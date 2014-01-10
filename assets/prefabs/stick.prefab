@@ -1,0 +1,9 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Stick",
+        "icon": "stick",
+        "stackId": "WoodAndStone:items.Stick",
+        "renderWithIcon": true
+    }
+}

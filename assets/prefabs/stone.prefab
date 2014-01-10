@@ -1,0 +1,9 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Small Stone",
+        "icon": "whitepwdr",
+        "stackId": "WoodAndStone:items.SmallStone",
+        "renderWithIcon": true
+    }
+}
