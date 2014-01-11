@@ -20,6 +20,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.health.BeforeDamagedEvent;
@@ -30,13 +31,12 @@ import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.entity.BlockDamageComponent;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RegisterSystem
+@RegisterSystem(RegisterMode.AUTHORITY)
 public class ModifyBlockDestruction implements ComponentSystem {
     private WorldProvider worldProvider;
     private Set<BlockUri> exceptions = new HashSet<>();

@@ -19,6 +19,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.EntityBeingGenerated;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.was.component.BlockDropGrammarComponent;
 import org.terasology.world.block.BlockUri;
@@ -28,7 +29,7 @@ import java.util.Arrays;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RegisterSystem
+@RegisterSystem(RegisterMode.AUTHORITY)
 public class WoodAndStoneBlockDrops implements ComponentSystem {
     @Override
     public void initialise() {
