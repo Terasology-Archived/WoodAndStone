@@ -72,4 +72,18 @@ public class DurabilitySystem implements ComponentSystem {
             entity.destroy();
         }
     }
+
+    @ReceiveEvent(components = {DurabilityComponent.class})
+    public void drawDurabilityBar(UIItemIconRendered event, EntityRef entity) {
+        DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
+        int pixels = 42 * durability.durability / durability.maxDurability;
+
+        glColor3f(0, 1, 0);
+        glBegin(GL_QUADS);
+        glVertex2f(3, 35);
+        glVertex2f(pixels, 35);
+        glVertex2f(pixels, 38);
+        glVertex2f(3, 38);
+        glEnd();
+    }
 }
