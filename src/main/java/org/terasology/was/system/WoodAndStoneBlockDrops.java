@@ -15,15 +15,12 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.engine.CoreRegistry;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.EntityBeingGenerated;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.was.component.BlockDropGrammarComponent;
-import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 
 import java.util.Arrays;
@@ -64,7 +61,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
             } else if (blockUri.equals(new BlockUri("Core", "GreenLeaf"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("0.1|Core:OakSapling");
-                dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick");
+                dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
                 event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("Core", "OakBranch"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();

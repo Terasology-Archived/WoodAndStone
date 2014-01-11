@@ -1,0 +1,9 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Plant Fibre",
+        "icon": "xbow",
+        "stackId": "WoodAndStone:items.PlantFibre",
+        "renderWithIcon": true
+    }
+}
