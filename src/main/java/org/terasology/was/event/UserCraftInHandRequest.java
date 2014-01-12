@@ -24,22 +24,28 @@ import org.terasology.network.ServerEvent;
  */
 @ServerEvent
 public class UserCraftInHandRequest implements Event {
-    private EntityRef handleItem;
-    private EntityRef toolHeadItem;
+    private EntityRef item1;
+    private EntityRef item2;
+    private EntityRef item3;
 
     public UserCraftInHandRequest() {
     }
 
-    public UserCraftInHandRequest(EntityRef handleItem, EntityRef toolHeadItem) {
-        this.handleItem = handleItem;
-        this.toolHeadItem = toolHeadItem;
+    public UserCraftInHandRequest(EntityRef item1, EntityRef item2, EntityRef item3) {
+        this.item1 = item1;
+        this.item2 = item2;
+        this.item3 = item3;
     }
 
-    public EntityRef getHandleItem() {
-        return handleItem;
+    public EntityRef getItem1() {
+        return item1;
     }
 
-    public EntityRef getToolHeadItem() {
-        return toolHeadItem;
+    public EntityRef getItem2() {
+        return item2;
+    }
+
+    public EntityRef getItem3() {
+        return item3;
     }
 }

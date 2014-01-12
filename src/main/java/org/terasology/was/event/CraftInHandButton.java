@@ -15,32 +15,16 @@
  */
 package org.terasology.was.event;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.Event;
+import org.lwjgl.input.Keyboard;
+import org.terasology.input.BindButtonEvent;
+import org.terasology.input.DefaultBinding;
+import org.terasology.input.InputType;
+import org.terasology.input.RegisterBindButton;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UserClosedCraftInHandUI implements Event {
-    private EntityRef entity1;
-    private EntityRef entity2;
-    private EntityRef entity3;
-
-    public UserClosedCraftInHandUI(EntityRef entity1, EntityRef entity2, EntityRef entity3) {
-        this.entity1 = entity1;
-        this.entity2 = entity2;
-        this.entity3 = entity3;
-    }
-
-    public EntityRef getEntity1() {
-        return entity1;
-    }
-
-    public EntityRef getEntity2() {
-        return entity2;
-    }
-
-    public EntityRef getEntity3() {
-        return entity3;
-    }
+@RegisterBindButton(id = "craftInHand", description = "Craft in hand", repeating = false)
+@DefaultBinding(type = InputType.KEY, id = Keyboard.KEY_R)
+public class CraftInHandButton extends BindButtonEvent {
 }

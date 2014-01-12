@@ -26,7 +26,6 @@ import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.component.PlantFibreComponent;
 import org.terasology.was.event.UserCraftInHandRequest;
 import org.terasology.was.system.recipe.SimpleCraftInHandRecipe;
 
@@ -37,7 +36,7 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class CraftToolsInHandAuthoritySystem implements ComponentSystem {
+public class CraftInHandAuthoritySystem implements ComponentSystem {
     @In
     private SlotBasedInventoryManager inventoryManager;
     @In
@@ -49,7 +48,9 @@ public class CraftToolsInHandAuthoritySystem implements ComponentSystem {
     @Override
     public void initialise() {
         recipes.add(
-                new SimpleCraftInHandRecipe("stick", "stone", "WoodAndStone:hammer"));
+                new SimpleCraftInHandRecipe("stick", "binding", "stone", "WoodAndStone:hammer"));
+        recipes.add(
+                new SimpleCraftInHandRecipe("stone", "binding", "stick", "WoodAndStone:hammer"));
         pickupBuilder = new PickupBuilder();
     }
 
@@ -59,46 +60,38 @@ public class CraftToolsInHandAuthoritySystem implements ComponentSystem {
 
     @ReceiveEvent
     public void craftInHandRequestReceived(UserCraftInHandRequest event, EntityRef character) {
-        EntityRef handleItem = event.getHandleItem();
-        EntityRef toolHeadItem = event.getToolHeadItem();
+        EntityRef item1 = event.getItem1();
+        EntityRef item2 = event.getItem2();
+        EntityRef item3 = event.getItem3();
 
-        CraftInHandRecipeComponent handle = handleItem.getComponent(CraftInHandRecipeComponent.class);
-        CraftInHandRecipeComponent toolHead = toolHeadItem.getComponent(CraftInHandRecipeComponent.class);
+        CraftInHandRecipeComponent component1 = item1.getComponent(CraftInHandRecipeComponent.class);
+        CraftInHandRecipeComponent component2 = item2.getComponent(CraftInHandRecipeComponent.class);
+        CraftInHandRecipeComponent component3 = item3.getComponent(CraftInHandRecipeComponent.class);
 
-        String resultPrefab = findResultForMatchingRecipe(handle, toolHead);
+        String resultPrefab = findResultForMatchingRecipe(component1, component2, component3);
 
         if (resultPrefab != null) {
             EntityRef resultEntity = entityManager.create(resultPrefab);
 
-            int slotWithHandle = inventoryManager.findSlotWithItem(character, handleItem);
-            int slotWithToolHead = inventoryManager.findSlotWithItem(character, toolHeadItem);
-            int slotWithPlantFibre = findSlotWithPlantFibre(character);
+            int item1Slot = inventoryManager.findSlotWithItem(character, item1);
+            int item2Slot = inventoryManager.findSlotWithItem(character, item2);
+            int item3Slot = inventoryManager.findSlotWithItem(character, item3);
 
-            if (slotWithHandle != -1 && slotWithToolHead != -1 && slotWithPlantFibre != -1) {
-                inventoryManager.removeItem(character, handleItem, 1);
-                inventoryManager.removeItem(character, toolHeadItem, 1);
-                inventoryManager.removeItem(character, inventoryManager.getItemInSlot(character, slotWithPlantFibre));
+            if (item1Slot != -1 && item2Slot != -1 && item3Slot != -1) {
+                inventoryManager.removeItem(character, item1, 1);
+                inventoryManager.removeItem(character, item2, 1);
+                inventoryManager.removeItem(character, item3, 1);
 
                 pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200);
             }
         }
     }
 
-    private int findSlotWithPlantFibre(EntityRef character) {
-        int slotCount = inventoryManager.getNumSlots(character);
-        for (int i = 0; i < slotCount; i++) {
-            EntityRef itemInSlot = inventoryManager.getItemInSlot(character, i);
-            if (itemInSlot.hasComponent(PlantFibreComponent.class))
-                return i;
-        }
-        return -1;
-    }
-
-    private String findResultForMatchingRecipe(CraftInHandRecipeComponent handle, CraftInHandRecipeComponent toolHead) {
-        if (handle == null || toolHead == null)
+    private String findResultForMatchingRecipe(CraftInHandRecipeComponent item1, CraftInHandRecipeComponent item2, CraftInHandRecipeComponent item3) {
+        if (item1 == null && item2 == null && item3 == null)
             return null;
         for (CraftInHandRecipe recipe : recipes) {
-            if (recipe.matchesRecipe(handle, toolHead)) {
+            if (recipe.matchesRecipe(item1, item2, item3)) {
                 return recipe.getResultPrefab();
             }
         }
@@ -106,7 +99,7 @@ public class CraftToolsInHandAuthoritySystem implements ComponentSystem {
     }
 
     public interface CraftInHandRecipe {
-        public boolean matchesRecipe(CraftInHandRecipeComponent handle, CraftInHandRecipeComponent toolHead);
+        public boolean matchesRecipe(CraftInHandRecipeComponent item1, CraftInHandRecipeComponent item2, CraftInHandRecipeComponent item3);
 
         public String getResultPrefab();
     }

@@ -6,5 +6,7 @@
         "stackId": "WoodAndStone:items.PlantFibre",
         "renderWithIcon": true
     },
-    "PlantFibre": {}
+    "CraftInHandRecipe": {
+        "componentType": "binding"
+    }
 }

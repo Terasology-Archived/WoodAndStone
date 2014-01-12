@@ -16,25 +16,27 @@
 package org.terasology.was.system.recipe;
 
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.system.CraftToolsInHandAuthoritySystem;
+import org.terasology.was.system.CraftInHandAuthoritySystem;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class SimpleCraftInHandRecipe implements CraftToolsInHandAuthoritySystem.CraftInHandRecipe {
-    private String handleType;
-    private String toolHeadType;
+public class SimpleCraftInHandRecipe implements CraftInHandAuthoritySystem.CraftInHandRecipe {
+    private String item1Type;
+    private String item2Type;
+    private String item3Type;
     private String resultPrefab;
 
-    public SimpleCraftInHandRecipe(String handleType, String toolHeadType, String resultPrefab) {
-        this.handleType = handleType;
-        this.toolHeadType = toolHeadType;
+    public SimpleCraftInHandRecipe(String item1Type, String item2Type, String item3Type, String resultPrefab) {
+        this.item1Type = item1Type;
+        this.item2Type = item2Type;
+        this.item3Type = item3Type;
         this.resultPrefab = resultPrefab;
     }
 
     @Override
-    public boolean matchesRecipe(CraftInHandRecipeComponent handle, CraftInHandRecipeComponent toolHead) {
-        return handle.componentType.equals(this.handleType) && toolHead.componentType.equals(this.toolHeadType);
+    public boolean matchesRecipe(CraftInHandRecipeComponent item1Type, CraftInHandRecipeComponent item2Type, CraftInHandRecipeComponent item3Type) {
+        return item1Type.componentType.equals(this.item1Type) && item2Type.componentType.equals(this.item2Type) && item3Type.componentType.equals(this.item3Type);
     }
 
     @Override
