@@ -5,5 +5,9 @@
         "icon": "hammer",
         "renderWithIcon": true,
         "damageType": "hammerDamage"
+    },
+    "Durability": {
+        "durability": 20,
+        "maxDurability": 20
     }
 }
