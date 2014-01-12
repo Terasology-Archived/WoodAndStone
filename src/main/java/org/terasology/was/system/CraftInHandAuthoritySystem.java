@@ -47,15 +47,19 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
 
     @Override
     public void initialise() {
-        recipes.add(
+        addCraftInHandRecipe(
                 new SimpleCraftInHandRecipe("stick", "binding", "stone", "WoodAndStone:hammer"));
-        recipes.add(
+        addCraftInHandRecipe(
                 new SimpleCraftInHandRecipe("stone", "binding", "stick", "WoodAndStone:hammer"));
         pickupBuilder = new PickupBuilder();
     }
 
     @Override
     public void shutdown() {
+    }
+
+    public void addCraftInHandRecipe(CraftInHandRecipe craftInHandRecipe) {
+        recipes.add(craftInHandRecipe);
     }
 
     @ReceiveEvent
