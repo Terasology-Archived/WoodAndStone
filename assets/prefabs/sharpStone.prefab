@@ -1,0 +1,12 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Sharp-edged Stone",
+        "icon": "whitepwdr",
+        "stackId": "WoodAndStone:items.SharpStone",
+        "renderWithIcon": true
+    },
+    "CraftInHandRecipe": {
+        "componentType": "sharpStone"
+    }
+}

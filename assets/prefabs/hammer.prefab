@@ -9,5 +9,8 @@
     "Durability": {
         "durability": 20,
         "maxDurability": 20
+    },
+    "CraftInHandRecipe": {
+        "componentType": "hammer"
     }
 }
