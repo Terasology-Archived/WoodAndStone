@@ -15,7 +15,6 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -24,7 +23,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.health.BeforeDamagedEvent;
-import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
@@ -38,12 +36,10 @@ import java.util.Set;
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class ModifyBlockDestruction implements ComponentSystem {
-    private WorldProvider worldProvider;
     private Set<BlockUri> exceptions = new HashSet<>();
 
     @Override
     public void initialise() {
-        worldProvider = CoreRegistry.get(WorldProvider.class);
         exceptions.add(new BlockUri("Core", "Grass"));
         exceptions.add(new BlockUri("Core", "Dirt"));
         exceptions.add(new BlockUri("Core", "Sand"));
@@ -58,7 +54,7 @@ public class ModifyBlockDestruction implements ComponentSystem {
     public void preventPlayerFromDestroyingBasicBlocksByHand(BeforeDamagedEvent event, EntityRef blockEntity) {
         BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
         if (blockComponent != null && event.getInstigator().hasComponent(CharacterComponent.class)) {
-            Block block = worldProvider.getBlock(blockComponent.getPosition());
+            Block block = blockComponent.getBlock();
 
             if (exceptions.contains(block.getURI()))
                 return;
