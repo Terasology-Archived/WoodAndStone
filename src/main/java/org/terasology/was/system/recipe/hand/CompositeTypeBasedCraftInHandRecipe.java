@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe;
+package org.terasology.was.system.recipe.hand;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.system.recipe.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.was.system.recipe.behaviour.DoNothingCraftBehaviour;
+import org.terasology.was.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.was.system.recipe.hand.behaviour.DoNothingCraftBehaviour;
 
 import java.util.Map;
 

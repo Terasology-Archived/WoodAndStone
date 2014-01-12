@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe;
+package org.terasology.was.component;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.was.component.CraftInHandRecipeComponent;
+import org.terasology.entitySystem.Component;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipe {
-    public CraftInHandResult getMatchingRecipeResult(CraftInHandRecipeComponent item1, CraftInHandRecipeComponent item2, CraftInHandRecipeComponent item3);
-
-    public interface CraftInHandResult {
-        public String getResultPrefab();
-
-        public boolean processCraftingForCharacter(EntityRef character, EntityRef item1, EntityRef item2, EntityRef item3);
-    }
+public class CraftingStationMaterialComponent implements Component {
+    public String type;
 }

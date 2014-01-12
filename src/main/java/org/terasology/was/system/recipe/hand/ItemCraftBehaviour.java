@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe.behaviour;
+package org.terasology.was.system.recipe.hand;
 
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.was.system.recipe.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class DoNothingCraftBehaviour implements ItemCraftBehaviour {
-    @Override
-    public boolean isValid(EntityRef character, EntityRef item) {
-        return true;
-    }
+public interface ItemCraftBehaviour {
+    public boolean isValid(EntityRef character, EntityRef item);
 
-    @Override
-    public void processForItem(EntityRef character, EntityRef item) {
-    }
+    public void processForItem(EntityRef character, EntityRef item);
 }

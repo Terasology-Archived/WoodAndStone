@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe;
+package org.terasology.was.system.recipe.station;
 
-import java.util.Collections;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class SimpleConsumingCraftInHandRecipe extends CompositeTypeBasedCraftInHandRecipe {
-    public SimpleConsumingCraftInHandRecipe(String item1Type, String item2Type, String item3Type, String resultPrefab) {
-        super(item1Type, item2Type, item3Type, Collections.<String, ItemCraftBehaviour>emptyMap(), resultPrefab);
+public interface UpgradeRecipe {
+    public boolean isUpgradeComponent(EntityRef entityRef);
+
+    public UpgradeResult getMatchingUpgradeResult(EntityRef stationEntity, int upgradeSlotFrom, int upgradeSlotCount);
+
+    public interface UpgradeResult {
+        public void processUpgrade(EntityRef stationEntity);
     }
 }

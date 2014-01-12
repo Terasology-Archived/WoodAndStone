@@ -27,11 +27,11 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.was.component.CraftInHandRecipeComponent;
 import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.recipe.CompositeTypeBasedCraftInHandRecipe;
-import org.terasology.was.system.recipe.CraftInHandRecipe;
-import org.terasology.was.system.recipe.ItemCraftBehaviour;
-import org.terasology.was.system.recipe.SimpleConsumingCraftInHandRecipe;
-import org.terasology.was.system.recipe.behaviour.ReduceItemDurabilityCraftBehaviour;
+import org.terasology.was.system.recipe.hand.CompositeTypeBasedCraftInHandRecipe;
+import org.terasology.was.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.was.system.recipe.hand.ItemCraftBehaviour;
+import org.terasology.was.system.recipe.hand.SimpleConsumingCraftInHandRecipe;
+import org.terasology.was.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
 
 import java.util.Collections;
 import java.util.LinkedList;

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe.behaviour;
+package org.terasology.was.system.recipe.hand.behaviour;
 
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.was.system.recipe.ItemCraftBehaviour;
+import org.terasology.was.system.recipe.hand.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

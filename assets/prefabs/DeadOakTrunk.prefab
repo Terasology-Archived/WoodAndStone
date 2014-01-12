@@ -1,2 +1,5 @@
 {
+    "CraftingStationMaterial": {
+        "type": "basicWoodcrafting"
+    }
 }
