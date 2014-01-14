@@ -3,7 +3,7 @@ package org.terasology.was.system;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.internal.EntityInfoComponent;
-import org.terasology.entitySystem.entity.lifecycleEvents.EntityBeingGenerated;
+import org.terasology.entitySystem.entity.lifecycleEvents.BeforeEntityCreated;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -30,7 +30,7 @@ public class DurabilityAuthoritySystem implements ComponentSystem {
     }
 
     @ReceiveEvent
-    public void addDurabilityToTools(EntityBeingGenerated event, EntityRef entity) {
+    public void addDurabilityToTools(BeforeEntityCreated event, EntityRef entity) {
         String prefabName = null;
         for (Component component : event.getOriginalComponents()) {
             if (component instanceof EntityInfoComponent) {

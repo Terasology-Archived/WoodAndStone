@@ -17,7 +17,7 @@ package org.terasology.was.system;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.EntityBeingGenerated;
+import org.terasology.entitySystem.entity.lifecycleEvents.BeforeEntityCreated;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
@@ -44,7 +44,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
     }
 
     @ReceiveEvent
-    public void overrideDropsForCoreBlocks(EntityBeingGenerated event, EntityRef entity) {
+    public void overrideDropsForCoreBlocks(BeforeEntityCreated event, EntityRef entity) {
         BlockUri blockUri = null;
         for (Component component : event.getOriginalComponents()) {
             if (component instanceof BlockComponent) {
