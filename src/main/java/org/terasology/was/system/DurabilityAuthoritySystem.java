@@ -1,6 +1,8 @@
 package org.terasology.was.system;
 
+import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.internal.EntityInfoComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.EntityBeingGenerated;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -29,7 +31,14 @@ public class DurabilityAuthoritySystem implements ComponentSystem {
 
     @ReceiveEvent
     public void addDurabilityToTools(EntityBeingGenerated event, EntityRef entity) {
-        String prefabName = event.getPrefabName();
+        String prefabName = null;
+        for (Component component : event.getOriginalComponents()) {
+            if (component instanceof EntityInfoComponent) {
+                EntityInfoComponent comp = (EntityInfoComponent) component;
+                prefabName = comp.parentPrefab;
+            }
+        }
+
         if (prefabName != null) {
             if (prefabName.equals("Core:axe") || prefabName.equals("Core:pickaxe")) {
                 DurabilityComponent durabilityComponent = new DurabilityComponent();

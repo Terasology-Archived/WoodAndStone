@@ -15,6 +15,7 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.EntityBeingGenerated;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -22,6 +23,7 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.was.component.BlockDropGrammarComponent;
+import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
 
 import java.util.Arrays;
@@ -43,7 +45,14 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
 
     @ReceiveEvent
     public void overrideDropsForCoreBlocks(EntityBeingGenerated event, EntityRef entity) {
-        BlockUri blockUri = event.getBlockUri();
+        BlockUri blockUri = null;
+        for (Component component : event.getOriginalComponents()) {
+            if (component instanceof BlockComponent) {
+                BlockComponent comp = (BlockComponent) component;
+                blockUri = comp.getBlock().getBlockFamily().getURI();
+            }
+        }
+
         if (blockUri != null) {
             if (blockUri.equals(new BlockUri("Core", "Grass"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
