@@ -24,10 +24,17 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.Region3i;
 import org.terasology.math.Side;
+import org.terasology.math.Vector3i;
 import org.terasology.was.component.CraftingStationMaterialComponent;
 import org.terasology.world.BlockEntityRegistry;
+import org.terasology.world.WorldProvider;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.BlockDamageComponent;
+import org.terasology.world.block.regions.BlockRegionComponent;
 
 import javax.vecmath.Vector3f;
 
@@ -38,6 +45,10 @@ import javax.vecmath.Vector3f;
 public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
     @In
     private BlockEntityRegistry blockEntityRegistry;
+    @In
+    private WorldProvider worldProvider;
+    @In
+    private BlockManager blockManager;
 
     @Override
     public void initialise() {
@@ -50,12 +61,12 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
     @ReceiveEvent(components = {ItemComponent.class})
     public void createBasicWoodworkingStation(ActivateEvent event, EntityRef item) {
         if (event.getTarget() != null) {
-            Side side = Side.inDirection(event.getDirection());
+            Side side = Side.inDirection(event.getHitNormal());
             if (side == Side.TOP) {
                 ItemComponent component = item.getComponent(ItemComponent.class);
                 if (component != null) {
                     BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
-                    if (blockDamage.materialDamageMultiplier.containsKey("wood")) {
+                    if (blockDamage != null && blockDamage.materialDamageMultiplier.containsKey("wood")) {
                         if (checkIfBlockIsBasicWoodcraftStationPotential(event.getTarget())) {
                             processBlockStructure(event.getTarget());
                         }
@@ -75,7 +86,16 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
     }
 
     private void putBasicWoodworkingStation(EntityRef block1, EntityRef block2) {
+        Block woodStationBlock = blockManager.getBlock("WoodAndStone:BasicWoodStation");
 
+        Vector3i block1Position = block1.getComponent(BlockComponent.class).getPosition();
+        Vector3i block2Position = block2.getComponent(BlockComponent.class).getPosition();
+
+        worldProvider.setBlock(block1Position, woodStationBlock);
+        worldProvider.setBlock(block2Position, woodStationBlock);
+
+        EntityRef multiblockEntity = blockEntityRegistry.getBlockEntityAt(block1Position);
+        multiblockEntity.addComponent(new BlockRegionComponent(Region3i.createBounded(block1Position, block2Position)));
     }
 
     private EntityRef findOtherMatchingBlock(Vector3f position) {
@@ -96,6 +116,6 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
 
     private boolean checkIfBlockIsBasicWoodcraftStationPotential(EntityRef block) {
         CraftingStationMaterialComponent craftingStationPotential = block.getComponent(CraftingStationMaterialComponent.class);
-        return craftingStationPotential != null && craftingStationPotential.type.equals("basicWoodcrafting");
+        return craftingStationPotential != null && craftingStationPotential.type.equals("WoodAndStone:basicWoodcrafting");
     }
 }

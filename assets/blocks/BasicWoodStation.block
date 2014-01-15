@@ -1,0 +1,11 @@
+{
+    "hardness": 6,
+
+    "displayName": "Basic Woodworking Station",
+
+    "categories": ["wood"],
+
+    "entity": {
+        "prefab": "WoodAndStone:BasicWoodStation"
+    }
+}
