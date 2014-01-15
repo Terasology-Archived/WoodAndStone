@@ -63,6 +63,7 @@ public class CraftingStationRecipeRegistryImpl implements ComponentSystem, Craft
         stationTypeUpgrades.put(recipeId, recipe);
     }
 
+    @Override
     public Map<String, CraftingStationRecipe> getRecipesForStation(String stationType) {
         Map<String, CraftingStationRecipe> recipeMap = stationRecipes.get(stationType);
         if (recipeMap == null)
