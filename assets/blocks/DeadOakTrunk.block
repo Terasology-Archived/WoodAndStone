@@ -9,7 +9,7 @@
         "prefab": "WoodAndStone:DeadOakTrunk"
     },
     "tiles": {
-        "sides": "OakBark",
+        "sides": "Core:OakBark",
         "topBottom": "Core:OakTrunk"
     }
 }
