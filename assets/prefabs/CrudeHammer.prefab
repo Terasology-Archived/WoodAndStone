@@ -1,7 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Stone Hammer",
+        "name": "Crude Hammer",
         "icon": "hammer",
         "renderWithIcon": true,
         "damageType": "hammerDamage"

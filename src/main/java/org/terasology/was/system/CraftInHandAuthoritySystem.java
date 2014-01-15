@@ -53,17 +53,17 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
     @Override
     public void initialise() {
         addCraftInHandRecipe(
-                new SimpleConsumingCraftInHandRecipe("stick", "binding", "stone", "WoodAndStone:hammer"));
+                new SimpleConsumingCraftInHandRecipe("stick", "binding", "stone", "WoodAndStone:CrudeHammer"));
         addCraftInHandRecipe(
-                new SimpleConsumingCraftInHandRecipe("stone", "binding", "stick", "WoodAndStone:hammer"));
+                new SimpleConsumingCraftInHandRecipe("stone", "binding", "stick", "WoodAndStone:CrudeHammer"));
         addCraftInHandRecipe(
                 new CompositeTypeBasedCraftInHandRecipe("stone", "hammer", null,
                         Collections.<String, ItemCraftBehaviour>singletonMap("hammer", new ReduceItemDurabilityCraftBehaviour(1)),
                         "WoodAndStone:sharpStone"));
         addCraftInHandRecipe(
-                new SimpleConsumingCraftInHandRecipe("sharpStone", "binding", "stick", "Core:axe"));
+                new SimpleConsumingCraftInHandRecipe("sharpStone", "binding", "stick", "WoodAndStone:CrudeAxe"));
         addCraftInHandRecipe(
-                new SimpleConsumingCraftInHandRecipe("stick", "binding", "sharpStone", "Core:axe"));
+                new SimpleConsumingCraftInHandRecipe("stick", "binding", "sharpStone", "WoodAndStone:CrudeAxe"));
         pickupBuilder = new PickupBuilder();
     }
 

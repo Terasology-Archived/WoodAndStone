@@ -41,14 +41,22 @@ public class DurabilityClientSystem implements ComponentSystem {
     @ReceiveEvent(components = {DurabilityComponent.class})
     public void drawDurabilityBar(UIItemIconRendered event, EntityRef entity) {
         DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
-        int pixels = 42 * durability.durability / durability.maxDurability;
+        int pixels = 36 * durability.durability / durability.maxDurability;
+
+        glColor3f(1, 1, 1);
+        glBegin(GL_QUADS);
+        glVertex2f(3, 34);
+        glVertex2f(41, 34);
+        glVertex2f(41, 39);
+        glVertex2f(3, 39);
+        glEnd();
 
         glColor3f(0, 1, 0);
         glBegin(GL_QUADS);
-        glVertex2f(3, 35);
-        glVertex2f(pixels, 35);
-        glVertex2f(pixels, 38);
-        glVertex2f(3, 38);
+        glVertex2f(4, 35);
+        glVertex2f(4 + pixels, 35);
+        glVertex2f(4 + pixels, 38);
+        glVertex2f(4, 38);
         glEnd();
     }
 }
