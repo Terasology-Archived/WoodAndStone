@@ -18,10 +18,7 @@ package org.terasology.was.system;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
-import org.terasology.entitySystem.systems.In;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.entitySystem.systems.*;
 import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
@@ -41,7 +38,8 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class CraftInHandAuthoritySystem implements ComponentSystem {
+@Share(CraftInHandRecipeRegistry.class)
+public class CraftInHandAuthoritySystem implements ComponentSystem, CraftInHandRecipeRegistry {
     @In
     private SlotBasedInventoryManager inventoryManager;
     @In
@@ -71,6 +69,7 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
     public void shutdown() {
     }
 
+    @Override
     public void addCraftInHandRecipe(CraftInHandRecipe craftInHandRecipe) {
         recipes.add(craftInHandRecipe);
     }
