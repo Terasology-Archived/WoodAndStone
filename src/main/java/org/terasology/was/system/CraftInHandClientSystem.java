@@ -6,10 +6,12 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.In;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.input.ButtonState;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.manager.GUIManager;
+import org.terasology.network.ClientComponent;
 import org.terasology.was.component.CraftInHandRecipeComponent;
 import org.terasology.was.event.CraftInHandButton;
 import org.terasology.was.event.UserClosedCraftInHandUI;
@@ -37,12 +39,13 @@ public class CraftInHandClientSystem implements ComponentSystem {
     public void shutdown() {
     }
 
-    @ReceiveEvent(components = {CharacterComponent.class, InventoryComponent.class})
+    @ReceiveEvent(components = {CharacterComponent.class, InventoryComponent.class, ClientComponent.class})
     public void craftRequested(CraftInHandButton event, EntityRef entity) {
-        if (!windowOpened) {
+        if (event.getState() == ButtonState.DOWN && !windowOpened) {
             UICraftInHand uiWindow = (UICraftInHand) guiManager.openWindow("WoodAndStone:CraftInHand");
             uiWindow.setCharacterEntity(entity);
             windowOpened = true;
+            event.consume();
         }
     }
 
