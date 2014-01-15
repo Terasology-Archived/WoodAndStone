@@ -15,6 +15,7 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -49,6 +50,8 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
     private WorldProvider worldProvider;
     @In
     private BlockManager blockManager;
+    @In
+    private EntityManager entityManager;
 
     @Override
     public void initialise() {
@@ -94,8 +97,8 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         worldProvider.setBlock(block1Position, woodStationBlock);
         worldProvider.setBlock(block2Position, woodStationBlock);
 
-        EntityRef multiblockEntity = blockEntityRegistry.getBlockEntityAt(block1Position);
-        multiblockEntity.addComponent(new BlockRegionComponent(Region3i.createBounded(block1Position, block2Position)));
+        final EntityRef multiBlockEntity = entityManager.create("WoodAndStone:BasicWoodStation");
+        multiBlockEntity.addComponent(new BlockRegionComponent(Region3i.createBounded(block1Position, block2Position)));
     }
 
     private EntityRef findOtherMatchingBlock(Vector3f position) {

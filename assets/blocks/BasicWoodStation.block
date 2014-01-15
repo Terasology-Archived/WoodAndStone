@@ -3,9 +3,5 @@
 
     "displayName": "Basic Woodworking Station",
 
-    "categories": ["wood"],
-
-    "entity": {
-        "prefab": "WoodAndStone:BasicWoodStation"
-    }
+    "categories": ["wood"]
 }
