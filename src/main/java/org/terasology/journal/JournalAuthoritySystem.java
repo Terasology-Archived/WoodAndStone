@@ -26,7 +26,7 @@ public class JournalAuthoritySystem implements ComponentSystem {
 
     @ReceiveEvent
     public void addJournalAccessComponentToPlayers(BeforeEntityCreated event, EntityRef character) {
-        if (event.getPrefab().equals("engine:player")) {
+        if (event.getPrefab() != null && event.getPrefab().equals("engine:player")) {
             JournalAccessComponent journalAccess = new JournalAccessComponent();
             journalAccess.discoveredJournalEntries = new LinkedHashMap<>();
             event.addComponent(journalAccess);
