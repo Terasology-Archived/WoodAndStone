@@ -51,7 +51,7 @@ public class UIRecipeDisplay extends UIDisplayContainer {
             itemIndex++;
         }
         result = craftingRecipe.createResultItemEntityForDisplayOne();
-        UIPassiveItemDisplay resultElement = new UIPassiveItemDisplay(inventoryManager, result, 1);
+        UIPassiveItemDisplay resultElement = new UIPassiveItemDisplay(inventoryManager, result, null);
         resultElement.setSize(new Vector2f(iconSize, iconSize));
         resultElement.setPosition(new Vector2f(4 * iconSize, iconSize));
         addDisplayElement(resultElement);

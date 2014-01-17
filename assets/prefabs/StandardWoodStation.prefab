@@ -1,0 +1,38 @@
+{
+    "BlockDropGrammar": {
+        "blockDrops": "10*WoodAndStone:WoodPlank"
+    },
+    "CraftingStation": {
+        "type": "WoodAndStone:StandardWoodcrafting",
+        "workstationUITexture": "WoodAndStone:StandardWoodworking",
+        "upgradeSlots": 2,
+        "toolSlots": 2,
+        "ingredientSlots": 6
+    },
+    "Inventory": {
+        "privateToOwner": false,
+        "itemSlots": [
+            // Upgrade slot
+            0,
+            0,
+            // Tool slot
+            0,
+            0,
+            // Component slots
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            // Output slot
+            0
+        ]
+    },
+    "Health": {
+        "currentHealth": 5,
+        "maxHealth": 5,
+        "regenRate": 1,
+        "waitBeforeRegen": 2
+    }
+}

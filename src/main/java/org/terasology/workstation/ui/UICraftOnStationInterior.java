@@ -123,6 +123,7 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
             if (matchingUpgradeRecipe != null) {
                 addUpgradeButton(matchingUpgradeRecipe);
             }
+            upgradeRecipeDisplayed = matchingUpgradeRecipe;
         }
     }
 

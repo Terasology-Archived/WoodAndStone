@@ -63,7 +63,7 @@ public class UIPassiveItemDisplay extends UIDisplayContainer {
         }
     };
 
-    public UIPassiveItemDisplay(InventoryManager inventoryManager, EntityRef item, int count) {
+    public UIPassiveItemDisplay(InventoryManager inventoryManager, EntityRef item, Integer count) {
         background = new UIImage(Assets.getTexture("engine:inventory"));
         background.setTextureSize(new Vector2f(19f, 19f));
         background.setTextureOrigin(new Vector2f(3f, 146f));
@@ -78,7 +78,8 @@ public class UIPassiveItemDisplay extends UIDisplayContainer {
 
         icon = new UIItemIcon(inventoryManager);
         icon.setPosition(DEFAULT_ICON_POSITION);
-        icon.setFixedItemCount(count);
+        if (count != null)
+            icon.setFixedItemCount(count);
         icon.setItem(item);
         icon.setVisible(true);
 

@@ -25,6 +25,7 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.BlockDamageComponent;
+import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.*;
@@ -248,7 +249,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 entity.saveComponent(item);
                 return entity;
             } else {
-                return CoreRegistry.get(BlockItemFactory.class).newInstance(CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult), count);
+                BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult);
+                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, count);
             }
         }
 
