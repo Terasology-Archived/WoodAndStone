@@ -15,6 +15,7 @@
  */
 package org.terasology.workstation.system;
 
+import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -22,8 +23,7 @@ import org.terasology.entitySystem.systems.In;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.inventory.PickupBuilder;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.event.OpenCraftingWorkstationRequest;
 import org.terasology.workstation.event.UserCraftOnStationRequest;
@@ -39,11 +39,8 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
     @In
     private CraftingStationRecipeRegistry recipeRegistry;
 
-    private PickupBuilder pickupBuilder;
-
     @Override
     public void initialise() {
-        pickupBuilder = new PickupBuilder();
     }
 
     @Override
@@ -64,9 +61,10 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
         final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
         EntityRef resultEntity = result.craftOne(station,
                 craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
-                craftingStation.upgradeSlots, craftingStation.toolSlots);
+                craftingStation.upgradeSlots, craftingStation.toolSlots, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots);
         if (resultEntity.exists()) {
-            pickupBuilder.createPickupFor(resultEntity, station.getComponent(LocationComponent.class).getWorldPosition(), 200);
+            SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+            inventoryManager.putItemInSlot(station, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots, resultEntity);
         }
     }
 

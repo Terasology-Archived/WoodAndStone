@@ -7,7 +7,7 @@
         "workstationUITexture": "WoodAndStone:BasicWoodworking",
         "upgradeSlots": 1,
         "toolSlots": 1,
-        "ingredientSlots: 3
+        "ingredientSlots": 3
     },
     "Inventory": {
         "privateToOwner": false,

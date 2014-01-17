@@ -70,7 +70,7 @@ public interface CraftingStationRecipe {
          * @return
          */
         public EntityRef craftOne(EntityRef station, int componentFromSlot, int componentSlotCount,
-                                  int toolFromSlot, int toolSlotCount);
+                                  int toolFromSlot, int toolSlotCount, int resultSlot);
 
         /**
          * Processes the crafting of the recipe maximum possible times. Returns the entity that should be put (or added to)

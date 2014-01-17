@@ -15,10 +15,8 @@
  */
 package org.terasology.workstation.ui;
 
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
-import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 
 import javax.vecmath.Vector2f;
 
@@ -48,22 +46,5 @@ public class UICraftOnStation extends UIScreenInventory {
                     }
                 });
         addDisplayElement(interior);
-        updateRecipes();
-    }
-
-    public void updateRecipes() {
-        if (allRecipesDisplay != null) {
-            removeDisplayElement(allRecipesDisplay);
-            allRecipesDisplay.dispose();
-        }
-
-        CraftingStationRecipeRegistry registry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
-
-        allRecipesDisplay = new UIAvailableStationRecipesDisplay(registry, stationType, station, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
-        allRecipesDisplay.setHorizontalAlign(EHorizontalAlign.CENTER);
-        allRecipesDisplay.setVerticalAlign(EVerticalAlign.TOP);
-        addDisplayElement(allRecipesDisplay);
-
-        layout();
     }
 }

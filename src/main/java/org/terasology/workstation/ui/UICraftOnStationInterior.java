@@ -101,7 +101,11 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
         setPosition(new Vector2f((displaySize.x - windowWidth) / 2, (displaySize.y - windowHeight) / 2));
 
         CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
-        addDisplayElement(new UIAvailableStationRecipesDisplay(craftingRegistry, stationType, station, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots));
+        UIAvailableStationRecipesDisplay recipesDisplay = new UIAvailableStationRecipesDisplay(craftingRegistry, stationType, station, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
+        recipesDisplay.setSize(new Vector2f(windowWidth - 150, windowHeight - 48));
+        recipesDisplay.setPosition(new Vector2f(150, 0));
+
+        addDisplayElement(recipesDisplay);
 
         layout();
     }

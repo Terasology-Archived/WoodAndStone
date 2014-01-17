@@ -160,7 +160,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
         public Result(List<Integer> slots) {
             items = slots.subList(0, ingredientsMap.size());
-            tools = slots.subList(ingredientsMap.size(), toolsMap.size());
+            tools = slots.subList(ingredientsMap.size(), ingredientsMap.size() + toolsMap.size());
         }
 
         @Override
@@ -177,8 +177,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craftOne(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
-            if (!validateCreation(station)) return EntityRef.NULL;
+        public EntityRef craftOne(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount, int resultSlot) {
+            if (!validateCreation(station, resultSlot)) return EntityRef.NULL;
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
@@ -195,7 +195,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             return createResultItemEntityForDisplayOne();
         }
 
-        private boolean validateCreation(EntityRef station) {
+        private boolean validateCreation(EntityRef station, int resultSlot) {
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
                 if (!hasItemInSlot(station, ingredientCount.getKey(), items.get(index), ingredientCount.getValue()))
@@ -208,7 +208,18 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                     return false;
                 index++;
             }
-            return true;
+
+            EntityRef resultItem = createResultItemEntityForDisplayOne();
+            try {
+                EntityRef itemInResultSlot = inventoryManager.getItemInSlot(station, resultSlot);
+                if (!itemInResultSlot.exists()) {
+                    return true;
+                }
+                return inventoryManager.canStackTogether(resultItem, itemInResultSlot)
+                        && (resultItem.getComponent(ItemComponent.class).stackCount + itemInResultSlot.getComponent(ItemComponent.class).stackCount <= 99);
+            } finally {
+                resultItem.destroy();
+            }
         }
 
         @Override
