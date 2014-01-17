@@ -64,9 +64,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         SimpleWorkstationRecipe plankRecipe = new SimpleWorkstationRecipe();
         plankRecipe.addIngredient("WoodAndStone:wood", 1);
         plankRecipe.addRequiredTool("wood", 1);
-        plankRecipe.setItemResult("WoodAndStone:stone", (byte) 1);
+        plankRecipe.setItemResult("WoodAndStone:WoodPlank", (byte) 2);
 
-        addBasicWoodworkingRecipe("WoodAndStone:Plank", plankRecipe);
+        addBasicWoodworkingRecipe("WoodAndStone:WoodPlank", plankRecipe);
     }
 
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {
@@ -74,9 +74,8 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     }
 
     public void addBasicWoodworkingRecipe(String recipeId, CraftingStationRecipe recipe) {
-        stationRecipeRegistry.addCraftingStationRecipe("WoodAndStone:basicWoodcrafting", recipeId, recipe);
+        stationRecipeRegistry.addCraftingStationRecipe("WoodAndStone:BasicWoodcrafting", recipeId, recipe);
     }
-
 
     @Override
     public void shutdown() {

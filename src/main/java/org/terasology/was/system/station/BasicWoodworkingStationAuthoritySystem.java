@@ -121,6 +121,6 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
 
     private boolean checkIfBlockIsBasicWoodcraftStationPotential(EntityRef block) {
         CraftingStationMaterialComponent craftingStationPotential = block.getComponent(CraftingStationMaterialComponent.class);
-        return craftingStationPotential != null && craftingStationPotential.type.equals("WoodAndStone:basicWoodcrafting");
+        return craftingStationPotential != null && craftingStationPotential.type.equals("WoodAndStone:BasicWoodcrafting");
     }
 }

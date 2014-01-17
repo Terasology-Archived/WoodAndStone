@@ -1,0 +1,12 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Wood Plank",
+        "icon": "book",
+        "stackId": "WoodAndStone:items.WoodPlank",
+        "renderWithIcon": true
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:plank"
+    }
+}

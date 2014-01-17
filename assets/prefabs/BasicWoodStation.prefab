@@ -3,7 +3,7 @@
         "blockDrops": "2*WoodAndStone:DeadOakTrunk"
     },
     "CraftingStation": {
-        "type": "WoodAndStone:basicWoodcrafting",
+        "type": "WoodAndStone:BasicWoodcrafting",
         "workstationUITexture": "WoodAndStone:BasicWoodworking",
         "upgradeSlots": 1,
         "toolSlots": 1,
