@@ -23,8 +23,8 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.CraftInHandRecipeRegistry;
-import org.terasology.was.system.recipe.CraftInHandRecipe;
+import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
+import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
 import org.terasology.workstation.ui.CreationCallback;
 import org.terasology.workstation.ui.UIRecipeDisplay;
 

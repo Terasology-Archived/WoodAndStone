@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system;
+package org.terasology.was.system.hand;
 
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -26,7 +26,7 @@ import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.recipe.CraftInHandRecipe;
+import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

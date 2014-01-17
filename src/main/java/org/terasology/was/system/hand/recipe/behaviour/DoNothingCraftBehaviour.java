@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe;
+package org.terasology.was.system.hand.recipe.behaviour;
 
-import org.terasology.was.system.recipe.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.was.system.hand.recipe.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class SimpleConsumingCraftInHandRecipe extends CompositeTypeBasedCraftInHandRecipe {
-    public SimpleConsumingCraftInHandRecipe(String item1Type, String item2Type, String item3Type, String resultPrefab) {
-        super(item1Type, new ConsumeItemCraftBehaviour(item1Type),
-                item2Type, new ConsumeItemCraftBehaviour(item2Type),
-                item3Type, new ConsumeItemCraftBehaviour(item3Type), resultPrefab);
+public class DoNothingCraftBehaviour implements ItemCraftBehaviour {
+    @Override
+    public boolean isValid(EntityRef character, EntityRef item) {
+        return true;
+    }
+
+    @Override
+    public void processForItem(EntityRef character, EntityRef item) {
     }
 }

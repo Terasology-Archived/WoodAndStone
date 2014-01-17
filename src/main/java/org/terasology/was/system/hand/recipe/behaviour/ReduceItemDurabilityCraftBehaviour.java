@@ -13,34 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe.behaviour;
+package org.terasology.was.system.hand.recipe.behaviour;
 
-import org.terasology.engine.CoreRegistry;
+import org.terasology.durability.DurabilityComponent;
+import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.system.recipe.ItemCraftBehaviour;
+import org.terasology.was.system.hand.recipe.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
+public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
     private String itemType;
+    private int durabilityUsed;
 
-    public ConsumeItemCraftBehaviour(String itemType) {
+    public ReduceItemDurabilityCraftBehaviour(String itemType, int durabilityUsed) {
         this.itemType = itemType;
+        this.durabilityUsed = durabilityUsed;
     }
 
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
         CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
-        return craftComponent != null && craftComponent.componentType.equals(itemType);
+        if (craftComponent == null || !craftComponent.componentType.equals(itemType))
+            return false;
+
+        DurabilityComponent durability = item.getComponent(DurabilityComponent.class);
+        if (durability == null)
+            return false;
+
+        return durability.durability >= durabilityUsed;
     }
 
     @Override
     public void processForItem(EntityRef character, EntityRef item) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-
-        inventoryManager.removeItem(character, item, 1);
+        item.send(new ReduceDurabilityEvent(1));
     }
 }

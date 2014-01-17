@@ -7,7 +7,7 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.WindowListener;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
-import org.terasology.was.system.CraftInHandRecipeRegistry;
+import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

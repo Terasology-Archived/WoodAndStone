@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system;
+package org.terasology.was.system.hand;
 
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.Share;
-import org.terasology.was.system.recipe.CraftInHandRecipe;
+import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

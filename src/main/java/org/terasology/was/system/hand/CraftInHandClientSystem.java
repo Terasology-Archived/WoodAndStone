@@ -1,4 +1,4 @@
-package org.terasology.was.system;
+package org.terasology.was.system.hand;
 
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
