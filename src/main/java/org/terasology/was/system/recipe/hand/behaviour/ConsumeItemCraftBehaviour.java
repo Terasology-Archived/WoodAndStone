@@ -18,16 +18,23 @@ package org.terasology.was.system.recipe.hand.behaviour;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.was.component.CraftInHandRecipeComponent;
 import org.terasology.was.system.recipe.hand.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
+    private String itemType;
+
+    public ConsumeItemCraftBehaviour(String itemType) {
+        this.itemType = itemType;
+    }
+
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-        return inventoryManager.findSlotWithItem(character, item) != -1;
+        CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
+        return craftComponent != null && craftComponent.componentType.equals(itemType);
     }
 
     @Override

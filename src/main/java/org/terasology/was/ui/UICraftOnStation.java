@@ -38,7 +38,7 @@ public class UICraftOnStation extends UIScreenInventory {
     private int toolSlots;
     private int componentSlots;
 
-    private UIAvailableRecipesDisplay availableRecipes;
+    private UIAvailableStationRecipesDisplay availableRecipes;
 
     public void setCraftingStation(EntityRef entity, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots) {
         this.entity = entity;
@@ -82,6 +82,6 @@ public class UICraftOnStation extends UIScreenInventory {
         }
         CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
 
-        addDisplayElement(new UIAvailableRecipesDisplay(craftingRegistry, entity, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots));
+        addDisplayElement(new UIAvailableStationRecipesDisplay(craftingRegistry, entity, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots));
     }
 }

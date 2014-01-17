@@ -26,8 +26,8 @@ import org.terasology.was.system.recipe.station.CraftingStationRecipe;
 import java.util.List;
 import java.util.Map;
 
-public class UIAvailableRecipesDisplay extends UIDisplayContainer {
-    public UIAvailableRecipesDisplay(CraftingStationRecipeRegistry recipeRegistry, EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
+public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
+    public UIAvailableStationRecipesDisplay(CraftingStationRecipeRegistry recipeRegistry, EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
 
         final Map<String, CraftingStationRecipe> recipes = recipeRegistry.getRecipesForStation(station.getComponent(CraftingStationComponent.class).type);
@@ -35,7 +35,7 @@ public class UIAvailableRecipesDisplay extends UIDisplayContainer {
             final List<CraftingStationRecipe.CraftingStationResult> matchingRecipes = recipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (matchingRecipes != null) {
                 for (CraftingStationRecipe.CraftingStationResult matchingRecipe : matchingRecipes) {
-                    addDisplayElement(new UIRecipeDisplay(recipe.getKey(), inventoryManager, station, matchingRecipe));
+                    addDisplayElement(new UIRecipeDisplay(recipe.getKey(), matchingRecipe.getResultId(), inventoryManager, station, matchingRecipe));
                 }
             }
         }

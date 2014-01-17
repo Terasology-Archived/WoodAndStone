@@ -15,11 +15,15 @@
  */
 package org.terasology.was.system.recipe.hand;
 
+import org.terasology.engine.CoreRegistry;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.was.system.recipe.hand.behaviour.DoNothingCraftBehaviour;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,67 +31,113 @@ import java.util.Map;
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     private String item1Type;
+    private ItemCraftBehaviour itemCraftBehaviour1;
     private String item2Type;
+    private ItemCraftBehaviour itemCraftBehaviour2;
     private String item3Type;
-    private Map<String, ItemCraftBehaviour> itemCraftBehaviourMap;
-    private String resultPrefab;
+    private ItemCraftBehaviour itemCraftBehaviour3;
+    private String prefabName;
 
-    public CompositeTypeBasedCraftInHandRecipe(String item1Type, String item2Type, String item3Type, Map<String, ItemCraftBehaviour> itemCraftBehaviourMap, String resultPrefab) {
+    public CompositeTypeBasedCraftInHandRecipe(String item1Type, ItemCraftBehaviour itemCraftBehaviour1,
+                                               String item2Type, ItemCraftBehaviour itemCraftBehaviour2,
+                                               String item3Type, ItemCraftBehaviour itemCraftBehaviour3,
+                                               String resultPrefab) {
         this.item1Type = item1Type;
+        this.itemCraftBehaviour1 = itemCraftBehaviour1;
         this.item2Type = item2Type;
+        this.itemCraftBehaviour2 = itemCraftBehaviour2;
         this.item3Type = item3Type;
-        this.itemCraftBehaviourMap = itemCraftBehaviourMap;
-        this.resultPrefab = resultPrefab;
+        this.itemCraftBehaviour3 = itemCraftBehaviour3;
+        this.prefabName = resultPrefab;
     }
 
     @Override
-    public CraftInHandResult getMatchingRecipeResult(CraftInHandRecipeComponent item1Type, CraftInHandRecipeComponent item2Type, CraftInHandRecipeComponent item3Type) {
-        if (compareItems(item1Type, this.item1Type) && compareItems(item2Type, this.item2Type) && compareItems(item3Type, this.item3Type)) {
-            return new CraftResult();
+    public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
+        int slot1 = item1Type != null ? hasItem(character, item1Type) : -1;
+        int slot2 = item2Type != null ? hasItem(character, item2Type) : -1;
+        int slot3 = item3Type != null ? hasItem(character, item3Type) : -1;
+        if ((slot1 != -1 || item1Type == null) && (slot2 != -1 || item2Type == null) && (slot3 != -1 || item3Type == null)) {
+            return Collections.<CraftInHandResult>singletonList(new CraftResult(slot1, slot2, slot3));
         }
         return null;
     }
 
-    private boolean compareItems(CraftInHandRecipeComponent itemType, String storedType) {
-        if (itemType == null && storedType == null)
+    @Override
+    public CraftInHandResult getResultById(String resultId) {
+        String[] slots = resultId.split("\\|");
+        return new CraftResult(Integer.parseInt(slots[0]), Integer.parseInt(slots[1]), Integer.parseInt(slots[2]));
+    }
+
+    private int hasItem(EntityRef character, String itemType) {
+        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+        int numSlots = inventoryManager.getNumSlots(character);
+        for (int i = 0; i < numSlots; i++) {
+            if (hasItemInSlot(character, itemType, inventoryManager, i))
+                return i;
+        }
+
+        return -1;
+    }
+
+    private boolean hasItemInSlot(EntityRef character, String itemType, SlotBasedInventoryManager inventoryManager, int slot) {
+        CraftInHandRecipeComponent component = inventoryManager.getItemInSlot(character, slot).getComponent(CraftInHandRecipeComponent.class);
+        if (component != null && component.componentType.equals(itemType))
             return true;
-        if (itemType == null || storedType == null)
-            return false;
-        return itemType.componentType.equals(storedType);
+        return false;
     }
 
     public class CraftResult implements CraftInHandResult {
-        @Override
-        public String getResultPrefab() {
-            return resultPrefab;
+        private int slot1;
+        private int slot2;
+        private int slot3;
+
+        public CraftResult(int slot1, int slot2, int slot3) {
+            this.slot1 = slot1;
+            this.slot2 = slot2;
+            this.slot3 = slot3;
         }
 
         @Override
-        public boolean processCraftingForCharacter(EntityRef character, EntityRef item1, EntityRef item2, EntityRef item3) {
-            ItemCraftBehaviour behaviour1 = getCraftBehaviourForItemType(item1Type);
-            ItemCraftBehaviour behaviour2 = getCraftBehaviourForItemType(item2Type);
-            ItemCraftBehaviour behaviour3 = getCraftBehaviourForItemType(item3Type);
+        public String getResultId() {
+            return slot1 + "|" + slot2 + "|" + slot3;
+        }
 
-            if (behaviour1.isValid(character, item1)
-                    && behaviour2.isValid(character, item2)
-                    && behaviour3.isValid(character, item3)) {
-                behaviour1.processForItem(character, item1);
-                behaviour2.processForItem(character, item2);
-                behaviour3.processForItem(character, item3);
+        @Override
+        public Map<Integer, Integer> getComponentSlotAndCount() {
+            Map<Integer, Integer> result = new LinkedHashMap<>();
+            if (slot1 != -1) result.put(slot1, 1);
+            if (slot2 != -1) result.put(slot2, 1);
+            if (slot3 != -1) result.put(slot3, 1);
+            return result;
+        }
 
-                return true;
+        @Override
+        public EntityRef createResultItemEntityForDisplayOne() {
+            return CoreRegistry.get(EntityManager.class).create(prefabName);
+        }
+
+        @Override
+        public EntityRef getResultItemEntityForDisplayMax() {
+            return null;
+        }
+
+        @Override
+        public EntityRef craftOne(EntityRef character) {
+            SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+            EntityRef item1 = inventoryManager.getItemInSlot(character, slot1);
+            EntityRef item2 = inventoryManager.getItemInSlot(character, slot2);
+            EntityRef item3 = inventoryManager.getItemInSlot(character, slot3);
+            if (itemCraftBehaviour1.isValid(character, item1)
+                    && itemCraftBehaviour2.isValid(character, item2)
+                    && itemCraftBehaviour3.isValid(character, item3)) {
+                itemCraftBehaviour1.processForItem(character, item1);
+                itemCraftBehaviour2.processForItem(character, item2);
+                itemCraftBehaviour3.processForItem(character, item3);
+
+                return CoreRegistry.get(EntityManager.class).create(prefabName);
             }
 
-            return false;
-        }
-
-        private ItemCraftBehaviour getCraftBehaviourForItemType(String itemType) {
-            if (itemType == null)
-                return new DoNothingCraftBehaviour();
-            ItemCraftBehaviour craftBehaviour = itemCraftBehaviourMap.get(itemType);
-            if (craftBehaviour == null)
-                craftBehaviour = new ConsumeItemCraftBehaviour();
-            return craftBehaviour;
+            return EntityRef.NULL;
         }
     }
 }

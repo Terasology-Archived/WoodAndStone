@@ -15,31 +15,31 @@
  */
 package org.terasology.was.system.recipe.hand.behaviour;
 
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.was.component.CraftInHandRecipeComponent;
 import org.terasology.was.component.DurabilityComponent;
+import org.terasology.was.event.ReduceDurabilityEvent;
 import org.terasology.was.system.recipe.hand.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
+    private String itemType;
     private int durabilityUsed;
 
-    public ReduceItemDurabilityCraftBehaviour(int durabilityUsed) {
+    public ReduceItemDurabilityCraftBehaviour(String itemType, int durabilityUsed) {
+        this.itemType = itemType;
         this.durabilityUsed = durabilityUsed;
     }
 
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-        int slot = inventoryManager.findSlotWithItem(character, item);
-        if (slot == -1)
+        CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
+        if (craftComponent == null || !craftComponent.componentType.equals(itemType))
             return false;
 
-        EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slot);
-        DurabilityComponent durability = itemInSlot.getComponent(DurabilityComponent.class);
+        DurabilityComponent durability = item.getComponent(DurabilityComponent.class);
         if (durability == null)
             return false;
 
@@ -48,14 +48,6 @@ public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
 
     @Override
     public void processForItem(EntityRef character, EntityRef item) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-        int slot = inventoryManager.findSlotWithItem(character, item);
-        if (slot == -1)
-            return;
-
-        EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slot);
-        DurabilityComponent durability = itemInSlot.getComponent(DurabilityComponent.class);
-        durability.durability -= durabilityUsed;
-        itemInSlot.saveComponent(durability);
+        item.send(new ReduceDurabilityEvent(1));
     }
 }

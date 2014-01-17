@@ -16,17 +16,21 @@
 package org.terasology.was.system.recipe.hand;
 
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.was.component.CraftInHandRecipeComponent;
+import org.terasology.was.system.recipe.CraftProcessDisplay;
+
+import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface CraftInHandRecipe {
-    public CraftInHandResult getMatchingRecipeResult(CraftInHandRecipeComponent item1, CraftInHandRecipeComponent item2, CraftInHandRecipeComponent item3);
+    public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character);
 
-    public interface CraftInHandResult {
-        public String getResultPrefab();
+    public CraftInHandResult getResultById(String resultId);
 
-        public boolean processCraftingForCharacter(EntityRef character, EntityRef item1, EntityRef item2, EntityRef item3);
+    public interface CraftInHandResult extends CraftProcessDisplay {
+        public String getResultId();
+
+        public EntityRef craftOne(EntityRef character);
     }
 }

@@ -16,9 +16,9 @@
 package org.terasology.was.system.recipe.station;
 
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.was.system.recipe.CraftProcessDisplay;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -55,28 +55,10 @@ public interface CraftingStationRecipe {
                                                                 int componentFromSlot, int componentSlotCount,
                                                                 int toolFromSlot, int toolSlotCount);
 
-    public interface CraftingStationResult {
-        /**
-         * Returns components and their count that will be used in crafting this recipe.
-         *
-         * @return
-         */
-        public Map<Integer, Integer> getComponentSlotAndCount();
+    public CraftingStationResult getResultById(String resultId);
 
-        /**
-         * Returns an item entity that will be used to display a result of crafting the recipe once.
-         *
-         * @return
-         */
-        public EntityRef getResultItemEntityForDisplayOne();
-
-        /**
-         * Returns an item entity that will be used to display a result of creating the recipe as many times
-         * as possible at the moment (taking into account available components and tools, space in result slot).
-         *
-         * @return
-         */
-        public EntityRef getResultItemEntityForDisplayMax();
+    public interface CraftingStationResult extends CraftProcessDisplay {
+        public String getResultId();
 
         /**
          * Processes the crafting of the recipe once. Returns the entity that should be put (or added to) the result slot.

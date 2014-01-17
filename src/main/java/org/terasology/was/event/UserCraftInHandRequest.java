@@ -15,7 +15,6 @@
  */
 package org.terasology.was.event;
 
-import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 import org.terasology.network.ServerEvent;
 
@@ -24,28 +23,22 @@ import org.terasology.network.ServerEvent;
  */
 @ServerEvent
 public class UserCraftInHandRequest implements Event {
-    private EntityRef item1;
-    private EntityRef item2;
-    private EntityRef item3;
+    private String recipeId;
+    private String resultId;
 
     public UserCraftInHandRequest() {
     }
 
-    public UserCraftInHandRequest(EntityRef item1, EntityRef item2, EntityRef item3) {
-        this.item1 = item1;
-        this.item2 = item2;
-        this.item3 = item3;
+    public UserCraftInHandRequest(String recipeId, String resultId) {
+        this.recipeId = recipeId;
+        this.resultId = resultId;
     }
 
-    public EntityRef getItem1() {
-        return item1;
+    public String getRecipeId() {
+        return recipeId;
     }
 
-    public EntityRef getItem2() {
-        return item2;
-    }
-
-    public EntityRef getItem3() {
-        return item3;
+    public String getResultId() {
+        return resultId;
     }
 }

@@ -9,6 +9,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.health.NoHealthEvent;
 import org.terasology.was.component.DurabilityComponent;
 import org.terasology.was.event.DurabilityReducedEvent;
+import org.terasology.was.event.ReduceDurabilityEvent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.entity.BlockDamageComponent;
@@ -37,13 +38,19 @@ public class DurabilityAuthoritySystem implements ComponentSystem {
                 Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
                 if (canBeDestroyedByBlockDamage(categoriesIterator, event.getDamageType())) {
                     // It was the right tool for the job, so reduce the durability
-                    durabilityComponent.durability--;
-                    tool.saveComponent(durabilityComponent);
-
-                    tool.send(new DurabilityReducedEvent());
+                    tool.send(new ReduceDurabilityEvent(1));
                 }
             }
         }
+    }
+
+    @ReceiveEvent(components = {DurabilityComponent.class})
+    public void reduceDurability(ReduceDurabilityEvent event, EntityRef entity) {
+        DurabilityComponent durabilityComponent = entity.getComponent(DurabilityComponent.class);
+        durabilityComponent.durability--;
+        entity.saveComponent(durabilityComponent);
+
+        entity.send(new DurabilityReducedEvent());
     }
 
     @ReceiveEvent(components = {DurabilityComponent.class})

@@ -15,13 +15,15 @@
  */
 package org.terasology.was.system.recipe.hand;
 
-import java.util.Collections;
+import org.terasology.was.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SimpleConsumingCraftInHandRecipe extends CompositeTypeBasedCraftInHandRecipe {
     public SimpleConsumingCraftInHandRecipe(String item1Type, String item2Type, String item3Type, String resultPrefab) {
-        super(item1Type, item2Type, item3Type, Collections.<String, ItemCraftBehaviour>emptyMap(), resultPrefab);
+        super(item1Type, new ConsumeItemCraftBehaviour(item1Type),
+                item2Type, new ConsumeItemCraftBehaviour(item2Type),
+                item3Type, new ConsumeItemCraftBehaviour(item3Type), resultPrefab);
     }
 }

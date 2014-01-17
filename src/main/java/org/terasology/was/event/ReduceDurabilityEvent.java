@@ -15,32 +15,19 @@
  */
 package org.terasology.was.event;
 
-import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UserClosedCraftInHandUI implements Event {
-    private EntityRef entity1;
-    private EntityRef entity2;
-    private EntityRef entity3;
+public class ReduceDurabilityEvent implements Event {
+    private int reduceBy;
 
-    public UserClosedCraftInHandUI(EntityRef entity1, EntityRef entity2, EntityRef entity3) {
-        this.entity1 = entity1;
-        this.entity2 = entity2;
-        this.entity3 = entity3;
+    public ReduceDurabilityEvent(int reduceBy) {
+        this.reduceBy = reduceBy;
     }
 
-    public EntityRef getEntity1() {
-        return entity1;
-    }
-
-    public EntityRef getEntity2() {
-        return entity2;
-    }
-
-    public EntityRef getEntity3() {
-        return entity3;
+    public int getReduceBy() {
+        return reduceBy;
     }
 }
