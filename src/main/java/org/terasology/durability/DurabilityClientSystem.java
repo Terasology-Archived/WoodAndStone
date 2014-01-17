@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system;
+package org.terasology.durability;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -21,7 +21,6 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.rendering.gui.events.UIItemIconRendered;
-import org.terasology.was.component.DurabilityComponent;
 
 import static org.lwjgl.opengl.GL11.*;
 

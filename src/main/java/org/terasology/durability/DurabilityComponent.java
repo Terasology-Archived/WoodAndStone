@@ -1,4 +1,4 @@
-package org.terasology.was.component;
+package org.terasology.durability;
 
 import org.terasology.entitySystem.Component;
 

@@ -15,10 +15,10 @@
  */
 package org.terasology.was.system.recipe.hand.behaviour;
 
+import org.terasology.durability.DurabilityComponent;
+import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.component.DurabilityComponent;
-import org.terasology.was.event.ReduceDurabilityEvent;
 import org.terasology.was.system.recipe.hand.ItemCraftBehaviour;
 
 /**

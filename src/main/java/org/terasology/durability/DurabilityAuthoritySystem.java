@@ -1,4 +1,4 @@
-package org.terasology.was.system;
+package org.terasology.durability;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -7,9 +7,6 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.health.NoHealthEvent;
-import org.terasology.was.component.DurabilityComponent;
-import org.terasology.was.event.DurabilityReducedEvent;
-import org.terasology.was.event.ReduceDurabilityEvent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.entity.BlockDamageComponent;
