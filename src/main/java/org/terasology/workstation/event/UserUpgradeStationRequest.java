@@ -22,29 +22,23 @@ import org.terasology.network.ServerEvent;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @ServerEvent
-public class UserCraftOnStationRequest implements Event {
-    private String workstationType;
+public class UserUpgradeStationRequest implements Event {
+    private String stationType;
     private String recipeId;
-    private String resultId;
 
-    public UserCraftOnStationRequest() {
+    public UserUpgradeStationRequest() {
     }
 
-    public UserCraftOnStationRequest(String workstationType, String recipeId, String resultId) {
-        this.workstationType = workstationType;
+    public UserUpgradeStationRequest(String stationType, String recipeId) {
+        this.stationType = stationType;
         this.recipeId = recipeId;
-        this.resultId = resultId;
     }
 
-    public String getWorkstationType() {
-        return workstationType;
+    public String getStationType() {
+        return stationType;
     }
 
     public String getRecipeId() {
         return recipeId;
-    }
-
-    public String getResultId() {
-        return resultId;
     }
 }

@@ -22,6 +22,9 @@ import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 
 import javax.vecmath.Vector2f;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class UICraftOnStation extends UIScreenInventory {
     private UICraftOnStationInterior interior;
     private UIAvailableStationRecipesDisplay allRecipesDisplay;
@@ -37,8 +40,13 @@ public class UICraftOnStation extends UIScreenInventory {
         this.upgradeSlots = upgradeSlots;
         this.toolSlots = toolSlots;
         this.componentSlots = componentSlots;
-        interior = new UICraftOnStationInterior();
-        interior.setCraftingStation(entity, stationType, textureUri, textureOrigin, upgradeSlots, toolSlots, componentSlots);
+        interior = new UICraftOnStationInterior(entity, stationType, textureUri, textureOrigin, upgradeSlots, toolSlots, componentSlots,
+                new UpgradeCompleteCallback() {
+                    @Override
+                    public void upgradeComplete() {
+                        close();
+                    }
+                });
         addDisplayElement(interior);
         updateRecipes();
     }

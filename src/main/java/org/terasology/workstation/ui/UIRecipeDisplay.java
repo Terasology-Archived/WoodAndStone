@@ -26,6 +26,9 @@ import org.terasology.workstation.system.recipe.CraftProcessDisplay;
 import javax.vecmath.Vector2f;
 import java.util.Map;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class UIRecipeDisplay extends UIDisplayContainer {
     private EntityRef character;
     private CreationCallback callback;

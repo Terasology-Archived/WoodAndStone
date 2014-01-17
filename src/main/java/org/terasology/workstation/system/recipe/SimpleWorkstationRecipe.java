@@ -61,14 +61,14 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
-    public boolean hasAsComponent(EntityRef itemEntity) {
-        CraftingStationIngredientComponent ingredient = itemEntity.getComponent(CraftingStationIngredientComponent.class);
+    public boolean hasAsComponent(EntityRef item) {
+        CraftingStationIngredientComponent ingredient = item.getComponent(CraftingStationIngredientComponent.class);
         return ingredient != null && ingredientsMap.containsKey(ingredient.type);
     }
 
     @Override
-    public boolean hasAsTool(EntityRef itemEntity) {
-        ItemComponent component = itemEntity.getComponent(ItemComponent.class);
+    public boolean hasAsTool(EntityRef item) {
+        ItemComponent component = item.getComponent(ItemComponent.class);
         if (component == null)
             return false;
         BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
@@ -212,7 +212,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craftMax(EntityRef stationEntity, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount, int resultSlot) {
+        public EntityRef craftMax(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount, int resultSlot) {
             return null;
         }
 

@@ -31,6 +31,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
     private Multimap<String, String> displayedRecipes = HashMultimap.create();
     private CraftingStationRecipeRegistry registry;
@@ -56,7 +59,7 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
     public void update() {
         // TODO: Naive approach by comparing all the possible recipes to those currently displayed
         Multimap<String, String> recipes = HashMultimap.create();
-        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getRecipesForStation(stationType).entrySet()) {
+        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             String recipeId = craftInHandRecipe.getKey();
             List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
@@ -92,7 +95,7 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
 
         displayedRecipes.clear();
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getRecipesForStation(stationType).entrySet()) {
+        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
             List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {

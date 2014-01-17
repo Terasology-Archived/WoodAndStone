@@ -21,11 +21,16 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.math.Vector2i;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
+import org.terasology.rendering.gui.framework.events.ClickListener;
+import org.terasology.rendering.gui.widgets.UIButton;
 import org.terasology.rendering.gui.widgets.UIImage;
 import org.terasology.rendering.gui.widgets.UIInventoryGrid;
+import org.terasology.workstation.event.UserUpgradeStationRequest;
 import org.terasology.workstation.system.CraftingStationRecipeRegistry;
+import org.terasology.workstation.system.recipe.UpgradeRecipe;
 
 import javax.vecmath.Vector2f;
+import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -38,24 +43,30 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
     private UIInventoryGrid componentsGrid;
     private UIInventoryGrid outputGrid;
 
-    private EntityRef entity;
+    private UIButton upgradeButton;
+
+    private EntityRef station;
     private String stationType;
     private int upgradeSlots;
     private int toolSlots;
     private int componentSlots;
+    private UpgradeCompleteCallback upgradeCompleteCallback;
 
     private UIAvailableStationRecipesDisplay availableRecipes;
 
-    public void setCraftingStation(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots) {
-        this.entity = entity;
+    private String upgradeRecipeDisplayed;
+
+    private int windowWidth = 500;
+    private int windowHeight = 320;
+
+    public UICraftOnStationInterior(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots, UpgradeCompleteCallback upgradeCompleteCallback) {
+        this.station = entity;
         this.stationType = stationType;
 
         this.upgradeSlots = upgradeSlots;
         this.toolSlots = toolSlots;
         this.componentSlots = componentSlots;
-
-        int windowWidth = 500;
-        int windowHeight = 320;
+        this.upgradeCompleteCallback = upgradeCompleteCallback;
 
         backgroundImage = new UIImage(Assets.getTexture(textureUri));
         backgroundImage.setTextureOrigin(textureOrigin);
@@ -89,17 +100,67 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
         setSize(new Vector2f(windowWidth, windowHeight));
         setPosition(new Vector2f((displaySize.x - windowWidth) / 2, (displaySize.y - windowHeight) / 2));
 
+        CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
+        addDisplayElement(new UIAvailableStationRecipesDisplay(craftingRegistry, stationType, station, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots));
+
         layout();
     }
 
     public void update() {
         super.update();
 
-        if (availableRecipes != null) {
-            removeDisplayElement(availableRecipes);
-        }
         CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
 
-        addDisplayElement(new UIAvailableStationRecipesDisplay(craftingRegistry, stationType, entity, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots));
+        String matchingUpgradeRecipe = getMatchingUpgradeRecipe(craftingRegistry);
+        if (!isSame(matchingUpgradeRecipe, upgradeRecipeDisplayed)) {
+            if (upgradeRecipeDisplayed != null) {
+                removeDisplayElement(upgradeButton);
+            }
+            if (matchingUpgradeRecipe != null) {
+                addUpgradeButton(matchingUpgradeRecipe);
+            }
+        }
+    }
+
+    private void addUpgradeButton(final String matchingUpgradeRecipe) {
+        upgradeRecipeDisplayed = matchingUpgradeRecipe;
+
+        upgradeButton = new UIButton(new Vector2f(80, 48), UIButton.ButtonType.NORMAL);
+        upgradeButton.getLabel().setText("Upgrade");
+        upgradeButton.setPosition(new Vector2f(50, windowHeight - 48));
+
+        upgradeButton.addClickListener(
+                new ClickListener() {
+                    @Override
+                    public void click(UIDisplayElement element, int button) {
+                        CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
+                        final UpgradeRecipe upgradeRecipe = craftingRegistry.getUpgradeRecipes(stationType).get(matchingUpgradeRecipe);
+                        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, upgradeSlots);
+                        if (result != null) {
+                            station.send(new UserUpgradeStationRequest(stationType, matchingUpgradeRecipe));
+                            upgradeCompleteCallback.upgradeComplete();
+                        }
+                    }
+                });
+
+        addDisplayElement(upgradeButton);
+    }
+
+    private boolean isSame(String matchingUpgradeRecipe, String upgradeRecipeDisplayed) {
+        if (matchingUpgradeRecipe == null && upgradeRecipeDisplayed == null)
+            return true;
+        if (matchingUpgradeRecipe == null || upgradeRecipeDisplayed == null)
+            return false;
+        return matchingUpgradeRecipe.equals(upgradeRecipeDisplayed);
+    }
+
+    private String getMatchingUpgradeRecipe(CraftingStationRecipeRegistry craftingRegistry) {
+        final Map<String, UpgradeRecipe> upgradeRecipes = craftingRegistry.getUpgradeRecipes(stationType);
+        for (Map.Entry<String, UpgradeRecipe> upgradeRecipe : upgradeRecipes.entrySet()) {
+            final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getValue().getMatchingUpgradeResult(station, 0, upgradeSlots);
+            if (result != null)
+                return upgradeRecipe.getKey();
+        }
+        return null;
     }
 }

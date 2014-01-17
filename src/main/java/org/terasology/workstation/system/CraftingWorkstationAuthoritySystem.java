@@ -27,7 +27,9 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.event.OpenCraftingWorkstationRequest;
 import org.terasology.workstation.event.UserCraftOnStationRequest;
+import org.terasology.workstation.event.UserUpgradeStationRequest;
 import org.terasology.workstation.system.recipe.CraftingStationRecipe;
+import org.terasology.workstation.system.recipe.UpgradeRecipe;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -53,12 +55,11 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
         entity.send(new OpenCraftingWorkstationRequest());
     }
 
-
     @ReceiveEvent
     public void craftOnWorkstationRequestReceived(UserCraftOnStationRequest event, EntityRef station) {
         String recipeId = event.getRecipeId();
         String resultId = event.getResultId();
-        CraftingStationRecipe craftingStationRecipe = recipeRegistry.getRecipesForStation(event.getWorkstationType()).get(recipeId);
+        CraftingStationRecipe craftingStationRecipe = recipeRegistry.getCraftingRecipes(event.getWorkstationType()).get(recipeId);
         CraftingStationRecipe.CraftingStationResult result = craftingStationRecipe.getResultById(resultId);
         final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
         EntityRef resultEntity = result.craftOne(station,
@@ -66,6 +67,17 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
                 craftingStation.upgradeSlots, craftingStation.toolSlots);
         if (resultEntity.exists()) {
             pickupBuilder.createPickupFor(resultEntity, station.getComponent(LocationComponent.class).getWorldPosition(), 200);
+        }
+    }
+
+    @ReceiveEvent
+    public void upgradeWorkstationRequestReceived(UserUpgradeStationRequest event, EntityRef station) {
+        String recipeId = event.getRecipeId();
+        final UpgradeRecipe upgradeRecipe = recipeRegistry.getUpgradeRecipes(event.getStationType()).get(recipeId);
+        final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
+        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, craftingStation.upgradeSlots);
+        if (result != null) {
+            result.processUpgrade(station);
         }
     }
 }

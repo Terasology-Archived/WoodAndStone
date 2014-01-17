@@ -30,6 +30,9 @@ import org.terasology.world.block.items.BlockItemComponent;
 
 import javax.vecmath.Vector2f;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class UIPassiveItemDisplay extends UIDisplayContainer {
     private static final Vector2f DEFAULT_ICON_POSITION = new Vector2f(2f, 2f);
 

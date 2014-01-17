@@ -13,19 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.system.recipe;
-
-import org.terasology.entitySystem.entity.EntityRef;
+package org.terasology.workstation.ui;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface UpgradeRecipe {
-    public boolean isUpgradeComponent(EntityRef item);
-
-    public UpgradeResult getMatchingUpgradeResult(EntityRef station, int upgradeSlotFrom, int upgradeSlotCount);
-
-    public interface UpgradeResult {
-        public void processUpgrade(EntityRef station);
-    }
+public interface UpgradeCompleteCallback {
+    public void upgradeComplete();
 }

@@ -14,5 +14,7 @@ public interface CraftingStationRecipeRegistry {
 
     public void addStationUpgradeRecipe(String stationType, String recipeId, UpgradeRecipe recipe);
 
-    public Map<String, CraftingStationRecipe> getRecipesForStation(String stationType);
+    public Map<String, CraftingStationRecipe> getCraftingRecipes(String stationType);
+
+    public Map<String, UpgradeRecipe> getUpgradeRecipes(String stationType);
 }
