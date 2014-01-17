@@ -11,8 +11,6 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.was.component.BlockDropGrammarComponent;
 import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.items.BeforeBlockToItem;
 
@@ -39,13 +37,10 @@ public class BlockDropGrammarSystem implements ComponentSystem {
 
     @ReceiveEvent(components = {BlockDropGrammarComponent.class})
     public void whenBlockDropped(BeforeBlockToItem event, EntityRef blockEntity) {
-        BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
-        Block block = worldProvider.getBlock(blockComponent.getPosition());
-
         BlockDropGrammarComponent blockDrop = blockEntity.getComponent(BlockDropGrammarComponent.class);
 
         // Remove the "default" block drop
-        event.removeBlockFromGeneration(block.getBlockFamily());
+        event.removeDefaultBlock();
 
         FastRandom rnd = new FastRandom();
 
