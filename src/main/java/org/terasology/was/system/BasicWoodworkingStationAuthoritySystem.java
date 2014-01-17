@@ -28,7 +28,9 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
+import org.terasology.was.component.CraftingStationComponent;
 import org.terasology.was.component.CraftingStationMaterialComponent;
+import org.terasology.was.event.OpenCraftingWorkstationRequest;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
@@ -79,6 +81,11 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         }
     }
 
+    @ReceiveEvent(components = {CraftingStationComponent.class})
+    public void userActivatesWorkstation(ActivateEvent event, EntityRef entity) {
+        entity.send(new OpenCraftingWorkstationRequest());
+    }
+
     private void processBlockStructure(EntityRef matchingBlock) {
         LocationComponent location = matchingBlock.getComponent(LocationComponent.class);
         Vector3f position = location.getWorldPosition();
@@ -98,7 +105,8 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         worldProvider.setBlock(block2Position, woodStationBlock);
 
         final EntityRef multiBlockEntity = entityManager.create("WoodAndStone:BasicWoodStation");
-        multiBlockEntity.addComponent(new BlockRegionComponent(Region3i.createBounded(block1Position, block2Position)));
+        Region3i region = Region3i.createBounded(block1Position, block2Position);
+        multiBlockEntity.addComponent(new BlockRegionComponent(region));
     }
 
     private EntityRef findOtherMatchingBlock(Vector3f position) {

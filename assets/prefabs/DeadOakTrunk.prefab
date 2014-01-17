@@ -1,5 +1,8 @@
 {
     "CraftingStationMaterial": {
         "type": "WoodAndStone:basicWoodcrafting"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:wood"
     }
 }

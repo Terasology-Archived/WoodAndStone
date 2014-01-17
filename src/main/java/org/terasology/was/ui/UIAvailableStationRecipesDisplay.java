@@ -15,28 +15,103 @@
  */
 package org.terasology.was.ui;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
-import org.terasology.was.component.CraftingStationComponent;
+import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.was.system.CraftingStationRecipeRegistry;
 import org.terasology.was.system.recipe.station.CraftingStationRecipe;
 
+import javax.vecmath.Vector2f;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
-    public UIAvailableStationRecipesDisplay(CraftingStationRecipeRegistry recipeRegistry, EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+    private Multimap<String, String> displayedRecipes = HashMultimap.create();
+    private CraftingStationRecipeRegistry registry;
+    private String stationType;
+    private EntityRef station;
+    private int componentFromSlot;
+    private int componentSlotCount;
+    private int toolFromSlot;
+    private int toolSlotCount;
 
-        final Map<String, CraftingStationRecipe> recipes = recipeRegistry.getRecipesForStation(station.getComponent(CraftingStationComponent.class).type);
-        for (Map.Entry<String, CraftingStationRecipe> recipe : recipes.entrySet()) {
-            final List<CraftingStationRecipe.CraftingStationResult> matchingRecipes = recipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
-            if (matchingRecipes != null) {
-                for (CraftingStationRecipe.CraftingStationResult matchingRecipe : matchingRecipes) {
-                    addDisplayElement(new UIRecipeDisplay(recipe.getKey(), matchingRecipe.getResultId(), inventoryManager, station, matchingRecipe));
+    public UIAvailableStationRecipesDisplay(CraftingStationRecipeRegistry registry, String stationType, EntityRef station,
+                                            int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
+        this.registry = registry;
+        this.stationType = stationType;
+        this.station = station;
+        this.componentFromSlot = componentFromSlot;
+        this.componentSlotCount = componentSlotCount;
+        this.toolFromSlot = toolFromSlot;
+        this.toolSlotCount = toolSlotCount;
+        loadRecipes();
+    }
+
+    public void update() {
+        // TODO: Naive approach by comparing all the possible recipes to those currently displayed
+        Multimap<String, String> recipes = HashMultimap.create();
+        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getRecipesForStation(stationType).entrySet()) {
+            String recipeId = craftInHandRecipe.getKey();
+            List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+            if (results != null) {
+                for (CraftingStationRecipe.CraftingStationResult result : results) {
+                    String resultId = result.getResultId();
+                    recipes.put(recipeId, resultId);
                 }
+            }
+        }
+
+        if (!recipes.equals(displayedRecipes))
+            reloadRecipes();
+
+        super.update();
+    }
+
+    private void reloadRecipes() {
+        List<UIDisplayElement> uiDisplayElements = new LinkedList<>(getDisplayElements());
+        for (UIDisplayElement uiDisplayElement : uiDisplayElements) {
+            if (uiDisplayElement instanceof UIRecipeDisplay) {
+                UIRecipeDisplay recipeDisplay = (UIRecipeDisplay) uiDisplayElement;
+                removeDisplayElement(recipeDisplay);
+                recipeDisplay.dispose();
+            }
+        }
+
+        loadRecipes();
+    }
+
+    public void loadRecipes() {
+        int rowHeight = 50;
+        int rowIndex = 0;
+
+        displayedRecipes.clear();
+        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getRecipesForStation(stationType).entrySet()) {
+            String recipeId = craftInHandRecipe.getKey();
+            List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+            if (results != null) {
+                for (CraftingStationRecipe.CraftingStationResult result : results) {
+                    String resultId = result.getResultId();
+                    displayedRecipes.put(recipeId, resultId);
+                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, station, result);
+                    recipeDisplay.setPosition(new Vector2f(0, rowIndex * rowHeight));
+                    addDisplayElement(recipeDisplay);
+                    rowIndex++;
+                }
+            }
+        }
+        layout();
+    }
+
+    public void dispose() {
+        for (UIDisplayElement displayElement : getDisplayElements()) {
+            if (displayElement instanceof UIRecipeDisplay) {
+                ((UIRecipeDisplay) displayElement).dispose();
             }
         }
     }

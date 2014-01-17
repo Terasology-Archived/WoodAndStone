@@ -15,73 +15,47 @@
  */
 package org.terasology.was.ui;
 
-import org.terasology.asset.Assets;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.rendering.gui.widgets.UIImage;
-import org.terasology.rendering.gui.widgets.UIInventoryGrid;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
 import org.terasology.was.system.CraftingStationRecipeRegistry;
 
 import javax.vecmath.Vector2f;
 
 public class UICraftOnStation extends UIScreenInventory {
-    private UIImage backgroundImage;
-
-    private UIInventoryGrid upgradeGrid;
-    private UIInventoryGrid toolsGrid;
-    private UIInventoryGrid componentsGrid;
-    private UIInventoryGrid outputGrid;
-
-    private EntityRef entity;
+    private UICraftOnStationInterior interior;
+    private UIAvailableStationRecipesDisplay allRecipesDisplay;
+    private EntityRef station;
+    private String stationType;
     private int upgradeSlots;
     private int toolSlots;
     private int componentSlots;
 
-    private UIAvailableStationRecipesDisplay availableRecipes;
-
-    public void setCraftingStation(EntityRef entity, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots) {
-        this.entity = entity;
-
+    public void setCraftingStation(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots) {
+        station = entity;
+        this.stationType = stationType;
         this.upgradeSlots = upgradeSlots;
         this.toolSlots = toolSlots;
         this.componentSlots = componentSlots;
-
-        backgroundImage = new UIImage(Assets.getTexture(textureUri));
-        backgroundImage.setTextureOrigin(textureOrigin);
-        backgroundImage.setTextureSize(new Vector2f(400, 300));
-        backgroundImage.setHorizontalAlign(EHorizontalAlign.CENTER);
-        backgroundImage.setVerticalAlign(EVerticalAlign.CENTER);
-
-        upgradeGrid = new UIInventoryGrid(3);
-        upgradeGrid.linkToEntity(entity, 0, upgradeSlots);
-
-        toolsGrid = new UIInventoryGrid(3);
-        toolsGrid.linkToEntity(entity, upgradeSlots, toolSlots);
-
-        componentsGrid = new UIInventoryGrid(3);
-        componentsGrid.linkToEntity(entity, upgradeSlots + toolSlots, componentSlots);
-
-        outputGrid = new UIInventoryGrid(1);
-        outputGrid.linkToEntity(entity, upgradeSlots + toolSlots + componentSlots, 1);
-
-        addDisplayElement(backgroundImage);
-        addDisplayElement(upgradeGrid);
-        addDisplayElement(toolsGrid);
-        addDisplayElement(componentsGrid);
-        addDisplayElement(outputGrid);
-
-        layout();
+        interior = new UICraftOnStationInterior();
+        interior.setCraftingStation(entity, stationType, textureUri, textureOrigin, upgradeSlots, toolSlots, componentSlots);
+        addDisplayElement(interior);
+        updateRecipes();
     }
 
-    public void update() {
-        super.update();
-
-        if (availableRecipes != null) {
-            removeDisplayElement(availableRecipes);
+    public void updateRecipes() {
+        if (allRecipesDisplay != null) {
+            removeDisplayElement(allRecipesDisplay);
+            allRecipesDisplay.dispose();
         }
-        CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
 
-        addDisplayElement(new UIAvailableStationRecipesDisplay(craftingRegistry, entity, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots));
+        CraftingStationRecipeRegistry registry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
+
+        allRecipesDisplay = new UIAvailableStationRecipesDisplay(registry, stationType, station, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
+        allRecipesDisplay.setHorizontalAlign(EHorizontalAlign.CENTER);
+        allRecipesDisplay.setVerticalAlign(EVerticalAlign.TOP);
+        addDisplayElement(allRecipesDisplay);
+
+        layout();
     }
 }

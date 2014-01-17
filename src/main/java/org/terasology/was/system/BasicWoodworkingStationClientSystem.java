@@ -19,10 +19,11 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.In;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.manager.GUIManager;
 import org.terasology.was.component.CraftingStationComponent;
+import org.terasology.was.event.OpenCraftingWorkstationRequest;
 import org.terasology.was.ui.UICraftOnStation;
 
 import javax.vecmath.Vector2f;
@@ -30,7 +31,7 @@ import javax.vecmath.Vector2f;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RegisterSystem
+@RegisterSystem(RegisterMode.CLIENT)
 public class BasicWoodworkingStationClientSystem implements ComponentSystem {
     @In
     private GUIManager guiManager;
@@ -44,9 +45,9 @@ public class BasicWoodworkingStationClientSystem implements ComponentSystem {
     public void shutdown() {
     }
 
-    @ReceiveEvent(components = {CraftingStationComponent.class})
-    public void userActivatesWorkstation(ActivateEvent event, EntityRef entity) {
+    @ReceiveEvent
+    public void openCraftingWorkstationWindow(OpenCraftingWorkstationRequest event, EntityRef workStation) {
         final UICraftOnStation uiCraftOnStation = (UICraftOnStation) guiManager.openWindow("WoodAndStone:BasicWoodworking");
-        uiCraftOnStation.setCraftingStation(entity, "WoodAndStone:BasicWoodworking", new Vector2f(0, 0), 1, 1, 3);
+        uiCraftOnStation.setCraftingStation(workStation, workStation.getComponent(CraftingStationComponent.class).type, "WoodAndStone:BasicWoodworking", new Vector2f(0, 0), 1, 1, 3);
     }
 }

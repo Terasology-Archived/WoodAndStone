@@ -53,6 +53,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
+        // TODO: Improve searching for different kinds of items of the same type in whole inventory, not just first matching
         int slot1 = item1Type != null ? hasItem(character, item1Type) : -1;
         int slot2 = item2Type != null ? hasItem(character, item2Type) : -1;
         int slot3 = item3Type != null ? hasItem(character, item3Type) : -1;

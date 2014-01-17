@@ -24,6 +24,8 @@ import org.terasology.was.system.recipe.hand.SimpleConsumingCraftInHandRecipe;
 import org.terasology.was.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.was.system.recipe.hand.behaviour.DoNothingCraftBehaviour;
 import org.terasology.was.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
+import org.terasology.was.system.recipe.station.CraftingStationRecipe;
+import org.terasology.was.system.recipe.station.SimpleWorkstationRecipe;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -32,6 +34,8 @@ import org.terasology.was.system.recipe.hand.behaviour.ReduceItemDurabilityCraft
 public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
+    @In
+    private CraftingStationRecipeRegistry stationRecipeRegistry;
 
     @Override
     public void initialise() {
@@ -46,10 +50,21 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         "hammer", new ReduceItemDurabilityCraftBehaviour("hammer", 1),
                         null, new DoNothingCraftBehaviour(),
                         "WoodAndStone:sharpStone"));
+
+        SimpleWorkstationRecipe plankRecipe = new SimpleWorkstationRecipe();
+        plankRecipe.addIngredient("WoodAndStone:wood", 1);
+        plankRecipe.addRequiredTool("wood", 1);
+        plankRecipe.setItemResult("WoodAndStone:stone");
+
+        addBasicWoodworkingRecipe("WoodAndStone:Plank", plankRecipe);
     }
 
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {
         recipeRegistry.addCraftInHandRecipe(recipeId, craftInHandRecipe);
+    }
+
+    public void addBasicWoodworkingRecipe(String recipeId, CraftingStationRecipe recipe) {
+        stationRecipeRegistry.addCraftingStationRecipe("WoodAndStone:basicWoodcrafting", recipeId, recipe);
     }
 
 
