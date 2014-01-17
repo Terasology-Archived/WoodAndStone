@@ -8,5 +8,8 @@
     },
     "CraftInHandRecipe": {
         "componentType": "stick"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:stick"
     }
 }

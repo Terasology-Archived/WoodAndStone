@@ -1,0 +1,13 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Stone Axe",
+        "icon": "Axe",
+        "renderWithIcon": true,
+        "damageType": "axeDamage"
+    },
+    "Durability": {
+        "durability": 100,
+        "maxDurability": 100
+    }
+}

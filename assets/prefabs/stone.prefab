@@ -8,5 +8,8 @@
     },
     "CraftInHandRecipe": {
         "componentType": "stone"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:stone"
     }
 }

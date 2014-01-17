@@ -8,5 +8,8 @@
     },
     "CraftInHandRecipe": {
         "componentType": "sharpStone"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:sharpStone"
     }
 }

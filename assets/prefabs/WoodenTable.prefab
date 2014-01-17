@@ -1,0 +1,7 @@
+{
+    "CraftingStationMaterial": {
+        "stationType": "WoodAndStone:BasicStonecrafting",
+        "toolType": "stone",
+        "stationBlockType": "WoodAndStone:StoneStation"
+    }
+}

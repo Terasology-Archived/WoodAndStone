@@ -1,0 +1,17 @@
+{
+//    "shape" : "WoodAndStone:Table",
+    "categories": ["wood"],
+
+    "displayName": "Wooden Table",
+
+    "entity": {
+        "prefab": "WoodAndStone:WoodenTable"
+    },
+
+    "tiles": {
+        "top": "WoodAndStone:WoodenTableTop",
+        "bottom": "WoodAndStone:WoodenTableBottom",
+        "sides": "WoodAndStone:WoodenTableSides"
+    },
+    "translucent": true
+}

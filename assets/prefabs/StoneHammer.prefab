@@ -1,0 +1,16 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Stone Hammer",
+        "icon": "hammer",
+        "renderWithIcon": true,
+        "damageType": "hammerDamage"
+    },
+    "Durability": {
+        "durability": 100,
+        "maxDurability": 100
+    },
+    "CraftInHandRecipe": {
+        "componentType": "hammer"
+    }
+}

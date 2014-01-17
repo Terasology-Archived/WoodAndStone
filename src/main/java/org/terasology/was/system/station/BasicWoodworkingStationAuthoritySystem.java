@@ -62,16 +62,19 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
     }
 
     @ReceiveEvent(components = {ItemComponent.class})
-    public void createBasicWoodworkingStation(ActivateEvent event, EntityRef item) {
+    public void createCraftingStation(ActivateEvent event, EntityRef item) {
         if (event.getTarget() != null) {
             Side side = Side.inDirection(event.getHitNormal());
             if (side == Side.TOP) {
-                ItemComponent component = item.getComponent(ItemComponent.class);
-                if (component != null) {
-                    BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
-                    if (blockDamage != null && blockDamage.materialDamageMultiplier.containsKey("wood")) {
-                        if (checkIfBlockIsBasicWoodcraftStationPotential(event.getTarget())) {
-                            processBlockStructure(event.getTarget());
+                CraftingStationMaterialComponent stationMaterial = event.getTarget().getComponent(CraftingStationMaterialComponent.class);
+                if (stationMaterial != null) {
+                    String toolType = stationMaterial.toolType;
+
+                    ItemComponent component = item.getComponent(ItemComponent.class);
+                    if (component != null) {
+                        BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
+                        if (blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType)) {
+                            processBlockStructure(event.getTarget(), stationMaterial.stationBlockType, stationMaterial.stationType);
                         }
                     }
                 }
@@ -79,17 +82,17 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         }
     }
 
-    private void processBlockStructure(EntityRef matchingBlock) {
+    private void processBlockStructure(EntityRef matchingBlock, String stationBlockType, String stationType) {
         LocationComponent location = matchingBlock.getComponent(LocationComponent.class);
         Vector3f position = location.getWorldPosition();
-        EntityRef otherBlock = findOtherMatchingBlock(position);
+        EntityRef otherBlock = findOtherMatchingBlock(position, stationType);
         if (otherBlock != null) {
-            putBasicWoodworkingStation(matchingBlock, otherBlock);
+            putBasicWoodworkingStation(matchingBlock, otherBlock, stationBlockType, stationType);
         }
     }
 
-    private void putBasicWoodworkingStation(EntityRef block1, EntityRef block2) {
-        Block woodStationBlock = blockManager.getBlock("WoodAndStone:BasicWoodStation");
+    private void putBasicWoodworkingStation(EntityRef block1, EntityRef block2, String stationBlockType, String stationType) {
+        Block woodStationBlock = blockManager.getBlock(stationBlockType);
 
         Vector3i block1Position = block1.getComponent(BlockComponent.class).getPosition();
         Vector3i block2Position = block2.getComponent(BlockComponent.class).getPosition();
@@ -97,30 +100,30 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         worldProvider.setBlock(block1Position, woodStationBlock);
         worldProvider.setBlock(block2Position, woodStationBlock);
 
-        final EntityRef multiBlockEntity = entityManager.create("WoodAndStone:BasicWoodStation");
+        final EntityRef multiBlockEntity = entityManager.create(stationType);
         Region3i region = Region3i.createBounded(block1Position, block2Position);
         multiBlockEntity.addComponent(new BlockRegionComponent(region));
         multiBlockEntity.addComponent(new LocationComponent(region.center()));
     }
 
-    private EntityRef findOtherMatchingBlock(Vector3f position) {
+    private EntityRef findOtherMatchingBlock(Vector3f position, String stationType) {
         EntityRef entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x + 1, position.y, position.z));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
             return entity;
         entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x - 1, position.y, position.z));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
             return entity;
         entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x, position.y, position.z + 1));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
             return entity;
         entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x, position.y, position.z - 1));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
             return entity;
         return null;
     }
 
-    private boolean checkIfBlockIsBasicWoodcraftStationPotential(EntityRef block) {
+    private boolean checkIfBlockIsBasicWoodcraftStationPotential(EntityRef block, String stationType) {
         CraftingStationMaterialComponent craftingStationPotential = block.getComponent(CraftingStationMaterialComponent.class);
-        return craftingStationPotential != null && craftingStationPotential.type.equals("WoodAndStone:BasicWoodcrafting");
+        return craftingStationPotential != null && craftingStationPotential.stationType.equals(stationType);
     }
 }

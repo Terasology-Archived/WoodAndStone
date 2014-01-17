@@ -1,0 +1,13 @@
+{
+    "hardness": 16,
+
+    "displayName": "Stone Station",
+
+    "categories": ["stone"],
+
+    "tiles": {
+        "top": "WoodAndStone:WoodenTableTop",
+        "bottom": "WoodAndStone:WoodenTableBottom",
+        "sides": "WoodAndStone:WoodenTableSides"
+    }
+}
