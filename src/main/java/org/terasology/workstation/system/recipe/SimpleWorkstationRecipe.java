@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe.station;
+package org.terasology.workstation.system.recipe;
 
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
@@ -22,7 +22,7 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.was.component.CraftingStationIngredientComponent;
+import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.BlockDamageComponent;
 import org.terasology.world.block.items.BlockItemFactory;

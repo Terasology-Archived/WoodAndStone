@@ -18,14 +18,15 @@ package org.terasology.was.system;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.In;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.was.system.recipe.hand.CompositeTypeBasedCraftInHandRecipe;
-import org.terasology.was.system.recipe.hand.CraftInHandRecipe;
-import org.terasology.was.system.recipe.hand.SimpleConsumingCraftInHandRecipe;
-import org.terasology.was.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.was.system.recipe.hand.behaviour.DoNothingCraftBehaviour;
-import org.terasology.was.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
-import org.terasology.was.system.recipe.station.CraftingStationRecipe;
-import org.terasology.was.system.recipe.station.SimpleWorkstationRecipe;
+import org.terasology.was.system.recipe.CompositeTypeBasedCraftInHandRecipe;
+import org.terasology.was.system.recipe.CraftInHandRecipe;
+import org.terasology.was.system.recipe.SimpleConsumingCraftInHandRecipe;
+import org.terasology.was.system.recipe.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.was.system.recipe.behaviour.DoNothingCraftBehaviour;
+import org.terasology.was.system.recipe.behaviour.ReduceItemDurabilityCraftBehaviour;
+import org.terasology.workstation.system.CraftingStationRecipeRegistry;
+import org.terasology.workstation.system.recipe.CraftingStationRecipe;
+import org.terasology.workstation.system.recipe.SimpleWorkstationRecipe;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

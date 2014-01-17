@@ -13,17 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.component;
+package org.terasology.workstation.event;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.network.NetworkEvent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CraftingStationComponent implements Component {
-    public String type;
-    public String workstationUITexture;
-    public int upgradeSlots;
-    public int toolSlots;
-    public int ingredientSlots;
+public class OpenCraftingWorkstationRequest extends NetworkEvent {
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.ui;
+package org.terasology.workstation.ui;
 
 import org.terasology.asset.Assets;
 import org.terasology.engine.CoreRegistry;
@@ -23,7 +23,7 @@ import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.widgets.UIImage;
 import org.terasology.rendering.gui.widgets.UIInventoryGrid;
-import org.terasology.was.system.CraftingStationRecipeRegistry;
+import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 
 import javax.vecmath.Vector2f;
 

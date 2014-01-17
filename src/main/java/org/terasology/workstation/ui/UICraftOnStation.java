@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.ui;
+package org.terasology.workstation.ui;
 
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
-import org.terasology.was.system.CraftingStationRecipeRegistry;
+import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 
 import javax.vecmath.Vector2f;
 

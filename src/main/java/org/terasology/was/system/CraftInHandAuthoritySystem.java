@@ -26,7 +26,7 @@ import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.was.system.recipe.CraftInHandRecipe;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

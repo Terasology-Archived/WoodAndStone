@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system;
+package org.terasology.workstation.system;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -22,9 +22,9 @@ import org.terasology.entitySystem.systems.In;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.manager.GUIManager;
-import org.terasology.was.component.CraftingStationComponent;
-import org.terasology.was.event.OpenCraftingWorkstationRequest;
-import org.terasology.was.ui.UICraftOnStation;
+import org.terasology.workstation.component.CraftingStationComponent;
+import org.terasology.workstation.event.OpenCraftingWorkstationRequest;
+import org.terasology.workstation.ui.UICraftOnStation;
 
 import javax.vecmath.Vector2f;
 

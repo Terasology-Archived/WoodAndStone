@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.ui;
+package org.terasology.workstation.ui;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
@@ -21,22 +21,23 @@ import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.ClickListener;
 import org.terasology.rendering.gui.widgets.UIButton;
-import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.recipe.CraftProcessDisplay;
+import org.terasology.workstation.system.recipe.CraftProcessDisplay;
 
 import javax.vecmath.Vector2f;
 import java.util.Map;
 
 public class UIRecipeDisplay extends UIDisplayContainer {
     private EntityRef character;
+    private CreationCallback callback;
     private String recipeId;
     private String resultId;
     private EntityRef result;
 
-    public UIRecipeDisplay(String recipeId, String resultId, SlotBasedInventoryManager inventoryManager, EntityRef character, CraftProcessDisplay craftingRecipe) {
+    public UIRecipeDisplay(String recipeId, String resultId, SlotBasedInventoryManager inventoryManager, EntityRef character, CraftProcessDisplay craftingRecipe, CreationCallback callback) {
         this.recipeId = recipeId;
         this.resultId = resultId;
         this.character = character;
+        this.callback = callback;
         int itemIndex = 0;
         int iconSize = 38;
         for (Map.Entry<Integer, Integer> craftingComponents : craftingRecipe.getComponentSlotAndCount().entrySet()) {
@@ -72,6 +73,6 @@ public class UIRecipeDisplay extends UIDisplayContainer {
     }
 
     private void produceOne() {
-        character.send(new UserCraftInHandRequest(recipeId, resultId));
+        callback.createOne();
     }
 }

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe.hand.behaviour;
+package org.terasology.was.system.recipe.behaviour;
 
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.system.recipe.hand.ItemCraftBehaviour;
+import org.terasology.was.system.recipe.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.component;
+package org.terasology.workstation.system.recipe;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.world.block.items.RetainWhenBlockDetached;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RetainWhenBlockDetached
-public class CraftingStationIngredientComponent implements Component {
-    public String type;
+public interface UpgradeRecipe {
+    public boolean isUpgradeComponent(EntityRef entityRef);
+
+    public UpgradeResult getMatchingUpgradeResult(EntityRef stationEntity, int upgradeSlotFrom, int upgradeSlotCount);
+
+    public interface UpgradeResult {
+        public void processUpgrade(EntityRef stationEntity);
+    }
 }

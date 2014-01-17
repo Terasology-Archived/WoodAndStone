@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.recipe.station;
+package org.terasology.workstation.component;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.Component;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface UpgradeRecipe {
-    public boolean isUpgradeComponent(EntityRef entityRef);
-
-    public UpgradeResult getMatchingUpgradeResult(EntityRef stationEntity, int upgradeSlotFrom, int upgradeSlotCount);
-
-    public interface UpgradeResult {
-        public void processUpgrade(EntityRef stationEntity);
-    }
+public class CraftingStationComponent implements Component {
+    public String type;
+    public String workstationUITexture;
+    public int upgradeSlots;
+    public int toolSlots;
+    public int ingredientSlots;
 }

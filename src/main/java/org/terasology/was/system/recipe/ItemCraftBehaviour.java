@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.event;
+package org.terasology.was.system.recipe;
 
-import org.terasology.network.NetworkEvent;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class OpenCraftingWorkstationRequest extends NetworkEvent {
+public interface ItemCraftBehaviour {
+    public boolean isValid(EntityRef character, EntityRef item);
+
+    public void processForItem(EntityRef character, EntityRef item);
 }

@@ -1,6 +1,6 @@
 package org.terasology.was.system;
 
-import org.terasology.was.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.was.system.recipe.CraftInHandRecipe;
 
 import java.util.Map;
 

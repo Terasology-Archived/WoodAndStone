@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system;
+package org.terasology.workstation.system;
 
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.Share;
-import org.terasology.was.system.recipe.station.CraftingStationRecipe;
-import org.terasology.was.system.recipe.station.UpgradeRecipe;
+import org.terasology.workstation.system.recipe.CraftingStationRecipe;
+import org.terasology.workstation.system.recipe.UpgradeRecipe;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.ui;
+package org.terasology.workstation.ui;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -22,8 +22,9 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
-import org.terasology.was.system.CraftingStationRecipeRegistry;
-import org.terasology.was.system.recipe.station.CraftingStationRecipe;
+import org.terasology.workstation.event.UserCraftOnStationRequest;
+import org.terasology.workstation.system.CraftingStationRecipeRegistry;
+import org.terasology.workstation.system.recipe.CraftingStationRecipe;
 
 import javax.vecmath.Vector2f;
 import java.util.LinkedList;
@@ -92,13 +93,19 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
         displayedRecipes.clear();
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
         for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getRecipesForStation(stationType).entrySet()) {
-            String recipeId = craftInHandRecipe.getKey();
+            final String recipeId = craftInHandRecipe.getKey();
             List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
-                for (CraftingStationRecipe.CraftingStationResult result : results) {
-                    String resultId = result.getResultId();
+                for (final CraftingStationRecipe.CraftingStationResult result : results) {
+                    final String resultId = result.getResultId();
                     displayedRecipes.put(recipeId, resultId);
-                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, station, result);
+                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, station, result,
+                            new CreationCallback() {
+                                @Override
+                                public void createOne() {
+                                    station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
+                                }
+                            });
                     recipeDisplay.setPosition(new Vector2f(0, rowIndex * rowHeight));
                     addDisplayElement(recipeDisplay);
                     rowIndex++;

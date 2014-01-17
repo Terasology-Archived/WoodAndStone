@@ -22,8 +22,11 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
+import org.terasology.was.event.UserCraftInHandRequest;
 import org.terasology.was.system.CraftInHandRecipeRegistry;
-import org.terasology.was.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.was.system.recipe.CraftInHandRecipe;
+import org.terasology.workstation.ui.CreationCallback;
+import org.terasology.workstation.ui.UIRecipeDisplay;
 
 import javax.vecmath.Vector2f;
 import java.util.LinkedList;
@@ -84,13 +87,19 @@ public class UIAvailableInHandRecipesDisplay extends UIDisplayContainer {
         displayedRecipes.clear();
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
-            String recipeId = craftInHandRecipe.getKey();
+            final String recipeId = craftInHandRecipe.getKey();
             List<CraftInHandRecipe.CraftInHandResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(character);
             if (results != null) {
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
-                    String resultId = result.getResultId();
+                    final String resultId = result.getResultId();
                     displayedRecipes.put(recipeId, resultId);
-                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, character, result);
+                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, character, result,
+                            new CreationCallback() {
+                                @Override
+                                public void createOne() {
+                                    character.send(new UserCraftInHandRequest(recipeId, resultId));
+                                }
+                            });
                     recipeDisplay.setPosition(new Vector2f(0, rowIndex * rowHeight));
                     addDisplayElement(recipeDisplay);
                     rowIndex++;

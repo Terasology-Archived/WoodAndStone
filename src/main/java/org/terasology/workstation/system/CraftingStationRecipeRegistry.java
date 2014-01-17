@@ -1,7 +1,7 @@
-package org.terasology.was.system;
+package org.terasology.workstation.system;
 
-import org.terasology.was.system.recipe.station.CraftingStationRecipe;
-import org.terasology.was.system.recipe.station.UpgradeRecipe;
+import org.terasology.workstation.system.recipe.CraftingStationRecipe;
+import org.terasology.workstation.system.recipe.UpgradeRecipe;
 
 import java.util.Map;
 

@@ -28,7 +28,7 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
-import org.terasology.was.component.CraftingStationMaterialComponent;
+import org.terasology.workstation.component.CraftingStationMaterialComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
@@ -100,6 +100,7 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         final EntityRef multiBlockEntity = entityManager.create("WoodAndStone:BasicWoodStation");
         Region3i region = Region3i.createBounded(block1Position, block2Position);
         multiBlockEntity.addComponent(new BlockRegionComponent(region));
+        multiBlockEntity.addComponent(new LocationComponent(region.center()));
     }
 
     private EntityRef findOtherMatchingBlock(Vector3f position) {
