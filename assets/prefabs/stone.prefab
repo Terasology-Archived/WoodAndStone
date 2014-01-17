@@ -1,9 +1,9 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Small Stone",
+        "name": "Stone",
         "icon": "whitepwdr",
-        "stackId": "WoodAndStone:items.SmallStone",
+        "stackId": "WoodAndStone:items.Stone",
         "renderWithIcon": true
     },
     "CraftInHandRecipe": {
