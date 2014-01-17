@@ -135,7 +135,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
                 itemCraftBehaviour2.processForItem(character, item2);
                 itemCraftBehaviour3.processForItem(character, item3);
 
-                return CoreRegistry.get(EntityManager.class).create(prefabName);
+                return createResultItemEntityForDisplayOne();
             }
 
             return EntityRef.NULL;

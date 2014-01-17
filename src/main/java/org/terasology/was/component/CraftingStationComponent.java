@@ -22,4 +22,8 @@ import org.terasology.entitySystem.Component;
  */
 public class CraftingStationComponent implements Component {
     public String type;
+    public String workstationUITexture;
+    public int upgradeSlots;
+    public int toolSlots;
+    public int ingredientSlots;
 }

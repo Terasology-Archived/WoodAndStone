@@ -39,6 +39,12 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
     @Override
     public void initialise() {
+        addCraftInHandRecipes();
+
+        addWorkstationRecipes();
+    }
+
+    private void addCraftInHandRecipes() {
         addCraftInHandRecipe("WoodAndStone:CrudeHammer",
                 new SimpleConsumingCraftInHandRecipe("stick", "binding", "stone", "WoodAndStone:CrudeHammer"));
         addCraftInHandRecipe("WoodAndStone:CrudeAxe",
@@ -50,11 +56,13 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         "hammer", new ReduceItemDurabilityCraftBehaviour("hammer", 1),
                         null, new DoNothingCraftBehaviour(),
                         "WoodAndStone:sharpStone"));
+    }
 
+    private void addWorkstationRecipes() {
         SimpleWorkstationRecipe plankRecipe = new SimpleWorkstationRecipe();
         plankRecipe.addIngredient("WoodAndStone:wood", 1);
         plankRecipe.addRequiredTool("wood", 1);
-        plankRecipe.setItemResult("WoodAndStone:stone");
+        plankRecipe.setItemResult("WoodAndStone:stone", (byte) 1);
 
         addBasicWoodworkingRecipe("WoodAndStone:Plank", plankRecipe);
     }

@@ -16,6 +16,7 @@
 package org.terasology.was.system.recipe.station;
 
 import org.terasology.durability.DurabilityComponent;
+import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -37,6 +38,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     private String blockResult;
     private String itemResult;
+    private byte count;
+
+    private SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
 
     public void addIngredient(String type, int count) {
         ingredientsMap.put(type, count);
@@ -46,12 +50,14 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         toolsMap.put(toolType, durability);
     }
 
-    public void setBlockResult(String blockResult) {
+    public void setBlockResult(String blockResult, byte count) {
         this.blockResult = blockResult;
+        this.count = count;
     }
 
-    public void setItemResult(String itemResult) {
+    public void setItemResult(String itemResult, byte count) {
         this.itemResult = itemResult;
+        this.count = count;
     }
 
     @Override
@@ -100,35 +106,33 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     private int hasTool(EntityRef station, String toolType, int durability, int fromSlot, int toSlot) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
         for (int i = fromSlot; i < toSlot; i++) {
-            if (hasToolInSlot(station, toolType, inventoryManager, i, durability))
+            if (hasToolInSlot(station, toolType, i, durability))
                 return i;
         }
 
         return -1;
     }
 
-    private int hasItem(EntityRef character, String itemType, int count, int fromSlot, int toSlot) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+    private int hasItem(EntityRef station, String itemType, int count, int fromSlot, int toSlot) {
         for (int i = fromSlot; i < toSlot; i++) {
-            if (hasItemInSlot(character, itemType, inventoryManager, i, count))
+            if (hasItemInSlot(station, itemType, i, count))
                 return i;
         }
 
         return -1;
     }
 
-    private boolean hasItemInSlot(EntityRef character, String itemType, SlotBasedInventoryManager inventoryManager, int slot, int count) {
-        EntityRef item = inventoryManager.getItemInSlot(character, slot);
+    private boolean hasItemInSlot(EntityRef station, String itemType, int slot, int count) {
+        EntityRef item = inventoryManager.getItemInSlot(station, slot);
         CraftingStationIngredientComponent component = item.getComponent(CraftingStationIngredientComponent.class);
         if (component != null && component.type.equals(itemType) && item.getComponent(ItemComponent.class).stackCount >= count)
             return true;
         return false;
     }
 
-    private boolean hasToolInSlot(EntityRef character, String toolType, SlotBasedInventoryManager inventoryManager, int slot, int durability) {
-        EntityRef item = inventoryManager.getItemInSlot(character, slot);
+    private boolean hasToolInSlot(EntityRef station, String toolType, int slot, int durability) {
+        EntityRef item = inventoryManager.getItemInSlot(station, slot);
         ItemComponent component = item.getComponent(ItemComponent.class);
         if (component == null)
             return false;
@@ -173,8 +177,38 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craftOne(EntityRef stationEntity, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
-            return null;
+        public EntityRef craftOne(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
+            if (!validateCreation(station)) return EntityRef.NULL;
+
+            int index = 0;
+            for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
+                inventoryManager.removeItem(station, inventoryManager.getItemInSlot(station, items.get(index)), ingredientCount.getValue());
+                index++;
+            }
+            index = 0;
+            for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
+                final EntityRef tool = inventoryManager.getItemInSlot(station, tools.get(index));
+                tool.send(new ReduceDurabilityEvent(toolDurability.getValue()));
+                index++;
+            }
+
+            return createResultItemEntityForDisplayOne();
+        }
+
+        private boolean validateCreation(EntityRef station) {
+            int index = 0;
+            for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
+                if (!hasItemInSlot(station, ingredientCount.getKey(), items.get(index), ingredientCount.getValue()))
+                    return false;
+                index++;
+            }
+            index = 0;
+            for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
+                if (!hasToolInSlot(station, toolDurability.getKey(), tools.get(index), toolDurability.getValue()))
+                    return false;
+                index++;
+            }
+            return true;
         }
 
         @Override
@@ -197,9 +231,13 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         @Override
         public EntityRef createResultItemEntityForDisplayOne() {
             if (itemResult != null) {
-                return CoreRegistry.get(EntityManager.class).create(itemResult);
+                final EntityRef entity = CoreRegistry.get(EntityManager.class).create(itemResult);
+                final ItemComponent item = entity.getComponent(ItemComponent.class);
+                item.stackCount = count;
+                entity.saveComponent(item);
+                return entity;
             } else {
-                return CoreRegistry.get(BlockItemFactory.class).newInstance(CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult));
+                return CoreRegistry.get(BlockItemFactory.class).newInstance(CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult), count);
             }
         }
 
