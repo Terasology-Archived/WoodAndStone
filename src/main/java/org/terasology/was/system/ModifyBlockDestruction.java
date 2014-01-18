@@ -56,12 +56,14 @@ public class ModifyBlockDestruction implements ComponentSystem {
         if (blockComponent != null && event.getInstigator().hasComponent(CharacterComponent.class)) {
             Block block = blockComponent.getBlock();
 
-            if (exceptions.contains(block.getURI()))
+            if (exceptions.contains(block.getURI())) {
                 return;
+            }
 
             Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
-            if (!canBeDestroyedByBlockDamage(categoriesIterator, event.getDamageType()))
+            if (!canBeDestroyedByBlockDamage(categoriesIterator, event.getDamageType())) {
                 event.consume();
+            }
         }
     }
 
@@ -69,11 +71,13 @@ public class ModifyBlockDestruction implements ComponentSystem {
         if (categoriesIterator.iterator().hasNext()) {
             // If this block has a category, then it HAS to be destroyed by a tool with that category
             BlockDamageComponent blockDamage = damageType.getComponent(BlockDamageComponent.class);
-            if (blockDamage == null)
+            if (blockDamage == null) {
                 return false;
+            }
             for (String category : categoriesIterator) {
-                if (blockDamage.materialDamageMultiplier.containsKey(category))
+                if (blockDamage.materialDamageMultiplier.containsKey(category)) {
                     return true;
+                }
             }
             return false;
         }

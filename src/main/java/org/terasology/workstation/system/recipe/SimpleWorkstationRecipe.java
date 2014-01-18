@@ -43,7 +43,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     private String blockResult;
     private String itemResult;
-    private byte count;
+    private byte resultCount;
 
     private SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
 
@@ -55,14 +55,14 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         toolsMap.put(toolType, durability);
     }
 
-    public void setBlockResult(String blockResult, byte count) {
-        this.blockResult = blockResult;
-        this.count = count;
+    public void setBlockResult(String block, byte count) {
+        blockResult = block;
+        resultCount = count;
     }
 
-    public void setItemResult(String itemResult, byte count) {
-        this.itemResult = itemResult;
-        this.count = count;
+    public void setItemResult(String item, byte count) {
+        itemResult = item;
+        resultCount = count;
     }
 
     @Override
@@ -262,12 +262,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (itemResult != null) {
                 final EntityRef entity = CoreRegistry.get(EntityManager.class).create(itemResult);
                 final ItemComponent item = entity.getComponent(ItemComponent.class);
-                item.stackCount = count;
+                item.stackCount = resultCount;
                 entity.saveComponent(item);
                 return entity;
             } else {
                 BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult);
-                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, count);
+                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, resultCount);
             }
         }
 

@@ -36,7 +36,8 @@ public class UIRecipeDisplay extends UIDisplayContainer {
     private String resultId;
     private EntityRef result;
 
-    public UIRecipeDisplay(String recipeId, String resultId, SlotBasedInventoryManager inventoryManager, EntityRef character, CraftProcessDisplay craftingRecipe, CreationCallback callback) {
+    public UIRecipeDisplay(String recipeId, String resultId, SlotBasedInventoryManager inventoryManager, EntityRef character,
+                           CraftProcessDisplay craftingRecipe, CreationCallback callback) {
         this.recipeId = recipeId;
         this.resultId = resultId;
         this.character = character;
@@ -44,7 +45,9 @@ public class UIRecipeDisplay extends UIDisplayContainer {
         int itemIndex = 0;
         int iconSize = 38;
         for (Map.Entry<Integer, Integer> craftingComponents : craftingRecipe.getComponentSlotAndCount().entrySet()) {
-            UIPassiveItemDisplay element = new UIPassiveItemDisplay(inventoryManager, inventoryManager.getItemInSlot(character, craftingComponents.getKey()), craftingComponents.getValue());
+            UIPassiveItemDisplay element =
+                    new UIPassiveItemDisplay(inventoryManager, inventoryManager.getItemInSlot(character, craftingComponents.getKey()),
+                            craftingComponents.getValue());
             element.setSize(new Vector2f(iconSize, iconSize));
             element.setPosition(new Vector2f(itemIndex * iconSize, iconSize));
             addDisplayElement(element);

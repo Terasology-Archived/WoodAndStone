@@ -21,11 +21,11 @@ import org.terasology.entitySystem.entity.EntityRef;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface UpgradeRecipe {
-    public boolean isUpgradeComponent(EntityRef item);
+    boolean isUpgradeComponent(EntityRef item);
 
-    public UpgradeResult getMatchingUpgradeResult(EntityRef station, int upgradeSlotFrom, int upgradeSlotCount);
+    UpgradeResult getMatchingUpgradeResult(EntityRef station, int upgradeSlotFrom, int upgradeSlotCount);
 
     public interface UpgradeResult {
-        public void processUpgrade(EntityRef station);
+        void processUpgrade(EntityRef station);
     }
 }

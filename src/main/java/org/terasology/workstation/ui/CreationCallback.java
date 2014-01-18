@@ -19,5 +19,5 @@ package org.terasology.workstation.ui;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface CreationCallback {
-    public void createOne();
+    void createOne();
 }

@@ -124,11 +124,13 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         for (int i = upgradeSlotFrom; i < upgradeSlotFrom + upgradeSlotCount; i++) {
                             EntityRef item = inventoryManager.getItemInSlot(station, i);
                             CraftingStationIngredientComponent ingredient = item.getComponent(CraftingStationIngredientComponent.class);
-                            if (ingredient != null && ingredient.type.equals("WoodAndStone:plank"))
+                            if (ingredient != null && ingredient.type.equals("WoodAndStone:plank")) {
                                 planksCount += item.getComponent(ItemComponent.class).stackCount;
+                            }
                         }
-                        if (planksCount < 10)
+                        if (planksCount < 10) {
                             return null;
+                        }
 
                         return new UpgradeResult() {
                             @Override
@@ -170,8 +172,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                                         inventoryManager.removeItem(station, item, toRemove);
                                         leftToRemote -= toRemove;
                                     }
-                                    if (leftToRemote == 0)
+                                    if (leftToRemote == 0) {
                                         break;
+                                    }
                                 }
                             }
                         };

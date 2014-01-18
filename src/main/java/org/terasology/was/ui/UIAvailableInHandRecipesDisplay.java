@@ -61,8 +61,9 @@ public class UIAvailableInHandRecipesDisplay extends UIDisplayContainer {
             }
         }
 
-        if (!recipes.equals(displayedRecipes))
+        if (!recipes.equals(displayedRecipes)) {
             reloadRecipes();
+        }
 
         super.update();
     }

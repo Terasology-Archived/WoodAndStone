@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.terasology.journal;
 
 import org.terasology.entitySystem.entity.EntityRef;
@@ -35,8 +50,9 @@ public class JournalManagerImpl implements ComponentSystem, JournalManager {
 
     @Override
     public void registerJournalEntry(String chapterId, String entryId, String text) {
-        if (!journalChapters.containsKey(chapterId))
+        if (!journalChapters.containsKey(chapterId)) {
             throw new IllegalStateException("Unable to add entry to an unknown chapter");
+        }
         Map<String, String> chapterEntries = journalEntries.get(chapterId);
         if (chapterEntries == null) {
             chapterEntries = new LinkedHashMap<>();
@@ -57,9 +73,9 @@ public class JournalManagerImpl implements ComponentSystem, JournalManager {
         return journal.discoveredJournalEntries;
     }
 
-    private class JournalChapter {
-        private Texture texture;
-        private String name;
+    private final class JournalChapter {
+        private final Texture texture;
+        private final String name;
 
         private JournalChapter(Texture texture, String name) {
             this.texture = texture;

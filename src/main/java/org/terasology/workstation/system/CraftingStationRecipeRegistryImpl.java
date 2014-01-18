@@ -66,15 +66,17 @@ public class CraftingStationRecipeRegistryImpl implements ComponentSystem, Craft
     @Override
     public Map<String, CraftingStationRecipe> getCraftingRecipes(String stationType) {
         Map<String, CraftingStationRecipe> recipeMap = stationRecipes.get(stationType);
-        if (recipeMap == null)
+        if (recipeMap == null) {
             return Collections.emptyMap();
+        }
         return recipeMap;
     }
 
     public Map<String, UpgradeRecipe> getUpgradeRecipes(String stationType) {
         Map<String, UpgradeRecipe> recipeMap = upgradeRecipes.get(stationType);
-        if (recipeMap == null)
+        if (recipeMap == null) {
             return Collections.emptyMap();
+        }
         return recipeMap;
     }
 }

@@ -61,7 +61,9 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
         Multimap<String, String> recipes = HashMultimap.create();
         for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             String recipeId = craftInHandRecipe.getKey();
-            List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+            CraftingStationRecipe recipe = craftInHandRecipe.getValue();
+            List<CraftingStationRecipe.CraftingStationResult> results =
+                    recipe.getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
                 for (CraftingStationRecipe.CraftingStationResult result : results) {
                     String resultId = result.getResultId();
@@ -70,8 +72,9 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
             }
         }
 
-        if (!recipes.equals(displayedRecipes))
+        if (!recipes.equals(displayedRecipes)) {
             reloadRecipes();
+        }
 
         super.update();
     }
@@ -97,7 +100,9 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
         for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
-            List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+            CraftingStationRecipe recipe = craftInHandRecipe.getValue();
+            List<CraftingStationRecipe.CraftingStationResult> results =
+                    recipe.getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
                 for (final CraftingStationRecipe.CraftingStationResult result : results) {
                     final String resultId = result.getResultId();

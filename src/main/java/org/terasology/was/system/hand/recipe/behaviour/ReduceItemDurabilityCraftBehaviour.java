@@ -36,12 +36,14 @@ public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
         CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
-        if (craftComponent == null || !craftComponent.componentType.equals(itemType))
+        if (craftComponent == null || !craftComponent.componentType.equals(itemType)) {
             return false;
+        }
 
         DurabilityComponent durability = item.getComponent(DurabilityComponent.class);
-        if (durability == null)
+        if (durability == null) {
             return false;
+        }
 
         return durability.durability >= durabilityUsed;
     }

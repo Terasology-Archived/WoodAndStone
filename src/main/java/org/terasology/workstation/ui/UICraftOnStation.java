@@ -25,19 +25,8 @@ import javax.vecmath.Vector2f;
  */
 public class UICraftOnStation extends UIScreenInventory {
     private UICraftOnStationInterior interior;
-    private UIAvailableStationRecipesDisplay allRecipesDisplay;
-    private EntityRef station;
-    private String stationType;
-    private int upgradeSlots;
-    private int toolSlots;
-    private int componentSlots;
 
     public void setCraftingStation(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots) {
-        station = entity;
-        this.stationType = stationType;
-        this.upgradeSlots = upgradeSlots;
-        this.toolSlots = toolSlots;
-        this.componentSlots = componentSlots;
         interior = new UICraftOnStationInterior(entity, stationType, textureUri, textureOrigin, upgradeSlots, toolSlots, componentSlots,
                 new UpgradeCompleteCallback() {
                     @Override

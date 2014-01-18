@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.terasology.was.system;
 
 import org.terasology.engine.CoreRegistry;
@@ -46,16 +61,18 @@ public class BlockDropGrammarSystem implements ComponentSystem {
 
         if (blockDrop.blockDrops != null) {
             for (String drop : blockDrop.blockDrops) {
+                String dropResult = drop;
                 boolean dropping = true;
-                int pipeIndex = drop.indexOf('|');
+                int pipeIndex = dropResult.indexOf('|');
                 if (pipeIndex > -1) {
-                    float chance = Float.parseFloat(drop.substring(0, pipeIndex));
-                    if (rnd.nextFloat() >= chance)
+                    float chance = Float.parseFloat(dropResult.substring(0, pipeIndex));
+                    if (rnd.nextFloat() >= chance) {
                         dropping = false;
-                    drop = drop.substring(pipeIndex + 1);
+                    }
+                    dropResult = dropResult.substring(pipeIndex + 1);
                 }
                 if (dropping) {
-                    DropParser dropParser = new DropParser(rnd, drop).invoke();
+                    DropParser dropParser = new DropParser(rnd, dropResult).invoke();
                     event.addBlockToGenerate(blockManager.getBlockFamily(dropParser.getDrop()), dropParser.getCount());
                 }
             }
@@ -63,16 +80,18 @@ public class BlockDropGrammarSystem implements ComponentSystem {
 
         if (blockDrop.itemDrops != null) {
             for (String drop : blockDrop.itemDrops) {
+                String dropResult = drop;
                 boolean dropping = true;
-                int pipeIndex = drop.indexOf('|');
+                int pipeIndex = dropResult.indexOf('|');
                 if (pipeIndex > -1) {
-                    float chance = Float.parseFloat(drop.substring(0, pipeIndex));
-                    if (rnd.nextFloat() >= chance)
+                    float chance = Float.parseFloat(dropResult.substring(0, pipeIndex));
+                    if (rnd.nextFloat() >= chance) {
                         dropping = false;
-                    drop = drop.substring(pipeIndex + 1);
+                    }
+                    dropResult = dropResult.substring(pipeIndex + 1);
                 }
                 if (dropping) {
-                    DropParser dropParser = new DropParser(rnd, drop).invoke();
+                    DropParser dropParser = new DropParser(rnd, dropResult).invoke();
                     EntityRef entityRef = entityManager.create(dropParser.getDrop());
                     if (dropParser.getCount() > 1) {
                         ItemComponent itemComponent = entityRef.getComponent(ItemComponent.class);
@@ -88,6 +107,7 @@ public class BlockDropGrammarSystem implements ComponentSystem {
         private FastRandom rnd;
         private String drop;
         private int count;
+        private String resultDrop;
 
         public DropParser(FastRandom rnd, String drop) {
             this.rnd = rnd;
@@ -95,7 +115,7 @@ public class BlockDropGrammarSystem implements ComponentSystem {
         }
 
         public String getDrop() {
-            return drop;
+            return resultDrop;
         }
 
         public int getCount() {
@@ -103,18 +123,21 @@ public class BlockDropGrammarSystem implements ComponentSystem {
         }
 
         public DropParser invoke() {
-            int timesIndex = drop.indexOf('*');
+            resultDrop = drop;
+            int timesIndex = resultDrop.indexOf('*');
             int countMin = 1;
             int countMax = 1;
             if (timesIndex > -1) {
-                String timesStr = drop.substring(0, timesIndex);
+                String timesStr = resultDrop.substring(0, timesIndex);
                 int minusIndex = timesStr.indexOf('-');
                 if (minusIndex > -1) {
                     countMin = Integer.parseInt(timesStr.substring(0, minusIndex));
                     countMax = Integer.parseInt(timesStr.substring(minusIndex + 1));
-                } else
-                    countMin = countMax = Integer.parseInt(timesStr);
-                drop = drop.substring(timesIndex + 1);
+                } else {
+                    countMin = Integer.parseInt(timesStr);
+                    countMax = countMin;
+                }
+                resultDrop = resultDrop.substring(timesIndex + 1);
             }
             count = rnd.nextInt(countMin, countMax);
             return this;

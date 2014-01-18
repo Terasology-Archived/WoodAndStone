@@ -108,17 +108,21 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
 
     private EntityRef findOtherMatchingBlock(Vector3f position, String stationType) {
         EntityRef entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x + 1, position.y, position.z));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType)) {
             return entity;
+        }
         entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x - 1, position.y, position.z));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType)) {
             return entity;
+        }
         entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x, position.y, position.z + 1));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType)) {
             return entity;
+        }
         entity = blockEntityRegistry.getBlockEntityAt(new Vector3f(position.x, position.y, position.z - 1));
-        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType))
+        if (checkIfBlockIsBasicWoodcraftStationPotential(entity, stationType)) {
             return entity;
+        }
         return null;
     }
 

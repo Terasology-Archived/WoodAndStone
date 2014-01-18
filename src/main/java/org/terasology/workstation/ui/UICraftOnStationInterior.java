@@ -59,7 +59,8 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
     private int windowWidth = 500;
     private int windowHeight = 320;
 
-    public UICraftOnStationInterior(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin, int upgradeSlots, int toolSlots, int componentSlots, UpgradeCompleteCallback upgradeCompleteCallback) {
+    public UICraftOnStationInterior(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin,
+                                    int upgradeSlots, int toolSlots, int componentSlots, UpgradeCompleteCallback upgradeCompleteCallback) {
         this.station = entity;
         this.stationType = stationType;
 
@@ -101,7 +102,9 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
         setPosition(new Vector2f((displaySize.x - windowWidth) / 2, (displaySize.y - windowHeight) / 2));
 
         CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
-        UIAvailableStationRecipesDisplay recipesDisplay = new UIAvailableStationRecipesDisplay(craftingRegistry, stationType, station, upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
+        UIAvailableStationRecipesDisplay recipesDisplay =
+                new UIAvailableStationRecipesDisplay(craftingRegistry, stationType, station,
+                        upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
         recipesDisplay.setSize(new Vector2f(windowWidth - 150, windowHeight - 48));
         recipesDisplay.setPosition(new Vector2f(150, 0));
 
@@ -151,20 +154,23 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
         addDisplayElement(upgradeButton);
     }
 
-    private boolean isSame(String matchingUpgradeRecipe, String upgradeRecipeDisplayed) {
-        if (matchingUpgradeRecipe == null && upgradeRecipeDisplayed == null)
+    private boolean isSame(String recipe1, String recipe2) {
+        if (recipe1 == null && recipe2 == null) {
             return true;
-        if (matchingUpgradeRecipe == null || upgradeRecipeDisplayed == null)
+        }
+        if (recipe1 == null || recipe2 == null) {
             return false;
-        return matchingUpgradeRecipe.equals(upgradeRecipeDisplayed);
+        }
+        return recipe1.equals(recipe2);
     }
 
     private String getMatchingUpgradeRecipe(CraftingStationRecipeRegistry craftingRegistry) {
         final Map<String, UpgradeRecipe> upgradeRecipes = craftingRegistry.getUpgradeRecipes(stationType);
         for (Map.Entry<String, UpgradeRecipe> upgradeRecipe : upgradeRecipes.entrySet()) {
             final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getValue().getMatchingUpgradeResult(station, 0, upgradeSlots);
-            if (result != null)
+            if (result != null) {
                 return upgradeRecipe.getKey();
+            }
         }
         return null;
     }

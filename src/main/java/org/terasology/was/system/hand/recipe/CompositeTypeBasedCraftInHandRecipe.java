@@ -73,8 +73,9 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
         int numSlots = inventoryManager.getNumSlots(character);
         for (int i = 0; i < numSlots; i++) {
-            if (hasItemInSlot(character, itemType, inventoryManager, i))
+            if (hasItemInSlot(character, itemType, inventoryManager, i)) {
                 return i;
+            }
         }
 
         return -1;
@@ -82,8 +83,9 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
     private boolean hasItemInSlot(EntityRef character, String itemType, SlotBasedInventoryManager inventoryManager, int slot) {
         CraftInHandRecipeComponent component = inventoryManager.getItemInSlot(character, slot).getComponent(CraftInHandRecipeComponent.class);
-        if (component != null && component.componentType.equals(itemType))
+        if (component != null && component.componentType.equals(itemType)) {
             return true;
+        }
         return false;
     }
 
@@ -106,9 +108,15 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         @Override
         public Map<Integer, Integer> getComponentSlotAndCount() {
             Map<Integer, Integer> result = new LinkedHashMap<>();
-            if (slot1 != -1) result.put(slot1, 1);
-            if (slot2 != -1) result.put(slot2, 1);
-            if (slot3 != -1) result.put(slot3, 1);
+            if (slot1 != -1) {
+                result.put(slot1, 1);
+            }
+            if (slot2 != -1) {
+                result.put(slot2, 1);
+            }
+            if (slot3 != -1) {
+                result.put(slot3, 1);
+            }
             return result;
         }
 

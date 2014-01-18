@@ -21,7 +21,7 @@ import org.terasology.entitySystem.entity.EntityRef;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface ItemCraftBehaviour {
-    public boolean isValid(EntityRef character, EntityRef item);
+    boolean isValid(EntityRef character, EntityRef item);
 
-    public void processForItem(EntityRef character, EntityRef item);
+    void processForItem(EntityRef character, EntityRef item);
 }

@@ -28,14 +28,14 @@ public interface CraftProcessDisplay {
      *
      * @return
      */
-    public Map<Integer, Integer> getComponentSlotAndCount();
+    Map<Integer, Integer> getComponentSlotAndCount();
 
     /**
      * Returns an item entity that will be used to display a result of crafting the recipe once.
      *
      * @return
      */
-    public EntityRef createResultItemEntityForDisplayOne();
+    EntityRef createResultItemEntityForDisplayOne();
 
     /**
      * Returns an item entity that will be used to display a result of creating the recipe as many times
@@ -43,5 +43,5 @@ public interface CraftProcessDisplay {
      *
      * @return
      */
-    public EntityRef getResultItemEntityForDisplayMax();
+    EntityRef getResultItemEntityForDisplayMax();
 }

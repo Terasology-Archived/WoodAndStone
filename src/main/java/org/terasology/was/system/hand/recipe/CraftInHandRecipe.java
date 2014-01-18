@@ -24,13 +24,13 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface CraftInHandRecipe {
-    public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character);
+    List<CraftInHandResult> getMatchingRecipeResults(EntityRef character);
 
-    public CraftInHandResult getResultById(String resultId);
+    CraftInHandResult getResultById(String resultId);
 
     public interface CraftInHandResult extends CraftProcessDisplay {
-        public String getResultId();
+        String getResultId();
 
-        public EntityRef craftOne(EntityRef character);
+        EntityRef craftOne(EntityRef character);
     }
 }
