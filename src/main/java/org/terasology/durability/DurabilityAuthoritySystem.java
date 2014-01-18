@@ -16,6 +16,7 @@
 package org.terasology.durability;
 
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -59,18 +60,26 @@ public class DurabilityAuthoritySystem implements ComponentSystem {
     @ReceiveEvent(components = {DurabilityComponent.class})
     public void reduceDurability(ReduceDurabilityEvent event, EntityRef entity) {
         DurabilityComponent durabilityComponent = entity.getComponent(DurabilityComponent.class);
-        durabilityComponent.durability--;
+        durabilityComponent.durability -= event.getReduceBy();
+        if (durabilityComponent.durability < 0) {
+            durabilityComponent.durability = 0;
+        }
         entity.saveComponent(durabilityComponent);
 
         entity.send(new DurabilityReducedEvent());
     }
 
     @ReceiveEvent(components = {DurabilityComponent.class})
-    public void destroyItemOnZeroDurability(DurabilityReducedEvent event, EntityRef entity) {
+    public void checkIfDurabilityExhausted(DurabilityReducedEvent event, EntityRef entity) {
         DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
         if (durability.durability == 0) {
-            entity.destroy();
+            entity.send(new DurabilityExhaustedEvent());
         }
+    }
+
+    @ReceiveEvent(components = {DurabilityComponent.class}, priority = EventPriority.PRIORITY_TRIVIAL)
+    public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity) {
+        entity.destroy();
     }
 
     private boolean canBeDestroyedByBlockDamage(Iterable<String> categoriesIterator, Prefab damageType) {
