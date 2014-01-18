@@ -147,7 +147,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                                     worldProvider.setBlock(location, block);
                                 }
 
-                                final EntityRef newStation = entityManager.create("WoodAndStone:StandardWoodStation");
+                                final EntityRef newStation = entityManager.create("WoodAndStone:StandardWoodcrafting");
 
                                 inventoryManager.moveItem(station, 0, newStation, 0);
                                 inventoryManager.moveItem(station, 1, newStation, 2);
@@ -206,6 +206,13 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     }
 
     private void addStandardWorkstationRecipes() {
+        SimpleWorkstationRecipe stickRecipe = new SimpleWorkstationRecipe();
+        stickRecipe.addIngredient("WoodAndStone:wood", 1);
+        stickRecipe.addRequiredTool("wood", 1);
+        stickRecipe.setItemResult("WoodAndStone:Stick", (byte) 6);
+
+        addStandardWoodworkingRecipe("WoodAndStone:Stick", stickRecipe);
+
         SimpleWorkstationRecipe plankRecipe = new SimpleWorkstationRecipe();
         plankRecipe.addIngredient("WoodAndStone:wood", 1);
         plankRecipe.addRequiredTool("wood", 1);
@@ -222,8 +229,8 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         addStandardWoodworkingRecipe("WoodAndStone:PlankWall", plankWallRecipe);
 
         SimpleWorkstationRecipe woodenTableRecipe = new SimpleWorkstationRecipe();
-        woodenTableRecipe.addIngredient("WoodAndStone:plank", 2);
-        woodenTableRecipe.addIngredient("WoodAndStone:wood", 1);
+        woodenTableRecipe.addIngredient("WoodAndStone:plank", 4);
+        woodenTableRecipe.addIngredient("WoodAndStone:stick", 4);
         woodenTableRecipe.addRequiredTool("wood", 1);
         woodenTableRecipe.addRequiredTool("stone", 1);
         woodenTableRecipe.setBlockResult("WoodAndStone:WoodenTable", (byte) 1);
