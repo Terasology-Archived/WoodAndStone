@@ -1,5 +1,5 @@
 {
-//    "shape" : "WoodAndStone:Table",
+    "shape": "WoodAndStone:Table",
     "categories": ["wood"],
 
     "displayName": "Wooden Table",
@@ -8,10 +8,5 @@
         "prefab": "WoodAndStone:WoodenTable"
     },
 
-    "tiles": {
-        "top": "WoodAndStone:WoodenTableTop",
-        "bottom": "WoodAndStone:WoodenTableBottom",
-        "sides": "WoodAndStone:WoodenTableSides"
-    },
     "translucent": true
 }

@@ -1,4 +1,6 @@
 {
+    "shape": "WoodAndStone:Table",
+
     "hardness": 16,
 
     "displayName": "Stone Station",
