@@ -194,6 +194,20 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         "hammer", new ReduceItemDurabilityCraftBehaviour("hammer", 1),
                         null, new DoNothingCraftBehaviour(),
                         "WoodAndStone:sharpStone"));
+
+        addCraftInHandRecipe("WoodAndStone:unlitTorch",
+                new CompositeTypeBasedCraftInHandRecipe(
+                        "stick", new ConsumeItemCraftBehaviour("stick"),
+                        "resin", new ReduceItemDurabilityCraftBehaviour("resin", 1),
+                        null, new DoNothingCraftBehaviour(),
+                        "WoodAndStone:UnlitTorch"));
+
+        addCraftInHandRecipe("WoodAndStone:litTorch",
+                new CompositeTypeBasedCraftInHandRecipe(
+                        "unlitTorch", new ConsumeItemCraftBehaviour("unlitTorch"),
+                        "flint", new ReduceItemDurabilityCraftBehaviour("flint", 1),
+                        null, new DoNothingCraftBehaviour(),
+                        "WoodAndStone:LitTorch", true));
     }
 
     private void addBasicWorkstationRecipes() {

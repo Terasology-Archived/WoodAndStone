@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Flint",
+        "icon": "whitepwdr",
+        "renderWithIcon": true
+    },
+    "Durability": {
+        "durability": 20,
+        "maxDurability": 20
+    },
+    "CraftInHandRecipe": {
+        "componentType": "flint"
+    }
+}

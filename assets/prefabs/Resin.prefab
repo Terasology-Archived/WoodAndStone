@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Resin",
+        "icon": "goldbloom",
+        "renderWithIcon": true
+    },
+    "Durability": {
+        "durability": 20,
+        "maxDurability": 20
+    },
+    "CraftInHandRecipe": {
+        "componentType": "resin"
+    }
+}

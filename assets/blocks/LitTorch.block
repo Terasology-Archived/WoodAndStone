@@ -1,0 +1,23 @@
+{
+    "rotation": "attachedToSurface",
+    "sides": {
+        "shape": "Core:TorchWall"
+    },
+    "top": {
+        "shape": "Core:TorchGrounded"
+    },
+
+    "entity": {
+        "prefab": "WoodAndStone:LitTorch"
+    },
+
+    "penetrable": true,
+    "attachmentAllowed": false,
+    "shadowCasting": false,
+    "luminance": 15,
+    "hardness": 1,
+    "inventory": {
+        "stackable": false,
+        "directPickup": true
+    }
+}

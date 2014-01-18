@@ -71,7 +71,7 @@ public class UICraftInHand extends UIScreenInventory {
 
         CraftInHandRecipeRegistry registry = CoreRegistry.get(CraftInHandRecipeRegistry.class);
 
-        allRecipesDisplay = new UIAvailableInHandRecipesDisplay(new Vector2f(300, 200), registry, characterEntity);
+        allRecipesDisplay = new UIAvailableInHandRecipesDisplay(new Vector2f(300, 400), registry, characterEntity);
         allRecipesDisplay.setHorizontalAlign(EHorizontalAlign.CENTER);
         allRecipesDisplay.setVerticalAlign(EVerticalAlign.TOP);
         addDisplayElement(allRecipesDisplay);

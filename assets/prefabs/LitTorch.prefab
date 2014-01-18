@@ -1,0 +1,7 @@
+{
+    "Durability": {
+        "durability": 60,
+        "maxDurability": 60
+    },
+    "OverTimeDurabilityReduce": {}
+}

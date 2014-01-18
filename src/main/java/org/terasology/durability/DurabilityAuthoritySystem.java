@@ -15,13 +15,16 @@
  */
 package org.terasology.durability;
 
+import org.terasology.engine.Time;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.In;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.health.NoHealthEvent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
@@ -31,13 +34,33 @@ import org.terasology.world.block.entity.BlockDamageComponent;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class DurabilityAuthoritySystem implements ComponentSystem {
+public class DurabilityAuthoritySystem implements UpdateSubscriberSystem {
+    @In
+    private Time time;
+    @In
+    private EntityManager entityManager;
+
     @Override
     public void initialise() {
     }
 
     @Override
     public void shutdown() {
+    }
+
+    private long tickLength = 5000;
+    private long lastModified;
+
+    @Override
+    public void update(float delta) {
+        long gameTimeInMs = time.getGameTimeInMs();
+        if (lastModified + tickLength < gameTimeInMs) {
+            for (EntityRef entityRef : entityManager.getEntitiesWith(OverTimeDurabilityReduceComponent.class, DurabilityComponent.class)) {
+                entityRef.send(new ReduceDurabilityEvent(1));
+            }
+
+            lastModified = gameTimeInMs;
+        }
     }
 
     @ReceiveEvent(components = {BlockComponent.class})

@@ -20,6 +20,9 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.was.component.CraftInHandRecipeComponent;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.family.BlockFamily;
+import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -37,11 +40,19 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     private String item3Type;
     private ItemCraftBehaviour itemCraftBehaviour3;
     private String prefabName;
+    private boolean block;
 
     public CompositeTypeBasedCraftInHandRecipe(String item1Type, ItemCraftBehaviour itemCraftBehaviour1,
                                                String item2Type, ItemCraftBehaviour itemCraftBehaviour2,
                                                String item3Type, ItemCraftBehaviour itemCraftBehaviour3,
                                                String resultPrefab) {
+        this(item1Type, itemCraftBehaviour1, item2Type, itemCraftBehaviour2, item3Type, itemCraftBehaviour3, resultPrefab, false);
+    }
+
+    public CompositeTypeBasedCraftInHandRecipe(String item1Type, ItemCraftBehaviour itemCraftBehaviour1,
+                                               String item2Type, ItemCraftBehaviour itemCraftBehaviour2,
+                                               String item3Type, ItemCraftBehaviour itemCraftBehaviour3,
+                                               String resultPrefab, boolean block) {
         this.item1Type = item1Type;
         this.itemCraftBehaviour1 = itemCraftBehaviour1;
         this.item2Type = item2Type;
@@ -49,6 +60,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         this.item3Type = item3Type;
         this.itemCraftBehaviour3 = itemCraftBehaviour3;
         this.prefabName = resultPrefab;
+        this.block = block;
     }
 
     @Override
@@ -122,7 +134,12 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
         @Override
         public EntityRef createResultItemEntityForDisplayOne() {
-            return CoreRegistry.get(EntityManager.class).create(prefabName);
+            if (block) {
+                BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName);
+                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, 1);
+            } else {
+                return CoreRegistry.get(EntityManager.class).create(prefabName);
+            }
         }
 
         @Override

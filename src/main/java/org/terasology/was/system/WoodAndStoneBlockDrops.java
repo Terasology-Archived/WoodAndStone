@@ -62,7 +62,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
             } else if (blockUri.equals(new BlockUri("Core", "Dirt"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("Core:Dirt");
-                dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stone");
+                dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint");
                 event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("Core", "Stone"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
@@ -80,6 +80,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
             } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakTrunk"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("WoodAndStone:DeadOakTrunk");
+                dropGrammar.itemDrops = Arrays.asList("0.1|WoodAndStone:Resin");
                 event.addComponent(dropGrammar);
             }
         }

@@ -1,0 +1,12 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Unlit Torch",
+        "icon": "stick",
+        "stackId": "WoodAndStone:items.UnlitTorch",
+        "renderWithIcon": true
+    },
+    "CraftInHandRecipe": {
+        "componentType": "unlitTorch"
+    }
+}
