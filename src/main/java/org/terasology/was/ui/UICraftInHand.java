@@ -24,6 +24,8 @@ import org.terasology.rendering.gui.framework.events.WindowListener;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
 import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
 
+import javax.vecmath.Vector2f;
+
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
@@ -69,12 +71,10 @@ public class UICraftInHand extends UIScreenInventory {
 
         CraftInHandRecipeRegistry registry = CoreRegistry.get(CraftInHandRecipeRegistry.class);
 
-        allRecipesDisplay = new UIAvailableInHandRecipesDisplay(registry, characterEntity);
+        allRecipesDisplay = new UIAvailableInHandRecipesDisplay(new Vector2f(300, 200), registry, characterEntity);
         allRecipesDisplay.setHorizontalAlign(EHorizontalAlign.CENTER);
         allRecipesDisplay.setVerticalAlign(EVerticalAlign.TOP);
         addDisplayElement(allRecipesDisplay);
-
-        layout();
     }
 
     public void windowClosed() {

@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.rendering.gui.framework.UIDisplayContainer;
+import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.workstation.event.UserCraftOnStationRequest;
 import org.terasology.workstation.system.CraftingStationRecipeRegistry;
@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
+public class UIAvailableStationRecipesDisplay extends UIDisplayContainerScrollable {
     private Multimap<String, String> displayedRecipes = HashMultimap.create();
     private CraftingStationRecipeRegistry registry;
     private String stationType;
@@ -44,8 +44,9 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
     private int toolFromSlot;
     private int toolSlotCount;
 
-    public UIAvailableStationRecipesDisplay(CraftingStationRecipeRegistry registry, String stationType, EntityRef station,
+    public UIAvailableStationRecipesDisplay(Vector2f size, CraftingStationRecipeRegistry registry, String stationType, EntityRef station,
                                             int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
+        super(size);
         this.registry = registry;
         this.stationType = stationType;
         this.station = station;
@@ -94,7 +95,7 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
 
     public void loadRecipes() {
         int rowHeight = 50;
-        int rowIndex = 0;
+        int rowIndex = -1;
 
         displayedRecipes.clear();
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
@@ -114,13 +115,12 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainer {
                                     station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
                                 }
                             });
-                    recipeDisplay.setPosition(new Vector2f(0, rowIndex * rowHeight));
+                    recipeDisplay.setPosition(new Vector2f(0, 10 + rowIndex * rowHeight));
                     addDisplayElement(recipeDisplay);
                     rowIndex++;
                 }
             }
         }
-        layout();
     }
 
     public void dispose() {

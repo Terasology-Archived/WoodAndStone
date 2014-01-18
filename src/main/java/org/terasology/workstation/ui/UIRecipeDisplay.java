@@ -71,7 +71,6 @@ public class UIRecipeDisplay extends UIDisplayContainer {
                     }
                 }
         );
-        layout();
     }
 
     public void dispose() {

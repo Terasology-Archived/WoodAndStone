@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.rendering.gui.framework.UIDisplayContainer;
+import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.was.event.UserCraftInHandRequest;
 import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
@@ -36,12 +36,13 @@ import java.util.Map;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UIAvailableInHandRecipesDisplay extends UIDisplayContainer {
+public class UIAvailableInHandRecipesDisplay extends UIDisplayContainerScrollable {
     private Multimap<String, String> displayedRecipes = HashMultimap.create();
     private CraftInHandRecipeRegistry registry;
     private EntityRef character;
 
-    public UIAvailableInHandRecipesDisplay(CraftInHandRecipeRegistry registry, EntityRef character) {
+    public UIAvailableInHandRecipesDisplay(Vector2f size, CraftInHandRecipeRegistry registry, EntityRef character) {
+        super(size);
         this.registry = registry;
         this.character = character;
         loadRecipes();
@@ -107,7 +108,6 @@ public class UIAvailableInHandRecipesDisplay extends UIDisplayContainer {
                 }
             }
         }
-        layout();
     }
 
     public void dispose() {
