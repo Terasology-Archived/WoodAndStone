@@ -8,5 +8,12 @@
         "prefab": "WoodAndStone:WoodenTable"
     },
 
+    "tiles": {
+        "top": "WoodAndStone:WoodenTableTop",
+        "bottom": "WoodAndStone:WoodenTableBottom",
+        "sides": "WoodAndStone:WoodenTableSides",
+        "center": "WoodAndStone:WoodenTableSides"
+    },
+
     "translucent": true
 }

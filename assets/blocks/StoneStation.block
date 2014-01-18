@@ -8,8 +8,9 @@
     "categories": ["stone"],
 
     "tiles": {
-        "top": "WoodAndStone:WoodenTableTop",
+        "top": "WoodAndStone:WoodenTableTopWithHammer",
         "bottom": "WoodAndStone:WoodenTableBottom",
-        "sides": "WoodAndStone:WoodenTableSides"
+        "sides": "WoodAndStone:WoodenTableSides",
+        "center": "WoodAndStone:WoodenTableSides"
     }
 }
