@@ -22,8 +22,8 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.was.component.BlockDropGrammarComponent;
 import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.BlockDropGrammarComponent;
 import org.terasology.world.block.BlockUri;
 
 import java.util.Arrays;
