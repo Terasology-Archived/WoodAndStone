@@ -3,5 +3,12 @@
 
     "displayName": "Standard Woodworking Station",
 
-    "categories": ["wood"]
+    "categories": ["wood"],
+
+    "tiles": {
+        "top": "WoodAndStone:StandardWoodStation",
+        "bottom": "Core:Plank",
+        "sides": "Core:Plank"
+    }
+
 }

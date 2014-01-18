@@ -3,5 +3,12 @@
 
     "displayName": "Basic Woodworking Station",
 
-    "categories": ["wood"]
+    "categories": ["wood"],
+
+    "tiles": {
+        "top": "WoodAndStone:BasicWoodStation",
+        "bottom": "Core:OakBark",
+        "sides": "Core:OakBark"
+    }
+
 }
