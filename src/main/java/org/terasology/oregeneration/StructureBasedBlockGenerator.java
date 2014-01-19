@@ -1,6 +1,7 @@
 package org.terasology.oregeneration;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.terasology.math.Vector3i;
 import org.terasology.world.WorldBiomeProvider;
 import org.terasology.world.block.Block;
@@ -20,9 +21,9 @@ public class StructureBasedBlockGenerator implements FirstPassGenerator {
     private String worldSeed;
     private WorldBiomeProvider worldBiomeProvider;
     private List<BlockStructureGenerator> structureGenerators = Lists.newLinkedList();
-    private boolean debug;
 
     private Set<Block> blocksToReplace;
+    private boolean debug;
 
     public StructureBasedBlockGenerator(Set<Block> blocksToReplace) {
         this.blocksToReplace = blocksToReplace;
@@ -61,43 +62,62 @@ public class StructureBasedBlockGenerator implements FirstPassGenerator {
             }
         }
 
+        CollectingStructureCallback collectingStructureCallback = new CollectingStructureCallback(chunk);
+
+        for (Structure structure : structures) {
+            structure.generateStructure(collectingStructureCallback);
+        }
+
+        Map<Vector3i, Block> replacements = collectingStructureCallback.getReplacements();
+
         if (debug) {
             for (int x = 0; x < chunk.getChunkSizeX(); x++) {
-                for (int y = 0; y < chunk.getChunkSizeY(); y++) {
+                for (int y = 1; y < chunk.getChunkSizeY(); y++) {
                     for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
-                        replaceBlock(chunk, structures, x, y, z);
-                    }
-                }
-            }
-        } else {
-            for (int x = 0; x < chunk.getChunkSizeX(); x++) {
-                for (int y = 0; y < chunk.getChunkSizeY(); y++) {
-                    for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
-                        if (blocksToReplace.contains(chunk.getBlock(x, y, z))) {
-                            replaceBlock(chunk, structures, x, y, z);
+                        Block block = replacements.get(new Vector3i(x, y, z));
+                        if (block != null) {
+                            chunk.setBlock(x, y, z, block);
+                        } else {
+                            chunk.setBlock(x, y, z, BlockManager.getAir());
                         }
                     }
                 }
             }
+        } else {
+            for (Map.Entry<Vector3i, Block> replacementBlock : replacements.entrySet()) {
+                chunk.setBlock(replacementBlock.getKey(), replacementBlock.getValue());
+            }
         }
     }
 
-    private void replaceBlock(Chunk chunk, List<Structure> structures, int x, int y, int z) {
-        Vector3i position = new Vector3i(x, y, z);
-        Block blockToUse = null;
-        float maxWeight = 0;
-        for (Structure structure : structures) {
-            float weightForStructure = structure.getWeightForChunkPosition(position);
-            if (weightForStructure > maxWeight) {
-                maxWeight = weightForStructure;
-                blockToUse = structure.getBlockToPlaceInChunkPosition(position);
+    private class CollectingStructureCallback implements Structure.StructureCallback {
+        private Chunk chunk;
+        private Map<Vector3i, Block> replacements = Maps.newHashMap();
+        private Map<Vector3i, Float> forces = Maps.newHashMap();
+
+        private CollectingStructureCallback(Chunk chunk) {
+            this.chunk = chunk;
+        }
+
+        @Override
+        public void replaceBlock(Vector3i position, float force, Block block) {
+            Float oldForce = forces.get(position);
+            if (oldForce == null || oldForce < force) {
+                replacements.put(position, block);
             }
         }
 
-        if (blockToUse != null) {
-            chunk.setBlock(x, y, z, blockToUse);
-        } else if (debug && y > 0) {
-            chunk.setBlock(x, y, z, BlockManager.getAir());
+        @Override
+        public boolean canReplace(int x, int y, int z) {
+            if (x < 0 || y < 1 || z < 0
+                    || x >= chunk.getChunkSizeX() || y >= chunk.getChunkSizeY() || z >= chunk.getChunkSizeZ()) {
+                return false;
+            }
+            return debug || blocksToReplace.contains(chunk.getBlock(x, y, z));
+        }
+
+        private Map<Vector3i, Block> getReplacements() {
+            return replacements;
         }
     }
 

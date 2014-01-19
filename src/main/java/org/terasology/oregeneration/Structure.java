@@ -7,7 +7,11 @@ import org.terasology.world.block.Block;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface Structure {
-    public float getWeightForChunkPosition(Vector3i position);
+    void generateStructure(StructureCallback callback);
 
-    public Block getBlockToPlaceInChunkPosition(Vector3i position);
+    public interface StructureCallback {
+        void replaceBlock(Vector3i position, float force, Block block);
+
+        boolean canReplace(int x, int y, int z);
+    }
 }

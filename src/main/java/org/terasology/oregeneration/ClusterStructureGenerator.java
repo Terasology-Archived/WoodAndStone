@@ -7,10 +7,8 @@ import org.terasology.world.WorldBiomeProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -101,8 +99,25 @@ public class ClusterStructureGenerator extends AbstractBlockStructureGenerator {
                 rad[s] = ((float) Math.sin(ns * Math.PI) + 1) * baseRadius + 0.5F;
             }
 
-            Set<Vector3i> positions = new HashSet<>();
+            result.add(new ClusterStructure(chunkSize, rad, ptA, ptB));
+        }
+    }
 
+    private class ClusterStructure implements Structure {
+        private Vector3i chunkSize;
+        private float[] rad;
+        private float[] ptA;
+        private float[] ptB;
+
+        private ClusterStructure(Vector3i chunkSize, float[] rad, float[] ptA, float[] ptB) {
+            this.chunkSize = chunkSize;
+            this.rad = rad;
+            this.ptA = ptA;
+            this.ptB = ptB;
+        }
+
+        @Override
+        public void generateStructure(StructureCallback callback) {
             // iterate along segment in unit steps
             for (int s = 0; s < rad.length; s++) {
                 float ns = s / (float) (rad.length - 1);
@@ -112,13 +127,13 @@ public class ClusterStructureGenerator extends AbstractBlockStructureGenerator {
                 float yCenter = ptA[1] + (ptB[1] - ptA[1]) * ns;
                 float zCenter = ptA[2] + (ptB[2] - ptA[2]) * ns;
 
-                // iterate over each block in the bounding box of the cuboid
-                int xMin = Math.max(0, (int) Math.floor(xCenter - rad[s]));
-                int xMax = Math.min(chunkSize.x - 1, (int) Math.floor(xCenter + rad[s]));
-                int yMin = Math.max(0, (int) Math.floor(yCenter - rad[s]));
-                int yMax = Math.min(chunkSize.y - 1, (int) Math.floor(yCenter + rad[s]));
-                int zMin = Math.max(0, (int) Math.floor(zCenter - rad[s]));
-                int zMax = Math.min(chunkSize.z - 1, (int) Math.floor(zCenter + rad[s]));
+                // iterate over each block in the bounding box of the sphere
+                int xMin = (int) Math.max(0, Math.floor(xCenter - rad[s]));
+                int xMax = (int) Math.min(chunkSize.x - 1, Math.ceil(xCenter + rad[s]));
+                int yMin = (int) Math.max(0, Math.floor(yCenter - rad[s]));
+                int yMax = (int) Math.min(chunkSize.y - 1, Math.ceil(yCenter + rad[s]));
+                int zMin = (int) Math.max(0, Math.floor(zCenter - rad[s]));
+                int zMax = (int) Math.min(chunkSize.z - 1, Math.ceil(zCenter + rad[s]));
                 for (int tgtX = xMin; tgtX <= xMax; tgtX++) {
                     double normXDist = (tgtX + 0.5D - xCenter) / rad[s];
                     if (normXDist * normXDist >= 1.0D) {
@@ -130,40 +145,19 @@ public class ClusterStructureGenerator extends AbstractBlockStructureGenerator {
                             continue;
                         }
                         for (int tgtZ = zMin; tgtZ <= zMax; tgtZ++) {
+                            if (!callback.canReplace(tgtX, tgtY, tgtZ)) {
+                                continue;
+                            }
                             double normZDist = (tgtZ + 0.5D - zCenter) / rad[s];
                             if (normXDist * normXDist + normYDist * normYDist + normZDist * normZDist >= 1.0D) {
                                 continue;
                             }
-                            positions.add(new Vector3i(tgtX, tgtY, tgtZ));
+                            callback.replaceBlock(new Vector3i(tgtX, tgtY, tgtZ), 1, block);
                         }
                     }
                 }
             }
 
-            if (positions.size() > 0) {
-                result.add(new ClusterStructure(positions));
-            }
-        }
-    }
-
-    private class ClusterStructure implements Structure {
-        private Set<Vector3i> positions;
-
-        public ClusterStructure(Set<Vector3i> positions) {
-            this.positions = positions;
-        }
-
-        @Override
-        public float getWeightForChunkPosition(Vector3i position) {
-            if (positions.contains(position)) {
-                return 1;
-            }
-            return 0;
-        }
-
-        @Override
-        public Block getBlockToPlaceInChunkPosition(Vector3i position) {
-            return block;
         }
     }
 }

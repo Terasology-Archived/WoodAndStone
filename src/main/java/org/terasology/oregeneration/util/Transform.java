@@ -104,7 +104,7 @@ public class Transform implements Cloneable {
         float z = mat[8] * vector[0] + mat[9] * vector[1] + mat[10] * vector[2] + mat[11] * vw;
         float w = mat[12] * vector[0] + mat[13] * vector[1] + mat[14] * vector[2] + mat[15] * vw;
         /* FOR FUTURE USE:
-		// left-multiply: vector * matrix
+        // left-multiply: vector * matrix
 		float x = vector[0]*mat[0] + vector[1]*mat[4] + vector[2]*mat[8]  + vw*mat[12];
 		float y = vector[0]*mat[1] + vector[1]*mat[5] + vector[2]*mat[9]  + vw*mat[13];
 		float z = vector[0]*mat[2] + vector[1]*mat[6] + vector[2]*mat[10] + vw*mat[14];
