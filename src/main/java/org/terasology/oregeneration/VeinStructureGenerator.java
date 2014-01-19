@@ -146,13 +146,13 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
                 float minHeight = mlY - branchHeightLimit.getValue(brRandom);
 
                 // create branch
-                generateBranch(null, result, branchLength.getValue(brRandom), maxHeight, minHeight, segMat, brRandom, seedForChunk, chunkPosition);
+                generateBranch(result, branchLength.getValue(brRandom), maxHeight, minHeight, segMat, brRandom, seedForChunk, chunkPosition);
             }
 
         }
     }
 
-    public void generateBranch(TubeStructure prev, List<Structure> result, float length, float maxHeight, float minHeight, Transform mat, Random random, long seed, Vector3i chunkPosition) {
+    public void generateBranch(List<Structure> result, float length, float maxHeight, float minHeight, Transform mat, Random random, long seed, Vector3i chunkPosition) {
         float[] pos = new float[3];
         // create segments until max branch length is reached
         while (length > 0) {
@@ -171,7 +171,7 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
             // create segment component
             Transform segMat = mat.clone().scale(segRad, segRad, segLen);
 
-            result.add(new TubeStructure(prev, segMat, seed, chunkPosition));
+            result.add(new TubeStructure(segMat, seed, chunkPosition));
 
             // translate to end point
             mat.translate(0, 0, segLen);
@@ -203,21 +203,13 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
         protected float[] end;
         // radius
         protected final float rad;
-        // neighbors
-        protected TubeStructure prev;
-        protected TubeStructure next;
         // interpolation context & persistent transform object
         protected final InterpolationContext context;
         protected final Transform mat;
         private long seed;
         private Vector3i chunkPosition;
 
-        public TubeStructure(TubeStructure prev, Transform transform, long seed, Vector3i chunkPosition) {
-            this.prev = prev;
-            if (this.prev != null) {
-                this.prev.next = this;
-            }
-
+        public TubeStructure(Transform transform, long seed, Vector3i chunkPosition) {
             this.seed = seed;
             this.chunkPosition = chunkPosition;
             // calculate midpoint & endpoint
@@ -324,25 +316,10 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
          * @param t   interpolating parameter between [-1,1]
          */
         public void interpolatePosition(float[] pos, float t) {
-            if (t > 0 && next != null) // valid forward neighbor
-            {
-                float nt = 1 - t;
-                pos[0] = nt * nt * mid[0] + 2 * t * nt * end[0] + t * t * next.mid[0];
-                pos[1] = nt * nt * mid[1] + 2 * t * nt * end[1] + t * t * next.mid[1];
-                pos[2] = nt * nt * mid[2] + 2 * t * nt * end[2] + t * t * next.mid[2];
-            } else if (t < 0 && prev != null) // valid backward neighbor
-            {
-                float nt = 1 + t;
-                pos[0] = nt * nt * mid[0] - 2 * t * nt * prev.end[0] + t * t * prev.mid[0];
-                pos[1] = nt * nt * mid[1] - 2 * t * nt * prev.end[1] + t * t * prev.mid[1];
-                pos[2] = nt * nt * mid[2] - 2 * t * nt * prev.end[2] + t * t * prev.mid[2];
-            } else // no neighbor in specified direction - simple linear interpolation
-            {
-                float nt = 1 - 2 * t;
-                pos[0] = nt * mid[0] + 2 * t * end[0];
-                pos[1] = nt * mid[1] + 2 * t * end[1];
-                pos[2] = nt * mid[2] + 2 * t * end[2];
-            }
+            float nt = 1 - 2 * t;
+            pos[0] = nt * mid[0] + 2 * t * end[0];
+            pos[1] = nt * mid[1] + 2 * t * end[1];
+            pos[2] = nt * mid[2] + 2 * t * end[2];
         }
 
         /**
@@ -353,22 +330,9 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
          * @param t   interpolating parameter between [-1,1]
          */
         public void interpolateDerivative(float[] der, float t) {
-            if (t > 0 && next != null) // valid forward neighbor
-            {
-                der[0] = 2 * ((1 - t) * (end[0] - mid[0]) + t * (next.mid[0] - end[0]));
-                der[1] = 2 * ((1 - t) * (end[1] - mid[1]) + t * (next.mid[1] - end[1]));
-                der[2] = 2 * ((1 - t) * (end[2] - mid[2]) + t * (next.mid[2] - end[2]));
-            } else if (t < 0 && prev != null) // valid backward neighbor
-            {
-                der[0] = 2 * ((1 + t) * (mid[0] - prev.end[0]) - t * (prev.end[0] - prev.mid[0]));
-                der[1] = 2 * ((1 + t) * (mid[1] - prev.end[1]) - t * (prev.end[1] - prev.mid[1]));
-                der[2] = 2 * ((1 + t) * (mid[2] - prev.end[2]) - t * (prev.end[2] - prev.mid[2]));
-            } else // no neighbor in specified direction
-            {
-                der[0] = 2 * (end[0] - mid[0]);
-                der[1] = 2 * (end[1] - mid[1]);
-                der[2] = 2 * (end[2] - mid[2]);
-            }
+            der[0] = 2 * (end[0] - mid[0]);
+            der[1] = 2 * (end[1] - mid[1]);
+            der[2] = 2 * (end[2] - mid[2]);
         }
 
         /**
@@ -380,11 +344,7 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
          * @param t interpolating parameter between [-1,1]
          */
         public float interpolateRadius(float t) {
-            if (t > 0 && next != null) {
-                return (1 - t) * rad + t * next.rad; // valid forward neighbor
-            } else if (t < 0 && prev != null) {
-                return (1 + t) * rad - t * prev.rad; // valid backward neighbor
-            } else if (t <= 0 && t > -1) {
+            if (t <= 0 && t > -1) {
                 return rad; // no backward neighbor - constant radius
             } else if (t > 0 && t < 1) {
                 return (float) (rad * Math.sqrt(1 - 4 * t * t)); // no forward neighbor - approach zero as parabola
@@ -424,7 +384,7 @@ public class VeinStructureGenerator extends AbstractBlockStructureGenerator {
              */
             public void init(float stepSize, boolean calculateDirection) {
                 // interpolate all the way to the center of previous segment unless it reciprocates
-                t = (prev == null || prev.next == TubeStructure.this) ? -0.5F : -1.0F;
+                t = -0.5F;
                 if (stepSize > 0) {
                     dt = stepSize;
                 }
