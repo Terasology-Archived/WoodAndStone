@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RegisterWorldGenerator(id = "example", displayName = "Example generator", description = "Generates ore")
+@RegisterWorldGenerator(id = "debug", displayName = "Debug generator", description = "Generates ore, and removes any other ore")
 public class ExampleGenerator extends AbstractBaseWorldGenerator {
 
     public ExampleGenerator(SimpleUri uri) {
