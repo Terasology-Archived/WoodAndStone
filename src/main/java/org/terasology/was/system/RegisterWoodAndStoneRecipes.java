@@ -67,14 +67,57 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         addWorkstationUpgradeRecipes();
     }
 
+    private void addWorkstationBlockShapesRecipe(String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
+                                                 String tool, int toolDurability, String blockResultPrefix, int blockResultCount) {
+        SimpleWorkstationRecipe fullBlockRecipe = new SimpleWorkstationRecipe();
+        fullBlockRecipe.addIngredient(ingredient, ingredientBasicCount);
+        fullBlockRecipe.addRequiredTool(tool, toolDurability);
+        fullBlockRecipe.setBlockResult(blockResultPrefix, (byte) blockResultCount);
+
+        stationRecipeRegistry.addCraftingStationRecipe(workstationType, recipeNamePrefix, fullBlockRecipe);
+
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "Stair", 3, 4, 2);
+
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "Slope", 1, 2, 2);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "UpperHalfSlope", 1, 2, 2);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "SlopeCorner", 1, 2, 2);
+
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "SteepSlope", 1, 1, 2);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "QuarterSlope", 1, 8, 2);
+
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "HalfBlock", 1, 2, 1);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "HalfSlope", 1, 4, 2);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "HalfSlopeCorner", 1, 6, 1);
+
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "PillarTop", 1, 1, 2);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "Pillar", 1, 1, 2);
+        addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "PillarBase", 1, 1, 2);
+    }
+
+    private void addShapeRecipe(String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
+                                String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
+                                String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
+        SimpleWorkstationRecipe stairRecipe = new SimpleWorkstationRecipe();
+        stairRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
+        stairRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
+        stairRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
+
+        stationRecipeRegistry.addCraftingStationRecipe(workstationType, recipeNamePrefix + shape, stairRecipe);
+    }
+
     private void addBasicStoneWorkstationRecipes() {
-        SimpleWorkstationRecipe cobbleRecipe = new SimpleWorkstationRecipe();
-        cobbleRecipe.addIngredient("WoodAndStone:stone", 2);
-        cobbleRecipe.addRequiredTool("stone", 1);
-        cobbleRecipe.setBlockResult("Core:CobbleStone", (byte) 1);
-
-        addBasicStoneworkingRecipe("WoodAndStone:CobbleBlock", cobbleRecipe);
-
         SimpleWorkstationRecipe sharpStoneRecipe = new SimpleWorkstationRecipe();
         sharpStoneRecipe.addIngredient("WoodAndStone:stone", 1);
         sharpStoneRecipe.addRequiredTool("stone", 1);
@@ -107,6 +150,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         stonePickaxeRecipe.setItemResult("WoodAndStone:StonePickaxe", (byte) 1);
 
         addBasicStoneworkingRecipe("WoodAndStone:StonePickaxe", stonePickaxeRecipe);
+
+        addWorkstationBlockShapesRecipe("WoodAndStone:BasicStonecrafting", "WoodAndStone:CobbleBlock",
+                "WoodAndStone:stone", 2, "stone", 1, "Core:CobbleStone", 1);
     }
 
     private void addWorkstationUpgradeRecipes() {
@@ -234,14 +280,6 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
         addStandardWoodworkingRecipe("WoodAndStone:WoodPlank", plankRecipe);
 
-        SimpleWorkstationRecipe plankWallRecipe = new SimpleWorkstationRecipe();
-        plankWallRecipe.addIngredient("WoodAndStone:plank", 2);
-        plankWallRecipe.addRequiredTool("wood", 1);
-        plankWallRecipe.addRequiredTool("stone", 1);
-        plankWallRecipe.setBlockResult("Core:Plank", (byte) 4);
-
-        addStandardWoodworkingRecipe("WoodAndStone:PlankWall", plankWallRecipe);
-
         SimpleWorkstationRecipe woodenTableRecipe = new SimpleWorkstationRecipe();
         woodenTableRecipe.addIngredient("WoodAndStone:plank", 4);
         woodenTableRecipe.addIngredient("WoodAndStone:stick", 4);
@@ -250,6 +288,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         woodenTableRecipe.setBlockResult("WoodAndStone:WoodenTable", (byte) 1);
 
         addStandardWoodworkingRecipe("WoodAndStone:WoodenTable", woodenTableRecipe);
+
+        addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:PlankBlock",
+                "WoodAndStone:plank", 2, "wood", 1, "Core:Plank", 4);
     }
 
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {
