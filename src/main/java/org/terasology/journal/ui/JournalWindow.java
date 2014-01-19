@@ -79,5 +79,6 @@ public class JournalWindow extends UIWindow {
         }
 
         text.setText(sb.toString());
+        text.scrollToBottom();
     }
 }
