@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.event;
+package org.terasology.crafting.event;
 
 import org.lwjgl.input.Keyboard;
 import org.terasology.input.BindButtonEvent;

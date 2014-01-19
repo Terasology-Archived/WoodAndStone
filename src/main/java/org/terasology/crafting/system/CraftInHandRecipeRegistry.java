@@ -13,13 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.component;
+package org.terasology.crafting.system;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.crafting.system.recipe.CraftInHandRecipe;
+
+import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CraftInHandRecipeComponent implements Component {
-    public String componentType;
+public interface CraftInHandRecipeRegistry {
+    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
+
+    Map<String, CraftInHandRecipe> getRecipes();
+
+    void disableCraftingInHand();
+
+    boolean isCraftingInHandDisabled();
 }

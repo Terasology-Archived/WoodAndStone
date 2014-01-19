@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.hand;
+package org.terasology.crafting.system;
 
+import org.terasology.crafting.event.CraftInHandButton;
+import org.terasology.crafting.ui.UICraftInHand;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -29,8 +31,6 @@ import org.terasology.logic.players.LocalPlayer;
 import org.terasology.network.ClientComponent;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.WindowListener;
-import org.terasology.was.event.CraftInHandButton;
-import org.terasology.was.ui.UICraftInHand;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -41,6 +41,8 @@ public class CraftInHandClientSystem implements ComponentSystem {
     private GUIManager guiManager;
     @In
     private SlotBasedInventoryManager inventoryManager;
+    @In
+    private CraftInHandRecipeRegistry recipeRegistry;
 
     private UICraftInHand uiWindow;
 
@@ -55,25 +57,24 @@ public class CraftInHandClientSystem implements ComponentSystem {
 
     @ReceiveEvent(components = {ClientComponent.class})
     public void craftRequested(CraftInHandButton event, EntityRef entity) {
-        if (event.getState() == ButtonState.DOWN && uiWindow == null) {
-            uiWindow = (UICraftInHand) guiManager.openWindow("WoodAndStone:CraftInHand");
-            uiWindow.setCharacterEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity());
-            uiWindow.addWindowListener(
-                    new WindowListener() {
-                        @Override
-                        public void initialise(UIDisplayElement element) {
-                        }
+        if (!recipeRegistry.isCraftingInHandDisabled()) {
+            if (event.getState() == ButtonState.DOWN && uiWindow == null) {
+                uiWindow = (UICraftInHand) guiManager.openWindow("WoodAndStone:CraftInHand");
+                uiWindow.setCharacterEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity());
+                uiWindow.addWindowListener(
+                        new WindowListener() {
+                            @Override
+                            public void initialise(UIDisplayElement element) {
+                            }
 
-                        @Override
-                        public void shutdown(UIDisplayElement element) {
-                            uiWindow = null;
+                            @Override
+                            public void shutdown(UIDisplayElement element) {
+                                uiWindow = null;
+                            }
                         }
-                    }
-            );
-            event.consume();
+                );
+                event.consume();
+            }
         }
     }
-//
-//    @ReceiveEvent(components = {CharacterComponent.class, InventoryComponent.class})
-//    public void characterInventoryChanged()
 }

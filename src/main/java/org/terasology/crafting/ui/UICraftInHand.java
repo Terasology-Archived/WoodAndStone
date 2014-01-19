@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.ui;
+package org.terasology.crafting.ui;
 
+import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -22,7 +23,6 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.WindowListener;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
-import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
 
 import javax.vecmath.Vector2f;
 

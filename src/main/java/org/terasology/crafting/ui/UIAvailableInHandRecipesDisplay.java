@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.ui;
+package org.terasology.crafting.ui;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import org.terasology.crafting.event.UserCraftInHandRequest;
+import org.terasology.crafting.system.CraftInHandRecipeRegistry;
+import org.terasology.crafting.system.recipe.CraftInHandRecipe;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
-import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
-import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
-import org.terasology.workstation.ui.CreationCallback;
-import org.terasology.workstation.ui.UIRecipeDisplay;
 
 import javax.vecmath.Vector2f;
 import java.util.LinkedList;

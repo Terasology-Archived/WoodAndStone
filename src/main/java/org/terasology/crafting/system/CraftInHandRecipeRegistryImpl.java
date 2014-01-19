@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.hand;
+package org.terasology.crafting.system;
 
+import org.terasology.crafting.system.recipe.CraftInHandRecipe;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.Share;
-import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +30,7 @@ import java.util.Map;
 @Share(value = CraftInHandRecipeRegistry.class)
 public class CraftInHandRecipeRegistryImpl implements CraftInHandRecipeRegistry, ComponentSystem {
     private Map<String, CraftInHandRecipe> recipes = new LinkedHashMap<>();
+    private boolean disabled;
 
     @Override
     public void initialise() {
@@ -47,5 +48,15 @@ public class CraftInHandRecipeRegistryImpl implements CraftInHandRecipeRegistry,
     @Override
     public Map<String, CraftInHandRecipe> getRecipes() {
         return recipes;
+    }
+
+    @Override
+    public void disableCraftingInHand() {
+        disabled = true;
+    }
+
+    @Override
+    public boolean isCraftingInHandDisabled() {
+        return disabled;
     }
 }

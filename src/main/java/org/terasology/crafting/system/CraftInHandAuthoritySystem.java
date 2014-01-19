@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.hand;
+package org.terasology.crafting.system;
 
+import org.terasology.crafting.event.UserCraftInHandRequest;
+import org.terasology.crafting.system.recipe.CraftInHandRecipe;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -25,8 +27,6 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.was.event.UserCraftInHandRequest;
-import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -53,13 +53,15 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
 
     @ReceiveEvent
     public void craftInHandRequestReceived(UserCraftInHandRequest event, EntityRef character) {
-        String recipeId = event.getRecipeId();
-        String resultId = event.getResultId();
-        CraftInHandRecipe craftInHandRecipe = recipeRegistry.getRecipes().get(recipeId);
-        CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(resultId);
-        EntityRef resultEntity = result.craftOne(character);
-        if (resultEntity.exists()) {
-            pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200);
+        if (!recipeRegistry.isCraftingInHandDisabled()) {
+            String recipeId = event.getRecipeId();
+            String resultId = event.getResultId();
+            CraftInHandRecipe craftInHandRecipe = recipeRegistry.getRecipes().get(recipeId);
+            CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(resultId);
+            EntityRef resultEntity = result.craftOne(character);
+            if (resultEntity.exists()) {
+                pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200);
+            }
         }
     }
 }

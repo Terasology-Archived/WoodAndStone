@@ -13,34 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.hand.recipe.behaviour;
+package org.terasology.crafting.system.recipe.behaviour;
 
-import org.terasology.engine.CoreRegistry;
+import org.terasology.crafting.system.recipe.ItemCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.was.component.CraftInHandRecipeComponent;
-import org.terasology.was.system.hand.recipe.ItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
-    private String itemType;
-
-    public ConsumeItemCraftBehaviour(String itemType) {
-        this.itemType = itemType;
-    }
-
+public class DoNothingCraftBehaviour implements ItemCraftBehaviour {
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
-        CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
-        return craftComponent != null && craftComponent.componentType.equals(itemType);
+        return true;
     }
 
     @Override
     public void processForItem(EntityRef character, EntityRef item) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-
-        inventoryManager.removeItem(character, item, 1);
     }
 }

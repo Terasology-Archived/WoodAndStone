@@ -17,6 +17,8 @@ package org.terasology.workstation.ui;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import org.terasology.crafting.ui.CreationCallback;
+import org.terasology.crafting.ui.UIRecipeDisplay;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;

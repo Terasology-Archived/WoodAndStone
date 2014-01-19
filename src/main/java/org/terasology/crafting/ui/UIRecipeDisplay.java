@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.ui;
+package org.terasology.crafting.ui;
 
+import org.terasology.crafting.system.recipe.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.ClickListener;
 import org.terasology.rendering.gui.widgets.UIButton;
-import org.terasology.workstation.system.recipe.CraftProcessDisplay;
 
 import javax.vecmath.Vector2f;
 import java.util.Map;

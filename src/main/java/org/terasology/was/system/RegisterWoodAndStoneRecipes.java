@@ -15,6 +15,13 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.crafting.system.CraftInHandRecipeRegistry;
+import org.terasology.crafting.system.recipe.CompositeTypeBasedCraftInHandRecipe;
+import org.terasology.crafting.system.recipe.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.SimpleConsumingCraftInHandRecipe;
+import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.DoNothingCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.ReduceItemDurabilityCraftBehaviour;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -26,13 +33,6 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
-import org.terasology.was.system.hand.CraftInHandRecipeRegistry;
-import org.terasology.was.system.hand.recipe.CompositeTypeBasedCraftInHandRecipe;
-import org.terasology.was.system.hand.recipe.CraftInHandRecipe;
-import org.terasology.was.system.hand.recipe.SimpleConsumingCraftInHandRecipe;
-import org.terasology.was.system.hand.recipe.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.was.system.hand.recipe.behaviour.DoNothingCraftBehaviour;
-import org.terasology.was.system.hand.recipe.behaviour.ReduceItemDurabilityCraftBehaviour;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 import org.terasology.workstation.system.recipe.CraftingStationRecipe;

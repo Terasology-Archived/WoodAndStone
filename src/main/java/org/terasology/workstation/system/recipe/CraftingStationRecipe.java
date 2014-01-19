@@ -15,6 +15,7 @@
  */
 package org.terasology.workstation.system.recipe;
 
+import org.terasology.crafting.system.recipe.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
 
 import java.util.List;

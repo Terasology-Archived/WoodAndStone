@@ -13,24 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system.hand.recipe;
+package org.terasology.crafting.event;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.workstation.system.recipe.CraftProcessDisplay;
-
-import java.util.List;
+import org.terasology.entitySystem.event.Event;
+import org.terasology.network.ServerEvent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipe {
-    List<CraftInHandResult> getMatchingRecipeResults(EntityRef character);
+@ServerEvent
+public class UserCraftInHandRequest implements Event {
+    private String recipeId;
+    private String resultId;
 
-    CraftInHandResult getResultById(String resultId);
+    public UserCraftInHandRequest() {
+    }
 
-    public interface CraftInHandResult extends CraftProcessDisplay {
-        String getResultId();
+    public UserCraftInHandRequest(String recipeId, String resultId) {
+        this.recipeId = recipeId;
+        this.resultId = resultId;
+    }
 
-        EntityRef craftOne(EntityRef character);
+    public String getRecipeId() {
+        return recipeId;
+    }
+
+    public String getResultId() {
+        return resultId;
     }
 }
