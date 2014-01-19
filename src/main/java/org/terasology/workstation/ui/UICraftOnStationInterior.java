@@ -18,6 +18,7 @@ package org.terasology.workstation.ui;
 import org.terasology.asset.Assets;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.Vector2i;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
@@ -142,7 +143,8 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
                         final UpgradeRecipe upgradeRecipe = craftingRegistry.getUpgradeRecipes(stationType).get(matchingUpgradeRecipe);
                         final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, upgradeSlots);
                         if (result != null) {
-                            station.send(new UserUpgradeStationRequest(stationType, matchingUpgradeRecipe));
+                            EntityRef character = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
+                            station.send(new UserUpgradeStationRequest(character, stationType, matchingUpgradeRecipe));
                             upgradeCompleteCallback.upgradeComplete();
                         }
                     }

@@ -28,6 +28,7 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
+import org.terasology.was.CraftingStationFormed;
 import org.terasology.workstation.component.CraftingStationMaterialComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
@@ -74,7 +75,7 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
                     if (component != null) {
                         BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
                         if (blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType)) {
-                            processBlockStructure(event.getTarget(), stationMaterial.stationBlockType, stationMaterial.stationType);
+                            processBlockStructure(event.getInstigator(), event.getTarget(), stationMaterial.stationBlockType, stationMaterial.stationType);
                         }
                     }
                 }
@@ -82,16 +83,16 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         }
     }
 
-    private void processBlockStructure(EntityRef matchingBlock, String stationBlockType, String stationType) {
+    private void processBlockStructure(EntityRef character, EntityRef matchingBlock, String stationBlockType, String stationType) {
         LocationComponent location = matchingBlock.getComponent(LocationComponent.class);
         Vector3f position = location.getWorldPosition();
         EntityRef otherBlock = findOtherMatchingBlock(position, stationType);
         if (otherBlock != null) {
-            putBasicWoodworkingStation(matchingBlock, otherBlock, stationBlockType, stationType);
+            putBasicWoodworkingStation(character, matchingBlock, otherBlock, stationBlockType, stationType);
         }
     }
 
-    private void putBasicWoodworkingStation(EntityRef block1, EntityRef block2, String stationBlockType, String stationType) {
+    private void putBasicWoodworkingStation(EntityRef character, EntityRef block1, EntityRef block2, String stationBlockType, String stationType) {
         Block woodStationBlock = blockManager.getBlock(stationBlockType);
 
         Vector3i block1Position = block1.getComponent(BlockComponent.class).getPosition();
@@ -104,6 +105,8 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
         Region3i region = Region3i.createBounded(block1Position, block2Position);
         multiBlockEntity.addComponent(new BlockRegionComponent(region));
         multiBlockEntity.addComponent(new LocationComponent(region.center()));
+
+        character.send(new CraftingStationFormed(stationType));
     }
 
     private EntityRef findOtherMatchingBlock(Vector3f position, String stationType) {

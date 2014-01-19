@@ -61,30 +61,34 @@ public class JournalClientSystem implements UpdateSubscriberSystem {
     @Override
     public void update(float delta) {
         if (newEntryFull && !newEntryFadingOut && lastNotificationReceived + timeNotificationOpened < time.getGameTimeInMs()) {
-            final UIWindow window = guiManager.getWindowById("Journal:NewEntry");
-            if (window != null) {
-                AnimationOpacity opacityAnimation = new AnimationOpacity(1f, 0f, 10f);
-                window.addAnimation(opacityAnimation);
-                opacityAnimation.addAnimationListener(
-                        new AnimationListener() {
-                            @Override
-                            public void start(UIDisplayElement element) {
-                            }
+            fadeNewEntryWindow();
+        }
+    }
 
-                            @Override
-                            public void stop(UIDisplayElement element) {
-                                window.close();
-                                newEntryFadingOut = false;
-                            }
+    private void fadeNewEntryWindow() {
+        final UIWindow window = guiManager.getWindowById("Journal:NewEntry");
+        if (window != null) {
+            AnimationOpacity opacityAnimation = new AnimationOpacity(1f, 0f, 10f);
+            window.addAnimation(opacityAnimation);
+            opacityAnimation.addAnimationListener(
+                    new AnimationListener() {
+                        @Override
+                        public void start(UIDisplayElement element) {
+                        }
 
-                            @Override
-                            public void repeat(UIDisplayElement element) {
-                            }
-                        });
-                opacityAnimation.start();
-                newEntryFull = false;
-                newEntryFadingOut = true;
-            }
+                        @Override
+                        public void stop(UIDisplayElement element) {
+                            window.close();
+                            newEntryFadingOut = false;
+                        }
+
+                        @Override
+                        public void repeat(UIDisplayElement element) {
+                        }
+                    });
+            opacityAnimation.start();
+            newEntryFull = false;
+            newEntryFadingOut = true;
         }
     }
 

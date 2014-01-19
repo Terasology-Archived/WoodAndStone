@@ -15,6 +15,7 @@
  */
 package org.terasology.workstation.event;
 
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
 import org.terasology.network.ServerEvent;
 
@@ -25,13 +26,19 @@ import org.terasology.network.ServerEvent;
 public class UserUpgradeStationRequest implements Event {
     private String stationType;
     private String recipeId;
+    private EntityRef instigator;
 
     public UserUpgradeStationRequest() {
     }
 
-    public UserUpgradeStationRequest(String stationType, String recipeId) {
+    public UserUpgradeStationRequest(EntityRef instigator, String stationType, String recipeId) {
+        this.instigator = instigator;
         this.stationType = stationType;
         this.recipeId = recipeId;
+    }
+
+    public EntityRef getInstigator() {
+        return instigator;
     }
 
     public String getStationType() {

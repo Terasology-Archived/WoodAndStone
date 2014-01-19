@@ -23,6 +23,7 @@ import org.terasology.rendering.assets.texture.Texture;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -68,18 +69,45 @@ public class JournalManagerImpl implements ComponentSystem, JournalManager {
         return entryIds != null && entryIds.contains(entryId);
     }
 
-    public Map<String, List<String>> getEntriesForPlayer(EntityRef player) {
-        JournalAccessComponent journal = player.getComponent(JournalAccessComponent.class);
-        return journal.discoveredJournalEntries;
+    @Override
+    public Map<JournalManager.JournalChapter, List<String>> getPlayerEntries(EntityRef player) {
+        Map<JournalManager.JournalChapter, List<String>> result = new LinkedHashMap<>();
+        for (Map.Entry<String, JournalChapter> chapterEntry : journalChapters.entrySet()) {
+            JournalAccessComponent journal = player.getComponent(JournalAccessComponent.class);
+            Map<String, List<String>> discoveredEntries = journal.discoveredJournalEntries;
+            String chapterId = chapterEntry.getKey();
+            List<String> discoveredChapterEntries = discoveredEntries.get(chapterId);
+            if (discoveredChapterEntries != null) {
+                List<String> chapterEntries = new LinkedList<>();
+
+                for (String discoveredChapterEntryId : discoveredChapterEntries) {
+                    chapterEntries.add(journalEntries.get(chapterId).get(discoveredChapterEntryId));
+                }
+
+                result.put(chapterEntry.getValue(), chapterEntries);
+            }
+        }
+
+        return result;
     }
 
-    private final class JournalChapter {
+    private final class JournalChapter implements JournalManager.JournalChapter {
         private final Texture texture;
         private final String name;
 
         private JournalChapter(Texture texture, String name) {
             this.texture = texture;
             this.name = name;
+        }
+
+        @Override
+        public String getChapterName() {
+            return name;
+        }
+
+        @Override
+        public Texture getTexture() {
+            return texture;
         }
     }
 }

@@ -25,6 +25,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.workstation.component.CraftingStationComponent;
+import org.terasology.workstation.event.CraftingStationUpgraded;
 import org.terasology.workstation.event.OpenCraftingWorkstationRequest;
 import org.terasology.workstation.event.UserCraftOnStationRequest;
 import org.terasology.workstation.event.UserUpgradeStationRequest;
@@ -75,7 +76,8 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
         final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
         final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, craftingStation.upgradeSlots);
         if (result != null) {
-            result.processUpgrade(station);
+            EntityRef newStation = result.processUpgrade(station);
+            event.getInstigator().send(new CraftingStationUpgraded(newStation));
         }
     }
 }

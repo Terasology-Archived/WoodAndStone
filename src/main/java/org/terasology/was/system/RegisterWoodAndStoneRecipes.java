@@ -180,7 +180,12 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
                         return new UpgradeResult() {
                             @Override
-                            public void processUpgrade(EntityRef station) {
+                            public String getResultStationType() {
+                                return "WoodAndStone:StandardWoodcrafting";
+                            }
+
+                            @Override
+                            public EntityRef processUpgrade(EntityRef station) {
                                 removeUpgradeIngredients(station);
 
                                 WorldProvider worldProvider = CoreRegistry.get(WorldProvider.class);
@@ -206,6 +211,8 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
                                 newStation.addComponent(new BlockRegionComponent(region));
                                 newStation.addComponent(new LocationComponent(region.center()));
+
+                                return newStation;
                             }
 
                             private void removeUpgradeIngredients(EntityRef station) {

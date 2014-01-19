@@ -35,7 +35,6 @@ public class NewEntryWindow extends UIWindow {
         image.setSize(new Vector2f(235, 50));
 
         addDisplayElement(image);
-        setVisible(true);
 
         setSize(new Vector2f(235, 50));
     }

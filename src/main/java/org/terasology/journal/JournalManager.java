@@ -18,6 +18,9 @@ package org.terasology.journal;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.rendering.assets.texture.Texture;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
@@ -27,4 +30,12 @@ public interface JournalManager {
     void registerJournalEntry(String chapterId, String entryId, String text);
 
     boolean hasEntry(EntityRef player, String chapterId, String entryId);
+
+    Map<JournalChapter, List<String>> getPlayerEntries(EntityRef player);
+
+    public interface JournalChapter {
+        public String getChapterName();
+
+        public Texture getTexture();
+    }
 }
