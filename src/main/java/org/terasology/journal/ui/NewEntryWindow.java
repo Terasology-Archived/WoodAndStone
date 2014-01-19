@@ -15,14 +15,28 @@
  */
 package org.terasology.journal.ui;
 
+import org.terasology.asset.Assets;
+import org.terasology.rendering.gui.widgets.UIImage;
 import org.terasology.rendering.gui.widgets.UIWindow;
+
+import javax.vecmath.Vector2f;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class NewEntryWindow extends UIWindow {
     public NewEntryWindow() {
+        setId("Journal:NewEntry");
+
         setVerticalAlign(EVerticalAlign.TOP);
         setHorizontalAlign(EHorizontalAlign.RIGHT);
+
+        UIImage image = new UIImage(Assets.getTexture("WoodAndStone:NewJournalEntry"));
+        image.setSize(new Vector2f(235, 50));
+
+        addDisplayElement(image);
+        setVisible(true);
+
+        setSize(new Vector2f(235, 50));
     }
 }
