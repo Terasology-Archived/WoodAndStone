@@ -24,15 +24,11 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.entity.BlockDamageComponent;
+import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -77,7 +73,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         if (component == null) {
             return false;
         }
-        BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
+        BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
         if (blockDamage == null) {
             return false;
         }
@@ -151,7 +147,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             return false;
         }
 
-        BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
+        BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
 
         return blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType)
                 && item.hasComponent(DurabilityComponent.class) && item.getComponent(DurabilityComponent.class).durability >= durability;

@@ -26,7 +26,7 @@ import org.terasology.logic.health.BeforeDamagedEvent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
-import org.terasology.world.block.entity.BlockDamageComponent;
+import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -70,7 +70,7 @@ public class ModifyBlockDestruction implements ComponentSystem {
     private boolean canBeDestroyedByBlockDamage(Iterable<String> categoriesIterator, Prefab damageType) {
         if (categoriesIterator.iterator().hasNext()) {
             // If this block has a category, then it HAS to be destroyed by a tool with that category
-            BlockDamageComponent blockDamage = damageType.getComponent(BlockDamageComponent.class);
+            BlockDamageModifierComponent blockDamage = damageType.getComponent(BlockDamageModifierComponent.class);
             if (blockDamage == null) {
                 return false;
             }

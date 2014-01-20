@@ -16,12 +16,12 @@
 package org.terasology.workstation.component;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.world.block.items.RetainWhenBlockDetached;
+import org.terasology.world.block.items.AddToBlockBasedItem;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RetainWhenBlockDetached
+@AddToBlockBasedItem
 public class CraftingStationIngredientComponent implements Component {
     public String type;
 }

@@ -15,6 +15,7 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.core.logic.blockDropGrammar.BlockDropGrammarComponent;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeEntityCreated;
@@ -23,7 +24,6 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockDropGrammarComponent;
 import org.terasology.world.block.BlockUri;
 
 import java.util.Arrays;

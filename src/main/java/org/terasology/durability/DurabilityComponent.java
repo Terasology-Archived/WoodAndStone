@@ -16,12 +16,12 @@
 package org.terasology.durability;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.world.block.items.RetainWhenBlockDetached;
+import org.terasology.world.block.items.AddToBlockBasedItem;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RetainWhenBlockDetached
+@AddToBlockBasedItem
 public class DurabilityComponent implements Component {
     public int durability;
     public int maxDurability;

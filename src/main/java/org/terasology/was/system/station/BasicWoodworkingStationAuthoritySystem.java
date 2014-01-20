@@ -35,7 +35,7 @@ import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.entity.BlockDamageComponent;
+import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
 import javax.vecmath.Vector3f;
@@ -73,7 +73,7 @@ public class BasicWoodworkingStationAuthoritySystem implements ComponentSystem {
 
                     ItemComponent component = item.getComponent(ItemComponent.class);
                     if (component != null) {
-                        BlockDamageComponent blockDamage = component.damageType.getComponent(BlockDamageComponent.class);
+                        BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
                         if (blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType)) {
                             processBlockStructure(event.getInstigator(), event.getTarget(), stationMaterial.stationBlockType, stationMaterial.stationType);
                         }

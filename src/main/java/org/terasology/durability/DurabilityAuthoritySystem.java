@@ -25,10 +25,10 @@ import org.terasology.entitySystem.systems.In;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.health.NoHealthEvent;
+import org.terasology.logic.health.DestroyEvent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.entity.BlockDamageComponent;
+import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -64,8 +64,8 @@ public class DurabilityAuthoritySystem implements UpdateSubscriberSystem {
     }
 
     @ReceiveEvent(components = {BlockComponent.class})
-    public void reduceItemDurability(NoHealthEvent event, EntityRef entity) {
-        EntityRef tool = event.getTool();
+    public void reduceItemDurability(DestroyEvent event, EntityRef entity) {
+        EntityRef tool = event.getDirectCause();
         DurabilityComponent durabilityComponent = tool.getComponent(DurabilityComponent.class);
         if (durabilityComponent != null) {
             BlockComponent blockComponent = entity.getComponent(BlockComponent.class);
@@ -107,7 +107,7 @@ public class DurabilityAuthoritySystem implements UpdateSubscriberSystem {
 
     private boolean canBeDestroyedByBlockDamage(Iterable<String> categoriesIterator, Prefab damageType) {
         if (categoriesIterator.iterator().hasNext()) {
-            BlockDamageComponent blockDamage = damageType.getComponent(BlockDamageComponent.class);
+            BlockDamageModifierComponent blockDamage = damageType.getComponent(BlockDamageModifierComponent.class);
             if (blockDamage == null) {
                 return false;
             }
