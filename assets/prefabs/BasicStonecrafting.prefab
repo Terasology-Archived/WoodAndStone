@@ -33,5 +33,8 @@
         "maxHealth": 5,
         "regenRate": 1,
         "waitBeforeRegen": 2
+    },
+    "ActAsBlock" : {
+        "block" : "WoodAndStone:StoneStation"
     }
 }
