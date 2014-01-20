@@ -1,6 +1,6 @@
 {
     "BlockDropGrammar": {
-        "blockDrops": "2*WoodAndStone:DeadOakTrunk"
+        "blockDrops": "2*WoodAndStone:TreeLog"
     },
     "CraftingStation": {
         "type": "WoodAndStone:BasicWoodcrafting",

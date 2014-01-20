@@ -1,12 +1,12 @@
 {
     "hardness": 6,
 
-    "displayName": "Oak Log",
+    "displayName": "Tree Log",
 
     "categories": ["wood"],
 
     "entity": {
-        "prefab": "WoodAndStone:DeadOakTrunk"
+        "prefab": "WoodAndStone:TreeLog"
     },
     "tiles": {
         "sides": "Core:OakBark",

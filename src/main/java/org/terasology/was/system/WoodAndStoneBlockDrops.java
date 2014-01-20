@@ -73,13 +73,20 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
                 dropGrammar.blockDrops = Arrays.asList("0.1|GrowingFlora:OakSapling");
                 dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakBranch"))) {
+            } else if (blockUri.equals(new BlockUri("GrowingFlora", "PineLeaf"))) {
+                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
+                dropGrammar.blockDrops = Arrays.asList("0.15|GrowingFlora:PineSapling");
+                dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
+                event.addComponent(dropGrammar);
+            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakBranch"))
+                    || blockUri.equals(new BlockUri("GrowingFlora", "PineBranch"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("WoodAndStone:stick");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakTrunk"))) {
+            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakTrunk"))
+                    || blockUri.equals(new BlockUri("GrowingFlora", "PineTrunk"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("WoodAndStone:DeadOakTrunk");
+                dropGrammar.blockDrops = Arrays.asList("WoodAndStone:TreeLog");
                 dropGrammar.itemDrops = Arrays.asList("0.1|WoodAndStone:Resin");
                 event.addComponent(dropGrammar);
             }
