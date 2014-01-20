@@ -8,7 +8,7 @@
             {
                 "id" : "GrowingFlora",
                 "minVersion" : "0.1.0"
-            },// Temporarily add the Core dependency to fix the build
+            },
             {
                 "id" : "Core",
                 "minVersion" : "0.1.0"
