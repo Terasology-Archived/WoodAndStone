@@ -24,12 +24,12 @@ import java.util.Map;
 public class BiomeProvider {
     private ConditionsBaseProvider conditions;
     private Map<String, Biome> biomes;
-    private int seeLevel;
+    private int seaLevel;
     private int maxLevel;
 
-    public BiomeProvider(String worldSeed, Map<String, Biome> biomes, int seeLevel, int maxLevel) {
+    public BiomeProvider(String worldSeed, Map<String, Biome> biomes, int seaLevel, int maxLevel) {
         this.biomes = biomes;
-        this.seeLevel = seeLevel;
+        this.seaLevel = seaLevel;
         this.maxLevel = maxLevel;
 
         conditions = new ConditionsBaseProvider(worldSeed);
@@ -40,8 +40,8 @@ public class BiomeProvider {
     }
 
     public Biome getBaseBiomeAt(int x, int z) {
-        float temperatureBase = conditions.getTemperatureAtSeeLevel(x, z);
-        float humidityBase = conditions.getHumidityAtSeeLevel(x, z);
+        float temperatureBase = conditions.getTemperatureAtseaLevel(x, z);
+        float humidityBase = conditions.getHumidityAtseaLevel(x, z);
         return getBestBiomeMatch(temperatureBase, humidityBase);
     }
 
@@ -71,28 +71,28 @@ public class BiomeProvider {
     }
 
     public float getTemperature(int x, int y, int z) {
-        float temperatureBase = conditions.getTemperatureAtSeeLevel(x, z);
-        if (y == seeLevel) {
+        float temperatureBase = conditions.getTemperatureAtseaLevel(x, z);
+        if (y == seaLevel) {
             return temperatureBase;
         }
 
-        if (y > seeLevel) {
-            return temperatureBase / ((y - seeLevel) / maxLevel + 1);
+        if (y > seaLevel) {
+            return temperatureBase / ((y - seaLevel) / maxLevel + 1);
         } else {
-            return temperatureBase * seeLevel / (seeLevel - y);
+            return temperatureBase * seaLevel / (seaLevel - y);
         }
     }
 
     public float getHumidity(int x, int y, int z) {
-        float humidityBase = conditions.getHumidityAtSeeLevel(x, z);
-        if (y == seeLevel) {
+        float humidityBase = conditions.getHumidityAtseaLevel(x, z);
+        if (y == seaLevel) {
             return humidityBase;
         }
 
-        if (y > seeLevel) {
-            return humidityBase / ((y - seeLevel) / maxLevel + 1);
+        if (y > seaLevel) {
+            return humidityBase / ((y - seaLevel) / maxLevel + 1);
         } else {
-            return humidityBase / ((seeLevel - y) / maxLevel + 1);
+            return humidityBase / ((seaLevel - y) / maxLevel + 1);
         }
     }
 }

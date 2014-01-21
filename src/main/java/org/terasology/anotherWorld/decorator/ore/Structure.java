@@ -13,12 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld;
+package org.terasology.anotherWorld.decorator.ore;
 
-import org.terasology.world.chunks.Chunk;
+import org.terasology.math.Vector3i;
+import org.terasology.world.block.Block;
 
-public interface ChunkDecorator {
-    void initializeWithSeed(String seed);
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public interface Structure {
+    void generateStructure(StructureCallback callback);
 
-    void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel);
+    public interface StructureCallback {
+        void replaceBlock(Vector3i position, float force, Block block);
+
+        boolean canReplace(int x, int y, int z);
+    }
 }

@@ -17,7 +17,13 @@ package org.terasology.was;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
+import org.terasology.anotherWorld.coreBiome.DesertBiome;
+import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
+import org.terasology.anotherWorld.util.PDist;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
 import org.terasology.world.block.Block;
@@ -37,17 +43,39 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
     @Override
     protected void appendGenerators() {
-        setSeeLevel(50);
+        setSeaLevel(50);
 
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+
         final Block mantle = blockManager.getBlock("Core:MantleStone");
         final Block stone = blockManager.getBlock("Core:Stone");
         final Block water = blockManager.getBlock("Core:Water");
+        final Block sand = blockManager.getBlock("Core:Sand");
+        final Block dirt = blockManager.getBlock("Core:Dirt");
+        final Block grass = blockManager.getBlock("Core:Grass");
+        final Block snow = blockManager.getBlock("Core:Snow");
 
         setLandscapeGenerator(
                 new PerlinLandscapeGenerator(0.6f, 200, mantle, stone, water, LiquidType.WATER));
 
-        addChunkDecorator(
-                new LayeringDecorator());
+        LayeringDecorator layering = new LayeringDecorator();
+
+        DefaultLayersDefinition desertDef = new DefaultLayersDefinition();
+        desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
+        desertDef.addLayerDefinition(new PDist(4, 2), dirt, true);
+        layering.addBiomeLayers(DesertBiome.ID, desertDef);
+
+        DefaultLayersDefinition forestAndPlainsDef = new DefaultLayersDefinition();
+        forestAndPlainsDef.addLayerDefinition(new PDist(1, 0), grass, false);
+        forestAndPlainsDef.addLayerDefinition(new PDist(4, 2), dirt, true);
+        layering.addBiomeLayers(ForestBiome.ID, forestAndPlainsDef);
+        layering.addBiomeLayers(PlainsBiome.ID, forestAndPlainsDef);
+
+        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition();
+        tundraDef.addLayerDefinition(new PDist(1, 0), snow, false);
+        tundraDef.addLayerDefinition(new PDist(4, 2), dirt, true);
+        layering.addBiomeLayers(TundraBiome.ID, tundraDef);
+
+        addChunkDecorator(layering);
     }
 }

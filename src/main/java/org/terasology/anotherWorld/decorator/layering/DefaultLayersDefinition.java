@@ -33,14 +33,9 @@ public class DefaultLayersDefinition implements LayersDefinition {
     }
 
     @Override
-    public void initializeWithSeed(String seed) {
-        this.seed = seed;
-    }
-
-    @Override
-    public void generateInChunk(int groundLevel, int seeLevel, Chunk chunk, int x, int z) {
+    public void generateInChunk(String seed, int groundLevel, int seaLevel, Chunk chunk, int x, int z) {
         Random random = ChunkRandom.getChunkRandom(seed, chunk.getPos(), 349 * (31 * x + z));
-        boolean underSee = groundLevel < seeLevel;
+        boolean underSee = groundLevel < seaLevel;
 
         int level = groundLevel;
         for (LayerDefinition layerDefinition : layerDefinitions) {

@@ -19,14 +19,6 @@ import org.terasology.anotherWorld.Biome;
 import org.terasology.anotherWorld.BiomeProvider;
 import org.terasology.anotherWorld.ChunkDecorator;
 import org.terasology.anotherWorld.ChunkInformation;
-import org.terasology.anotherWorld.coreBiome.DesertBiome;
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
-import org.terasology.anotherWorld.coreBiome.TundraBiome;
-import org.terasology.anotherWorld.util.PDist;
-import org.terasology.engine.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.Chunk;
 
 import java.util.HashMap;
@@ -34,50 +26,27 @@ import java.util.Map;
 
 public class LayeringDecorator implements ChunkDecorator {
     private Map<String, LayersDefinition> biomeLayers = new HashMap<>();
+    private String seed;
 
     @Override
     public void initializeWithSeed(String seed) {
-        registerCoreLayers();
+        this.seed = seed;
         loadLayers();
-
-        for (LayersDefinition layersDefinition : biomeLayers.values()) {
-            layersDefinition.initializeWithSeed(seed);
-        }
     }
 
-    private void registerCoreLayers() {
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        Block sand = blockManager.getBlock("Core:Sand");
-        Block dirt = blockManager.getBlock("Core:Dirt");
-        Block grass = blockManager.getBlock("Core:Grass");
-        Block snow = blockManager.getBlock("Core:Snow");
-
-        DefaultLayersDefinition desertDef = new DefaultLayersDefinition();
-        desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
-        desertDef.addLayerDefinition(new PDist(4, 2), dirt, true);
-        biomeLayers.put(DesertBiome.ID, desertDef);
-
-        DefaultLayersDefinition commonDef = new DefaultLayersDefinition();
-        commonDef.addLayerDefinition(new PDist(1, 0), grass, false);
-        commonDef.addLayerDefinition(new PDist(4, 2), dirt, true);
-        biomeLayers.put(ForestBiome.ID, commonDef);
-        biomeLayers.put(PlainsBiome.ID, commonDef);
-
-        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition();
-        tundraDef.addLayerDefinition(new PDist(1, 0), snow, false);
-        tundraDef.addLayerDefinition(new PDist(4, 2), dirt, true);
-        biomeLayers.put(TundraBiome.ID, tundraDef);
+    public void addBiomeLayers(String biomeId, LayersDefinition layersDefinition) {
+        biomeLayers.put(biomeId, layersDefinition);
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seeLevel) {
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
                 int groundLevel = chunkInformation.getGroundLevel(x, z);
                 Biome biome = biomeProvider.getBiomeAt(x, groundLevel, z);
                 LayersDefinition matchingLayers = findMatchingLayers(biomeProvider, biome);
                 if (matchingLayers != null) {
-                    matchingLayers.generateInChunk(groundLevel, seeLevel, chunk, x, z);
+                    matchingLayers.generateInChunk(seed, groundLevel, seaLevel, chunk, x, z);
                 }
             }
         }

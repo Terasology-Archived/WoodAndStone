@@ -49,7 +49,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seeLevel) {
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel) {
         int chunkXStart = chunk.getBlockWorldPosX(0);
         int chunkZStart = chunk.getBlockWorldPosZ(0);
 
@@ -58,12 +58,12 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
                 float density = (float) TeraMath.clamp((noise.noise(0.004 * (chunkXStart + x), 0.004 * (chunkZStart + z)) + 1.0) / 2.0);
                 int height;
                 if (density < seeFrequency) {
-                    height = (int) (seeLevel * density / seeFrequency);
+                    height = (int) (seaLevel * density / seeFrequency);
                 } else {
                     // Number in range 0<=alpha<1
-                    float alphaAboveSeeLevel = (density - seeFrequency) / (1 - seeFrequency);
-                    float resultAlpha = interpretAlpha(alphaAboveSeeLevel);
-                    height = (int) (seeLevel + resultAlpha * (maxGeneratedHeight - seeLevel));
+                    float alphaAboveseaLevel = (density - seeFrequency) / (1 - seeFrequency);
+                    float resultAlpha = interpretAlpha(alphaAboveseaLevel);
+                    height = (int) (seaLevel + resultAlpha * (maxGeneratedHeight - seaLevel));
                 }
 
                 height = Math.min(chunk.getChunkSizeY() - 1, height);
@@ -76,7 +76,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
                     chunk.setBlock(x, y, z, groundBlock);
                 }
 
-                for (int y = height + 1; y <= seeLevel; y++) {
+                for (int y = height + 1; y <= seaLevel; y++) {
                     chunk.setBlock(x, y, z, seeBlock);
                     chunk.setLiquid(x, y, z, new LiquidData(liquidType, LiquidData.MAX_LIQUID_DEPTH));
                 }
@@ -84,7 +84,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
         }
     }
 
-    private float interpretAlpha(float alphaAboveSeeLevel) {
-        return alphaAboveSeeLevel;
+    private float interpretAlpha(float alphaAboveseaLevel) {
+        return alphaAboveseaLevel;
     }
 }

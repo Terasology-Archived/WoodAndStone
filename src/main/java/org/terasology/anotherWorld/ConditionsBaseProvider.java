@@ -17,12 +17,12 @@ public class ConditionsBaseProvider {
         humidityNoise = new BrownianNoise3D(new PerlinNoise(worldSeed.hashCode() + 6));
     }
 
-    public float getHumidityAtSeeLevel(int x, int z) {
+    public float getHumidityAtseaLevel(int x, int z) {
         double result = humidityNoise.noise(x * 0.0005, 0, 0.0005 * z);
         return (float) TeraMath.clamp((result + 1.0f) / 2.0f);
     }
 
-    public float getTemperatureAtSeeLevel(int x, int z) {
+    public float getTemperatureAtseaLevel(int x, int z) {
         double result = temperatureNoise.noise(x * 0.0005, 0, 0.0005 * z);
         return (float) TeraMath.clamp((result + 1.0f) / 2.0f);
     }

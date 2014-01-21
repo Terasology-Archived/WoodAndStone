@@ -49,7 +49,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     private List<FeatureGenerator> featureGenerators = new LinkedList<>();
 
     private BiomeProvider biomeProvider;
-    private int seeLevel = 32;
+    private int seaLevel = 32;
 
     private LandscapeGenerator landscapeGenerator;
     private SimpleUri uri;
@@ -70,8 +70,8 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         featureGenerators.add(featureGenerator);
     }
 
-    public void setSeeLevel(int seeLevel) {
-        this.seeLevel = seeLevel;
+    public void setSeaLevel(int seaLevel) {
+        this.seaLevel = seaLevel;
     }
 
     @Override
@@ -85,7 +85,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         initializeCoreBiomes();
 //        loadBiomes();
 
-        biomeProvider = new BiomeProvider(seed, biomes, seeLevel, chunkSize.y);
+        biomeProvider = new BiomeProvider(seed, biomes, seaLevel, chunkSize.y);
 
         appendGenerators();
 
@@ -169,10 +169,10 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     public void createChunk(Chunk chunk) {
         ChunkInformation chunkInformation = new ChunkInformation();
 
-        landscapeGenerator.generateInChunk(chunk, chunkInformation, seeLevel);
+        landscapeGenerator.generateInChunk(chunk, chunkInformation, seaLevel);
 
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
-            chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seeLevel);
+            chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seaLevel);
         }
     }
 

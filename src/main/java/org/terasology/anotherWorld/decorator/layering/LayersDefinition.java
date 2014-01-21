@@ -18,7 +18,5 @@ package org.terasology.anotherWorld.decorator.layering;
 import org.terasology.world.chunks.Chunk;
 
 public interface LayersDefinition {
-    void initializeWithSeed(String seed);
-
-    void generateInChunk(int groundLevel, int seeLevel, Chunk chunk, int x, int y);
+    void generateInChunk(String seed, int groundLevel, int seaLevel, Chunk chunk, int x, int y);
 }

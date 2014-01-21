@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld;
+package org.terasology.anotherWorld.decorator.ore;
 
+import org.terasology.anotherWorld.BiomeProvider;
 import org.terasology.world.chunks.Chunk;
 
-public interface ChunkDecorator {
-    void initializeWithSeed(String seed);
+import java.util.Collection;
 
-    void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel);
+public interface OreDefinition {
+    Collection<Structure> generateStructures(Chunk chunk, String seed, BiomeProvider biomeProvider);
 }
