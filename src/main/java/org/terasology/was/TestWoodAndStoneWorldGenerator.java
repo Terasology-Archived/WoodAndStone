@@ -36,12 +36,14 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
     @Override
     protected void appendGenerators() {
+        setSeeLevel(50);
+
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         final Block mantle = blockManager.getBlock("Core:MantleStone");
         final Block stone = blockManager.getBlock("Core:Stone");
         final Block water = blockManager.getBlock("Core:Water");
 
         setLandscapeGenerator(
-                new PerlinLandscapeGenerator(0.6f, mantle, stone, water, LiquidType.WATER));
+                new PerlinLandscapeGenerator(0.6f, 200, mantle, stone, water, LiquidType.WATER));
     }
 }

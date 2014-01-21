@@ -27,13 +27,16 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     private BrownianNoise2D noise;
 
     private float seeFrequency;
+    private int maxGeneratedHeight;
     private Block bottomBlock;
     private Block groundBlock;
     private Block seeBlock;
     private LiquidType liquidType;
 
-    public PerlinLandscapeGenerator(float seeFrequency, Block bottomBlock, Block groundBlock, Block seeBlock, LiquidType liquidType) {
+    public PerlinLandscapeGenerator(float seeFrequency, int maxGeneratedHeight,
+                                    Block bottomBlock, Block groundBlock, Block seeBlock, LiquidType liquidType) {
         this.seeFrequency = seeFrequency;
+        this.maxGeneratedHeight = maxGeneratedHeight;
         this.bottomBlock = bottomBlock;
         this.groundBlock = groundBlock;
         this.seeBlock = seeBlock;
@@ -42,19 +45,25 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
 
     @Override
     public void initializeWithSeed(String seed) {
-        noise = new BrownianNoise2D(new SimplexNoise(seed.hashCode()), 8);
+        noise = new BrownianNoise2D(new SimplexNoise(seed.hashCode()), 4);
     }
 
     @Override
     public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seeLevel) {
+        int chunkXStart = chunk.getBlockWorldPosX(0);
+        int chunkZStart = chunk.getBlockWorldPosZ(0);
+
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
-                float density = (float) TeraMath.clamp((noise.noise(0.004 * chunk.getBlockWorldPosX(x), 0.004 * chunk.getBlockWorldPosZ(z)) + 1.0) / 2.0);
+                float density = (float) TeraMath.clamp((noise.noise(0.004 * (chunkXStart + x), 0.004 * (chunkZStart + z)) + 1.0) / 2.0);
                 int height;
                 if (density < seeFrequency) {
                     height = (int) (seeLevel * density / seeFrequency);
                 } else {
-                    height = (int) (seeLevel + (density - seeFrequency) / (1 - seeFrequency) * (chunk.getChunkSizeY() - seeLevel));
+                    // Number in range 0<=alpha<1
+                    float alphaAboveSeeLevel = (density - seeFrequency) / (1 - seeFrequency);
+                    float resultAlpha = interpretAlpha(alphaAboveSeeLevel);
+                    height = (int) (seeLevel + resultAlpha * (maxGeneratedHeight - seeLevel));
                 }
 
                 height = Math.min(chunk.getChunkSizeY() - 1, height);
@@ -73,5 +82,9 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
                 }
             }
         }
+    }
+
+    private float interpretAlpha(float alphaAboveSeeLevel) {
+        return alphaAboveSeeLevel;
     }
 }
