@@ -17,15 +17,19 @@ package org.terasology.anotherWorld.coreBiome;
 
 import org.terasology.anotherWorld.Biome;
 
-public class MountainBiome implements Biome {
+import javax.vecmath.Vector2f;
+
+public class TundraBiome implements Biome {
+    private Vector2f sweetSpot = new Vector2f(0.1f, 0.1f);
+
     @Override
     public String getBiomeId() {
-        return "AnotherWorld:Mountain";
+        return "AnotherWorld:Tundra";
     }
 
     @Override
     public String getBiomeName() {
-        return "Mountain";
+        return "Tundra";
     }
 
     @Override
@@ -35,31 +39,16 @@ public class MountainBiome implements Biome {
 
     @Override
     public float getRarity() {
-        return 0.4f;
-    }
-
-    @Override
-    public float getInfluenceStrength() {
-        return 0.3f;
-    }
-
-    @Override
-    public float getDesiredHeight() {
         return 0.8f;
     }
 
     @Override
+    public Vector2f getSweetSpot() {
+        return sweetSpot;
+    }
+
+    @Override
     public float getFog() {
-        return 0.7f;
-    }
-
-    @Override
-    public float getTemperature() {
-        return 0.2f;
-    }
-
-    @Override
-    public float getHumidity() {
         return 0.1f;
     }
 }

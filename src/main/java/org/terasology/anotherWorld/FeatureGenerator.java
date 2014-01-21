@@ -15,13 +15,11 @@
  */
 package org.terasology.anotherWorld;
 
-import org.terasology.world.chunks.Chunk;
+import org.terasology.math.Vector3i;
+import org.terasology.world.ChunkView;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public interface LandscapeGenerator {
+public interface FeatureGenerator {
     public void initializeWithSeed(String seed);
 
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seeLevel);
+    public void generateInChunk(Vector3i chunkPos, ChunkView view, BiomeProvider biomeProvider);
 }

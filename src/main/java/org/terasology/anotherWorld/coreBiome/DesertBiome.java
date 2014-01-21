@@ -17,7 +17,11 @@ package org.terasology.anotherWorld.coreBiome;
 
 import org.terasology.anotherWorld.Biome;
 
+import javax.vecmath.Vector2f;
+
 public class DesertBiome implements Biome {
+    private Vector2f sweetSpot = new Vector2f(0.8f, 0.1f);
+
     @Override
     public String getBiomeId() {
         return "AnotherWorld:Desert";
@@ -39,27 +43,12 @@ public class DesertBiome implements Biome {
     }
 
     @Override
-    public float getInfluenceStrength() {
-        return 0.9f;
-    }
-
-    @Override
-    public float getDesiredHeight() {
-        return 0.3f;
+    public Vector2f getSweetSpot() {
+        return sweetSpot;
     }
 
     @Override
     public float getFog() {
-        return 0.1f;
-    }
-
-    @Override
-    public float getTemperature() {
-        return 1f;
-    }
-
-    @Override
-    public float getHumidity() {
         return 0.1f;
     }
 }

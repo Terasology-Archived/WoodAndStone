@@ -17,15 +17,19 @@ package org.terasology.anotherWorld.coreBiome;
 
 import org.terasology.anotherWorld.Biome;
 
-public class RiverBiome implements Biome {
+import javax.vecmath.Vector2f;
+
+public class PlainsBiome implements Biome {
+    private Vector2f sweetSpot = new Vector2f(0.3f, 0.5f);
+
     @Override
     public String getBiomeId() {
-        return "AnotherWorld:River";
+        return "AnotherWorld:Plains";
     }
 
     @Override
     public String getBiomeName() {
-        return "River";
+        return "Plains";
     }
 
     @Override
@@ -35,31 +39,16 @@ public class RiverBiome implements Biome {
 
     @Override
     public float getRarity() {
-        return 0;
+        return 1f;
     }
 
     @Override
-    public float getInfluenceStrength() {
-        return 0.1f;
-    }
-
-    @Override
-    public float getDesiredHeight() {
-        return 0.2f;
+    public Vector2f getSweetSpot() {
+        return sweetSpot;
     }
 
     @Override
     public float getFog() {
         return 0.3f;
-    }
-
-    @Override
-    public float getTemperature() {
-        return 0.5f;
-    }
-
-    @Override
-    public float getHumidity() {
-        return 0.9f;
     }
 }

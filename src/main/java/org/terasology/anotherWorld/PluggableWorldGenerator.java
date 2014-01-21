@@ -18,15 +18,16 @@ package org.terasology.anotherWorld;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.anotherWorld.coreBiome.DesertBiome;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.coreBiome.MountainBiome;
-import org.terasology.anotherWorld.coreBiome.OceanBiome;
-import org.terasology.anotherWorld.coreBiome.RiverBiome;
+import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
 import org.terasology.engine.module.DependencyInfo;
 import org.terasology.engine.module.Module;
 import org.terasology.engine.module.ModuleManager;
+import org.terasology.math.TeraMath;
 import org.terasology.math.Vector3i;
 import org.terasology.world.ChunkView;
 import org.terasology.world.chunks.Chunk;
@@ -44,26 +45,37 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
     private Vector3i chunkSize = new Vector3i(16, 256, 16);
 
-    private List<ChunkGenerator> chunkGenerators = new LinkedList<>();
+    private List<ChunkDecorator> chunkDecorators = new LinkedList<>();
+    private List<FeatureGenerator> featureGenerators = new LinkedList<>();
 
     private BiomeProvider biomeProvider;
     private int seeLevel = 32;
 
     private LandscapeGenerator landscapeGenerator;
+    private SimpleUri uri;
 
     public PluggableWorldGenerator(SimpleUri uri) {
+        this.uri = uri;
     }
 
-    public void addChunkGenerator(ChunkGenerator chunkGenerator) {
-        chunkGenerators.add(chunkGenerator);
+    public void setLandscapeGenerator(LandscapeGenerator landscapeGenerator) {
+        this.landscapeGenerator = landscapeGenerator;
+    }
+
+    public void addChunkDecorator(ChunkDecorator chunkGenerator) {
+        chunkDecorators.add(chunkGenerator);
+    }
+
+    public void addFeatureGenerator(FeatureGenerator featureGenerator) {
+        featureGenerators.add(featureGenerator);
     }
 
     public void setSeeLevel(int seeLevel) {
         this.seeLevel = seeLevel;
     }
 
-    public void setLandscapeGenerator(LandscapeGenerator landscapeGenerator) {
-        this.landscapeGenerator = landscapeGenerator;
+    @Override
+    public final void initialize() {
     }
 
     @Override
@@ -79,28 +91,26 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
         landscapeGenerator.initializeWithSeed(seed);
 
-        for (ChunkGenerator chunkGenerator : chunkGenerators) {
-            chunkGenerator.initializeWithSeed(seed);
+        for (ChunkDecorator chunkDecorator : chunkDecorators) {
+            chunkDecorator.initializeWithSeed(seed);
         }
-    }
 
-    @Override
-    public void initialize() {
+        for (FeatureGenerator featureGenerator : featureGenerators) {
+            featureGenerator.initializeWithSeed(seed);
+        }
     }
 
     protected abstract void appendGenerators();
 
     private void initializeCoreBiomes() {
-        Biome ocean = new OceanBiome();
-        biomes.put(ocean.getBiomeId(), ocean);
-        Biome desert = new OceanBiome();
+        Biome desert = new DesertBiome();
         biomes.put(desert.getBiomeId(), desert);
-        Biome mountain = new MountainBiome();
-        biomes.put(desert.getBiomeId(), mountain);
         Biome forest = new ForestBiome();
         biomes.put(forest.getBiomeId(), forest);
-        Biome river = new RiverBiome();
-        biomes.put(river.getBiomeId(), river);
+        Biome plains = new PlainsBiome();
+        biomes.put(plains.getBiomeId(), plains);
+        Biome tundra = new TundraBiome();
+        biomes.put(tundra.getBiomeId(), tundra);
     }
 
     private void loadBiomes() {
@@ -145,36 +155,39 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
     @Override
     public void applySecondPass(Vector3i chunkPos, ChunkView view) {
+        for (FeatureGenerator featureGenerator : featureGenerators) {
+            featureGenerator.generateInChunk(chunkPos, view, biomeProvider);
+        }
     }
 
     @Override
     public SimpleUri getUri() {
-        return null;
+        return uri;
     }
 
     @Override
     public void createChunk(Chunk chunk) {
         ChunkInformation chunkInformation = new ChunkInformation();
 
-        landscapeGenerator.generateInChunk(chunk, chunkInformation);
+        landscapeGenerator.generateInChunk(chunk, chunkInformation, seeLevel);
 
-        for (ChunkGenerator chunkGenerator : chunkGenerators) {
-            chunkGenerator.generateInChunk(chunk, chunkInformation, biomeProvider);
+        for (ChunkDecorator chunkDecorator : chunkDecorators) {
+            chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider);
         }
     }
 
     @Override
     public float getFog(float x, float y, float z) {
-        return 0;
+        return biomeProvider.getBaseBiomeAt(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(z + 0.5f)).getFog();
     }
 
     @Override
     public float getTemperature(float x, float y, float z) {
-        return 0;
+        return biomeProvider.getTemperature(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(y + 0.5f), TeraMath.floorToInt(z + 0.5f));
     }
 
     @Override
     public float getHumidity(float x, float y, float z) {
-        return 0;
+        return biomeProvider.getHumidity(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(y + 0.5f), TeraMath.floorToInt(z + 0.5f));
     }
 }

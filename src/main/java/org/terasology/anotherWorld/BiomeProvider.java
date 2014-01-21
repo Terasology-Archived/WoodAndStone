@@ -1,8 +1,22 @@
+/*
+ * Copyright 2014 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.terasology.anotherWorld;
 
+import javax.vecmath.Vector2f;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -23,26 +37,35 @@ public class BiomeProvider {
         conditions = new ConditionsBaseProvider(worldSeed);
     }
 
+    public Biome getBaseBiomeAt(int x, int z) {
+        float temperatureBase = conditions.getTemperatureAtSeeLevel(x, z);
+        float humidityBase = conditions.getHumidityAtSeeLevel(x, z);
+        return getBestBiomeMatch(temperatureBase, humidityBase);
+    }
+
     public Biome getBiomeAt(int x, int y, int z) {
         float temp = getTemperature(x, y, z);
         float hum = getHumidity(x, y, z);
 
-        Set<Biome> biomesMatching = new HashSet<>();
+        return getBestBiomeMatch(temp, hum);
+    }
+
+    private Biome getBestBiomeMatch(float temp, float hum) {
+        Biome chosenBiome = null;
+        float maxPriority = 0;
+
         for (Biome biome : biomes) {
-            if (biome.biomeAccepts(temp, hum)) {
-                biomesMatching.add(biome);
+            final Vector2f sweetSpot = biome.getSweetSpot();
+            Vector2f conditions = new Vector2f(temp, hum);
+            conditions.sub(sweetSpot);
+            final float rarity = biome.getRarity();
+            float priority = conditions.length() * rarity;
+            if (priority > maxPriority) {
+                chosenBiome = biome;
+                maxPriority = priority;
             }
         }
-
-        if (biomesMatching.size() == 1) {
-            return biomesMatching.iterator().next();
-        } else if (biomesMatching.size() == 0) {
-            return defaultBiome;
-        } else {
-            // For now - fixed
-            BiomeRandomizer biomeRandomizer = new BiomeRandomizer(biomesMatching);
-            return biomeRandomizer.getRandomBiome(0f);
-        }
+        return chosenBiome;
     }
 
     public float getTemperature(int x, int y, int z) {

@@ -15,6 +15,8 @@
  */
 package org.terasology.anotherWorld;
 
+import javax.vecmath.Vector2f;
+
 public interface Biome {
     /**
      * A unique identifier for this biome. Used by mods to map their behaviours based on the id.
@@ -39,13 +41,19 @@ public interface Biome {
     public String getBiomeParent();
 
     /**
-     * How rare this biome is, on a scale from 0-1.
+     * How rare this biome is, on a scale from 0<rarity<=1.
      *
      * @return
      */
     public float getRarity();
 
-    public boolean biomeAccepts(float temperature, float humidity);
+    /**
+     * Returns the sweet-spot for this biome in terms of temperature and humidity. Returns a pair of floats:
+     * x=temperature, y=humidity
+     *
+     * @return
+     */
+    public Vector2f getSweetSpot();
 
     public float getFog();
 }
