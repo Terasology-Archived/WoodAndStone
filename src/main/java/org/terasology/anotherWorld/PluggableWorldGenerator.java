@@ -42,45 +42,50 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     private String seed;
     private Map<String, Biome> biomes = new HashMap<>();
 
-    /**
-     * Chance a chunk will contain a biome definition. Defines the effective size of a biome.
-     */
-    private float biomeScarcity = 0.10f;
-    /**
-     * How far a biome influences the terrain from its location (in blocks). If there is no biome in range of a block,
-     * that block will have a default biome (River).
-     */
-    private int biomeInfluenceRange = 40;
-
-    protected BiomeInfluenceProvider biomeInfluenceProvider;
-
     private Vector3i chunkSize = new Vector3i(16, 256, 16);
 
     private List<ChunkGenerator> chunkGenerators = new LinkedList<>();
 
-    public PluggableWorldGenerator() {
-        initializeCoreBiomes();
-        loadBiomes();
+    private BiomeProvider biomeProvider;
+    private int seeLevel = 32;
 
-        biomeInfluenceProvider = new BiomeInfluenceProvider(seed, biomes.values(), biomes.get("AnotherWorld:River"), biomeScarcity, biomeInfluenceRange, chunkSize);
+    private LandscapeGenerator landscapeGenerator;
+
+    public PluggableWorldGenerator(SimpleUri uri) {
     }
 
     public void addChunkGenerator(ChunkGenerator chunkGenerator) {
         chunkGenerators.add(chunkGenerator);
     }
 
-    @Override
-    public void setWorldSeed(String seed) {
-        this.seed = seed;
+    public void setSeeLevel(int seeLevel) {
+        this.seeLevel = seeLevel;
+    }
+
+    public void setLandscapeGenerator(LandscapeGenerator landscapeGenerator) {
+        this.landscapeGenerator = landscapeGenerator;
     }
 
     @Override
-    public void initialize() {
+    public void setWorldSeed(String seed) {
+        this.seed = seed;
+
+        initializeCoreBiomes();
+//        loadBiomes();
+
+        biomeProvider = new BiomeProvider(seed, biomes.values(), seeLevel, chunkSize.y, null);
+
         appendGenerators();
+
+        landscapeGenerator.initializeWithSeed(seed);
 
         for (ChunkGenerator chunkGenerator : chunkGenerators) {
             chunkGenerator.initializeWithSeed(seed);
         }
+    }
+
+    @Override
+    public void initialize() {
     }
 
     protected abstract void appendGenerators();
@@ -150,8 +155,11 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     @Override
     public void createChunk(Chunk chunk) {
         ChunkInformation chunkInformation = new ChunkInformation();
+
+        landscapeGenerator.generateInChunk(chunk, chunkInformation);
+
         for (ChunkGenerator chunkGenerator : chunkGenerators) {
-            chunkGenerator.generateInChunk(chunk, chunkInformation);
+            chunkGenerator.generateInChunk(chunk, chunkInformation, biomeProvider);
         }
     }
 

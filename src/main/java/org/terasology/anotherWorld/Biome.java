@@ -45,39 +45,7 @@ public interface Biome {
      */
     public float getRarity();
 
-    /**
-     * Defines a multiplier for when determining, which biome a block is in, if more than one biome is in influence
-     * range of that block.
-     *
-     * @return
-     */
-    public float getInfluenceStrength();
+    public boolean biomeAccepts(float temperature, float humidity);
 
-    /**
-     * Defines desired height for blocks in the biome. In range of -1<=x<1, where 0 is see level
-     *
-     * @return
-     */
-    public float getDesiredHeight();
-
-    /**
-     * Defines a fog typical for this biome.
-     *
-     * @return
-     */
     public float getFog();
-
-    /**
-     * Defines a temperature typical for this biome.
-     *
-     * @return
-     */
-    public float getTemperature();
-
-    /**
-     * Defines humidity typical for this biome.
-     *
-     * @return
-     */
-    public float getHumidity();
 }

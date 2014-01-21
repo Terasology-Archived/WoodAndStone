@@ -20,5 +20,5 @@ import org.terasology.world.chunks.Chunk;
 public interface ChunkGenerator {
     public void initializeWithSeed(String seed);
 
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation);
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider);
 }
