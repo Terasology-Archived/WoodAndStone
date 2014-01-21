@@ -1,11 +1,11 @@
 package org.terasology.oregeneration;
 
 import com.google.common.collect.Sets;
+import org.terasology.anotherWorld.util.PDist;
 import org.terasology.core.world.generator.AbstractBaseWorldGenerator;
 import org.terasology.core.world.generator.chunkGenerators.FlatTerrainGenerator;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
-import org.terasology.oregeneration.util.PDist;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;

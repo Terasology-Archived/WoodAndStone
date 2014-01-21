@@ -18,7 +18,7 @@ package org.terasology.anotherWorld;
 import org.terasology.world.chunks.Chunk;
 
 public interface ChunkDecorator {
-    public void initializeWithSeed(String seed);
+    void initializeWithSeed(String seed);
 
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider);
+    void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seeLevel);
 }

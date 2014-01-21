@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld;
+package org.terasology.anotherWorld.decorator.layering;
 
-import org.terasology.math.Vector3i;
-import org.terasology.world.ChunkView;
+import org.terasology.world.chunks.Chunk;
 
-public interface FeatureGenerator {
+public interface LayersDefinition {
     void initializeWithSeed(String seed);
 
-    void generateInChunk(Vector3i chunkPos, ChunkView view, BiomeProvider biomeProvider);
+    void generateInChunk(int groundLevel, int seeLevel, Chunk chunk, int x, int y);
 }

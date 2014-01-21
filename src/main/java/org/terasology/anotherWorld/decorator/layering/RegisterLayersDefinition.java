@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld;
+package org.terasology.anotherWorld.decorator.layering;
 
-import org.terasology.math.Vector3i;
-import org.terasology.world.ChunkView;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface FeatureGenerator {
-    void initializeWithSeed(String seed);
-
-    void generateInChunk(Vector3i chunkPos, ChunkView view, BiomeProvider biomeProvider);
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface RegisterLayersDefinition {
 }

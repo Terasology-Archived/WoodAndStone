@@ -16,25 +16,27 @@
 package org.terasology.anotherWorld;
 
 import javax.vecmath.Vector2f;
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class BiomeProvider {
     private ConditionsBaseProvider conditions;
-    private Collection<Biome> biomes;
+    private Map<String, Biome> biomes;
     private int seeLevel;
     private int maxLevel;
-    private Biome defaultBiome;
 
-    public BiomeProvider(String worldSeed, Collection<Biome> biomes, int seeLevel, int maxLevel, Biome defaultBiome) {
+    public BiomeProvider(String worldSeed, Map<String, Biome> biomes, int seeLevel, int maxLevel) {
         this.biomes = biomes;
         this.seeLevel = seeLevel;
         this.maxLevel = maxLevel;
-        this.defaultBiome = defaultBiome;
 
         conditions = new ConditionsBaseProvider(worldSeed);
+    }
+
+    public Biome getBiomeById(String biomeId) {
+        return biomes.get(biomeId);
     }
 
     public Biome getBaseBiomeAt(int x, int z) {
@@ -54,7 +56,7 @@ public class BiomeProvider {
         Biome chosenBiome = null;
         float maxPriority = 0;
 
-        for (Biome biome : biomes) {
+        for (Biome biome : biomes.values()) {
             final Vector2f sweetSpot = biome.getSweetSpot();
             Vector2f conditions = new Vector2f(temp, hum);
             conditions.sub(sweetSpot);

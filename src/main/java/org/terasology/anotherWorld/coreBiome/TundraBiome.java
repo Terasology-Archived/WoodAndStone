@@ -20,11 +20,12 @@ import org.terasology.anotherWorld.Biome;
 import javax.vecmath.Vector2f;
 
 public class TundraBiome implements Biome {
+    public static final String ID = "AnotherWorld:Tundra";
     private Vector2f sweetSpot = new Vector2f(0.1f, 0.1f);
 
     @Override
     public String getBiomeId() {
-        return "AnotherWorld:Tundra";
+        return ID;
     }
 
     @Override

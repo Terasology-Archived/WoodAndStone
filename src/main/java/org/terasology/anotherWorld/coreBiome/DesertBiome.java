@@ -20,11 +20,12 @@ import org.terasology.anotherWorld.Biome;
 import javax.vecmath.Vector2f;
 
 public class DesertBiome implements Biome {
+    public static final String ID = "AnotherWorld:Desert";
     private Vector2f sweetSpot = new Vector2f(0.8f, 0.1f);
 
     @Override
     public String getBiomeId() {
-        return "AnotherWorld:Desert";
+        return ID;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DesertBiome implements Biome {
 
     @Override
     public float getRarity() {
-        return 0.3f;
+        return 0.4f;
     }
 
     @Override

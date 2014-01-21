@@ -23,14 +23,14 @@ public interface Biome {
      *
      * @return
      */
-    public String getBiomeId();
+    String getBiomeId();
 
     /**
      * Returns human readable name of the biome.
      *
      * @return
      */
-    public String getBiomeName();
+    String getBiomeName();
 
     /**
      * What is the closest relative to this biome. Used when a mod requires to know the conditions in the biome,
@@ -38,14 +38,14 @@ public interface Biome {
      *
      * @return
      */
-    public String getBiomeParent();
+    String getBiomeParent();
 
     /**
      * How rare this biome is, on a scale from 0<rarity<=1.
      *
      * @return
      */
-    public float getRarity();
+    float getRarity();
 
     /**
      * Returns the sweet-spot for this biome in terms of temperature and humidity. Returns a pair of floats:
@@ -53,7 +53,7 @@ public interface Biome {
      *
      * @return
      */
-    public Vector2f getSweetSpot();
+    Vector2f getSweetSpot();
 
-    public float getFog();
+    float getFog();
 }

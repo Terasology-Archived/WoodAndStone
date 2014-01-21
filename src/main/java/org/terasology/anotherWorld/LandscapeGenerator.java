@@ -21,7 +21,7 @@ import org.terasology.world.chunks.Chunk;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface LandscapeGenerator {
-    public void initializeWithSeed(String seed);
+    void initializeWithSeed(String seed);
 
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seeLevel);
+    void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seeLevel);
 }

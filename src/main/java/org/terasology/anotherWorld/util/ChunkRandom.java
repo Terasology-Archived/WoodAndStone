@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld;
+package org.terasology.anotherWorld.util;
 
 import org.terasology.math.Vector3i;
-import org.terasology.world.ChunkView;
+import org.terasology.utilities.random.FastRandom;
+import org.terasology.utilities.random.Random;
 
-public interface FeatureGenerator {
-    void initializeWithSeed(String seed);
-
-    void generateInChunk(Vector3i chunkPos, ChunkView view, BiomeProvider biomeProvider);
+public abstract class ChunkRandom {
+    public static Random getChunkRandom(String seed, Vector3i chunkPos, int salt) {
+        return new FastRandom(seed.hashCode() + salt * (97 * chunkPos.x + chunkPos.z));
+    }
 }

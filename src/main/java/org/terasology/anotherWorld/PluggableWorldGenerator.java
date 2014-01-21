@@ -85,7 +85,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         initializeCoreBiomes();
 //        loadBiomes();
 
-        biomeProvider = new BiomeProvider(seed, biomes.values(), seeLevel, chunkSize.y, null);
+        biomeProvider = new BiomeProvider(seed, biomes, seeLevel, chunkSize.y);
 
         appendGenerators();
 
@@ -172,7 +172,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         landscapeGenerator.generateInChunk(chunk, chunkInformation, seeLevel);
 
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
-            chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider);
+            chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seeLevel);
         }
     }
 

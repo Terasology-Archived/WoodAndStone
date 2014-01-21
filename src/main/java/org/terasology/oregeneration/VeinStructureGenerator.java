@@ -1,8 +1,8 @@
 package org.terasology.oregeneration;
 
+import org.terasology.anotherWorld.util.PDist;
+import org.terasology.anotherWorld.util.Transform;
 import org.terasology.math.Vector3i;
-import org.terasology.oregeneration.util.PDist;
-import org.terasology.oregeneration.util.Transform;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.utilities.random.Random;
 import org.terasology.world.WorldBiomeProvider;

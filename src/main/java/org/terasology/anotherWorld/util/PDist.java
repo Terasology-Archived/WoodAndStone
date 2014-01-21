@@ -1,4 +1,4 @@
-package org.terasology.oregeneration.util;
+package org.terasology.anotherWorld.util;
 
 import org.terasology.utilities.random.Random;
 

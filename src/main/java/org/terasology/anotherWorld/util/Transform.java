@@ -1,4 +1,4 @@
-package org.terasology.oregeneration.util;
+package org.terasology.anotherWorld.util;
 
 /**
  * Represents a 3D single-precision Affine transformation.

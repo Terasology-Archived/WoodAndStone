@@ -17,6 +17,7 @@ package org.terasology.was;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
+import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
 import org.terasology.world.block.Block;
@@ -45,5 +46,8 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         setLandscapeGenerator(
                 new PerlinLandscapeGenerator(0.6f, 200, mantle, stone, water, LiquidType.WATER));
+
+        addChunkDecorator(
+                new LayeringDecorator());
     }
 }
