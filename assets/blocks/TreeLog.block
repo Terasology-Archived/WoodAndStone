@@ -5,11 +5,17 @@
 
     "categories": ["wood"],
 
+    "shape": "Engine:pillar",
+
     "entity": {
         "prefab": "WoodAndStone:TreeLog"
     },
+
+    "tile": "GrowingFlora:OakBark",
+
     "tiles": {
-        "sides": "Core:OakBark",
-        "topBottom": "Core:OakTrunk"
+        "sides": "GrowingFlora:OakBark",
+        "topBottom": "GrowingFlora:OakTrunk",
+        "center": "GrowingFlora:OakBark"
     }
 }
