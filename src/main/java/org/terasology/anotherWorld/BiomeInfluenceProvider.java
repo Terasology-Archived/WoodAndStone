@@ -47,11 +47,11 @@ public class BiomeInfluenceProvider {
     }
 
     private long getSeedForChunk(Vector3i position, int salt) {
-        return seed.hashCode() + salt * (31 * position.x + position.y);
+        return seed.hashCode() + salt * (31 * position.x + position.z);
     }
 
     public Map<Biome, Float> getBiomeInfluence(int x, int z) {
-        Vector3i chunkPosition = new Vector3i((int) Math.floor(x * 1f / chunkSize.x), 0, (int) Math.floor(z * 1f / chunkSize.y));
+        Vector3i chunkPosition = new Vector3i((int) Math.floor(x * 1f / chunkSize.x), 0, (int) Math.floor(z * 1f / chunkSize.z));
         final Map<Vector2i, Biome> biomesInVicinityOfChunk = getBiomesInVicinityOfChunk(chunkPosition);
 
         return getBiomeInfluenceWithChunkInformation(biomesInVicinityOfChunk, x, z);
@@ -70,10 +70,6 @@ public class BiomeInfluenceProvider {
                     result.put(biome, distance * biome.getInfluenceStrength());
                 }
             }
-        }
-
-        if (result.isEmpty()) {
-            result.put(defaultBiome, 1f);
         }
 
         return result;
@@ -100,7 +96,7 @@ public class BiomeInfluenceProvider {
         int xRange = (int) Math.ceil(biomeInfluenceRange * 1f / chunkSize.x);
         int zRange = (int) Math.ceil(biomeInfluenceRange * 1f / chunkSize.z);
 
-        Map<Vector2i, Biome> result = new HashMap();
+        Map<Vector2i, Biome> result = new HashMap<>();
         for (int x = chunkPosition.x - xRange; x <= chunkPosition.x + xRange; x++) {
             for (int z = chunkPosition.z - zRange; z <= chunkPosition.z + zRange; z++) {
                 final BiomeCenterPosition biomeForChunk = getBiomeForChunk(chunkPosition);
