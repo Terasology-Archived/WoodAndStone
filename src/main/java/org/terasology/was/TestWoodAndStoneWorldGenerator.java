@@ -42,6 +42,6 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block water = blockManager.getBlock("Core:Water");
 
         setLandscapeGenerator(
-                new PerlinLandscapeGenerator(0.3f, mantle, stone, water, LiquidType.WATER));
+                new PerlinLandscapeGenerator(0.6f, mantle, stone, water, LiquidType.WATER));
     }
 }

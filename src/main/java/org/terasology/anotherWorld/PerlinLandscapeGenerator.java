@@ -57,6 +57,8 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
                     height = (int) (seeLevel + (density - seeFrequency) / (1 - seeFrequency) * (chunk.getChunkSizeY() - seeLevel));
                 }
 
+                height = Math.min(chunk.getChunkSizeY() - 1, height);
+
                 chunkInformation.setPositionGroundLevel(x, height, z);
 
                 chunk.setBlock(x, 0, z, bottomBlock);
