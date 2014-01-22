@@ -71,7 +71,7 @@ public class OreDecorator implements ChunkDecorator {
 
         @Override
         public boolean canReplace(int x, int y, int z) {
-            boolean validCoords = (x > 0 && y > 1 && z > 0
+            boolean validCoords = (x >= 0 && y >= 1 && z >= 0
                     && x < chunk.getChunkSizeX() && y < chunk.getChunkSizeY() && z < chunk.getChunkSizeZ());
             return validCoords && replaceableBlocks.contains(chunk.getBlock(x, y, z));
 

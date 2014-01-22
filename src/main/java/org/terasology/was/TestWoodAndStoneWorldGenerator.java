@@ -15,6 +15,9 @@
  */
 package org.terasology.was;
 
+import org.terasology.anotherWorld.BiomeProvider;
+import org.terasology.anotherWorld.ChunkDecorator;
+import org.terasology.anotherWorld.ChunkInformation;
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
@@ -23,13 +26,18 @@ import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
+import org.terasology.anotherWorld.decorator.ore.OreDecorator;
+import org.terasology.anotherWorld.decorator.ore.PocketOreDefinition;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.Chunk;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.liquid.LiquidType;
+
+import java.util.Collections;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -58,6 +66,44 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         setLandscapeGenerator(
                 new PerlinLandscapeGenerator(0.6f, mantle, stone, water, LiquidType.WATER));
 
+        //setupLayers(sand, dirt, grass, snow);
+
+        OreDecorator oreDecorator = new OreDecorator(Collections.singleton(stone));
+        //oreDecorator.addOreDefinition("dirt", new ClusterOreDefinition(new PDist(1f, 0f), sand, new PDist(8f, 0f), new PDist(40f, 20f)));
+        oreDecorator.addOreDefinition("dirt", new PocketOreDefinition(
+                new PocketOreDefinition.PocketBlockProvider() {
+                    @Override
+                    public Block getBlock(float distanceFromCenter) {
+                        return sand;
+                    }
+                }, new PDist(0.025f, 0f), new PDist(10f, 2f), new PDist(6f, 1f), new PDist(30f, 10f), new PDist(0.1f, 0.1f),
+                new PDist(1f, 0f), new PDist(1f, 0f), new PDist(1f, 0f), new PDist(0.3f, 0f)));
+
+        addChunkDecorator(oreDecorator);
+
+        addChunkDecorator(
+                new ChunkDecorator() {
+                    @Override
+                    public void initializeWithSeed(String seed) {
+                    }
+
+                    @Override
+                    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
+                        for (int x = 0; x < chunk.getChunkSizeX(); x++) {
+                            for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
+                                for (int y = 1; y <= chunkInformation.getGroundLevel(x, z); y++) {
+                                    if (chunk.getBlock(x, y, z) == stone) {
+                                        chunk.setBlock(x, y, z, BlockManager.getAir());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        );
+    }
+
+    private void setupLayers(Block sand, Block dirt, Block grass, Block snow) {
         LayeringDecorator layering = new LayeringDecorator();
 
         DefaultLayersDefinition desertDef = new DefaultLayersDefinition();
