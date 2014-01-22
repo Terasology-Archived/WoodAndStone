@@ -61,7 +61,13 @@ public class BiomeProvider {
             Vector2f conditions = new Vector2f(temp, hum);
             conditions.sub(sweetSpot);
             final float rarity = biome.getRarity();
-            float priority = conditions.length() * rarity;
+            float matchStrength = conditions.length();
+            if (matchStrength == 0) {
+                // Exact match
+                return biome;
+            }
+
+            float priority = rarity / matchStrength;
             if (priority > maxPriority) {
                 chosenBiome = biome;
                 maxPriority = priority;
@@ -77,7 +83,7 @@ public class BiomeProvider {
         }
 
         if (y > seaLevel) {
-            return temperatureBase / ((y - seaLevel) / maxLevel + 1);
+            return temperatureBase / ((y - seaLevel) / (maxLevel - seaLevel) + 1);
         } else {
             return temperatureBase * seaLevel / (seaLevel - y);
         }
@@ -90,9 +96,9 @@ public class BiomeProvider {
         }
 
         if (y > seaLevel) {
-            return humidityBase / ((y - seaLevel) / maxLevel + 1);
+            return humidityBase / ((y - seaLevel) / (maxLevel - seaLevel) + 1);
         } else {
-            return humidityBase / ((seaLevel - y) / maxLevel + 1);
+            return humidityBase / ((seaLevel - y) / (maxLevel - y) + 1);
         }
     }
 }

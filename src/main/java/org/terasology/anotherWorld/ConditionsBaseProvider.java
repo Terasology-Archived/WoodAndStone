@@ -13,8 +13,8 @@ public class ConditionsBaseProvider {
     private final Noise3D humidityNoise;
 
     public ConditionsBaseProvider(String worldSeed) {
-        temperatureNoise = new BrownianNoise3D(new PerlinNoise(worldSeed.hashCode() + 5));
-        humidityNoise = new BrownianNoise3D(new PerlinNoise(worldSeed.hashCode() + 6));
+        temperatureNoise = new BrownianNoise3D(new PerlinNoise(worldSeed.hashCode() + 582374));
+        humidityNoise = new BrownianNoise3D(new PerlinNoise(worldSeed.hashCode() + 129534));
     }
 
     public float getHumidityAtseaLevel(int x, int z) {
