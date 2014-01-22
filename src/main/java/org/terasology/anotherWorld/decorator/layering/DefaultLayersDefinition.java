@@ -21,15 +21,15 @@ import org.terasology.utilities.random.Random;
 import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DefaultLayersDefinition implements LayersDefinition {
-    private String seed;
     private List<LayerDefinition> layerDefinitions = new LinkedList<>();
 
-    public void addLayerDefinition(PDist thickness, Block block, boolean generateUnderSee) {
-        layerDefinitions.add(new LayerDefinition(thickness, block, generateUnderSee));
+    public void addLayerDefinition(PDist thickness, Collection<Block> replacedBlocks, Block block, boolean generateUnderSee) {
+        layerDefinitions.add(new LayerDefinition(thickness, replacedBlocks, block, generateUnderSee));
     }
 
     @Override
@@ -43,7 +43,9 @@ public class DefaultLayersDefinition implements LayersDefinition {
                 int layerHeight = layerDefinition.thickness.getIntValue(random);
                 for (int i = 0; i < layerHeight; i++) {
                     if (level - i > 0) {
-                        chunk.setBlock(x, level - i, z, layerDefinition.block);
+                        if (layerDefinition.replacedBlocks.contains(chunk.getBlock(x, level - i, z))) {
+                            chunk.setBlock(x, level - i, z, layerDefinition.block);
+                        }
                     }
                 }
                 level -= layerHeight;
@@ -56,11 +58,13 @@ public class DefaultLayersDefinition implements LayersDefinition {
 
     private static class LayerDefinition {
         private PDist thickness;
+        private Collection<Block> replacedBlocks;
         private Block block;
         private boolean generateUnderSee;
 
-        private LayerDefinition(PDist thickness, Block block, boolean generateUnderSee) {
+        private LayerDefinition(PDist thickness, Collection<Block> replacedBlocks, Block block, boolean generateUnderSee) {
             this.thickness = thickness;
+            this.replacedBlocks = replacedBlocks;
             this.block = block;
             this.generateUnderSee = generateUnderSee;
         }
