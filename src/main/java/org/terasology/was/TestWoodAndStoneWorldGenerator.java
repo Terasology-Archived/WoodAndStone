@@ -27,7 +27,6 @@ import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
-import org.terasology.anotherWorld.decorator.ore.PocketOreDefinition;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
@@ -70,14 +69,29 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         OreDecorator oreDecorator = new OreDecorator(Collections.singleton(stone));
         //oreDecorator.addOreDefinition("dirt", new ClusterOreDefinition(new PDist(1f, 0f), sand, new PDist(8f, 0f), new PDist(40f, 20f)));
-        oreDecorator.addOreDefinition("dirt", new PocketOreDefinition(
-                new PocketOreDefinition.PocketBlockProvider() {
-                    @Override
-                    public Block getBlock(float distanceFromCenter) {
-                        return sand;
-                    }
-                }, new PDist(0.025f, 0f), new PDist(10f, 2f), new PDist(6f, 1f), new PDist(30f, 10f), new PDist(0.1f, 0.1f),
-                new PDist(1f, 0f), new PDist(1f, 0f), new PDist(1f, 0f), new PDist(0.3f, 0f)));
+//        oreDecorator.addOreDefinition("dirt", new PocketOreDefinition(
+//                new PocketOreDefinition.PocketBlockProvider() {
+//                    @Override
+//                    public Block getBlock(float distanceFromCenter) {
+//                        return sand;
+//                    }
+//                }, new PDist(0.025f, 0f), new PDist(10f, 2f), new PDist(6f, 1f), new PDist(30f, 10f), new PDist(0.1f, 0.1f),
+//                new PDist(1f, 0f), new PDist(1f, 0f), new PDist(1f, 0f), new PDist(0.3f, 0f)));
+
+//        oreDecorator.addOreDefinition("dirt",
+//                new VeinsOreDefinition(
+//                        new PDist(0.025f, 0f), new VeinsOreDefinition.VeinsBlockProvider() {
+//                    @Override
+//                    public Block getClusterBlock(float distanceFromCenter) {
+//                        return sand;
+//                    }
+//
+//                    @Override
+//                    public Block getBranchBlock() {
+//                        return dirt;
+//                    }
+//                }, new PDist(5f, 0f), new PDist(30f, 20f), new PDist(3f, 1f), new PDist(0f, 0.5f), new PDist(40f, 0f), new PDist(10f, 0f),
+//                        new PDist(0f, 0f), new PDist(0.4f, 0f), new PDist(3f, 0f), new PDist(0.4f, 0.2f), new PDist(0.8f, 0.3f), new PDist(1f, 0f), new PDist(1f, 0f)));
 
         addChunkDecorator(oreDecorator);
 
