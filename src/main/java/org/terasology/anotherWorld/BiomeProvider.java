@@ -15,6 +15,9 @@
  */
 package org.terasology.anotherWorld;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.vecmath.Vector2f;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class BiomeProvider {
+    private static final Logger logger = LoggerFactory.getLogger(BiomeProvider.class);
+
     private ConditionsBaseProvider conditions;
     private Map<String, Biome> biomes;
     private int seaLevel;
@@ -40,8 +45,9 @@ public class BiomeProvider {
     }
 
     public Biome getBaseBiomeAt(int x, int z) {
-        float temperatureBase = conditions.getTemperatureAtseaLevel(x, z);
-        float humidityBase = conditions.getHumidityAtseaLevel(x, z);
+        float temperatureBase = conditions.getTemperatureAtSeaLevel(x, z);
+        float humidityBase = conditions.getHumidityAtSeaLevel(x, z);
+
         return getBestBiomeMatch(temperatureBase, humidityBase);
     }
 
@@ -77,7 +83,7 @@ public class BiomeProvider {
     }
 
     public float getTemperature(int x, int y, int z) {
-        float temperatureBase = conditions.getTemperatureAtseaLevel(x, z);
+        float temperatureBase = conditions.getTemperatureAtSeaLevel(x, z);
         if (y == seaLevel) {
             return temperatureBase;
         }
@@ -90,7 +96,7 @@ public class BiomeProvider {
     }
 
     public float getHumidity(int x, int y, int z) {
-        float humidityBase = conditions.getHumidityAtseaLevel(x, z);
+        float humidityBase = conditions.getHumidityAtSeaLevel(x, z);
         if (y == seaLevel) {
             return humidityBase;
         }

@@ -27,16 +27,13 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     private BrownianNoise2D noise;
 
     private float seaFrequency;
-    private int maxGeneratedHeight;
     private Block bottomBlock;
     private Block groundBlock;
     private Block seeBlock;
     private LiquidType liquidType;
 
-    public PerlinLandscapeGenerator(float seaFrequency, int maxGeneratedHeight,
-                                    Block bottomBlock, Block groundBlock, Block seeBlock, LiquidType liquidType) {
+    public PerlinLandscapeGenerator(float seaFrequency, Block bottomBlock, Block groundBlock, Block seeBlock, LiquidType liquidType) {
         this.seaFrequency = seaFrequency;
-        this.maxGeneratedHeight = maxGeneratedHeight;
         this.bottomBlock = bottomBlock;
         this.groundBlock = groundBlock;
         this.seeBlock = seeBlock;
@@ -49,14 +46,14 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel) {
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel, int maxLevel) {
         int chunkXStart = chunk.getBlockWorldPosX(0);
         int chunkZStart = chunk.getBlockWorldPosZ(0);
 
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
                 double baseNoise = this.noise.noise(0.0008 * (chunkXStart + x), 0.0008 * (chunkZStart + z));
-                float noise = (float) TeraMath.clamp((baseNoise + 1.0) / 2.4);
+                float noise = (float) TeraMath.clamp((baseNoise + 1.0) / 2.6);
                 int height;
                 if (noise < seaFrequency) {
                     height = (int) (seaLevel * noise / seaFrequency);
@@ -64,7 +61,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
                     // Number in range 0<=alpha<1
                     float alphaAboveSeaLevel = (noise - seaFrequency) / (1 - seaFrequency);
                     float resultAlpha = interpretAlpha(alphaAboveSeaLevel);
-                    height = (int) (seaLevel + resultAlpha * (maxGeneratedHeight - seaLevel));
+                    height = (int) (seaLevel + resultAlpha * (maxLevel - seaLevel));
                 }
 
                 height = Math.min(chunk.getChunkSizeY() - 1, height);
@@ -86,6 +83,6 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     }
 
     private float interpretAlpha(float alphaAboveseaLevel) {
-        return (float) Math.pow(alphaAboveseaLevel, 2);
+        return (float) Math.pow(alphaAboveseaLevel, 1.8);
     }
 }

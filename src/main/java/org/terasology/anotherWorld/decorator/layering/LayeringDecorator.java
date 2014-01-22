@@ -43,7 +43,7 @@ public class LayeringDecorator implements ChunkDecorator {
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
                 int groundLevel = chunkInformation.getGroundLevel(x, z);
-                Biome biome = biomeProvider.getBiomeAt(x, groundLevel, z);
+                Biome biome = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), groundLevel, chunk.getBlockWorldPosZ(z));
                 LayersDefinition matchingLayers = findMatchingLayers(biomeProvider, biome);
                 if (matchingLayers != null) {
                     matchingLayers.generateInChunk(seed, groundLevel, seaLevel, chunk, x, z);

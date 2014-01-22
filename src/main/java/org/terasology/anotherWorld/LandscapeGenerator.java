@@ -23,5 +23,5 @@ import org.terasology.world.chunks.Chunk;
 public interface LandscapeGenerator {
     void initializeWithSeed(String seed);
 
-    void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel);
+    void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel, int maxLevel);
 }

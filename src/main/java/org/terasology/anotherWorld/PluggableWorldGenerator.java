@@ -35,7 +35,11 @@ import org.terasology.world.generator.WorldGenerator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class PluggableWorldGenerator implements WorldGenerator {
     private static final Logger logger = LoggerFactory.getLogger(PluggableWorldGenerator.class);
@@ -50,6 +54,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
     private BiomeProvider biomeProvider;
     private int seaLevel = 32;
+    private int maxLevel = 220;
 
     private LandscapeGenerator landscapeGenerator;
     private SimpleUri uri;
@@ -74,6 +79,10 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         this.seaLevel = seaLevel;
     }
 
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
     @Override
     public final void initialize() {
     }
@@ -85,7 +94,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         initializeCoreBiomes();
 //        loadBiomes();
 
-        biomeProvider = new BiomeProvider(seed, biomes, seaLevel, chunkSize.y);
+        biomeProvider = new BiomeProvider(seed, biomes, seaLevel, maxLevel);
 
         appendGenerators();
 
@@ -169,7 +178,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     public void createChunk(Chunk chunk) {
         ChunkInformation chunkInformation = new ChunkInformation();
 
-        landscapeGenerator.generateInChunk(chunk, chunkInformation, seaLevel);
+        landscapeGenerator.generateInChunk(chunk, chunkInformation, seaLevel, maxLevel);
 
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
             chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seaLevel);
