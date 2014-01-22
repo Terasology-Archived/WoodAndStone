@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator.structure;
 
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.anotherWorld.util.Transform;
@@ -24,7 +24,7 @@ import org.terasology.world.block.Block;
 
 import java.util.List;
 
-public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
+public class VeinsStructureDefinition extends AbstractMultiChunkStructureDefinition {
     private VeinsBlockProvider veinsBlockProvider;
 
     private PDist motherLodeRadius;
@@ -44,11 +44,11 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
     private PDist blockDensity;
     private PDist blockRadiusMultiplier;
 
-    public VeinsOreDefinition(PDist frequency, VeinsBlockProvider veinsBlockProvider,
-                              PDist motherLodeRadius, PDist motherLodeYLevel,
-                              PDist branchFrequency, PDist branchInclination, PDist branchLength, PDist branchHeightLimit,
-                              PDist segmentForkFrequency, PDist segmentForkLengthMultiplier, PDist segmentLength, PDist segmentAngle, PDist segmentRadius,
-                              PDist blockDensity, PDist blockRadiusMultiplier) {
+    public VeinsStructureDefinition(PDist frequency, VeinsBlockProvider veinsBlockProvider,
+                                    PDist motherLodeRadius, PDist motherLodeYLevel,
+                                    PDist branchFrequency, PDist branchInclination, PDist branchLength, PDist branchHeightLimit,
+                                    PDist segmentForkFrequency, PDist segmentForkLengthMultiplier, PDist segmentLength, PDist segmentAngle, PDist segmentRadius,
+                                    PDist blockDensity, PDist blockRadiusMultiplier) {
         super(frequency);
         this.veinsBlockProvider = veinsBlockProvider;
         this.motherLodeRadius = motherLodeRadius;
@@ -116,7 +116,9 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
         while (length > 0) {
             // determine segment length & radius
             float segLen = segmentLength.getValue(random);
-            if (segLen > length) segLen = length;
+            if (segLen > length) {
+                segLen = length;
+            }
             length -= segLen;
             segLen /= 2;
             float segRad = segmentRadius.getValue(random);
@@ -138,10 +140,11 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
             mat.transformVector(pos);
 
             // validate coordinates for next segment
-            if (pos[1] > maxHeight || pos[1] < minHeight)
+            if (pos[1] > maxHeight || pos[1] < minHeight) {
                 return;    // branch extends outside of vertical range
-            else if (length <= 0)
+            } else if (length <= 0) {
                 return; // remaining length is  <= 0
+            }
 
             // create forks
             for (int fk = segmentForkFrequency.getIntValue(random); fk > 0; fk--) {
@@ -195,7 +198,9 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
             rad = (float) Math.sqrt(xunit[0] * xunit[0] + xunit[1] * xunit[1] + xunit[2] * xunit[2]);
             // build transformed bounding box from the local BB for a cylinder
             float rMax = rad * blockRadiusMultiplier.getMax();
-            if (rMax < 0) rMax = 0;
+            if (rMax < 0) {
+                rMax = 0;
+            }
             float[] bb = new float[]{-rMax, -rMax, -1, rMax, rMax, 1};
             transform.transformBB(bb);
 
@@ -281,12 +286,17 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
          * @param t interpolating parameter between [-1,1]
          */
         public float interpolateRadius(float t) {
-            if (t > 0 && next != null) return (1 - t) * rad + t * next.rad; // valid forward neighbor
-            else if (t < 0 && prev != null) return (1 + t) * rad - t * prev.rad; // valid backward neighbor
-            else if (t <= 0 && t > -1) return rad; // no backward neighbor - constant radius
-            else if (t > 0 && t < 1)
+            if (t > 0 && next != null) {
+                return (1 - t) * rad + t * next.rad; // valid forward neighbor
+            } else if (t < 0 && prev != null) {
+                return (1 + t) * rad - t * prev.rad; // valid backward neighbor
+            } else if (t <= 0 && t > -1) {
+                return rad; // no backward neighbor - constant radius
+            } else if (t > 0 && t < 1) {
                 return rad * (float) Math.sqrt(1 - 4 * t * t); // no forward neighbor - approach zero as parabola
-            else return 0;
+            } else {
+                return 0;
+            }
         }
 
         /**
@@ -321,7 +331,9 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
             public void init(float stepSize, boolean calculateDirection) {
                 // interpolate all the way to the center of previous segment unless it reciprocates
                 t = (prev == null || prev.next == BezierTubeStructure.this) ? -0.5F : -1.0F;
-                if (stepSize > 0) dt = stepSize;
+                if (stepSize > 0) {
+                    dt = stepSize;
+                }
                 // calculate initial position
                 interpolatePosition(pos, t);
                 // calculate initial radius
@@ -385,9 +397,13 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
                     }
                     // check error
                     float maxErr = tolerance * tolerance;
-                    if (err > maxErr) dt *= 0.6;  // reduce step size -> reduce error
-                    else if (err < maxErr / 5) dt *= 1.8;    // increase step size -> fewer steps
-                    else break; // error was acceptable
+                    if (err > maxErr) {
+                        dt *= 0.6;  // reduce step size -> reduce error
+                    } else if (err < maxErr / 5) {
+                        dt *= 1.8;    // increase step size -> fewer steps
+                    } else {
+                        break; // error was acceptable
+                    }
                     // prevent infinite loops
                     if (dt < Math.ulp(t) * 2) {
                         throw new RuntimeException("CustomOreGen: Detected a possible infinite loop during bezier interpolation.  Please report this error.");
@@ -403,10 +419,14 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
         public void generateStructure(StructureCallback callback) {
             // get min & max radii in local coordinates
             float maxR = blockRadiusMultiplier.getMax();
-            if (maxR < 0) maxR = 0;
+            if (maxR < 0) {
+                maxR = 0;
+            }
             float maxR2 = maxR * maxR;
             float minR = blockRadiusMultiplier.getMin();
-            if (minR < 0) minR = 0;
+            if (minR < 0) {
+                minR = 0;
+            }
             float minR2 = minR * minR;
 
             // interpolate over segment
@@ -416,7 +436,9 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
             do {
                 // determine step size and count
                 innerStep = (int) context.radius / 4 + 1;
-                if (context.radius <= 0) continue; // zero radius
+                if (context.radius <= 0) {
+                    continue; // zero radius
+                }
                 float step = 0.7F * innerStep / context.radius;
                 int stepCount = (int) (maxR / step) + 1;
                 boolean oneBlockThreshold = (context.radius * maxR < 0.25F); // radius is too small even for a single block
@@ -434,14 +456,19 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
                         pos[2] = 0;
                         // check radius
                         float r2 = pos[0] * pos[0] + pos[1] * pos[1];
-                        if (r2 > maxR2) continue; // block is outside maximum possible radius
+                        if (r2 > maxR2) {
+                            continue; // block is outside maximum possible radius
+                        }
                         if (r2 > minR2) // block is near tube surface
                         {
                             float rMax = blockRadiusMultiplier.getValue(random);
-                            if (r2 > rMax * rMax) continue; // block is outside maximum radius
+                            if (r2 > rMax * rMax) {
+                                continue; // block is outside maximum radius
+                            }
                         }
-                        if (oneBlockThreshold && context.radius * maxR * 4 < random.nextFloat())
+                        if (oneBlockThreshold && context.radius * maxR * 4 < random.nextFloat()) {
                             continue; // blocks must pass random check for very thin tubes
+                        }
                         // transform into world coordinates
                         mat.transformVector(pos);
                         int baseX = (int) Math.floor(pos[0]) - innerStep / 2;
@@ -451,7 +478,9 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
                         for (int blockX = baseX; blockX < innerStep + baseX; blockX++) {
                             for (int blockY = baseY; blockY < innerStep + baseY; blockY++) {
                                 for (int blockZ = baseZ; blockZ < innerStep + baseZ; blockZ++) {
-                                    if (blockDensity.getIntValue(random) < 1) continue; // density check failed
+                                    if (blockDensity.getIntValue(random) < 1) {
+                                        continue; // density check failed
+                                    }
 
                                     callback.replaceBlock(new Vector3i(blockX, blockY, blockZ), 1, veinsBlockProvider.getBranchBlock());
                                 }
@@ -478,7 +507,9 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
             this.random = random;
             // build transformed bounding box from the local BB for a unit sphere
             float rMax = blockRadiusMultiplier.getMax();
-            if (rMax < 0) rMax = 0;
+            if (rMax < 0) {
+                rMax = 0;
+            }
             float[] bb = new float[]{-rMax, -rMax, -rMax, rMax, rMax, rMax};
             transform.transformBB(bb);
             float minX = Math.min(bb[0], bb[3]);
@@ -495,26 +526,37 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
 
             // store transforms
             mat = transform.clone();
-            if (transform.determinant() != 0) invMat = transform.inverse();
-            else invMat = null; // at least one axis of sphere has zero length
+            if (transform.determinant() != 0) {
+                invMat = transform.inverse();
+            } else {
+                invMat = null; // at least one axis of sphere has zero length
+            }
         }
 
         @Override
         public void generateStructure(StructureCallback callback) {
-            if (invMat == null) return; // sphere has zero volume and therefore cannot contain blocks
+            if (invMat == null) {
+                return; // sphere has zero volume and therefore cannot contain blocks
+            }
             // get min & max radii in local coordinates
             float maxR2 = blockRadiusMultiplier.getMax();
-            if (maxR2 < 0) maxR2 = 0;
+            if (maxR2 < 0) {
+                maxR2 = 0;
+            }
             maxR2 *= maxR2;
             float minR2 = blockRadiusMultiplier.getMin();
-            if (minR2 < 0) minR2 = 0;
+            if (minR2 < 0) {
+                minR2 = 0;
+            }
             minR2 *= minR2;
             // iterate through blocks
             float[] pos = new float[3];
             for (int x = Math.max(0, minPosition.x); x <= Math.min(chunkSize.x - 1, maxPosition.x); x++) {
                 for (int y = Math.max(0, minPosition.y); y <= Math.min(chunkSize.y - 1, maxPosition.y); y++) {
                     for (int z = Math.max(0, minPosition.z); z <= Math.min(chunkSize.z - 1, maxPosition.z); z++) {
-                        if (!callback.canReplace(x, y, z)) continue;
+                        if (!callback.canReplace(x, y, z)) {
+                            continue;
+                        }
                         // transform into local coordinates
                         pos[0] = x + 0.5F;
                         pos[1] = y + 0.5F;
@@ -522,14 +564,20 @@ public class VeinsOreDefinition extends AbstractMultiChunkOreDefinition {
                         invMat.transformVector(pos);
                         // check radius
                         float r2 = pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2];
-                        if (r2 > maxR2) continue; // block is outside maximum possible radius
+                        if (r2 > maxR2) {
+                            continue; // block is outside maximum possible radius
+                        }
                         if (r2 > minR2) // block is near ellipsoid surface
                         {
                             float rMax = blockRadiusMultiplier.getValue(random);
-                            if (r2 > rMax * rMax) continue; // block is outside maximum radius
+                            if (r2 > rMax * rMax) {
+                                continue; // block is outside maximum radius
+                            }
                         }
                         // place block
-                        if (blockDensity.getIntValue(random) < 1) continue; // density check failed
+                        if (blockDensity.getIntValue(random) < 1) {
+                            continue; // density check failed
+                        }
                         callback.replaceBlock(new Vector3i(x, y, z), 1, veinsBlockProvider.getClusterBlock((float) Math.sqrt(r2)));
                     }
                 }

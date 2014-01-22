@@ -13,55 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator;
 
 import org.terasology.anotherWorld.BiomeProvider;
 import org.terasology.anotherWorld.ChunkDecorator;
 import org.terasology.anotherWorld.ChunkInformation;
-import org.terasology.anotherWorld.decorator.BlockFilter;
 import org.terasology.anotherWorld.decorator.structure.Structure;
 import org.terasology.anotherWorld.decorator.structure.StructureDefinition;
+import org.terasology.anotherWorld.decorator.structure.VeinsStructureDefinition;
+import org.terasology.anotherWorld.util.PDist;
 import org.terasology.math.Vector3i;
 import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.Chunk;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-public class OreDecorator implements ChunkDecorator {
-    private Map<String, StructureDefinition> oreDefinitions = new LinkedHashMap<>();
-    private BlockFilter blockFilter;
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public class CaveDecorator implements ChunkDecorator {
     private String seed;
+    private BlockFilter blockFilter;
+    private PDist caveFrequency;
+    private PDist mainCaveRadius;
+    private PDist mainCaveYLevel;
+    private PDist tunnelLength;
+    private PDist tunnelRadius;
+    private StructureDefinition caveDefinition;
 
-    public OreDecorator(BlockFilter blockFilter) {
+    public CaveDecorator(BlockFilter blockFilter, PDist caveFrequency, PDist mainCaveRadius, PDist mainCaveYLevel,
+                         PDist tunnelLength, PDist tunnelRadius) {
         this.blockFilter = blockFilter;
+        this.caveFrequency = caveFrequency;
+        this.mainCaveRadius = mainCaveRadius;
+        this.mainCaveYLevel = mainCaveYLevel;
+        this.tunnelLength = tunnelLength;
+        this.tunnelRadius = tunnelRadius;
     }
 
     @Override
     public void initializeWithSeed(String seed) {
         this.seed = seed;
-        loadOres();
-    }
 
-    public void addOreDefinition(String oreId, StructureDefinition structureDefinition) {
-        oreDefinitions.put(oreId, structureDefinition);
+        caveDefinition = new VeinsStructureDefinition(caveFrequency,
+                new VeinsStructureDefinition.VeinsBlockProvider() {
+                    @Override
+                    public Block getClusterBlock(float distanceFromCenter) {
+                        return BlockManager.getAir();
+                    }
+
+                    @Override
+                    public Block getBranchBlock() {
+                        return BlockManager.getAir();
+                    }
+                }, mainCaveRadius, mainCaveYLevel, new PDist(4f, 1f), new PDist(0f, 0.1f), tunnelLength,
+                new PDist(1000f, 0f), new PDist(0f, 0f), new PDist(0.25f, 0f), new PDist(5f, 0f), new PDist(0.5f, 0.5f),
+                tunnelRadius, new PDist(1f, 0f), new PDist(1f, 0f));
     }
 
     @Override
     public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
         Structure.StructureCallback callback = new StructureCallbackImpl(chunk);
 
-        for (StructureDefinition structureDefinition : oreDefinitions.values()) {
-            Collection<Structure> structures = structureDefinition.generateStructures(chunk, seed, biomeProvider);
-            for (Structure structure : structures) {
-                structure.generateStructure(callback);
-            }
+        Collection<Structure> structures = caveDefinition.generateStructures(chunk, seed, biomeProvider);
+        for (Structure structure : structures) {
+            structure.generateStructure(callback);
         }
-    }
-
-    private void loadOres() {
-        // Use reflections to find classes with RegisterLayersDefinition annotation
     }
 
     private class StructureCallbackImpl implements Structure.StructureCallback {

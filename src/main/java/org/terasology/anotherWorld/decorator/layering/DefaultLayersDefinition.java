@@ -15,21 +15,21 @@
  */
 package org.terasology.anotherWorld.decorator.layering;
 
+import org.terasology.anotherWorld.decorator.BlockFilter;
 import org.terasology.anotherWorld.util.ChunkRandom;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.utilities.random.Random;
 import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DefaultLayersDefinition implements LayersDefinition {
     private List<LayerDefinition> layerDefinitions = new LinkedList<>();
 
-    public void addLayerDefinition(PDist thickness, Collection<Block> replacedBlocks, Block block, boolean generateUnderSee) {
-        layerDefinitions.add(new LayerDefinition(thickness, replacedBlocks, block, generateUnderSee));
+    public void addLayerDefinition(PDist thickness, BlockFilter blockFilter, Block block, boolean generateUnderSee) {
+        layerDefinitions.add(new LayerDefinition(thickness, blockFilter, block, generateUnderSee));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DefaultLayersDefinition implements LayersDefinition {
                 int layerHeight = layerDefinition.thickness.getIntValue(random);
                 for (int i = 0; i < layerHeight; i++) {
                     if (level - i > 0) {
-                        if (layerDefinition.replacedBlocks.contains(chunk.getBlock(x, level - i, z))) {
+                        if (layerDefinition.blockFilter.accepts(chunk, x, level - i, z)) {
                             chunk.setBlock(x, level - i, z, layerDefinition.block);
                         }
                     }
@@ -58,13 +58,13 @@ public class DefaultLayersDefinition implements LayersDefinition {
 
     private static class LayerDefinition {
         private PDist thickness;
-        private Collection<Block> replacedBlocks;
+        private BlockFilter blockFilter;
         private Block block;
         private boolean generateUnderSee;
 
-        private LayerDefinition(PDist thickness, Collection<Block> replacedBlocks, Block block, boolean generateUnderSee) {
+        private LayerDefinition(PDist thickness, BlockFilter blockFilter, Block block, boolean generateUnderSee) {
             this.thickness = thickness;
-            this.replacedBlocks = replacedBlocks;
+            this.blockFilter = blockFilter;
             this.block = block;
             this.generateUnderSee = generateUnderSee;
         }

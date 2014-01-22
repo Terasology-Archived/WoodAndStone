@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator.structure;
 
 import org.terasology.anotherWorld.BiomeProvider;
 import org.terasology.anotherWorld.util.ChunkRandom;
@@ -26,10 +26,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AbstractMultiChunkOreDefinition implements OreDefinition {
+public abstract class AbstractMultiChunkStructureDefinition implements StructureDefinition {
     private PDist frequency;
 
-    protected AbstractMultiChunkOreDefinition(PDist frequency) {
+    protected AbstractMultiChunkStructureDefinition(PDist frequency) {
         this.frequency = frequency;
     }
 

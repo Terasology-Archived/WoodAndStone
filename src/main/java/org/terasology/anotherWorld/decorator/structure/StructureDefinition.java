@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator.structure;
 
-import org.terasology.math.Vector3i;
-import org.terasology.world.block.Block;
+import org.terasology.anotherWorld.BiomeProvider;
+import org.terasology.world.chunks.Chunk;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public interface Structure {
-    void generateStructure(StructureCallback callback);
+import java.util.Collection;
 
-    public interface StructureCallback {
-        void replaceBlock(Vector3i position, float force, Block block);
-
-        boolean canReplace(int x, int y, int z);
-    }
+public interface StructureDefinition {
+    Collection<Structure> generateStructures(Chunk chunk, String seed, BiomeProvider biomeProvider);
 }

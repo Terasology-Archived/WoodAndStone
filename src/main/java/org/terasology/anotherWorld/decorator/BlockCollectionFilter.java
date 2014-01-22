@@ -13,13 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator;
 
-import org.terasology.anotherWorld.BiomeProvider;
+import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
 
 import java.util.Collection;
+import java.util.Collections;
 
-public interface OreDefinition {
-    Collection<Structure> generateStructures(Chunk chunk, String seed, BiomeProvider biomeProvider);
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public class BlockCollectionFilter implements BlockFilter {
+    private Collection<Block> blocks;
+
+    public BlockCollectionFilter(Block block) {
+        this(Collections.singleton(block));
+    }
+
+    public BlockCollectionFilter(Collection<Block> blocks) {
+        this.blocks = blocks;
+    }
+
+    @Override
+    public boolean accepts(Chunk chunk, int x, int y, int z) {
+        return blocks.contains(chunk.getBlock(x, y, z));
+    }
 }

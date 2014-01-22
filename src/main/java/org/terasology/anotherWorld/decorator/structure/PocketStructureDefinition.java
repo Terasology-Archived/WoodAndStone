@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator.structure;
 
 import org.terasology.anotherWorld.util.NoiseGenerator;
 import org.terasology.anotherWorld.util.PDist;
@@ -24,7 +24,7 @@ import org.terasology.world.block.Block;
 
 import java.util.List;
 
-public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
+public class PocketStructureDefinition extends AbstractMultiChunkStructureDefinition {
     private PocketBlockProvider blockProvider;
     private PDist pocketRadius;
     private PDist pocketThickness;
@@ -35,8 +35,8 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
     private PDist noiseLevel;
     private PDist volumeNoiseCutOff;
 
-    public PocketOreDefinition(PocketBlockProvider blockProvider, PDist frequency, PDist pocketRadius, PDist pocketThickness, PDist pocketYLevel, PDist pocketAngle,
-                               PDist blockRadiusMult, PDist blockDensity, PDist noiseLevel, PDist volumeNoiseCutOff) {
+    public PocketStructureDefinition(PocketBlockProvider blockProvider, PDist frequency, PDist pocketRadius, PDist pocketThickness, PDist pocketYLevel, PDist pocketAngle,
+                                     PDist blockRadiusMult, PDist blockDensity, PDist noiseLevel, PDist volumeNoiseCutOff) {
         super(frequency);
         this.blockProvider = blockProvider;
         this.pocketRadius = pocketRadius;
@@ -106,7 +106,9 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
 
             // build transformed bounding box from the local BB for a unit sphere
             float rMax = (1 + sizeNoiseMagnitude * 2) * blockRadiusMult.getMax();
-            if (rMax < 0) rMax = 0;
+            if (rMax < 0) {
+                rMax = 0;
+            }
             float[] bb = new float[]{-rMax, -rMax, -rMax, rMax, rMax, rMax};
             transform.transformBB(bb);
 
@@ -128,9 +130,11 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
 
             // store transforms
             mat = transform.clone();
-            if (transform.determinant() != 0)
+            if (transform.determinant() != 0) {
                 invMat = transform.inverse();  // note - this alters the transform argument
-            else invMat = null; // at least one axis of sphere has zero length
+            } else {
+                invMat = null; // at least one axis of sphere has zero length
+            }
         }
 
         /**
@@ -147,7 +151,9 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
 
         @Override
         public void generateStructure(StructureCallback callback) {
-            if (invMat == null) return; // sphere has zero volume and therefore cannot contain blocks
+            if (invMat == null) {
+                return; // sphere has zero volume and therefore cannot contain blocks
+            }
 
             // get min & max radii in local coordinates
             float maxR = Math.max(blockRadiusMult.getMax(), 0); // maximum radius after noise scaling
@@ -161,7 +167,9 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
             for (int x = Math.max(0, minPosition.x); x <= Math.min(chunkSize.x - 1, maxPosition.x); x++) {
                 for (int y = Math.max(0, minPosition.y); y <= Math.min(chunkSize.y - 1, maxPosition.y); y++) {
                     for (int z = Math.max(0, minPosition.z); z <= Math.min(chunkSize.z - 1, maxPosition.z); z++) {
-                        if (!callback.canReplace(x, y, z)) continue;
+                        if (!callback.canReplace(x, y, z)) {
+                            continue;
+                        }
 
                         // transform into local coordinates
                         pos[0] = x + 0.5F;
@@ -170,7 +178,9 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
                         invMat.transformVector(pos);
                         // check radius
                         float r2 = pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2];
-                        if (r2 > maxNoisyR2) continue; // block is outside maximum possible radius
+                        if (r2 > maxNoisyR2) {
+                            continue; // block is outside maximum possible radius
+                        }
                         if (r2 > minNoisyR2) // block is within max noise tolerance
                         {
                             // compute radius noise multiplier
@@ -179,22 +189,34 @@ public class PocketOreDefinition extends AbstractMultiChunkOreDefinition {
                             // multiplier for that solid angle.
                             float r = (float) Math.sqrt(r2);
                             float mult = 1;
-                            if (r > 0) mult += sizeNoiseMagnitude * getNoise(pos[0] / r, pos[1] / r, pos[2] / r);
-                            else mult += sizeNoiseMagnitude * getNoise(0, 0, 0);
-                            if (mult <= 0) continue; // noise-multiplied radius at this solid angle is zero
+                            if (r > 0) {
+                                mult += sizeNoiseMagnitude * getNoise(pos[0] / r, pos[1] / r, pos[2] / r);
+                            } else {
+                                mult += sizeNoiseMagnitude * getNoise(0, 0, 0);
+                            }
+                            if (mult <= 0) {
+                                continue; // noise-multiplied radius at this solid angle is zero
+                            }
                             r /= mult;
                             // check noise-scaled radius
-                            if (r > maxR) continue; // unit radius is outside max cutoff
-                            if (r > minR && r > blockRadiusMult.getValue(random))
+                            if (r > maxR) {
+                                continue; // unit radius is outside max cutoff
+                            }
+                            if (r > minR && r > blockRadiusMult.getValue(random)) {
                                 continue; // block is outside cutoff
+                            }
                         }
                         // apply internal density noise
-                        if (volumeNoiseCutOff.getMin() > 1) continue; // noise cutoff is too high
-                        else if (volumeNoiseCutOff.getMax() > 0) {
-                            if ((getNoise(pos[0], pos[1], pos[2]) + 1) / 2 < volumeNoiseCutOff.getValue(random))
+                        if (volumeNoiseCutOff.getMin() > 1) {
+                            continue; // noise cutoff is too high
+                        } else if (volumeNoiseCutOff.getMax() > 0) {
+                            if ((getNoise(pos[0], pos[1], pos[2]) + 1) / 2 < volumeNoiseCutOff.getValue(random)) {
                                 continue; // noise level below cutoff
+                            }
                         }
-                        if (blockDensity.getIntValue(random) < 1) continue; // density check failed
+                        if (blockDensity.getIntValue(random) < 1) {
+                            continue; // density check failed
+                        }
 
                         // place block
                         callback.replaceBlock(new Vector3i(x, y, z), 1, blockProvider.getBlock((float) Math.sqrt(r2)));

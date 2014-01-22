@@ -6,18 +6,20 @@ import org.terasology.anotherWorld.ChunkInformation;
 import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
 
-import java.util.Collection;
-
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class BeachDecorator implements ChunkDecorator {
-    private Collection<Block> replacedBlocks;
+    private BlockFilter blockFilter;
     private Block beachBlock;
+    private int aboveSeaLevel;
+    private int belowSeaLevel;
 
-    public BeachDecorator(Collection<Block> replacedBlocks, Block beachBlock) {
-        this.replacedBlocks = replacedBlocks;
+    public BeachDecorator(BlockFilter blockFilter, Block beachBlock, int aboveSeaLevel, int belowSeaLevel) {
+        this.blockFilter = blockFilter;
         this.beachBlock = beachBlock;
+        this.aboveSeaLevel = aboveSeaLevel;
+        this.belowSeaLevel = belowSeaLevel;
     }
 
     @Override
@@ -29,9 +31,9 @@ public class BeachDecorator implements ChunkDecorator {
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
                 int groundLevel = chunkInformation.getGroundLevel(x, z);
-                if (groundLevel <= seaLevel + 2 || groundLevel >= seaLevel - 2) {
-                    for (int y = seaLevel - 2; y < seaLevel + 2; y++) {
-                        if (replacedBlocks.contains(chunk.getBlock(x, y, z))) {
+                if (groundLevel <= seaLevel + aboveSeaLevel && groundLevel >= seaLevel - belowSeaLevel) {
+                    for (int y = seaLevel - belowSeaLevel; y < seaLevel + aboveSeaLevel; y++) {
+                        if (blockFilter.accepts(chunk, x, y, z)) {
                             chunk.setBlock(x, y, z, beachBlock);
                         }
                     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.ore;
+package org.terasology.anotherWorld.decorator.structure;
 
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.math.Vector3i;
@@ -22,13 +22,13 @@ import org.terasology.world.block.Block;
 
 import java.util.List;
 
-public class ClusterOreDefinition extends AbstractMultiChunkOreDefinition {
+public class ClusterStructureDefinition extends AbstractMultiChunkStructureDefinition {
     private Block block;
 
     private PDist pocketYLevel;
     private PDist clusterRichness;
 
-    public ClusterOreDefinition(PDist frequency, Block block, PDist clusterRichness, PDist pocketYLevel) {
+    public ClusterStructureDefinition(PDist frequency, Block block, PDist clusterRichness, PDist pocketYLevel) {
         super(frequency);
         this.block = block;
         this.clusterRichness = clusterRichness;
@@ -118,13 +118,19 @@ public class ClusterOreDefinition extends AbstractMultiChunkOreDefinition {
                 int zMax = (int) Math.min(chunkSize.z - 1, Math.ceil(zCenter + rad[s]));
                 for (int tgtX = xMin; tgtX <= xMax; tgtX++) {
                     double normXDist = (tgtX + 0.5D - xCenter) / rad[s];
-                    if (normXDist * normXDist >= 1.0D) continue;
+                    if (normXDist * normXDist >= 1.0D) {
+                        continue;
+                    }
                     for (int tgtY = yMin; tgtY <= yMax; tgtY++) {
                         double normYDist = (tgtY + 0.5D - yCenter) / rad[s];
-                        if (normXDist * normXDist + normYDist * normYDist >= 1.0D) continue;
+                        if (normXDist * normXDist + normYDist * normYDist >= 1.0D) {
+                            continue;
+                        }
                         for (int tgtZ = zMin; tgtZ <= zMax; tgtZ++) {
                             double normZDist = (tgtZ + 0.5D - zCenter) / rad[s];
-                            if (normXDist * normXDist + normYDist * normYDist + normZDist * normZDist >= 1.0D) continue;
+                            if (normXDist * normXDist + normYDist * normYDist + normZDist * normZDist >= 1.0D) {
+                                continue;
+                            }
 
                             callback.replaceBlock(new Vector3i(tgtX, tgtY, tgtZ), 1, block);
                         }
