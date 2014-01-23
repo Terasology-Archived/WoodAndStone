@@ -15,6 +15,9 @@
  */
 package org.terasology.was;
 
+import org.terasology.anotherWorld.BiomeProvider;
+import org.terasology.anotherWorld.ChunkDecorator;
+import org.terasology.anotherWorld.ChunkInformation;
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
@@ -29,6 +32,7 @@ import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
 import org.terasology.anotherWorld.decorator.structure.PocketStructureDefinition;
+import org.terasology.anotherWorld.decorator.structure.VeinsStructureDefinition;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
@@ -37,6 +41,9 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.Chunk;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.liquid.LiquidType;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -84,29 +91,35 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 }, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f))
         );
 
-//        addChunkDecorator(
-//                new ChunkDecorator() {
-//                    @Override
-//                    public void initializeWithSeed(String seed) {
-//                    }
-//
-//                    @Override
-//                    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
-//                        for (int x=0; x<16; x++) {
-//                            for (int z=0; z<16; z++) {
-//                                int level = chunkInformation.getGroundLevel(x, z);
-//                                for (int y=1; y<=level; y++) {
-//                                    if (chunk.getBlock(x, y, z) == stone) {
-//                                        chunk.setBlock(x, y, z, BlockManager.getAir());
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
+        List<Block> blocksToRemove = Arrays.asList(stone, sand, grass, dirt);
+        //removeBlocks(blocksToRemove);
     }
 
-    private void setupOres(Block stone, final Block coal, Block iron, Block gold) {
+    private void removeBlocks(List<Block> blocksToRemove) {
+        final BlockCollectionFilter filter = new BlockCollectionFilter(blocksToRemove);
+        addChunkDecorator(
+                new ChunkDecorator() {
+                    @Override
+                    public void initializeWithSeed(String seed) {
+                    }
+
+                    @Override
+                    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
+                        for (int x = 0; x < 16; x++) {
+                            for (int z = 0; z < 16; z++) {
+                                int level = chunkInformation.getGroundLevel(x, z);
+                                for (int y = 1; y <= level; y++) {
+                                    if (filter.accepts(chunk, x, y, z)) {
+                                        chunk.setBlock(x, y, z, BlockManager.getAir());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void setupOres(Block stone, final Block coal, final Block iron, final Block gold) {
         BlockFilter replacedBlocks = new BlockCollectionFilter(stone);
         OreDecorator oreDecorator = new OreDecorator(replacedBlocks);
 
@@ -118,9 +131,44 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                             public Block getBlock(float distanceFromCenter) {
                                 return coal;
                             }
-                        }, new PDist(0.8f, 0.2f), new PDist(4f, 1f), new PDist(2f, 1f), new PDist(50f, 20f), new PDist(0f, 0.35f),
+                        }, new PDist(0.9f, 0.15f), new PDist(4f, 1f), new PDist(2f, 1f), new PDist(50f, 20f), new PDist(0f, 0.35f),
                         new PDist(1f, 0f), new PDist(0.7f, 0.1f), new PDist(0.2f, 0f), new PDist(0f, 0f)));
 
+        oreDecorator.addOreDefinition(
+                "Core:IronOre",
+                new VeinsStructureDefinition(
+                        new PDist(0.5f, 0.15f),
+                        new VeinsStructureDefinition.VeinsBlockProvider() {
+                            @Override
+                            public Block getClusterBlock(float distanceFromCenter) {
+                                return iron;
+                            }
+
+                            @Override
+                            public Block getBranchBlock() {
+                                return iron;
+                            }
+                        }, new PDist(2f, 0.3f), new PDist(35f, 10f), new PDist(4f, 1f), new PDist(0f, 0.55f), new PDist(45f, 5f),
+                        new PDist(15f, 0f), new PDist(0f, 0f), new PDist(0f, 0f), new PDist(10f, 2.5f), new PDist(0.5f, 0.5f),
+                        new PDist(0.5f, 0.3f), new PDist(1f, 0f), new PDist(1f, 0f)));
+
+        oreDecorator.addOreDefinition(
+                "Core:GoldOre",
+                new VeinsStructureDefinition(
+                        new PDist(0.4f, 0.1f),
+                        new VeinsStructureDefinition.VeinsBlockProvider() {
+                            @Override
+                            public Block getClusterBlock(float distanceFromCenter) {
+                                return gold;
+                            }
+
+                            @Override
+                            public Block getBranchBlock() {
+                                return gold;
+                            }
+                        }, new PDist(2f, 0.3f), new PDist(20f, 12f), new PDist(4f, 1f), new PDist(0f, 0.55f), new PDist(45f, 5f),
+                        new PDist(15f, 0f), new PDist(0f, 0f), new PDist(0f, 0f), new PDist(10f, 2.5f), new PDist(0.5f, 0.5f),
+                        new PDist(0.5f, 0.3f), new PDist(1f, 0f), new PDist(1f, 0f)));
 
         addChunkDecorator(oreDecorator);
     }
