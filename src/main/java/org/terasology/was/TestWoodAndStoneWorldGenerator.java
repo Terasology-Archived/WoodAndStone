@@ -36,6 +36,8 @@ import org.terasology.anotherWorld.decorator.structure.VeinsStructureDefinition;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
+import org.terasology.growingFlora.BlockFloraDefinition;
+import org.terasology.growingFlora.FloraDecorator;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.Chunk;
@@ -50,6 +52,7 @@ import java.util.List;
  */
 @RegisterWorldGenerator(id = "woodAndStoneTest", displayName = "Test Wood and Stone", description = "Generates the world for playing 'Wood and Stone' content mod")
 public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
+    private BlockManager blockManager;
 
     public TestWoodAndStoneWorldGenerator(SimpleUri uri) {
         super(uri);
@@ -59,7 +62,7 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     protected void appendGenerators() {
         setSeaLevel(50);
 
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        blockManager = CoreRegistry.get(BlockManager.class);
 
         final Block mantle = blockManager.getBlock("Core:MantleStone");
         final Block stone = blockManager.getBlock("Core:Stone");
@@ -91,8 +94,34 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 }, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f))
         );
 
-        List<Block> blocksToRemove = Arrays.asList(stone, sand, grass, dirt);
+        setupFlora(grass, sand, snow);
+
+        //List<Block> blocksToRemove = Arrays.asList(stone, sand, grass, dirt);
         //removeBlocks(blocksToRemove);
+    }
+
+    private void setupFlora(Block grass, Block sand, Block snow) {
+        BlockFilter normalTreesGround = new BlockCollectionFilter(Arrays.asList(grass, snow));
+
+        FloraDecorator floraDecorator = new FloraDecorator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
+
+        // Forest
+        floraDecorator.addTreeDefinition(ForestBiome.ID,
+                new BlockFloraDefinition(1f, 0.8f, blockManager.getBlock("GrowingFlora:OakSaplingGenerated"), normalTreesGround));
+        floraDecorator.addTreeDefinition(ForestBiome.ID,
+                new BlockFloraDefinition(0.5f, 0.8f, blockManager.getBlock("GrowingFlora:PineSaplingGenerated"), normalTreesGround));
+
+        // Plains
+        floraDecorator.addTreeDefinition(PlainsBiome.ID,
+                new BlockFloraDefinition(1f, 0.2f, blockManager.getBlock("GrowingFlora:OakSaplingGenerated"), normalTreesGround));
+
+        // Tundra
+        floraDecorator.addTreeDefinition(TundraBiome.ID,
+                new BlockFloraDefinition(0.2f, 0.1f, blockManager.getBlock("GrowingFlora:OakSaplingGenerated"), normalTreesGround));
+        floraDecorator.addTreeDefinition(TundraBiome.ID,
+                new BlockFloraDefinition(1f, 0.7f, blockManager.getBlock("GrowingFlora:PineSaplingGenerated"), normalTreesGround));
+
+        addChunkDecorator(floraDecorator);
     }
 
     private void removeBlocks(List<Block> blocksToRemove) {
