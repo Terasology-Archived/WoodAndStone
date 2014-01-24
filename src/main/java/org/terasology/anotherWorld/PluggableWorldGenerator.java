@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TaigaBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
@@ -58,6 +59,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
     private LandscapeGenerator landscapeGenerator;
     private SimpleUri uri;
+    private float biomeSize = 0.7f;
 
     public PluggableWorldGenerator(SimpleUri uri) {
         this.uri = uri;
@@ -83,6 +85,15 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         this.maxLevel = maxLevel;
     }
 
+    /**
+     * 0=very small, 1=very large
+     *
+     * @param biomeSize
+     */
+    public void setBiomeSize(float biomeSize) {
+        this.biomeSize = biomeSize;
+    }
+
     @Override
     public final void initialize() {
     }
@@ -94,7 +105,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         initializeCoreBiomes();
 //        loadBiomes();
 
-        biomeProvider = new BiomeProvider(seed, biomes, seaLevel, maxLevel);
+        biomeProvider = new BiomeProvider(seed, biomes, seaLevel, maxLevel, biomeSize);
 
         appendGenerators();
 
@@ -120,6 +131,8 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         biomes.put(plains.getBiomeId(), plains);
         Biome tundra = new TundraBiome();
         biomes.put(tundra.getBiomeId(), tundra);
+        Biome taiga = new TaigaBiome();
+        biomes.put(taiga.getBiomeId(), taiga);
     }
 
     private void loadBiomes() {
@@ -178,7 +191,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     public void createChunk(Chunk chunk) {
         ChunkInformation chunkInformation = new ChunkInformation();
 
-        landscapeGenerator.generateInChunk(chunk, chunkInformation, seaLevel, maxLevel);
+        landscapeGenerator.generateInChunk(chunk, chunkInformation, seaLevel, 255);
 
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
             chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seaLevel);

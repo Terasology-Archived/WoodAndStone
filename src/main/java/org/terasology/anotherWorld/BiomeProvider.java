@@ -32,12 +32,12 @@ public class BiomeProvider {
     private int seaLevel;
     private int maxLevel;
 
-    public BiomeProvider(String worldSeed, Map<String, Biome> biomes, int seaLevel, int maxLevel) {
+    public BiomeProvider(String worldSeed, Map<String, Biome> biomes, int seaLevel, int maxLevel, float biomeSize) {
         this.biomes = biomes;
         this.seaLevel = seaLevel;
         this.maxLevel = maxLevel;
 
-        conditions = new ConditionsBaseProvider(worldSeed);
+        conditions = new ConditionsBaseProvider(worldSeed, biomeSize, 0.3f, 1f, 0.3f, 1f);
     }
 
     public Biome getBiomeById(String biomeId) {
@@ -84,27 +84,27 @@ public class BiomeProvider {
 
     public float getTemperature(int x, int y, int z) {
         float temperatureBase = conditions.getTemperatureAtSeaLevel(x, z);
-        if (y == seaLevel) {
+        if (y <= seaLevel) {
             return temperatureBase;
         }
 
-        if (y > seaLevel) {
-            return temperatureBase / ((y - seaLevel) / (maxLevel - seaLevel) + 1);
-        } else {
-            return temperatureBase * seaLevel / (seaLevel - y);
+        if (y >= maxLevel) {
+            return 0;
         }
+        // The higher above see level - the colder
+        return temperatureBase * (1f * (maxLevel - y) / (maxLevel - seaLevel));
     }
 
     public float getHumidity(int x, int y, int z) {
         float humidityBase = conditions.getHumidityAtSeaLevel(x, z);
-        if (y == seaLevel) {
+        if (y <= seaLevel) {
             return humidityBase;
         }
 
-        if (y > seaLevel) {
-            return humidityBase / ((y - seaLevel) / (maxLevel - seaLevel) + 1);
-        } else {
-            return humidityBase / ((seaLevel - y) / (maxLevel - y) + 1);
+        if (y >= maxLevel) {
+            return 0;
         }
+        // The higher above see level - the less humid
+        return humidityBase * (1f * (maxLevel - y) / (maxLevel - seaLevel));
     }
 }

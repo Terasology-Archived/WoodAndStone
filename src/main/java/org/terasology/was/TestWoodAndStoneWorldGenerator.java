@@ -23,6 +23,7 @@ import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TaigaBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
@@ -218,10 +219,11 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         layering.addBiomeLayers(ForestBiome.ID, forestAndPlainsDef);
         layering.addBiomeLayers(PlainsBiome.ID, forestAndPlainsDef);
 
-        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition();
-        tundraDef.addLayerDefinition(new PDist(1, 0), replacedBlocks, snow, false);
-        tundraDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
-        layering.addBiomeLayers(TundraBiome.ID, tundraDef);
+        DefaultLayersDefinition tundraAndTaigaDef = new DefaultLayersDefinition();
+        tundraAndTaigaDef.addLayerDefinition(new PDist(1, 0), replacedBlocks, snow, false);
+        tundraAndTaigaDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
+        layering.addBiomeLayers(TundraBiome.ID, tundraAndTaigaDef);
+        layering.addBiomeLayers(TaigaBiome.ID, tundraAndTaigaDef);
 
         addChunkDecorator(layering);
     }
