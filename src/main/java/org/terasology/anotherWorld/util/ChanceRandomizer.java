@@ -23,12 +23,17 @@ import java.util.LinkedList;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class ChanceRandomizer<T> {
-    private static final int granularity = 1000;
+    private int granularity;
 
     private float chanceSum;
     private LinkedList<ObjectChance<T>> objectChances = new LinkedList<>();
 
-    private Object[] lookupArray = new Object[granularity];
+    private Object[] lookupArray;
+
+    public ChanceRandomizer(int granularity) {
+        this.granularity = granularity;
+        lookupArray = new Object[granularity];
+    }
 
     public void addChance(float chance, T object) {
         objectChances.add(new ObjectChance<T>(chance, object));
@@ -38,7 +43,7 @@ public class ChanceRandomizer<T> {
     public void initialize() {
         int index = 0;
         for (ObjectChance<T> objectChance : objectChances) {
-            int maxIndex = (int) ((objectChance.chance / chanceSum) * granularity);
+            int maxIndex = index + ((int) ((objectChance.chance / chanceSum) * granularity));
             for (int i = index; i < maxIndex; i++) {
                 lookupArray[i] = objectChance.object;
             }

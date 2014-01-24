@@ -19,11 +19,17 @@ import org.terasology.anotherWorld.Biome;
 import org.terasology.anotherWorld.BiomeProvider;
 import org.terasology.anotherWorld.ChunkDecorator;
 import org.terasology.anotherWorld.ChunkInformation;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.world.chunks.Chunk;
+import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class LayeringDecorator implements ChunkDecorator {
     private Map<String, LayersDefinition> biomeLayers = new HashMap<>();
     private String seed;
@@ -61,13 +67,18 @@ public class LayeringDecorator implements ChunkDecorator {
         if (biomeParentId != null) {
             Biome parentBiome = biomeProvider.getBiomeById(biomeParentId);
             if (parentBiome != null) {
-                return findMatchingLayers(biomeProvider, biome);
+                return findMatchingLayers(biomeProvider, parentBiome);
             }
         }
         return null;
     }
 
     private void loadLayers() {
-        // Use reflections to find classes with RegisterLayersDefinition annotation
+        WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
+        List<LayersDefinition> loadedLayersDefinitions = pluginLibrary.instantiateAllWithAnnotation(RegisterLayersDefinition.class, LayersDefinition.class);
+        for (LayersDefinition layersDefinition : loadedLayersDefinitions) {
+            String biomeId = layersDefinition.getClass().getAnnotation(RegisterLayersDefinition.class).biomeId();
+            addBiomeLayers(biomeId, layersDefinition);
+        }
     }
 }

@@ -22,13 +22,19 @@ import org.terasology.anotherWorld.decorator.BlockFilter;
 import org.terasology.anotherWorld.decorator.structure.Structure;
 import org.terasology.anotherWorld.decorator.structure.StructureDefinition;
 import org.terasology.math.Vector3i;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
+import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class OreDecorator implements ChunkDecorator {
     private Map<String, StructureDefinition> oreDefinitions = new LinkedHashMap<>();
     private BlockFilter blockFilter;
@@ -61,7 +67,12 @@ public class OreDecorator implements ChunkDecorator {
     }
 
     private void loadOres() {
-        // Use reflections to find classes with RegisterLayersDefinition annotation
+        WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
+        List<StructureDefinition> loadedOreDefinitions = pluginLibrary.instantiateAllWithAnnotation(RegisterOreDefinition.class, StructureDefinition.class);
+        for (StructureDefinition oreDefinition : loadedOreDefinitions) {
+            String oreId = oreDefinition.getClass().getAnnotation(RegisterOreDefinition.class).oreId();
+            addOreDefinition(oreId, oreDefinition);
+        }
     }
 
     private class StructureCallbackImpl implements Structure.StructureCallback {

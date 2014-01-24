@@ -19,6 +19,9 @@ import org.terasology.anotherWorld.Biome;
 
 import javax.vecmath.Vector2f;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class ForestBiome implements Biome {
     public static final String ID = "AnotherWorld:Forest";
     private Vector2f sweetSpot = new Vector2f(0.5f, 0.5f);

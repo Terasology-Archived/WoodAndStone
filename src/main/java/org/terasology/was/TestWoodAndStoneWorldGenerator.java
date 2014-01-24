@@ -104,23 +104,26 @@ public class TestWoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     private void setupFlora(Block grass, Block sand, Block snow) {
         BlockFilter normalTreesGround = new BlockCollectionFilter(Arrays.asList(grass, snow));
 
+        Block oakSapling = blockManager.getBlock("GrowingFlora:OakSaplingGenerated");
+        Block pineSapling = blockManager.getBlock("GrowingFlora:PineSaplingGenerated");
+
         FloraDecorator floraDecorator = new FloraDecorator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
 
         // Forest
         floraDecorator.addTreeDefinition(ForestBiome.ID,
-                new BlockFloraDefinition(1f, 0.8f, blockManager.getBlock("GrowingFlora:OakSaplingGenerated"), normalTreesGround));
+                new BlockFloraDefinition(0.9f, 0.8f, oakSapling, normalTreesGround));
         floraDecorator.addTreeDefinition(ForestBiome.ID,
-                new BlockFloraDefinition(0.5f, 0.8f, blockManager.getBlock("GrowingFlora:PineSaplingGenerated"), normalTreesGround));
+                new BlockFloraDefinition(0.1f, 0.8f, pineSapling, normalTreesGround));
 
         // Plains
         floraDecorator.addTreeDefinition(PlainsBiome.ID,
-                new BlockFloraDefinition(1f, 0.2f, blockManager.getBlock("GrowingFlora:OakSaplingGenerated"), normalTreesGround));
+                new BlockFloraDefinition(1f, 0.3f, oakSapling, normalTreesGround));
 
         // Tundra
         floraDecorator.addTreeDefinition(TundraBiome.ID,
-                new BlockFloraDefinition(0.2f, 0.1f, blockManager.getBlock("GrowingFlora:OakSaplingGenerated"), normalTreesGround));
+                new BlockFloraDefinition(0.1f, 0.1f, oakSapling, normalTreesGround));
         floraDecorator.addTreeDefinition(TundraBiome.ID,
-                new BlockFloraDefinition(1f, 0.7f, blockManager.getBlock("GrowingFlora:PineSaplingGenerated"), normalTreesGround));
+                new BlockFloraDefinition(0.9f, 0.7f, pineSapling, normalTreesGround));
 
         addChunkDecorator(floraDecorator);
     }

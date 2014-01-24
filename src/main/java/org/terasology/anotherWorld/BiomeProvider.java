@@ -17,8 +17,17 @@ package org.terasology.anotherWorld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.anotherWorld.coreBiome.DesertBiome;
+import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TaigaBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 import javax.vecmath.Vector2f;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,16 +37,40 @@ public class BiomeProvider {
     private static final Logger logger = LoggerFactory.getLogger(BiomeProvider.class);
 
     private ConditionsBaseProvider conditions;
-    private Map<String, Biome> biomes;
+    private Map<String, Biome> biomes = new HashMap<>();
+
     private int seaLevel;
     private int maxLevel;
 
-    public BiomeProvider(String worldSeed, Map<String, Biome> biomes, int seaLevel, int maxLevel, float biomeSize) {
-        this.biomes = biomes;
+    public BiomeProvider(String worldSeed, int seaLevel, int maxLevel, float biomeSize) {
         this.seaLevel = seaLevel;
         this.maxLevel = maxLevel;
 
         conditions = new ConditionsBaseProvider(worldSeed, biomeSize, 0.3f, 1f, 0.3f, 1f);
+
+        initializeCoreBiomes();
+        loadBiomes();
+    }
+
+    private void initializeCoreBiomes() {
+        Biome desert = new DesertBiome();
+        biomes.put(desert.getBiomeId(), desert);
+        Biome forest = new ForestBiome();
+        biomes.put(forest.getBiomeId(), forest);
+        Biome plains = new PlainsBiome();
+        biomes.put(plains.getBiomeId(), plains);
+        Biome tundra = new TundraBiome();
+        biomes.put(tundra.getBiomeId(), tundra);
+        Biome taiga = new TaigaBiome();
+        biomes.put(taiga.getBiomeId(), taiga);
+    }
+
+    private void loadBiomes() {
+        WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
+        List<Biome> loadedBiomes = pluginLibrary.instantiateAllWithAnnotation(RegisterBiome.class, Biome.class);
+        for (Biome biome : loadedBiomes) {
+            biomes.put(biome.getBiomeId(), biome);
+        }
     }
 
     public Biome getBiomeById(String biomeId) {

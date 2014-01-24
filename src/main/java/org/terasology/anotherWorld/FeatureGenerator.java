@@ -18,6 +18,9 @@ package org.terasology.anotherWorld;
 import org.terasology.math.Vector3i;
 import org.terasology.world.ChunkView;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public interface FeatureGenerator {
     void initializeWithSeed(String seed);
 

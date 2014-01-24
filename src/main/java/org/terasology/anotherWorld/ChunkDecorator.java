@@ -17,6 +17,9 @@ package org.terasology.anotherWorld;
 
 import org.terasology.world.chunks.Chunk;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public interface ChunkDecorator {
     void initializeWithSeed(String seed);
 

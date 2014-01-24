@@ -15,7 +15,7 @@
  */
 package org.terasology.growingFlora;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import org.terasology.anotherWorld.Biome;
 import org.terasology.anotherWorld.BiomeProvider;
@@ -40,7 +40,7 @@ public class FloraDecorator implements ChunkDecorator {
     private PDist bushTriesPerChunk;
     private PDist foliageTriesPerChunk;
 
-    private Multimap<String, FloraDefinition> treeDefinitions = HashMultimap.create();
+    private Multimap<String, FloraDefinition> treeDefinitions = LinkedHashMultimap.create();
     private Map<String, ChanceRandomizer<FloraDefinition>> treeDefinitionsCache = new HashMap<>();
 
     public FloraDecorator(PDist treeTriesPerChunk, PDist bushTriesPerChunk, PDist foliageTriesPerChunk) {
@@ -68,13 +68,13 @@ public class FloraDecorator implements ChunkDecorator {
             int x = random.nextInt(chunk.getChunkSizeX());
             int z = random.nextInt(chunk.getChunkSizeZ());
 
-            int y = chunkInformation.getGroundLevel(x, z);
+            int groundLevel = chunkInformation.getGroundLevel(x, z);
 
-            Biome biome = biomeProvider.getBiomeAt(x, y, z);
+            Biome biome = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), groundLevel, chunk.getBlockWorldPosZ(z));
             ChanceRandomizer<FloraDefinition> definitionsForBiome = getDefinitionsForBiome(biome, biomeProvider, treeDefinitionsCache, treeDefinitions);
             FloraDefinition treeDefinition = definitionsForBiome.randomizeObject(random);
             if (treeDefinition != null && random.nextFloat() < treeDefinition.getProbability()) {
-                treeDefinition.plantSaplingOnGround(chunk, x, y, z);
+                treeDefinition.plantSaplingOnGround(chunk, x, groundLevel, z);
             }
         }
 
@@ -91,7 +91,7 @@ public class FloraDecorator implements ChunkDecorator {
             return result;
         }
 
-        result = new ChanceRandomizer<>();
+        result = new ChanceRandomizer<>(100);
         Biome biomeToAdd = biome;
         while (biomeToAdd != null) {
             for (FloraDefinition floraDefinition : definitions.get(biome.getBiomeId())) {

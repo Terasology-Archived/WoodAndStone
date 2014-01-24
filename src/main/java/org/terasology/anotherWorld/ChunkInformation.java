@@ -20,6 +20,9 @@ import org.terasology.math.Vector2i;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class ChunkInformation {
     private Map<Vector2i, Integer> groundLevel = new HashMap<>();
 

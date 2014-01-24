@@ -24,6 +24,9 @@ import org.terasology.world.block.Block;
 
 import java.util.List;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class PocketStructureDefinition extends AbstractMultiChunkStructureDefinition {
     private PocketBlockProvider blockProvider;
     private PDist pocketRadius;

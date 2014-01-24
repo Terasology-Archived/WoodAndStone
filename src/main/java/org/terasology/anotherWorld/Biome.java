@@ -15,9 +15,14 @@
  */
 package org.terasology.anotherWorld;
 
+import org.terasology.world.generator.plugin.WorldGeneratorPlugin;
+
 import javax.vecmath.Vector2f;
 
-public interface Biome {
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public interface Biome extends WorldGeneratorPlugin {
     /**
      * A unique identifier for this biome. Used by mods to map their behaviours based on the id.
      *

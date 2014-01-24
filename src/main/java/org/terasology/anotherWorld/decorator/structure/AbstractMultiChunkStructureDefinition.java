@@ -26,6 +26,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public abstract class AbstractMultiChunkStructureDefinition implements StructureDefinition {
     private PDist frequency;
 

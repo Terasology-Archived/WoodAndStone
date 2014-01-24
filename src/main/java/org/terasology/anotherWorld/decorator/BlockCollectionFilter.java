@@ -37,6 +37,9 @@ public class BlockCollectionFilter implements BlockFilter {
 
     @Override
     public boolean accepts(Chunk chunk, int x, int y, int z) {
+        if (chunk.getBlock(x, y, z).getURI().getFamilyName().equalsIgnoreCase("snow")) {
+            int sdfasdf = 0;
+        }
         return blocks.contains(chunk.getBlock(x, y, z));
     }
 }

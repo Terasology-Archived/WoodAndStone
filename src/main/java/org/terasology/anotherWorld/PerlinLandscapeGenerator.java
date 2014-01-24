@@ -23,6 +23,9 @@ import org.terasology.world.chunks.Chunk;
 import org.terasology.world.liquid.LiquidData;
 import org.terasology.world.liquid.LiquidType;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class PerlinLandscapeGenerator implements LandscapeGenerator {
     private BrownianNoise2D noise;
 

@@ -25,6 +25,9 @@ import org.terasology.world.chunks.Chunk;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 public class DefaultLayersDefinition implements LayersDefinition {
     private List<LayerDefinition> layerDefinitions = new LinkedList<>();
 

@@ -16,7 +16,11 @@
 package org.terasology.anotherWorld.decorator.layering;
 
 import org.terasology.world.chunks.Chunk;
+import org.terasology.world.generator.plugin.WorldGeneratorPlugin;
 
-public interface LayersDefinition {
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public interface LayersDefinition extends WorldGeneratorPlugin {
     void generateInChunk(String seed, int groundLevel, int seaLevel, Chunk chunk, int x, int y);
 }
