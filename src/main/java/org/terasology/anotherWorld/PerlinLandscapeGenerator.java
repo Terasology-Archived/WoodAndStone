@@ -51,14 +51,14 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel, int maxLevel) {
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, TerrainShapeProvider terrainShape, int seaLevel, int maxLevel) {
         int chunkXStart = chunk.getBlockWorldPosX(0);
         int chunkZStart = chunk.getBlockWorldPosZ(0);
 
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
-                double baseNoise = this.noise.noise(0.0008 * (chunkXStart + x), 0.0008 * (chunkZStart + z)) / noiseScale;
-                float noise = (float) TeraMath.clamp((baseNoise + 1.0) / 2);
+                float hillyness = terrainShape.getHillyness(chunkXStart + x, chunkZStart + z);
+                float noise = getNoiseInWorld(hillyness, chunkXStart + x, chunkZStart + z);
                 int height;
                 if (noise < seaFrequency) {
                     height = (int) (seaLevel * noise / seaFrequency);
@@ -87,8 +87,25 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
         }
     }
 
+    private float getNoiseInWorld(float hillyness, int worldX, int worldZ) {
+        double noise = 0;
+        int scanArea = (int) ((1 - hillyness) * 50);
+        int divider = 0;
+        // Scan and average heights in the circle of blocks with diameter of "scanArea" (based on hillyness)
+        for (int x = worldX - scanArea; x <= worldX + scanArea; x++) {
+            int zScan = (int) Math.sqrt(scanArea * scanArea - (x - worldX) * (x - worldX));
+            for (int z = worldZ - zScan; z <= worldZ + zScan; z++) {
+                noise += this.noise.noise(0.004 * x, 0.004 * z) / noiseScale;
+                divider++;
+            }
+        }
+        noise /= divider;
+        return (float) TeraMath.clamp((noise + 1.0) / 2);
+    }
+
     private float interpretAlpha(float alphaAboveseaLevel) {
-        return alphaAboveseaLevel;
-//        return (float) Math.pow(alphaAboveseaLevel, 1.8);
+        // Take into account that terrain height is not uniform, but skewed towards low parts (less mountains,
+        // more lowlands)
+        return (float) Math.pow(alphaAboveseaLevel, 1.5);
     }
 }

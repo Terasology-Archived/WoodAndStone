@@ -37,19 +37,25 @@ public class BiomeProvider {
     private static final Logger logger = LoggerFactory.getLogger(BiomeProvider.class);
 
     private ConditionsBaseProvider conditions;
+    private TerrainShapeProvider terrainShape;
     private Map<String, Biome> biomes = new HashMap<>();
 
     private int seaLevel;
     private int maxLevel;
 
-    public BiomeProvider(String worldSeed, int seaLevel, int maxLevel, float biomeSize) {
+    public BiomeProvider(String worldSeed, int seaLevel, int maxLevel, float biomeSize, float terrainDiversity) {
         this.seaLevel = seaLevel;
         this.maxLevel = maxLevel;
 
         conditions = new ConditionsBaseProvider(worldSeed, biomeSize, 0.3f, 1f, 0.3f, 1f);
+        terrainShape = new TerrainShapeProvider(worldSeed, terrainDiversity);
 
         initializeCoreBiomes();
         loadBiomes();
+    }
+
+    public TerrainShapeProvider getTerrainShape() {
+        return terrainShape;
     }
 
     private void initializeCoreBiomes() {
@@ -78,8 +84,8 @@ public class BiomeProvider {
     }
 
     public Biome getBaseBiomeAt(int x, int z) {
-        float temperatureBase = conditions.getTemperatureAtSeaLevel(x, z);
-        float humidityBase = conditions.getHumidityAtSeaLevel(x, z);
+        float temperatureBase = conditions.getBaseTemperature(x, z);
+        float humidityBase = conditions.getBaseHumidity(x, z);
 
         return getBestBiomeMatch(temperatureBase, humidityBase);
     }
@@ -116,7 +122,7 @@ public class BiomeProvider {
     }
 
     public float getTemperature(int x, int y, int z) {
-        float temperatureBase = conditions.getTemperatureAtSeaLevel(x, z);
+        float temperatureBase = conditions.getBaseTemperature(x, z);
         if (y <= seaLevel) {
             return temperatureBase;
         }
@@ -129,7 +135,7 @@ public class BiomeProvider {
     }
 
     public float getHumidity(int x, int y, int z) {
-        float humidityBase = conditions.getHumidityAtSeaLevel(x, z);
+        float humidityBase = conditions.getBaseHumidity(x, z);
         if (y <= seaLevel) {
             return humidityBase;
         }

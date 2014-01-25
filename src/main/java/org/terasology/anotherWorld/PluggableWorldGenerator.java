@@ -46,7 +46,8 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
     private LandscapeGenerator landscapeGenerator;
     private SimpleUri uri;
-    private float biomeSize = 0.7f;
+    private float biomeDiversity = 0.5f;
+    private float terrainDiversity = 0.5f;
 
     public PluggableWorldGenerator(SimpleUri uri) {
         this.uri = uri;
@@ -73,12 +74,21 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     }
 
     /**
-     * 0=very small, 1=very large
+     * 0=changing slowly, 1=changing frequently
      *
-     * @param biomeSize
+     * @param biomeDiversity
      */
-    public void setBiomeSize(float biomeSize) {
-        this.biomeSize = biomeSize;
+    public void setBiomeDiversity(float biomeDiversity) {
+        this.biomeDiversity = biomeDiversity;
+    }
+
+    /**
+     * 0=changing slowly, 1=changing frequently
+     *
+     * @param terrainDiversity
+     */
+    public void setTerrainDiversity(float terrainDiversity) {
+        this.terrainDiversity = terrainDiversity;
     }
 
     @Override
@@ -89,7 +99,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     public void setWorldSeed(String seed) {
         this.seed = seed;
 
-        biomeProvider = new BiomeProvider(seed, seaLevel, maxLevel, biomeSize);
+        biomeProvider = new BiomeProvider(seed, seaLevel, maxLevel, biomeDiversity, terrainDiversity);
 
         appendGenerators();
 
@@ -122,7 +132,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     public void createChunk(Chunk chunk) {
         ChunkInformation chunkInformation = new ChunkInformation();
 
-        landscapeGenerator.generateInChunk(chunk, chunkInformation, seaLevel, 255);
+        landscapeGenerator.generateInChunk(chunk, chunkInformation, biomeProvider.getTerrainShape(), seaLevel, maxLevel);
 
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
             chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seaLevel);
@@ -142,5 +152,9 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     @Override
     public float getHumidity(float x, float y, float z) {
         return biomeProvider.getHumidity(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(y + 0.5f), TeraMath.floorToInt(z + 0.5f));
+    }
+
+    public float getTerrainShape(float x, float y, float z) {
+        return biomeProvider.getTerrainShape().getHillyness(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(z + 0.5f));
     }
 }
