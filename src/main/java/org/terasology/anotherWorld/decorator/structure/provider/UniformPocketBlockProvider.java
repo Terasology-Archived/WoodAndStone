@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.anotherWorld.decorator.layering;
+package org.terasology.anotherWorld.decorator.structure.provider;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.terasology.anotherWorld.decorator.structure.PocketStructureDefinition;
+import org.terasology.world.block.Block;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface RegisterLayersDefinition {
-    String biomeId();
+public class UniformPocketBlockProvider implements PocketStructureDefinition.PocketBlockProvider {
+    private Block block;
+
+    public UniformPocketBlockProvider(Block block) {
+        this.block = block;
+    }
+
+    @Override
+    public Block getBlock(float distanceFromCenter) {
+        return block;
+    }
 }

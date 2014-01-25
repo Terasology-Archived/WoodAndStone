@@ -68,9 +68,9 @@ public class OreDecorator implements ChunkDecorator {
 
     private void loadOres() {
         WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
-        List<StructureDefinition> loadedOreDefinitions = pluginLibrary.instantiateAllWithAnnotation(RegisterOreDefinition.class, StructureDefinition.class);
-        for (StructureDefinition oreDefinition : loadedOreDefinitions) {
-            String oreId = oreDefinition.getClass().getAnnotation(RegisterOreDefinition.class).oreId();
+        List<OreDefinition> loadedOreDefinitions = pluginLibrary.instantiateAllOfType(OreDefinition.class);
+        for (OreDefinition oreDefinition : loadedOreDefinitions) {
+            String oreId = oreDefinition.getOreId();
             addOreDefinition(oreId, oreDefinition);
         }
     }

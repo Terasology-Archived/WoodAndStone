@@ -40,8 +40,8 @@ public class LayeringDecorator implements ChunkDecorator {
         loadLayers();
     }
 
-    public void addBiomeLayers(String biomeId, LayersDefinition layersDefinition) {
-        biomeLayers.put(biomeId, layersDefinition);
+    public void addBiomeLayers(LayersDefinition layersDefinition) {
+        biomeLayers.put(layersDefinition.getBiomeId(), layersDefinition);
     }
 
     @Override
@@ -75,10 +75,9 @@ public class LayeringDecorator implements ChunkDecorator {
 
     private void loadLayers() {
         WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
-        List<LayersDefinition> loadedLayersDefinitions = pluginLibrary.instantiateAllWithAnnotation(RegisterLayersDefinition.class, LayersDefinition.class);
+        List<LayersDefinition> loadedLayersDefinitions = pluginLibrary.instantiateAllOfType(LayersDefinition.class);
         for (LayersDefinition layersDefinition : loadedLayersDefinitions) {
-            String biomeId = layersDefinition.getClass().getAnnotation(RegisterLayersDefinition.class).biomeId();
-            addBiomeLayers(biomeId, layersDefinition);
+            addBiomeLayers(layersDefinition);
         }
     }
 }

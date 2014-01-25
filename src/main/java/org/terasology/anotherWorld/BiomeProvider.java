@@ -67,7 +67,7 @@ public class BiomeProvider {
 
     private void loadBiomes() {
         WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
-        List<Biome> loadedBiomes = pluginLibrary.instantiateAllWithAnnotation(RegisterBiome.class, Biome.class);
+        List<Biome> loadedBiomes = pluginLibrary.instantiateAllOfType(Biome.class);
         for (Biome biome : loadedBiomes) {
             biomes.put(biome.getBiomeId(), biome);
         }

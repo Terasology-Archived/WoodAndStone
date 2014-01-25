@@ -1,0 +1,8 @@
+{
+    "Item": {
+        "name": "Chalcopyrite Ore Crystal",
+        "icon": "redpwdr",
+        "renderWithIcon": true,
+        "stackId": "WoodAndStone:ChalcopyriteOreCrystal"
+    }
+}

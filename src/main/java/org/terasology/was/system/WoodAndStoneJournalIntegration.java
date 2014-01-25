@@ -10,7 +10,7 @@ import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
 import org.terasology.logic.inventory.PickedUpItem;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.was.CraftingStationFormed;
+import org.terasology.was.event.CraftingStationFormed;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.event.CraftingStationUpgraded;

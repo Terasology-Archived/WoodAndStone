@@ -22,5 +22,7 @@ import org.terasology.world.generator.plugin.WorldGeneratorPlugin;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface LayersDefinition extends WorldGeneratorPlugin {
+    String getBiomeId();
+
     void generateInChunk(String seed, int groundLevel, int seaLevel, Chunk chunk, int x, int y);
 }

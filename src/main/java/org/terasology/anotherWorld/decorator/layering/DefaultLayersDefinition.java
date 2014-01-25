@@ -30,6 +30,16 @@ import java.util.List;
  */
 public class DefaultLayersDefinition implements LayersDefinition {
     private List<LayerDefinition> layerDefinitions = new LinkedList<>();
+    private String biomeId;
+
+    public DefaultLayersDefinition(String biomeId) {
+        this.biomeId = biomeId;
+    }
+
+    @Override
+    public String getBiomeId() {
+        return biomeId;
+    }
 
     public void addLayerDefinition(PDist thickness, BlockFilter blockFilter, Block block, boolean generateUnderSee) {
         layerDefinitions.add(new LayerDefinition(thickness, blockFilter, block, generateUnderSee));

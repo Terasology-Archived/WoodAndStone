@@ -1,4 +1,4 @@
-package org.terasology.was;
+package org.terasology.was.event;
 
 import org.terasology.entitySystem.event.Event;
 

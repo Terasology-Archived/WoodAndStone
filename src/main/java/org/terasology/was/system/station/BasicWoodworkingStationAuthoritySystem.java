@@ -28,7 +28,7 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
-import org.terasology.was.CraftingStationFormed;
+import org.terasology.was.event.CraftingStationFormed;
 import org.terasology.workstation.component.CraftingStationMaterialComponent;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
