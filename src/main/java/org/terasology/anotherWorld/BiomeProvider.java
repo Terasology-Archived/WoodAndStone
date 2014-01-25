@@ -168,6 +168,8 @@ public class BiomeProvider {
             matchPriority += sweetSpot.getTemperatureWeight() * (1 - Math.abs(sweetSpot.getTemperature() - temp));
             matchPriority += sweetSpot.getTerrainWeight() * (1 - Math.abs(sweetSpot.getTerrain() - terrain));
 
+            matchPriority *= biome.getRarity();
+
             if (matchPriority > maxPriority) {
                 chosenBiome = biome;
                 maxPriority = matchPriority;
