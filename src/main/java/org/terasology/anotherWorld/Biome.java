@@ -51,7 +51,7 @@ public interface Biome extends WorldGeneratorPlugin {
     float getRarity();
 
     /**
-     * Returns the sweet-spot for this biome in terms of: temperature, humidity, terra and height above sea level.
+     * Returns the sweet-spot for this biome in terms of: temperature, humidity, terrain and height above sea level.
      * Biome that matches best the specified criteria will be chosen for each block.
      *
      * @return
