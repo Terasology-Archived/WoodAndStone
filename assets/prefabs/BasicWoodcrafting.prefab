@@ -30,7 +30,8 @@
         "regenRate": 1,
         "waitBeforeRegen": 2
     },
-    "ActAsBlock" : {
-        "block" : "WoodAndStone:BasicWoodStation"
-    }
+    "ActAsBlock": {
+        "block": "WoodAndStone:BasicWoodStation"
+    },
+    "DropBlockInventory": {}
 }

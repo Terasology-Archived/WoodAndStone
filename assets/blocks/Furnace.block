@@ -1,0 +1,10 @@
+{
+    "tiles": {
+        "sides": "WoodAndStone:FurnaceSides",
+        "front": "WoodAndStone:FurnaceFront",
+        "topBottom": "WoodAndStone:FurnaceTopBottom"
+    },
+    "entity": {
+        "prefab": "WoodAndStone:Furnace"
+    }
+}
