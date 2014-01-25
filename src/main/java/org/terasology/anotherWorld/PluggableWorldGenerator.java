@@ -141,7 +141,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
 
     @Override
     public float getFog(float x, float y, float z) {
-        return biomeProvider.getBaseBiomeAt(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(z + 0.5f)).getFog();
+        return biomeProvider.getBiomeAt(TeraMath.floorToInt(x + 0.5f), TeraMath.floorToInt(y + 0.5f), TeraMath.floorToInt(z + 0.5f)).getFog();
     }
 
     @Override

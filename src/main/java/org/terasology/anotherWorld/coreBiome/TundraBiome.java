@@ -17,14 +17,13 @@ package org.terasology.anotherWorld.coreBiome;
 
 import org.terasology.anotherWorld.Biome;
 
-import javax.vecmath.Vector2f;
-
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class TundraBiome implements Biome {
     public static final String ID = "AnotherWorld:Tundra";
-    private Vector2f sweetSpot = new Vector2f(0.1f, 0.1f);
+    // Cold and dry
+    private SweetSpot sweetSpot = new DefaultSweetSpot(0f, 0.5f, 0f, 0.5f, 0f, 0f, 0f, 0f);
 
     @Override
     public String getBiomeId() {
@@ -47,7 +46,7 @@ public class TundraBiome implements Biome {
     }
 
     @Override
-    public Vector2f getSweetSpot() {
+    public SweetSpot getSweetSpot() {
         return sweetSpot;
     }
 

@@ -17,8 +17,6 @@ package org.terasology.anotherWorld;
 
 import org.terasology.world.generator.plugin.WorldGeneratorPlugin;
 
-import javax.vecmath.Vector2f;
-
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
@@ -53,12 +51,38 @@ public interface Biome extends WorldGeneratorPlugin {
     float getRarity();
 
     /**
-     * Returns the sweet-spot for this biome in terms of temperature and humidity. Returns a pair of floats:
-     * x=temperature, y=humidity
+     * Returns the sweet-spot for this biome in terms of: temperature, humidity, terra and height above sea level.
+     * Biome that matches best the specified criteria will be chosen for each block.
      *
      * @return
      */
-    Vector2f getSweetSpot();
+    SweetSpot getSweetSpot();
 
     float getFog();
+
+    /**
+     * Each value specifies what is the desired value for the field, for this biome to be allocated to a spot in the world.
+     * Biome also specifies how important this field is, when determining the best fit. For example, if a biome doesn't really
+     * care that much about temperature fitting the desired value, but does care about humidity to be around 0.9 (90%), than
+     * it should specify high weight for humidity, and low weight for temperature.
+     * All the values below have to be in range of 0<=value<=1.
+     * All the weights HAVE TO add up to 1.
+     */
+    public interface SweetSpot {
+        float getHumidity();
+
+        float getHumidityWeight();
+
+        float getTemperature();
+
+        float getTemperatureWeight();
+
+        float getTerrain();
+
+        float getTerrainWeight();
+
+        float getAboveSeaLevel();
+
+        float getAboveSeaLevelWeight();
+    }
 }

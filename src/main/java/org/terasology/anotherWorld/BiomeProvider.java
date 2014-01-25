@@ -22,10 +22,10 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.coreBiome.TaigaBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
-import javax.vecmath.Vector2f;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +75,37 @@ public class BiomeProvider {
         WorldGeneratorPluginLibrary pluginLibrary = CoreRegistry.get(WorldGeneratorPluginLibrary.class);
         List<Biome> loadedBiomes = pluginLibrary.instantiateAllOfType(Biome.class);
         for (Biome biome : loadedBiomes) {
-            biomes.put(biome.getBiomeId(), biome);
+            try {
+                validateBiome(biome);
+                biomes.put(biome.getBiomeId(), biome);
+            } catch (IllegalArgumentException exp) {
+                logger.error("Biome has invalid definition of a sweet-spot");
+            }
+        }
+    }
+
+    private void validateBiome(Biome biome) {
+        Biome.SweetSpot sweetSpot = biome.getSweetSpot();
+        validateValue(sweetSpot.getAboveSeaLevel());
+        validateValue(sweetSpot.getAboveSeaLevelWeight());
+        validateValue(sweetSpot.getHumidity());
+        validateValue(sweetSpot.getHumidityWeight());
+        validateValue(sweetSpot.getTemperature());
+        validateValue(sweetSpot.getTemperatureWeight());
+        validateValue(sweetSpot.getTerrain());
+        validateValue(sweetSpot.getTerrainWeight());
+
+        float weightTotal = sweetSpot.getAboveSeaLevelWeight() + sweetSpot.getHumidityWeight()
+                + sweetSpot.getTemperatureWeight() + sweetSpot.getTerrainWeight();
+
+        if (weightTotal > 1.0001 || weightTotal < 0.0009) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void validateValue(float value) {
+        if (value < 0 || value > 1) {
+            throw new IllegalArgumentException();
         }
     }
 
@@ -83,43 +113,14 @@ public class BiomeProvider {
         return biomes.get(biomeId);
     }
 
-    public Biome getBaseBiomeAt(int x, int z) {
-        float temperatureBase = conditions.getBaseTemperature(x, z);
-        float humidityBase = conditions.getBaseHumidity(x, z);
-
-        return getBestBiomeMatch(temperatureBase, humidityBase);
-    }
-
     public Biome getBiomeAt(int x, int y, int z) {
         float temp = getTemperature(x, y, z);
         float hum = getHumidity(x, y, z);
+        float terrain = terrainShape.getHillyness(x, z);
 
-        return getBestBiomeMatch(temp, hum);
+        return getBestBiomeMatch(temp, hum, terrain, y);
     }
 
-    private Biome getBestBiomeMatch(float temp, float hum) {
-        Biome chosenBiome = null;
-        float maxPriority = 0;
-
-        for (Biome biome : biomes.values()) {
-            final Vector2f sweetSpot = biome.getSweetSpot();
-            Vector2f conditions = new Vector2f(temp, hum);
-            conditions.sub(sweetSpot);
-            final float rarity = biome.getRarity();
-            float matchStrength = conditions.length();
-            if (matchStrength == 0) {
-                // Exact match
-                return biome;
-            }
-
-            float priority = rarity / matchStrength;
-            if (priority > maxPriority) {
-                chosenBiome = biome;
-                maxPriority = priority;
-            }
-        }
-        return chosenBiome;
-    }
 
     public float getTemperature(int x, int y, int z) {
         float temperatureBase = conditions.getBaseTemperature(x, z);
@@ -145,5 +146,33 @@ public class BiomeProvider {
         }
         // The higher above see level - the less humid
         return humidityBase * (1f * (maxLevel - y) / (maxLevel - seaLevel));
+    }
+
+    private Biome getBestBiomeMatch(float temp, float hum, float terrain, int yLevel) {
+        float height;
+        if (yLevel <= seaLevel) {
+            height = 0f;
+        } else {
+            height = (float) TeraMath.clamp(1f * (yLevel - seaLevel) / (maxLevel - seaLevel));
+        }
+
+        Biome chosenBiome = null;
+        float maxPriority = 0;
+
+        for (Biome biome : biomes.values()) {
+            final Biome.SweetSpot sweetSpot = biome.getSweetSpot();
+            float matchPriority = 0;
+
+            matchPriority += sweetSpot.getAboveSeaLevelWeight() * (1 - Math.abs(sweetSpot.getAboveSeaLevel() - height));
+            matchPriority += sweetSpot.getHumidityWeight() * (1 - Math.abs(sweetSpot.getHumidity() - hum));
+            matchPriority += sweetSpot.getTemperatureWeight() * (1 - Math.abs(sweetSpot.getTemperature() - temp));
+            matchPriority += sweetSpot.getTerrainWeight() * (1 - Math.abs(sweetSpot.getTerrain() - terrain));
+
+            if (matchPriority > maxPriority) {
+                chosenBiome = biome;
+                maxPriority = matchPriority;
+            }
+        }
+        return chosenBiome;
     }
 }
