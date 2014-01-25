@@ -28,6 +28,7 @@ import org.terasology.world.liquid.LiquidType;
  */
 public class PerlinLandscapeGenerator implements LandscapeGenerator {
     private BrownianNoise2D noise;
+    private double noiseScale;
 
     private float seaFrequency;
     private Block bottomBlock;
@@ -46,6 +47,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     @Override
     public void initializeWithSeed(String seed) {
         noise = new BrownianNoise2D(new SimplexNoise(seed.hashCode()), 6);
+        noiseScale = noise.getScale();
     }
 
     @Override
@@ -55,8 +57,8 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
 
         for (int x = 0; x < chunk.getChunkSizeX(); x++) {
             for (int z = 0; z < chunk.getChunkSizeZ(); z++) {
-                double baseNoise = this.noise.noise(0.0008 * (chunkXStart + x), 0.0008 * (chunkZStart + z));
-                float noise = (float) TeraMath.clamp((baseNoise + 1.0) / 2.6);
+                double baseNoise = this.noise.noise(0.0008 * (chunkXStart + x), 0.0008 * (chunkZStart + z)) / noiseScale;
+                float noise = (float) TeraMath.clamp((baseNoise + 1.0) / 2);
                 int height;
                 if (noise < seaFrequency) {
                     height = (int) (seaLevel * noise / seaFrequency);
@@ -86,6 +88,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     }
 
     private float interpretAlpha(float alphaAboveseaLevel) {
-        return (float) Math.pow(alphaAboveseaLevel, 1.8);
+        return alphaAboveseaLevel;
+//        return (float) Math.pow(alphaAboveseaLevel, 1.8);
     }
 }
