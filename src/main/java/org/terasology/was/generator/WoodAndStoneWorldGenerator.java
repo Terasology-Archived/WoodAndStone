@@ -15,6 +15,7 @@
  */
 package org.terasology.was.generator;
 
+import org.terasology.anotherWorld.ChunkInformation;
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.AlpineBiome;
@@ -102,8 +103,8 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(
                 new CaveDecorator(new BlockFilter() {
                     @Override
-                    public boolean accepts(Chunk chunk, int x, int y, int z) {
-                        return true;
+                    public boolean accepts(Chunk chunk, ChunkInformation chunkInformation, int x, int y, int z) {
+                        return chunkInformation.getGroundLevel(x, z) >= y;
                     }
                 }, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f))
         );

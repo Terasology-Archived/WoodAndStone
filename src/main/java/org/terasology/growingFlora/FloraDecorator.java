@@ -74,7 +74,7 @@ public class FloraDecorator implements ChunkDecorator {
             ChanceRandomizer<FloraDefinition> definitionsForBiome = getDefinitionsForBiome(biome, biomeProvider, treeDefinitionsCache, treeDefinitions);
             FloraDefinition treeDefinition = definitionsForBiome.randomizeObject(random);
             if (treeDefinition != null && random.nextFloat() < treeDefinition.getProbability()) {
-                treeDefinition.plantSaplingOnGround(chunk, x, groundLevel, z);
+                treeDefinition.plantSaplingOnGround(chunk, chunkInformation, x, groundLevel, z);
             }
         }
 

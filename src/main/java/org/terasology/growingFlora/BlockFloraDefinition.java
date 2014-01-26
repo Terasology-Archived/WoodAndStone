@@ -15,6 +15,7 @@
  */
 package org.terasology.growingFlora;
 
+import org.terasology.anotherWorld.ChunkInformation;
 import org.terasology.anotherWorld.decorator.BlockFilter;
 import org.terasology.world.block.Block;
 import org.terasology.world.chunks.Chunk;
@@ -46,8 +47,8 @@ public class BlockFloraDefinition implements FloraDefinition {
     }
 
     @Override
-    public void plantSaplingOnGround(Chunk chunk, int x, int y, int z) {
-        if (groundFilter.accepts(chunk, x, y, z)) {
+    public void plantSaplingOnGround(Chunk chunk, ChunkInformation chunkInformation, int x, int y, int z) {
+        if (groundFilter.accepts(chunk, chunkInformation, x, y, z)) {
             chunk.setBlock(x, y + 1, z, block);
         }
     }
