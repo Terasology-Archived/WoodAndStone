@@ -22,6 +22,4 @@ import org.terasology.entitySystem.Component;
  */
 public class CraftingStationMaterialComponent implements Component {
     public String stationType;
-    public String stationBlockType;
-    public String toolType;
 }

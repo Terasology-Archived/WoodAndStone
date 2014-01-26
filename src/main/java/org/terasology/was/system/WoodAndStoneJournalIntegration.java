@@ -9,8 +9,8 @@ import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
 import org.terasology.logic.inventory.PickedUpItem;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
-import org.terasology.was.event.CraftingStationFormed;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.event.CraftingStationUpgraded;
@@ -73,9 +73,10 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
         player.send(new DiscoveredNewJournalEntry(chapterId, "1"));
     }
 
-    @ReceiveEvent
-    public void craftingStationFormed(CraftingStationFormed craftingStationFormed, EntityRef character) {
-        String workstationType = craftingStationFormed.getWorkstationType();
+    @ReceiveEvent(components = {CraftingStationComponent.class})
+    public void craftingStationFormed(MultiBlockFormed craftingStationFormed, EntityRef station) {
+        EntityRef character = craftingStationFormed.getInstigator();
+        String workstationType = station.getComponent(CraftingStationComponent.class).type;
         if (workstationType.equals("WoodAndStone:BasicWoodcrafting")
                 && !journalManager.hasEntry(character, chapterId, "5")) {
             character.send(new DiscoveredNewJournalEntry(chapterId, "5"));

@@ -1,8 +1,6 @@
 {
     "CraftingStationMaterial": {
-        "stationType": "WoodAndStone:BasicWoodcrafting",
-        "toolType": "wood",
-        "stationBlockType": "WoodAndStone:BasicWoodStation"
+        "stationType": "WoodAndStone:BasicWoodcrafting"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:wood"
