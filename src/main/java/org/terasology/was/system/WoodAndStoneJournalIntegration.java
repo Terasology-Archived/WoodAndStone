@@ -59,8 +59,9 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
                 "I will also need hammer (place it next to your axe in the station).\n\nOnce I get the tables I should place them " +
                 "on the ground next to each other and put my hammer on top of one of them (same as with axe before).");
 
-        journalManager.registerJournalEntry(chapterId, "7", "Now! I can start making the tools, and I don't even need Plant Fibres " +
-                "for them, just a stick and a couple of stones, including sharp-edged ones.");
+        journalManager.registerJournalEntry(chapterId, "7", "Now! I should be able to sharpen a stone and use it to attach another " +
+                "stone directly to a stick to make a hammer without binding it with fibre. I can use the same technique to " +
+                "create other tools. These stones are much more sturdy than the ones I've been using so far.");
     }
 
     @Override
