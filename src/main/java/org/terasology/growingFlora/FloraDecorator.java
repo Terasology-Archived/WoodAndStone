@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
 import org.terasology.anotherWorld.Biome;
 import org.terasology.anotherWorld.BiomeProvider;
 import org.terasology.anotherWorld.ChunkDecorator;
-import org.terasology.anotherWorld.ChunkInformation;
+import org.terasology.anotherWorld.GenerationParameters;
 import org.terasology.anotherWorld.util.ChanceRandomizer;
 import org.terasology.anotherWorld.util.ChunkRandom;
 import org.terasology.anotherWorld.util.PDist;
@@ -59,7 +59,7 @@ public class FloraDecorator implements ChunkDecorator {
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel, BiomeProvider biomeProvider) {
+    public void generateInChunk(Chunk chunk, GenerationParameters generationParameters) {
         Random random = ChunkRandom.getChunkRandom(seed, chunk.getPos(), 787234);
 
         // First, generate trees, as these are the rarest ones
@@ -68,13 +68,14 @@ public class FloraDecorator implements ChunkDecorator {
             int x = random.nextInt(chunk.getChunkSizeX());
             int z = random.nextInt(chunk.getChunkSizeZ());
 
-            int groundLevel = chunkInformation.getGroundLevel(x, z);
+            int groundLevel = generationParameters.getLandscapeProvider().getHeight(chunk.getBlockWorldPosX(x), chunk.getBlockWorldPosZ(z), generationParameters);
 
+            BiomeProvider biomeProvider = generationParameters.getBiomeProvider();
             Biome biome = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), groundLevel, chunk.getBlockWorldPosZ(z));
             ChanceRandomizer<FloraDefinition> definitionsForBiome = getDefinitionsForBiome(biome, biomeProvider, treeDefinitionsCache, treeDefinitions);
             FloraDefinition treeDefinition = definitionsForBiome.randomizeObject(random);
             if (treeDefinition != null && random.nextFloat() < treeDefinition.getProbability()) {
-                treeDefinition.plantSaplingOnGround(chunk, chunkInformation, x, groundLevel, z);
+                treeDefinition.plantSaplingOnGround(chunk, x, groundLevel, z, generationParameters);
             }
         }
 

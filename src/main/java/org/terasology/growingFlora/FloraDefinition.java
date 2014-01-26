@@ -15,7 +15,7 @@
  */
 package org.terasology.growingFlora;
 
-import org.terasology.anotherWorld.ChunkInformation;
+import org.terasology.anotherWorld.GenerationParameters;
 import org.terasology.world.chunks.Chunk;
 
 /**
@@ -26,5 +26,5 @@ public interface FloraDefinition {
 
     public float getProbability();
 
-    public void plantSaplingOnGround(Chunk chunk, ChunkInformation chunkInformation, int x, int y, int z);
+    public void plantSaplingOnGround(Chunk chunk, int x, int y, int z, GenerationParameters generationParameters);
 }

@@ -15,7 +15,6 @@
  */
 package org.terasology.was.generator;
 
-import org.terasology.anotherWorld.ChunkInformation;
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.AlpineBiome;
@@ -29,6 +28,7 @@ import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.anotherWorld.decorator.BlockFilter;
 import org.terasology.anotherWorld.decorator.CaveDecorator;
 import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
+import org.terasology.anotherWorld.decorator.layering.LayeringConfig;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
 import org.terasology.anotherWorld.util.PDist;
@@ -41,7 +41,6 @@ import org.terasology.growingFlora.BlockFloraDefinition;
 import org.terasology.growingFlora.FloraDecorator;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.Chunk;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.liquid.LiquidType;
 
@@ -85,29 +84,24 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block ice = blockManager.getBlock("Core:Ice");
 
         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
-        setLandscapeGenerator(
-                new PerlinLandscapeGenerator(0.3f, mantle, stone, water, LiquidType.WATER,
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f)));
+        setLandscapeProvider(
+                new PerlinLandscapeGenerator(0.3f, new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f)));
+
+        // Setup biome terrain layers
+        setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
 
-        // Setup biome terrain layers
-        setupLayers(stone, sand, dirt, grass, snow, ice);
-
-        // Setup ore spawning
-        setupOreGenerator(stone);
+        BlockFilter removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
         // Dig some caves in the terrain
         addChunkDecorator(
-                new CaveDecorator(new BlockFilter() {
-                    @Override
-                    public boolean accepts(Chunk chunk, ChunkInformation chunkInformation, int x, int y, int z) {
-                        return chunkInformation.getGroundLevel(x, z) >= y;
-                    }
-                }, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f))
-        );
+                new CaveDecorator(removableBlocks, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f)));
+
+        // Setup ore spawning
+        setupOreGenerator(stone);
 
         // Setup flora growing in the world
         setupFlora(grass, sand, snow);
@@ -151,37 +145,37 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(oreDecorator);
     }
 
-    private void setupLayers(Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice) {
-        BlockFilter replacedBlocks = new BlockCollectionFilter(stone);
+    private void setupLayers(Block mantle, Block sea, LiquidType seaType, Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice) {
+        LayeringConfig config = new LayeringConfig(mantle, stone, sea, seaType);
 
-        LayeringDecorator layering = new LayeringDecorator();
+        LayeringDecorator layering = new LayeringDecorator(config);
 
         DefaultLayersDefinition desertDef = new DefaultLayersDefinition(DesertBiome.ID);
-        desertDef.addLayerDefinition(new PDist(3, 1), replacedBlocks, sand, false);
-        desertDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
+        desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
+        desertDef.addLayerDefinition(new PDist(4, 2), dirt, true);
         layering.addBiomeLayers(desertDef);
 
         DefaultLayersDefinition forestDef = new DefaultLayersDefinition(ForestBiome.ID);
         DefaultLayersDefinition plainsDef = new DefaultLayersDefinition(PlainsBiome.ID);
-        forestDef.addLayerDefinition(new PDist(1, 0), replacedBlocks, grass, false);
-        plainsDef.addLayerDefinition(new PDist(1, 0), replacedBlocks, grass, false);
-        forestDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
-        plainsDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
+        forestDef.addLayerDefinition(new PDist(1, 0), grass, false);
+        plainsDef.addLayerDefinition(new PDist(1, 0), grass, false);
+        forestDef.addLayerDefinition(new PDist(4, 2), dirt, true);
+        plainsDef.addLayerDefinition(new PDist(4, 2), dirt, true);
         layering.addBiomeLayers(forestDef);
         layering.addBiomeLayers(plainsDef);
 
         DefaultLayersDefinition tundraDef = new DefaultLayersDefinition(TundraBiome.ID);
         DefaultLayersDefinition taigaDef = new DefaultLayersDefinition(TaigaBiome.ID);
-        tundraDef.addLayerDefinition(new PDist(1, 0), replacedBlocks, snow, false);
-        taigaDef.addLayerDefinition(new PDist(1, 0), replacedBlocks, snow, false);
-        tundraDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
-        taigaDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
+        tundraDef.addLayerDefinition(new PDist(1, 0), snow, false);
+        taigaDef.addLayerDefinition(new PDist(1, 0), snow, false);
+        tundraDef.addLayerDefinition(new PDist(4, 2), dirt, true);
+        taigaDef.addLayerDefinition(new PDist(4, 2), dirt, true);
         layering.addBiomeLayers(tundraDef);
         layering.addBiomeLayers(taigaDef);
 
         DefaultLayersDefinition alpineDef = new DefaultLayersDefinition(AlpineBiome.ID);
-        alpineDef.addLayerDefinition(new PDist(2f, 1f), replacedBlocks, ice, false);
-        alpineDef.addLayerDefinition(new PDist(1f, 0f), replacedBlocks, snow, false);
+        alpineDef.addLayerDefinition(new PDist(2f, 1f), ice, false);
+        alpineDef.addLayerDefinition(new PDist(1f, 0f), snow, false);
         layering.addBiomeLayers(alpineDef);
 
         addChunkDecorator(layering);
