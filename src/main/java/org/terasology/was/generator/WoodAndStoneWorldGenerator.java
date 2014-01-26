@@ -88,13 +88,17 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 new PerlinLandscapeGenerator(0.3f, mantle, stone, water, LiquidType.WATER,
                         new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f)));
 
+        // Replace stone with sand on the sea shores
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
 
+        // Setup biome terrain layers
         setupLayers(stone, sand, dirt, grass, snow, ice);
 
+        // Setup ore spawning
         setupOreGenerator(stone);
 
+        // Dig some caves in the terrain
         addChunkDecorator(
                 new CaveDecorator(new BlockFilter() {
                     @Override
@@ -104,6 +108,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 }, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f))
         );
 
+        // Setup flora growing in the world
         setupFlora(grass, sand, snow);
     }
 
@@ -139,53 +144,9 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         BlockFilter replacedBlocks = new BlockCollectionFilter(stone);
         OreDecorator oreDecorator = new OreDecorator(replacedBlocks);
 
-//        oreDecorator.addOreDefinition(
-//                "Core:CoalOre",
-//                new PocketStructureDefinition(
-//                        new PocketStructureDefinition.PocketBlockProvider() {
-//                            @Override
-//                            public Block getBlock(float distanceFromCenter) {
-//                                return coal;
-//                            }
-//                        }, new PDist(0.9f, 0.15f), new PDist(4f, 1f), new PDist(2f, 1f), new PDist(50f, 20f), new PDist(0f, 0.35f),
-//                        new PDist(1f, 0f), new PDist(0.7f, 0.1f), new PDist(0.2f, 0f), new PDist(0f, 0f)));
-//
-//        oreDecorator.addOreDefinition(
-//                "Core:IronOre",
-//                new VeinsStructureDefinition(
-//                        new PDist(0.5f, 0.15f),
-//                        new VeinsStructureDefinition.VeinsBlockProvider() {
-//                            @Override
-//                            public Block getClusterBlock(float distanceFromCenter) {
-//                                return iron;
-//                            }
-//
-//                            @Override
-//                            public Block getBranchBlock() {
-//                                return iron;
-//                            }
-//                        }, new PDist(2f, 0.3f), new PDist(35f, 10f), new PDist(4f, 1f), new PDist(0f, 0.55f), new PDist(45f, 5f),
-//                        new PDist(15f, 0f), new PDist(0f, 0f), new PDist(0f, 0f), new PDist(10f, 2.5f), new PDist(0.5f, 0.5f),
-//                        new PDist(0.5f, 0.3f), new PDist(1f, 0f), new PDist(1f, 0f)));
-//
-//        oreDecorator.addOreDefinition(
-//                "Core:GoldOre",
-//                new VeinsStructureDefinition(
-//                        new PDist(0.4f, 0.1f),
-//                        new VeinsStructureDefinition.VeinsBlockProvider() {
-//                            @Override
-//                            public Block getClusterBlock(float distanceFromCenter) {
-//                                return gold;
-//                            }
-//
-//                            @Override
-//                            public Block getBranchBlock() {
-//                                return gold;
-//                            }
-//                        }, new PDist(2f, 0.3f), new PDist(20f, 12f), new PDist(4f, 1f), new PDist(0f, 0.55f), new PDist(45f, 5f),
-//                        new PDist(15f, 0f), new PDist(0f, 0f), new PDist(0f, 0f), new PDist(10f, 2.5f), new PDist(0.5f, 0.5f),
-//                        new PDist(0.5f, 0.3f), new PDist(1f, 0f), new PDist(1f, 0f)));
-//
+        // Use plugin mechanism to setup required ores for the modules, by default WoodAndStone requires no
+        // ores
+
         addChunkDecorator(oreDecorator);
     }
 
