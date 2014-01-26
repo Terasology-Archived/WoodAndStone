@@ -1,8 +1,12 @@
 {
+    "parent": "engine:iconItem",
     "Item": {
         "name": "Chalcopyrite Ore Crystal",
         "icon": "redpwdr",
         "renderWithIcon": true,
         "stackId": "WoodAndStone:ChalcopyriteOreCrystal"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:copperOre"
     }
 }

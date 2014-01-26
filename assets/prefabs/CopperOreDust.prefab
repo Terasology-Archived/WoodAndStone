@@ -1,0 +1,8 @@
+{
+    "Item": {
+        "name": "Copper Ore Dust",
+        "icon": "redpwdr",
+        "renderWithIcon": true,
+        "stackId": "WoodAndStone:CopperOreDust"
+    }
+}

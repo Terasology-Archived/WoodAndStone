@@ -1,0 +1,14 @@
+{
+    "hardness": 6,
+
+    "displayName": "Basic Metalworking Station",
+
+    "categories": ["stone"],
+
+    "tiles": {
+        "top": "WoodAndStone:BasicMetalStation",
+        "bottom": "WoodAndStone:BasicMetalStation",
+        "sides": "WoodAndStone:BasicMetalStation"
+    }
+
+}

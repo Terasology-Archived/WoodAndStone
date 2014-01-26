@@ -27,14 +27,11 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
-import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
-import org.terasology.multiBlock.ActivateEventFilter;
 import org.terasology.multiBlock.EntityFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformMultiBlockFormItemRecipe;
@@ -48,7 +45,6 @@ import org.terasology.workstation.system.recipe.UpgradeRecipe;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
 /**
@@ -99,32 +95,6 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         public boolean accepts(EntityRef entity) {
             CraftingStationMaterialComponent stationMaterial = entity.getComponent(CraftingStationMaterialComponent.class);
             return stationMaterial != null && stationMaterial.stationType.equals(stationType);
-        }
-    }
-
-    private class UseOnTopFilter implements ActivateEventFilter {
-        @Override
-        public boolean accepts(ActivateEvent event) {
-            Side side = Side.inDirection(event.getHitNormal());
-            return side == Side.TOP;
-        }
-    }
-
-    private class ToolTypeEntityFilter implements EntityFilter {
-        private String toolType;
-
-        private ToolTypeEntityFilter(String toolType) {
-            this.toolType = toolType;
-        }
-
-        @Override
-        public boolean accepts(EntityRef item) {
-            ItemComponent component = item.getComponent(ItemComponent.class);
-            if (component != null) {
-                BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
-                return blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType);
-            }
-            return false;
         }
     }
 
