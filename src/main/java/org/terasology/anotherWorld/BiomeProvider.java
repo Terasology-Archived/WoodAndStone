@@ -22,6 +22,7 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.coreBiome.TaigaBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.anotherWorld.util.AlphaFunction;
 import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
@@ -43,12 +44,14 @@ public class BiomeProvider {
     private int seaLevel;
     private int maxLevel;
 
-    public BiomeProvider(String worldSeed, int seaLevel, int maxLevel, float biomeSize, float terrainDiversity) {
+    public BiomeProvider(String worldSeed, int seaLevel, int maxLevel,
+                         float biomeSize, AlphaFunction temperatureFunction, AlphaFunction humidityFunction,
+                         float terrainDiversity, AlphaFunction terrainFunction) {
         this.seaLevel = seaLevel;
         this.maxLevel = maxLevel;
 
-        conditions = new ConditionsBaseProvider(worldSeed, biomeSize, 0.3f, 1f, 0.3f, 1f);
-        terrainShape = new TerrainShapeProvider(worldSeed, terrainDiversity);
+        conditions = new ConditionsBaseProvider(worldSeed, biomeSize, temperatureFunction, humidityFunction);
+        terrainShape = new TerrainShapeProvider(worldSeed, terrainDiversity, terrainFunction);
 
         initializeCoreBiomes();
         loadBiomes();

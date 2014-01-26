@@ -15,6 +15,7 @@
  */
 package org.terasology.anotherWorld;
 
+import org.terasology.anotherWorld.util.AlphaFunction;
 import org.terasology.math.TeraMath;
 import org.terasology.utilities.procedural.BrownianNoise2D;
 import org.terasology.utilities.procedural.SimplexNoise;
@@ -35,13 +36,16 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
     private Block groundBlock;
     private Block seeBlock;
     private LiquidType liquidType;
+    private AlphaFunction heightAboveSeaLevelFunction;
 
-    public PerlinLandscapeGenerator(float seaFrequency, Block bottomBlock, Block groundBlock, Block seeBlock, LiquidType liquidType) {
+    public PerlinLandscapeGenerator(float seaFrequency, Block bottomBlock, Block groundBlock, Block seeBlock, LiquidType liquidType,
+                                    AlphaFunction heightAboveSeaLevelFunction) {
         this.seaFrequency = seaFrequency;
         this.bottomBlock = bottomBlock;
         this.groundBlock = groundBlock;
         this.seeBlock = seeBlock;
         this.liquidType = liquidType;
+        this.heightAboveSeaLevelFunction = heightAboveSeaLevelFunction;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
                 } else {
                     // Number in range 0<=alpha<1
                     float alphaAboveSeaLevel = (noise - seaFrequency) / (1 - seaFrequency);
-                    float resultAlpha = interpretAlpha(alphaAboveSeaLevel);
+                    float resultAlpha = heightAboveSeaLevelFunction.execute(alphaAboveSeaLevel);
                     height = (int) (seaLevel + resultAlpha * (maxLevel - seaLevel));
                 }
 
@@ -101,11 +105,5 @@ public class PerlinLandscapeGenerator implements LandscapeGenerator {
         }
         noise /= divider;
         return (float) TeraMath.clamp((noise + 1.0) / 2);
-    }
-
-    private float interpretAlpha(float alphaAboveseaLevel) {
-        // Take into account that terrain height is not uniform, but skewed towards low parts (less mountains,
-        // more lowlands)
-        return (float) Math.pow(alphaAboveseaLevel, 1.5);
     }
 }

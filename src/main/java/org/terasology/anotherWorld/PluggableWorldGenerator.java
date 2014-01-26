@@ -17,6 +17,8 @@ package org.terasology.anotherWorld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.anotherWorld.util.AlphaFunction;
+import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
 import org.terasology.engine.SimpleUri;
 import org.terasology.math.TeraMath;
 import org.terasology.math.Vector3i;
@@ -48,6 +50,10 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     private SimpleUri uri;
     private float biomeDiversity = 0.5f;
     private float terrainDiversity = 0.5f;
+
+    private AlphaFunction temperatureFunction = IdentityAlphaFunction.singleton;
+    private AlphaFunction humidityFunction = IdentityAlphaFunction.singleton;
+    private AlphaFunction terrainFunction = IdentityAlphaFunction.singleton;
 
     public PluggableWorldGenerator(SimpleUri uri) {
         this.uri = uri;
@@ -91,6 +97,18 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         this.terrainDiversity = terrainDiversity;
     }
 
+    public void setTemperatureFunction(AlphaFunction temperatureFunction) {
+        this.temperatureFunction = temperatureFunction;
+    }
+
+    public void setHumidityFunction(AlphaFunction humidityFunction) {
+        this.humidityFunction = humidityFunction;
+    }
+
+    public void setTerrainFunction(AlphaFunction terrainFunction) {
+        this.terrainFunction = terrainFunction;
+    }
+
     @Override
     public final void initialize() {
     }
@@ -99,9 +117,11 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
     public void setWorldSeed(String seed) {
         this.seed = seed;
 
-        biomeProvider = new BiomeProvider(seed, seaLevel, maxLevel, biomeDiversity, terrainDiversity);
+        biomeProvider = new BiomeProvider(seed, seaLevel, maxLevel,
+                biomeDiversity, temperatureFunction, humidityFunction,
+                terrainDiversity, terrainFunction);
 
-        appendGenerators();
+        setupGenerator();
 
         landscapeGenerator.initializeWithSeed(seed);
 
@@ -114,7 +134,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         }
     }
 
-    protected abstract void appendGenerators();
+    protected abstract void setupGenerator();
 
     @Override
     public void applySecondPass(Vector3i chunkPos, ChunkView view) {

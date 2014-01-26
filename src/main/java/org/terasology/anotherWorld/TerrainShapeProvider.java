@@ -15,6 +15,7 @@
  */
 package org.terasology.anotherWorld;
 
+import org.terasology.anotherWorld.util.AlphaFunction;
 import org.terasology.math.TeraMath;
 import org.terasology.utilities.procedural.Noise2D;
 import org.terasology.utilities.procedural.SimplexNoise;
@@ -29,14 +30,16 @@ public class TerrainShapeProvider {
     private final Noise2D hillynessNoise;
 
     private float noiseMultiplier;
+    private AlphaFunction terrainFunction;
 
-    public TerrainShapeProvider(String worldSeed, float terrainDiversity) {
+    public TerrainShapeProvider(String worldSeed, float terrainDiversity, AlphaFunction terrainFunction) {
+        this.terrainFunction = terrainFunction;
         hillynessNoise = new SimplexNoise(worldSeed.hashCode() + 872364);
         noiseMultiplier = minMultiplier + (maxMultiplier - minMultiplier) * terrainDiversity;
     }
 
     public float getHillyness(int x, int z) {
         double result = hillynessNoise.noise(x * noiseMultiplier, z * noiseMultiplier);
-        return (float) TeraMath.clamp((result + 1.0f) / 2.0f);
+        return terrainFunction.execute((float) TeraMath.clamp((result + 1.0f) / 2.0f));
     }
 }

@@ -30,6 +30,8 @@ import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
 import org.terasology.anotherWorld.util.PDist;
+import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
+import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
 import org.terasology.growingFlora.BlockFloraDefinition;
@@ -54,8 +56,12 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     @Override
-    protected void appendGenerators() {
+    protected void setupGenerator() {
         setSeaLevel(50);
+
+        // Make flat land a bit more prevalent than hills or mountains
+        setTerrainFunction(
+                new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f));
 
         blockManager = CoreRegistry.get(BlockManager.class);
 
@@ -67,8 +73,10 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block grass = blockManager.getBlock("Core:Grass");
         final Block snow = blockManager.getBlock("Core:Snow");
 
+        // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
         setLandscapeGenerator(
-                new PerlinLandscapeGenerator(0.3f, mantle, stone, water, LiquidType.WATER));
+                new PerlinLandscapeGenerator(0.3f, mantle, stone, water, LiquidType.WATER,
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f)));
 
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
