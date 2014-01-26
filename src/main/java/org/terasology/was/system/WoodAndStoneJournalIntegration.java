@@ -34,7 +34,7 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
                 "I need some tools for that.\n\nI should get some sticks from the nearby tree branches and dig in the ground for some " +
                 "stones I might have a use for.\n\nWhile I'm at it, I will probably need something to bind the stick and stone together - " +
                 "plant fibres, also from branches, should be good for that.\n\nOnce I get a Stick, Stone and a Plant Fibre, I will be able " +
-                "to make a Crude Hammer (press C to open crafting window).");
+                "to make a Crude Hammer (press G to open crafting window).");
 
         journalManager.registerJournalEntry(chapterId, "2", "Excellent! I got a hammer, I should be able to sharpen one of the stones " +
                 "and using the same technique as for the hammer, create a Crude Hammer! I can also dig stone with it to get stones more " +
