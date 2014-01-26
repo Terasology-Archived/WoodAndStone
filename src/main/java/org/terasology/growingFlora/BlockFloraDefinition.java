@@ -48,7 +48,7 @@ public class BlockFloraDefinition implements FloraDefinition {
     @Override
     public void plantSaplingOnGround(Chunk chunk, int x, int y, int z) {
         if (groundFilter.accepts(chunk, x, y, z)) {
-            chunk.setBlock(x, y, z, block);
+            chunk.setBlock(x, y + 1, z, block);
         }
     }
 }

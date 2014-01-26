@@ -17,6 +17,7 @@ package org.terasology.anotherWorld;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.anotherWorld.coreBiome.AlpineBiome;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
@@ -72,6 +73,8 @@ public class BiomeProvider {
         biomes.put(tundra.getBiomeId(), tundra);
         Biome taiga = new TaigaBiome();
         biomes.put(taiga.getBiomeId(), taiga);
+        Biome alpine = new AlpineBiome();
+        biomes.put(alpine.getBiomeId(), alpine);
     }
 
     private void loadBiomes() {

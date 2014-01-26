@@ -17,6 +17,7 @@ package org.terasology.was.generator;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
+import org.terasology.anotherWorld.coreBiome.AlpineBiome;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
@@ -31,6 +32,7 @@ import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
+import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
@@ -62,6 +64,13 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         // Make flat land a bit more prevalent than hills or mountains
         setTerrainFunction(
                 new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f));
+        // Make sure that area on the sea level is not dry, this will prevent deserts spawning next to sea
+        setHumidityFunction(
+                new MinMaxAlphaFunction(IdentityAlphaFunction.singleton, 0.3f, 1f));
+        // Make sure that area on the sea level in not too cold, so that colder areas (with snow) will
+        // only exist in higher Y-levels
+        setTemperatureFunction(
+                new MinMaxAlphaFunction(IdentityAlphaFunction.singleton, 0.4f, 1f));
 
         blockManager = CoreRegistry.get(BlockManager.class);
 
@@ -72,6 +81,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block dirt = blockManager.getBlock("Core:Dirt");
         final Block grass = blockManager.getBlock("Core:Grass");
         final Block snow = blockManager.getBlock("Core:Snow");
+        final Block ice = blockManager.getBlock("Core:Ice");
 
         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
         setLandscapeGenerator(
@@ -81,7 +91,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
 
-        setupLayers(stone, sand, dirt, grass, snow);
+        setupLayers(stone, sand, dirt, grass, snow, ice);
 
         setupOreGenerator(stone);
 
@@ -179,7 +189,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(oreDecorator);
     }
 
-    private void setupLayers(Block stone, Block sand, Block dirt, Block grass, Block snow) {
+    private void setupLayers(Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice) {
         BlockFilter replacedBlocks = new BlockCollectionFilter(stone);
 
         LayeringDecorator layering = new LayeringDecorator();
@@ -206,6 +216,11 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         taigaDef.addLayerDefinition(new PDist(4, 2), replacedBlocks, dirt, true);
         layering.addBiomeLayers(tundraDef);
         layering.addBiomeLayers(taigaDef);
+
+        DefaultLayersDefinition alpineDef = new DefaultLayersDefinition(AlpineBiome.ID);
+        alpineDef.addLayerDefinition(new PDist(2f, 1f), replacedBlocks, ice, false);
+        alpineDef.addLayerDefinition(new PDist(1f, 0f), replacedBlocks, snow, false);
+        layering.addBiomeLayers(alpineDef);
 
         addChunkDecorator(layering);
     }

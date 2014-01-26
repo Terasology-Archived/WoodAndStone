@@ -73,7 +73,7 @@ public class CaveDecorator implements ChunkDecorator {
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel, BiomeProvider biomeProvider) {
         Structure.StructureCallback callback = new StructureCallbackImpl(chunk);
 
         Collection<Structure> structures = caveDefinition.generateStructures(chunk, seed, biomeProvider);

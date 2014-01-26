@@ -155,7 +155,7 @@ public abstract class PluggableWorldGenerator implements WorldGenerator {
         landscapeGenerator.generateInChunk(chunk, chunkInformation, biomeProvider.getTerrainShape(), seaLevel, maxLevel);
 
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
-            chunkDecorator.generateInChunk(chunk, chunkInformation, biomeProvider, seaLevel);
+            chunkDecorator.generateInChunk(chunk, chunkInformation, seaLevel, biomeProvider);
         }
     }
 

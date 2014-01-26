@@ -20,10 +20,10 @@ import org.terasology.anotherWorld.Biome;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class TundraBiome implements Biome {
-    public static final String ID = "AnotherWorld:Tundra";
-    // Cold and dry
-    private SweetSpot sweetSpot = new DefaultSweetSpot(0f, 0.35f, 0f, 0.35f, 0f, 0f, 0.8f, 0.3f);
+public class AlpineBiome implements Biome {
+    public static final String ID = "AnotherWorld:Alpine";
+    // Occurs in very high Y-level, and cold
+    private SweetSpot sweetSpot = new DefaultSweetSpot(0f, 0f, 0f, 0f, 0f, 0f, 1f, 1f);
 
     @Override
     public String getBiomeId() {
@@ -32,7 +32,7 @@ public class TundraBiome implements Biome {
 
     @Override
     public String getBiomeName() {
-        return "Tundra";
+        return "Alpine";
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TundraBiome implements Biome {
 
     @Override
     public float getRarity() {
-        return 0.8f;
+        return 0.9f;
     }
 
     @Override
@@ -52,6 +52,6 @@ public class TundraBiome implements Biome {
 
     @Override
     public float getFog() {
-        return 0.1f;
+        return 0f;
     }
 }

@@ -59,7 +59,7 @@ public class FloraDecorator implements ChunkDecorator {
     }
 
     @Override
-    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, BiomeProvider biomeProvider, int seaLevel) {
+    public void generateInChunk(Chunk chunk, ChunkInformation chunkInformation, int seaLevel, BiomeProvider biomeProvider) {
         Random random = ChunkRandom.getChunkRandom(seed, chunk.getPos(), 787234);
 
         // First, generate trees, as these are the rarest ones
