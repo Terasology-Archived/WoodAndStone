@@ -23,7 +23,7 @@ import org.terasology.anotherWorld.Biome;
 public class TaigaBiome implements Biome {
     public static final String ID = "AnotherWorld:Taiga";
     // Cold, but reasonably humid, usually on high levels
-    private SweetSpot sweetSpot = new DefaultSweetSpot(0.5f, 0.35f, 0f, 0.35f, 0f, 0f, 0.8f, 0.3f);
+    private SweetSpot sweetSpot = new DefaultSweetSpot(0.5f, 0.2f, 0f, 0.2f, 0f, 0f, 0.6f, 0.6f);
 
     @Override
     public String getBiomeId() {

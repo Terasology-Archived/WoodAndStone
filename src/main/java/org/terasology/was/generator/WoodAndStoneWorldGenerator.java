@@ -86,7 +86,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
         setLandscapeGenerator(
                 new PerlinLandscapeGenerator(0.3f, mantle, stone, water, LiquidType.WATER,
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f)));
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f)));
 
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
