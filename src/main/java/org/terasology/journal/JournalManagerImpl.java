@@ -18,7 +18,7 @@ package org.terasology.journal;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.Share;
+import org.terasology.registry.Share;
 import org.terasology.rendering.assets.texture.Texture;
 
 import java.util.HashMap;

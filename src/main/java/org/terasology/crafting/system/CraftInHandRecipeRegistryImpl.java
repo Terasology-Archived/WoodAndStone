@@ -18,7 +18,7 @@ package org.terasology.crafting.system;
 import org.terasology.crafting.system.recipe.CraftInHandRecipe;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.Share;
+import org.terasology.registry.Share;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

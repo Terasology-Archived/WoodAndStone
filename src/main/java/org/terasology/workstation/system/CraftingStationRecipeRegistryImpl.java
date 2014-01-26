@@ -17,7 +17,7 @@ package org.terasology.workstation.system;
 
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.Share;
+import org.terasology.registry.Share;
 import org.terasology.workstation.system.recipe.CraftingStationRecipe;
 import org.terasology.workstation.system.recipe.UpgradeRecipe;
 
