@@ -61,9 +61,6 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     protected void setupGenerator() {
         setSeaLevel(50);
 
-        // Make flat land a bit more prevalent than hills or mountains
-        setTerrainFunction(
-                new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f));
         // Make sure that area on the sea level is not dry, this will prevent deserts spawning next to sea
         setHumidityFunction(
                 new MinMaxAlphaFunction(IdentityAlphaFunction.singleton, 0.3f, 1f));
@@ -83,9 +80,13 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block snow = blockManager.getBlock("Core:Snow");
         final Block ice = blockManager.getBlock("Core:Ice");
 
-        // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
         setLandscapeProvider(
-                new PerlinLandscapeGenerator(0.3f, new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f)));
+                new PerlinLandscapeGenerator(
+                        0.3f,
+                        // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f),
+                        // Make flat land a bit more prevalent than hills or mountains
+                        0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f)));
 
         // Setup biome terrain layers
         setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);

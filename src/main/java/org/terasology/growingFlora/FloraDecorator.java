@@ -24,6 +24,7 @@ import org.terasology.anotherWorld.GenerationParameters;
 import org.terasology.anotherWorld.util.ChanceRandomizer;
 import org.terasology.anotherWorld.util.ChunkRandom;
 import org.terasology.anotherWorld.util.PDist;
+import org.terasology.math.Vector2i;
 import org.terasology.utilities.random.Random;
 import org.terasology.world.chunks.Chunk;
 
@@ -68,7 +69,7 @@ public class FloraDecorator implements ChunkDecorator {
             int x = random.nextInt(chunk.getChunkSizeX());
             int z = random.nextInt(chunk.getChunkSizeZ());
 
-            int groundLevel = generationParameters.getLandscapeProvider().getHeight(chunk.getBlockWorldPosX(x), chunk.getBlockWorldPosZ(z), generationParameters);
+            int groundLevel = generationParameters.getLandscapeProvider().getHeight(new Vector2i(chunk.getBlockWorldPosX(x), chunk.getBlockWorldPosZ(z)));
 
             BiomeProvider biomeProvider = generationParameters.getBiomeProvider();
             Biome biome = biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x), groundLevel, chunk.getBlockWorldPosZ(z));
