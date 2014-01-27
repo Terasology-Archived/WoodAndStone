@@ -53,13 +53,14 @@ public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         if (!activateEventFilter.accepts(event)) {
             return false;
         }
+
         EntityRef target = event.getTarget();
-        if (!blockFilter.accepts(target)) {
+        BlockComponent targetBlock = target.getComponent(BlockComponent.class);
+        if (targetBlock == null) {
             return false;
         }
 
-        BlockComponent targetBlock = target.getComponent(BlockComponent.class);
-        if (targetBlock == null) {
+        if (!blockFilter.accepts(target)) {
             return false;
         }
 
@@ -106,7 +107,7 @@ public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
             return false;
         }
 
-        //
+        // Create the block region entity
         EntityManager entityManager = CoreRegistry.get(EntityManager.class);
         EntityRef multiBlockEntity = entityManager.create(prefab);
         multiBlockEntity.addComponent(new BlockRegionComponent(multiBlockRegion));
