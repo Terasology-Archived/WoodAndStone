@@ -18,14 +18,22 @@ package org.terasology.plantPack;
 import com.google.common.collect.Maps;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.gf.generator.PlantGrowthDefinition;
-import org.terasology.gf.tree.lsystem.*;
+import org.terasology.gf.tree.lsystem.AdvanceAxionElementGeneration;
+import org.terasology.gf.tree.lsystem.AdvancedLSystemTreeDefinition;
+import org.terasology.gf.tree.lsystem.AxionElementGeneration;
+import org.terasology.gf.tree.lsystem.AxionElementReplacement;
+import org.terasology.gf.tree.lsystem.DefaultAxionElementGeneration;
+import org.terasology.gf.tree.lsystem.SimpleAxionElementReplacement;
+import org.terasology.gf.tree.lsystem.SurroundAxionElementGeneration;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
+import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 import java.util.Map;
 
+@RegisterPlugin
 public class OakGrowthDefinition implements PlantGrowthDefinition {
     private AdvancedLSystemTreeDefinition treeDefinition;
 

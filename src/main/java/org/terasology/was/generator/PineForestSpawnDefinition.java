@@ -19,9 +19,11 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
+@RegisterPlugin
 public class PineForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public PineForestSpawnDefinition() {
         super(PlantType.TREE, ForestBiome.ID, 0.1f, 0.8f, Blocks.getBlock("GrowingFlora:PineSaplingGenerated"),
