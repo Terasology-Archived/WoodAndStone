@@ -1,0 +1,10 @@
+{
+    "LivingPlant": {
+        "type": "PlantPack:oak"
+    },
+    "LSystemTree": {
+        "axion": "s",
+        "generation": 1
+    },
+    "PartOfTree": {}
+}

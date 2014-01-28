@@ -1,0 +1,10 @@
+{
+    "LivingPlant": {
+        "type": "PlantPack:pine"
+    },
+    "LSystemTree": {
+        "axion": "s",
+        "generation": 1
+    },
+    "PartOfTree": {}
+}

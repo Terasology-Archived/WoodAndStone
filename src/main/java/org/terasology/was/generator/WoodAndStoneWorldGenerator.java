@@ -17,12 +17,7 @@ package org.terasology.was.generator;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
-import org.terasology.anotherWorld.coreBiome.AlpineBiome;
-import org.terasology.anotherWorld.coreBiome.DesertBiome;
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
-import org.terasology.anotherWorld.coreBiome.TaigaBiome;
-import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.anotherWorld.coreBiome.*;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.anotherWorld.decorator.BlockFilter;
@@ -37,8 +32,7 @@ import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
-import org.terasology.growingFlora.BlockFloraDefinition;
-import org.terasology.growingFlora.FloraDecorator;
+import org.terasology.gf.generator.FloraDecorator;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -105,32 +99,11 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         setupOreGenerator(stone);
 
         // Setup flora growing in the world
-        setupFlora(grass, sand, snow);
+        setupFlora();
     }
 
-    private void setupFlora(Block grass, Block sand, Block snow) {
-        BlockFilter normalTreesGround = new BlockCollectionFilter(Arrays.asList(grass, snow));
-
-        Block oakSapling = blockManager.getBlock("GrowingFlora:OakSaplingGenerated");
-        Block pineSapling = blockManager.getBlock("GrowingFlora:PineSaplingGenerated");
-
+    private void setupFlora() {
         FloraDecorator floraDecorator = new FloraDecorator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
-
-        // Forest
-        floraDecorator.addTreeDefinition(ForestBiome.ID,
-                new BlockFloraDefinition(0.9f, 0.8f, oakSapling, normalTreesGround));
-        floraDecorator.addTreeDefinition(ForestBiome.ID,
-                new BlockFloraDefinition(0.1f, 0.8f, pineSapling, normalTreesGround));
-
-        // Plains
-        floraDecorator.addTreeDefinition(PlainsBiome.ID,
-                new BlockFloraDefinition(1f, 0.3f, oakSapling, normalTreesGround));
-
-        // Tundra
-        floraDecorator.addTreeDefinition(TundraBiome.ID,
-                new BlockFloraDefinition(0.1f, 0.1f, oakSapling, normalTreesGround));
-        floraDecorator.addTreeDefinition(TundraBiome.ID,
-                new BlockFloraDefinition(0.9f, 0.7f, pineSapling, normalTreesGround));
 
         addChunkDecorator(floraDecorator);
     }

@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.growingFlora;
+package org.terasology.was.generator;
 
-import org.terasology.anotherWorld.GenerationParameters;
-import org.terasology.world.chunks.Chunk;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public interface FloraDefinition {
-    public float getRarity();
-
-    public float getProbability();
-
-    public void plantSaplingOnGround(Chunk chunk, int x, int y, int z, GenerationParameters generationParameters);
+public class Blocks {
+    public static Block getBlock(String blockId) {
+        return CoreRegistry.get(BlockManager.class).getBlock(blockId);
+    }
 }
