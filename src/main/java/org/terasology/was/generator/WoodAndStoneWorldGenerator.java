@@ -17,7 +17,12 @@ package org.terasology.was.generator;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
-import org.terasology.anotherWorld.coreBiome.*;
+import org.terasology.anotherWorld.coreBiome.AlpineBiome;
+import org.terasology.anotherWorld.coreBiome.DesertBiome;
+import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TaigaBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.anotherWorld.decorator.BlockFilter;
@@ -78,9 +83,9 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 new PerlinLandscapeGenerator(
                         0.3f,
                         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.3f),
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f),
                         // Make flat land a bit more prevalent than hills or mountains
-                        0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.5f)));
+                        0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton, 1.2f)));
 
         // Setup biome terrain layers
         setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);
