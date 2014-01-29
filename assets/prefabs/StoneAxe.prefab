@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "name": "Stone Axe",
-        "icon": "Axe",
+        "icon": "WoodAndStone:items.StoneAxe",
         "renderWithIcon": true,
         "damageType": "axeDamage"
     },

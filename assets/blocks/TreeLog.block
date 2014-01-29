@@ -11,11 +11,11 @@
         "prefab": "WoodAndStone:TreeLog"
     },
 
-    "tile": "WoodAndStone:OakBark",
+    "tile": "PlantPack:OakBark",
 
     "tiles": {
-        "sides": "WoodAndStone:OakBark",
-        "topBottom": "WoodAndStone:OakTrunk",
-        "center": "WoodAndStone:OakBark"
+        "sides": "PlantPack:OakBark",
+        "topBottom": "PlantPack:OakTrunk",
+        "center": "PlantPack:OakBark"
     }
 }

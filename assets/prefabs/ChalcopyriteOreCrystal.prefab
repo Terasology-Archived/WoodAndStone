@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "name": "Chalcopyrite Ore Crystal",
-        "icon": "redpwdr",
+        "icon": "WoodAndStone:items.ChalcopyriteOreCrystal",
         "renderWithIcon": true,
         "stackId": "WoodAndStone:ChalcopyriteOreCrystal"
     },

@@ -1,7 +1,7 @@
 {
     "Item": {
         "name": "Coal",
-        "icon": "Coal",
+        "icon": "WoodAndStone:items.Coal",
         "renderWithIcon": true,
         "stackId": "WoodAndStone:coal"
     }

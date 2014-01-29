@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "name": "Crude Hammer",
-        "icon": "hammer",
+        "icon": "WoodAndStone:items.CrudeHammer",
         "renderWithIcon": true,
         "damageType": "hammerDamage"
     },

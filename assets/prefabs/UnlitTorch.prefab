@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "name": "Unlit Torch",
-        "icon": "stick",
+        "icon": "WoodAndStone:items.UnlitTorch",
         "stackId": "WoodAndStone:items.UnlitTorch",
         "renderWithIcon": true
     },

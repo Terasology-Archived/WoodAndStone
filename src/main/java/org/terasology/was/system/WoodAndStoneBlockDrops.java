@@ -64,23 +64,23 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("3*WoodAndStone:stone");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakLeaf"))) {
+            } else if (blockUri.equals(new BlockUri("PlantPack", "OakLeaf"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("0.1|WoodAndStone:OakSapling");
+                dropGrammar.blockDrops = Arrays.asList("0.1|PlantPack:OakSapling");
                 dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("GrowingFlora", "PineLeaf"))) {
+            } else if (blockUri.equals(new BlockUri("PlantPack", "PineLeaf"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("0.15|WoodAndStone:PineSapling");
+                dropGrammar.blockDrops = Arrays.asList("0.15|PlantPack:PineSapling");
                 dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakBranch"))
-                    || blockUri.equals(new BlockUri("GrowingFlora", "PineBranch"))) {
+            } else if (blockUri.equals(new BlockUri("PlantPack", "OakBranch"))
+                    || blockUri.equals(new BlockUri("PlantPack", "PineBranch"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("WoodAndStone:stick");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakTrunk"))
-                    || blockUri.equals(new BlockUri("GrowingFlora", "PineTrunk"))) {
+            } else if (blockUri.equals(new BlockUri("PlantPack", "OakTrunk"))
+                    || blockUri.equals(new BlockUri("PlantPack", "PineTrunk"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("WoodAndStone:TreeLog");
                 dropGrammar.itemDrops = Arrays.asList("0.1|WoodAndStone:Resin");

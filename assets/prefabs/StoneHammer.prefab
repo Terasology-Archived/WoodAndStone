@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "name": "Stone Hammer",
-        "icon": "hammer",
+        "icon": "WoodAndStone:items.StoneHammer",
         "renderWithIcon": true,
         "damageType": "hammerDamage"
     },
