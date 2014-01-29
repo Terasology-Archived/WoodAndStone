@@ -26,7 +26,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class PineForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public PineForestSpawnDefinition() {
-        super(PlantType.TREE, ForestBiome.ID, 0.1f, 0.8f, Blocks.getBlock("GrowingFlora:PineSaplingGenerated"),
+        super(PlantType.TREE, ForestBiome.ID, 0.1f, 0.8f, Blocks.getBlock("WoodAndStone:PineSaplingGenerated"),
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

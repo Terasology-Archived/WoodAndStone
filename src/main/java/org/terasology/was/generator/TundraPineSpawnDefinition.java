@@ -26,7 +26,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class TundraPineSpawnDefinition extends BlockFloraSpawnDefinition {
     public TundraPineSpawnDefinition() {
-        super(PlantType.TREE, ForestBiome.ID, 0.9f, 0.7f, Blocks.getBlock("GrowingFlora:PineSaplingGenerated"),
+        super(PlantType.TREE, ForestBiome.ID, 0.9f, 0.7f, Blocks.getBlock("WoodAndStone:PineSaplingGenerated"),
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

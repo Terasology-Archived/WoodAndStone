@@ -11,11 +11,11 @@
         "prefab": "WoodAndStone:TreeLog"
     },
 
-    "tile": "GrowingFlora:OakBark",
+    "tile": "WoodAndStone:OakBark",
 
     "tiles": {
-        "sides": "GrowingFlora:OakBark",
-        "topBottom": "GrowingFlora:OakTrunk",
-        "center": "GrowingFlora:OakBark"
+        "sides": "WoodAndStone:OakBark",
+        "topBottom": "WoodAndStone:OakTrunk",
+        "center": "WoodAndStone:OakBark"
     }
 }

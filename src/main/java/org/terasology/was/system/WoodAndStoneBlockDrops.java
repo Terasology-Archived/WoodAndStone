@@ -66,12 +66,12 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
                 event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakLeaf"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("0.1|GrowingFlora:OakSapling");
+                dropGrammar.blockDrops = Arrays.asList("0.1|WoodAndStone:OakSapling");
                 dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
                 event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("GrowingFlora", "PineLeaf"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("0.15|GrowingFlora:PineSapling");
+                dropGrammar.blockDrops = Arrays.asList("0.15|WoodAndStone:PineSapling");
                 dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.1|WoodAndStone:plantFibre");
                 event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("GrowingFlora", "OakBranch"))

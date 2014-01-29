@@ -35,6 +35,8 @@ import java.util.Map;
 
 @RegisterPlugin
 public class OakGrowthDefinition implements PlantGrowthDefinition {
+    public static final String ID = "PlantPack:oak";
+
     private AdvancedLSystemTreeDefinition treeDefinition;
 
     public OakGrowthDefinition() {
@@ -109,12 +111,12 @@ public class OakGrowthDefinition implements PlantGrowthDefinition {
         blockMap.put('B', largeBranchGeneration);
         blockMap.put('M', new AdvanceAxionElementGeneration(branchAdvance));
 
-        treeDefinition = new AdvancedLSystemTreeDefinition("PlantPack:oak", "g", replacementMap, blockMap, Arrays.asList(oakTrunk, oakBranch, greenLeaf), 1.5f);
+        treeDefinition = new AdvancedLSystemTreeDefinition(ID, "g", replacementMap, blockMap, Arrays.asList(oakTrunk, oakBranch, greenLeaf), 1.5f);
     }
 
     @Override
     public String getPlantId() {
-        return "PlantPack:Oak";
+        return ID;
     }
 
     @Override

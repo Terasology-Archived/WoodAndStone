@@ -35,6 +35,7 @@ import java.util.Map;
 
 @RegisterPlugin
 public class PineGrowthDefinition implements PlantGrowthDefinition {
+    public static final String ID = "PlantPack:pine";
     private AdvancedLSystemTreeDefinition treeDefinition;
 
     public PineGrowthDefinition() {
@@ -109,12 +110,12 @@ public class PineGrowthDefinition implements PlantGrowthDefinition {
         blockMap.put('B', largeBranchGeneration);
         blockMap.put('M', new AdvanceAxionElementGeneration(branchAdvance));
 
-        treeDefinition = new AdvancedLSystemTreeDefinition("PlantPack:pine", "g", replacementMap, blockMap, Arrays.asList(oakTrunk, oakBranch, greenLeaf), 1.5f);
+        treeDefinition = new AdvancedLSystemTreeDefinition(ID, "g", replacementMap, blockMap, Arrays.asList(oakTrunk, oakBranch, greenLeaf), 1.5f);
     }
 
     @Override
     public String getPlantId() {
-        return "PlantPack:pine";
+        return ID;
     }
 
     @Override
