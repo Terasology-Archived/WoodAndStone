@@ -15,15 +15,15 @@
  */
 package org.terasology.bronze.system;
 
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.multiBlock.EntityFilter;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class BlockUriEntityFilter implements EntityFilter {
+public class BlockUriEntityFilter implements Filter<EntityRef> {
     private BlockUri blockUri;
 
     public BlockUriEntityFilter(BlockUri blockUri) {

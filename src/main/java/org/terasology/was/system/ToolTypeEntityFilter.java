@@ -15,15 +15,15 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.multiBlock.EntityFilter;
 import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ToolTypeEntityFilter implements EntityFilter {
+public class ToolTypeEntityFilter implements Filter<EntityRef> {
     private String toolType;
 
     public ToolTypeEntityFilter(String toolType) {

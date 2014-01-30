@@ -15,14 +15,14 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.math.Side;
-import org.terasology.multiBlock.ActivateEventFilter;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UseOnTopFilter implements ActivateEventFilter {
+public class UseOnTopFilter implements Filter<ActivateEvent> {
     @Override
     public boolean accepts(ActivateEvent event) {
         Side side = Side.inDirection(event.getHitNormal());

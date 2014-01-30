@@ -15,6 +15,7 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.recipe.CompositeTypeBasedCraftInHandRecipe;
 import org.terasology.crafting.system.recipe.CraftInHandRecipe;
@@ -32,7 +33,6 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
-import org.terasology.multiBlock.EntityFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.In;
@@ -84,7 +84,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new Vector3i(2, 1, 1), "WoodAndStone:BasicStonecrafting", "WoodAndStone:StoneStation"));
     }
 
-    private class StationTypeFilter implements EntityFilter {
+    private class StationTypeFilter implements Filter<EntityRef> {
         private String stationType;
 
         private StationTypeFilter(String stationType) {

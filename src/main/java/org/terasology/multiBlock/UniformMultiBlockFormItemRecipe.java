@@ -1,5 +1,6 @@
 package org.terasology.multiBlock;
 
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.common.ActivateEvent;
@@ -22,16 +23,16 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe {
-    private EntityFilter activatorFilter;
-    private ActivateEventFilter activateEventFilter;
-    private EntityFilter blockFilter;
+    private Filter<EntityRef> activatorFilter;
+    private Filter<ActivateEvent> activateEventFilter;
+    private Filter<EntityRef> blockFilter;
     private int requiredHeight;
     private int requiredMinSize;
     private int requiredMaxSize;
     private String prefab;
     private String replaceBlockUri;
 
-    public UniformMultiBlockFormItemRecipe(EntityFilter activatorFilter, ActivateEventFilter activateEventFilter, EntityFilter blockFilter, Vector3i size,
+    public UniformMultiBlockFormItemRecipe(Filter<EntityRef> activatorFilter, Filter<ActivateEvent> activateEventFilter, Filter<EntityRef> blockFilter, Vector3i size,
                                            String multiBlockPrefab, String replaceBlockUri) {
         this.activatorFilter = activatorFilter;
         this.activateEventFilter = activateEventFilter;

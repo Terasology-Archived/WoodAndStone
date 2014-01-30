@@ -15,6 +15,7 @@
  */
 package org.terasology.multiBlock;
 
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.common.ActivateEvent;
@@ -39,15 +40,15 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe {
-    private EntityFilter itemFilter;
-    private SizeFilter sizeFilter;
-    private ActivateEventFilter activateEventFilter;
+    private Filter<EntityRef> itemFilter;
+    private Filter<Vector2i> sizeFilter;
+    private Filter<ActivateEvent> activateEventFilter;
     private String prefab;
     private Callback callback;
 
     private List<LayerDefinition> layerDefinitions = new ArrayList<>();
 
-    public LayeredMultiBlockFormItemRecipe(EntityFilter itemFilter, SizeFilter sizeFilter, ActivateEventFilter activateEventFilter, String prefab, Callback callback) {
+    public LayeredMultiBlockFormItemRecipe(Filter<EntityRef> itemFilter, Filter<Vector2i> sizeFilter, Filter<ActivateEvent> activateEventFilter, String prefab, Callback callback) {
         this.itemFilter = itemFilter;
         this.sizeFilter = sizeFilter;
         this.activateEventFilter = activateEventFilter;
@@ -60,7 +61,7 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         return itemFilter.accepts(item);
     }
 
-    public void addLayer(int minHeight, int maxHeight, EntityFilter entityFilter, Block blockToReplaceWith) {
+    public void addLayer(int minHeight, int maxHeight, Filter<EntityRef> entityFilter, Block blockToReplaceWith) {
         if (minHeight > maxHeight || minHeight < 0) {
             throw new IllegalArgumentException("Invalid values for minHeight and maxHeight");
         }
@@ -94,7 +95,7 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
     private boolean processDetectionForLayer(int layerIndex, Vector3i basePosition) {
         BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
         LayerDefinition layerDefinition = layerDefinitions.get(layerIndex);
-        EntityFilter entityFilter = layerDefinition.entityFilter;
+        Filter<EntityRef> entityFilter = layerDefinition.entityFilter;
         int minX = getLastMatchingInDirection(blockEntityRegistry, entityFilter, basePosition, Vector3i.east()).x;
         int maxX = getLastMatchingInDirection(blockEntityRegistry, entityFilter, basePosition, Vector3i.west()).x;
         int minZ = getLastMatchingInDirection(blockEntityRegistry, entityFilter, basePosition, Vector3i.south()).z;
@@ -188,7 +189,7 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         return true;
     }
 
-    private Vector3i getLastMatchingInDirection(BlockEntityRegistry blockEntityRegistry, EntityFilter entityFilter, Vector3i location, Vector3i direction) {
+    private Vector3i getLastMatchingInDirection(BlockEntityRegistry blockEntityRegistry, Filter<EntityRef> entityFilter, Vector3i location, Vector3i direction) {
         Vector3i result = location;
         while (true) {
             Vector3i testedLocation = new Vector3i(result.x + direction.x, result.y + direction.y, result.z + direction.z);
@@ -203,10 +204,10 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
     private static class LayerDefinition {
         private int minHeight;
         private int maxHeight;
-        private EntityFilter entityFilter;
+        private Filter<EntityRef> entityFilter;
         private Block blockToReplaceWith;
 
-        private LayerDefinition(int minHeight, int maxHeight, EntityFilter entityFilter, Block blockToReplaceWith) {
+        private LayerDefinition(int minHeight, int maxHeight, Filter<EntityRef> entityFilter, Block blockToReplaceWith) {
             this.minHeight = minHeight;
             this.maxHeight = maxHeight;
             this.entityFilter = entityFilter;
@@ -216,9 +217,5 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
 
     public interface Callback {
         public void multiBlockFormed(EntityRef entity, Vector2i size, int[] layerSetup);
-    }
-
-    public interface SizeFilter {
-        public boolean accepts(Vector2i size);
     }
 }
