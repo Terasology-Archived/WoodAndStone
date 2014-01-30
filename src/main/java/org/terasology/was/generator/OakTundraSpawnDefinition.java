@@ -19,14 +19,15 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.plantPack.OakGrowthDefinition;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class TundraOakSpawnDefinition extends BlockFloraSpawnDefinition {
-    public TundraOakSpawnDefinition() {
-        super(PlantType.TREE, ForestBiome.ID, 0.1f, 0.1f, Blocks.getBlock("PlantPack:OakSaplingGenerated"),
+public class OakTundraSpawnDefinition extends BlockFloraSpawnDefinition {
+    public OakTundraSpawnDefinition() {
+        super(PlantType.TREE, OakGrowthDefinition.ID, ForestBiome.ID, 0.1f, 0.1f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

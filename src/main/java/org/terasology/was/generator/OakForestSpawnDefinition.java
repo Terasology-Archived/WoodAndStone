@@ -19,6 +19,7 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.plantPack.OakGrowthDefinition;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
@@ -26,7 +27,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class OakForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public OakForestSpawnDefinition() {
-        super(PlantType.TREE, ForestBiome.ID, 0.9f, 0.8f, Blocks.getBlock("PlantPack:OakSaplingGenerated"),
+        super(PlantType.TREE, OakGrowthDefinition.ID, ForestBiome.ID, 0.9f, 0.8f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

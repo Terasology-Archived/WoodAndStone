@@ -19,14 +19,15 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.plantPack.PineGrowthDefinition;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class TundraPineSpawnDefinition extends BlockFloraSpawnDefinition {
-    public TundraPineSpawnDefinition() {
-        super(PlantType.TREE, ForestBiome.ID, 0.9f, 0.7f, Blocks.getBlock("PlantPack:PineSaplingGenerated"),
+public class PineTundraSpawnDefinition extends BlockFloraSpawnDefinition {
+    public PineTundraSpawnDefinition() {
+        super(PlantType.TREE, PineGrowthDefinition.ID, ForestBiome.ID, 0.9f, 0.7f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

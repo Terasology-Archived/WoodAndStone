@@ -17,27 +17,22 @@ package org.terasology.was.generator;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
-import org.terasology.anotherWorld.coreBiome.AlpineBiome;
-import org.terasology.anotherWorld.coreBiome.DesertBiome;
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
-import org.terasology.anotherWorld.coreBiome.TaigaBiome;
-import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.anotherWorld.coreBiome.*;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
-import org.terasology.anotherWorld.decorator.BlockFilter;
 import org.terasology.anotherWorld.decorator.CaveDecorator;
 import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringConfig;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
+import org.terasology.anotherWorld.util.Filter;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.engine.CoreRegistry;
 import org.terasology.engine.SimpleUri;
-import org.terasology.gf.generator.FloraDecorator;
+import org.terasology.gf.generator.FloraFeatureGenerator;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -94,7 +89,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
 
-        BlockFilter removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
+        Filter<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
         // Dig some caves in the terrain
         addChunkDecorator(
@@ -108,14 +103,14 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     private void setupFlora() {
-        FloraDecorator floraDecorator = new FloraDecorator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
+        FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
 
-        addChunkDecorator(floraDecorator);
+        addFeatureGenerator(floraDecorator);
     }
 
 
     private void setupOreGenerator(Block stone) {
-        BlockFilter replacedBlocks = new BlockCollectionFilter(stone);
+        Filter<Block> replacedBlocks = new BlockCollectionFilter(stone);
         OreDecorator oreDecorator = new OreDecorator(replacedBlocks);
 
         // Use plugin mechanism to setup required ores for the modules, by default WoodAndStone requires no
