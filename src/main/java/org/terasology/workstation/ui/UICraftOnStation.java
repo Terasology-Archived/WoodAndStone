@@ -16,6 +16,8 @@
 package org.terasology.workstation.ui;
 
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.rendering.gui.framework.UIDisplayElement;
+import org.terasology.rendering.gui.framework.events.WindowListener;
 import org.terasology.rendering.gui.windows.UIScreenInventory;
 
 import javax.vecmath.Vector2f;
@@ -34,6 +36,26 @@ public class UICraftOnStation extends UIScreenInventory {
                         close();
                     }
                 });
+
+        addWindowListener(
+                new WindowListener() {
+                    @Override
+                    public void initialise(UIDisplayElement element) {
+                    }
+
+                    @Override
+                    public void shutdown(UIDisplayElement element) {
+                        windowClosed();
+                    }
+                }
+        );
+
         addDisplayElement(interior);
+    }
+
+    private void windowClosed() {
+        if (interior != null) {
+            interior.dispose();
+        }
     }
 }

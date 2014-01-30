@@ -64,10 +64,7 @@ public class UICraftInHand extends UIScreenInventory {
     }
 
     public void updateRecipes() {
-        if (allRecipesDisplay != null) {
-            removeDisplayElement(allRecipesDisplay);
-            allRecipesDisplay.dispose();
-        }
+        cleanup();
 
         CraftInHandRecipeRegistry registry = CoreRegistry.get(CraftInHandRecipeRegistry.class);
 
@@ -78,6 +75,13 @@ public class UICraftInHand extends UIScreenInventory {
     }
 
     public void windowClosed() {
+        cleanup();
+    }
 
+    private void cleanup() {
+        if (allRecipesDisplay != null) {
+            removeDisplayElement(allRecipesDisplay);
+            allRecipesDisplay.dispose();
+        }
     }
 }

@@ -59,6 +59,7 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
 
     private int windowWidth = 500;
     private int windowHeight = 320;
+    private UIAvailableStationRecipesDisplay recipesDisplay;
 
     public UICraftOnStationInterior(EntityRef entity, String stationType, String textureUri, Vector2f textureOrigin,
                                     int upgradeSlots, int toolSlots, int componentSlots, UpgradeCompleteCallback upgradeCompleteCallback) {
@@ -94,9 +95,8 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
 
 
         CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
-        UIAvailableStationRecipesDisplay recipesDisplay =
-                new UIAvailableStationRecipesDisplay(new Vector2f(windowWidth - 150, windowHeight - 50), craftingRegistry, stationType, station,
-                        upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
+        recipesDisplay = new UIAvailableStationRecipesDisplay(new Vector2f(windowWidth - 150, windowHeight - 50), craftingRegistry, stationType, station,
+                upgradeSlots + toolSlots, componentSlots, upgradeSlots, toolSlots);
         recipesDisplay.setPosition(new Vector2f(150, 0));
 
         addDisplayElement(recipesDisplay);
@@ -172,5 +172,9 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
             }
         }
         return null;
+    }
+
+    public void dispose() {
+        recipesDisplay.dispose();
     }
 }
