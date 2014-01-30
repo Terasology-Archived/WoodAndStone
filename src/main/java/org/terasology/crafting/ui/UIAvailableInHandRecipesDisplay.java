@@ -20,9 +20,9 @@ import com.google.common.collect.Multimap;
 import org.terasology.crafting.event.UserCraftInHandRequest;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.recipe.CraftInHandRecipe;
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 

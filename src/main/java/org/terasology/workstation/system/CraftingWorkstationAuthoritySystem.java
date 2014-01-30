@@ -15,7 +15,6 @@
  */
 package org.terasology.workstation.system;
 
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -23,6 +22,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.event.CraftingStationUpgraded;

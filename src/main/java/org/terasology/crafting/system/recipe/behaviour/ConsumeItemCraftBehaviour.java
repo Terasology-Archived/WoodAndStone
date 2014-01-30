@@ -17,9 +17,9 @@ package org.terasology.crafting.system.recipe.behaviour;
 
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.system.recipe.ItemCraftBehaviour;
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.registry.CoreRegistry;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

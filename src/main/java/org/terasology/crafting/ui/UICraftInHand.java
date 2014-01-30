@@ -16,10 +16,10 @@
 package org.terasology.crafting.ui;
 
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.WindowListener;
 import org.terasology.rendering.gui.windows.UIScreenInventory;

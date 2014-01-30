@@ -16,10 +16,10 @@
 package org.terasology.workstation.ui;
 
 import org.terasology.asset.Assets;
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.Vector2i;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.ClickListener;

@@ -17,11 +17,11 @@ package org.terasology.workstation.system.recipe;
 
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
-import org.terasology.engine.CoreRegistry;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
