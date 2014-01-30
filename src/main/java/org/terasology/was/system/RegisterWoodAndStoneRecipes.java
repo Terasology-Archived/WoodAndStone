@@ -84,20 +84,6 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new Vector3i(2, 1, 1), "WoodAndStone:BasicStonecrafting", "WoodAndStone:StoneStation"));
     }
 
-    private class StationTypeFilter implements Filter<EntityRef> {
-        private String stationType;
-
-        private StationTypeFilter(String stationType) {
-            this.stationType = stationType;
-        }
-
-        @Override
-        public boolean accepts(EntityRef entity) {
-            CraftingStationMaterialComponent stationMaterial = entity.getComponent(CraftingStationMaterialComponent.class);
-            return stationMaterial != null && stationMaterial.stationType.equals(stationType);
-        }
-    }
-
     private void addWorkstationBlockShapesRecipe(String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                                  String tool, int toolDurability, String blockResultPrefix, int blockResultCount) {
         SimpleWorkstationRecipe fullBlockRecipe = new SimpleWorkstationRecipe();
@@ -349,5 +335,19 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
     @Override
     public void shutdown() {
+    }
+
+    private final class StationTypeFilter implements Filter<EntityRef> {
+        private String stationType;
+
+        private StationTypeFilter(String stationType) {
+            this.stationType = stationType;
+        }
+
+        @Override
+        public boolean accepts(EntityRef entity) {
+            CraftingStationMaterialComponent stationMaterial = entity.getComponent(CraftingStationMaterialComponent.class);
+            return stationMaterial != null && stationMaterial.stationType.equals(stationType);
+        }
     }
 }

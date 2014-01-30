@@ -48,7 +48,8 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
 
     private List<LayerDefinition> layerDefinitions = new ArrayList<>();
 
-    public LayeredMultiBlockFormItemRecipe(Filter<EntityRef> itemFilter, Filter<Vector2i> sizeFilter, Filter<ActivateEvent> activateEventFilter, String prefab, Callback callback) {
+    public LayeredMultiBlockFormItemRecipe(Filter<EntityRef> itemFilter, Filter<Vector2i> sizeFilter,
+                                           Filter<ActivateEvent> activateEventFilter, String prefab, Callback callback) {
         this.itemFilter = itemFilter;
         this.sizeFilter = sizeFilter;
         this.activateEventFilter = activateEventFilter;
@@ -123,7 +124,8 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         int lastLayerYUp = maxY;
         for (int i = layerIndex + 1; i < layerDefinitions.size(); i++) {
             LayerDefinition upLayerDefinition = layerDefinitions.get(i);
-            int lastMatchingY = getLastMatchingInDirection(blockEntityRegistry, upLayerDefinition.entityFilter, new Vector3i(basePosition.x, lastLayerYUp, basePosition.z), Vector3i.up()).y;
+            int lastMatchingY = getLastMatchingInDirection(blockEntityRegistry, upLayerDefinition.entityFilter,
+                    new Vector3i(basePosition.x, lastLayerYUp, basePosition.z), Vector3i.up()).y;
             // Layer height
             int upLayerHeight = lastMatchingY - lastLayerYUp;
             if (upLayerDefinition.minHeight > upLayerHeight || upLayerDefinition.maxHeight < upLayerHeight) {
@@ -137,7 +139,8 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         int lastLayerYDown = minY;
         for (int i = layerIndex - 1; i >= 0; i--) {
             LayerDefinition downLayerDefinition = layerDefinitions.get(i);
-            int lastMatchingY = getLastMatchingInDirection(blockEntityRegistry, downLayerDefinition.entityFilter, new Vector3i(basePosition.x, lastLayerYUp, basePosition.z), Vector3i.down()).y;
+            int lastMatchingY = getLastMatchingInDirection(blockEntityRegistry, downLayerDefinition.entityFilter,
+                    new Vector3i(basePosition.x, lastLayerYUp, basePosition.z), Vector3i.down()).y;
             // Layer height
             int downLayerHeight = lastLayerYDown - lastMatchingY;
             if (downLayerDefinition.minHeight > downLayerHeight || downLayerDefinition.maxHeight < downLayerHeight) {
@@ -152,7 +155,8 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         Map<Vector3i, Block> blocksToReplace = new HashMap<>();
         for (int i = 0; i < layerHeights.length; i++) {
             if (layerHeights[i] > 0) {
-                Region3i layerRegion = Region3i.createBounded(new Vector3i(minX, validationY, minZ), new Vector3i(maxX, validationY + layerHeights[i] - 1, maxZ));
+                Region3i layerRegion = Region3i.createBounded(new Vector3i(minX, validationY, minZ),
+                        new Vector3i(maxX, validationY + layerHeights[i] - 1, maxZ));
                 LayerDefinition validateLayerDefinition = layerDefinitions.get(i);
                 for (Vector3i position : layerRegion) {
                     if (!validateLayerDefinition.entityFilter.accepts(blockEntityRegistry.getBlockEntityAt(position))) {
@@ -201,7 +205,7 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         }
     }
 
-    private static class LayerDefinition {
+    private static final class LayerDefinition {
         private int minHeight;
         private int maxHeight;
         private Filter<EntityRef> entityFilter;
@@ -216,6 +220,6 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
     }
 
     public interface Callback {
-        public void multiBlockFormed(EntityRef entity, Vector2i size, int[] layerSetup);
+        void multiBlockFormed(EntityRef entity, Vector2i size, int[] layerSetup);
     }
 }

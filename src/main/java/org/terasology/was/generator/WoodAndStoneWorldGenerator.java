@@ -17,7 +17,12 @@ package org.terasology.was.generator;
 
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
-import org.terasology.anotherWorld.coreBiome.*;
+import org.terasology.anotherWorld.coreBiome.AlpineBiome;
+import org.terasology.anotherWorld.coreBiome.DesertBiome;
+import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.coreBiome.TaigaBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.anotherWorld.decorator.CaveDecorator;

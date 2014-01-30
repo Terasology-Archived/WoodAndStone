@@ -19,7 +19,10 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 
-public class Blocks {
+public final class Blocks {
+    private Blocks() {
+    }
+
     public static Block getBlock(String blockId) {
         return CoreRegistry.get(BlockManager.class).getBlock(blockId);
     }

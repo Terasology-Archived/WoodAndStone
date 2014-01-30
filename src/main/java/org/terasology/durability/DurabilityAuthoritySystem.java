@@ -40,6 +40,9 @@ public class DurabilityAuthoritySystem implements UpdateSubscriberSystem {
     @In
     private EntityManager entityManager;
 
+    private long tickLength = 5000;
+    private long lastModified;
+
     @Override
     public void initialise() {
     }
@@ -47,9 +50,6 @@ public class DurabilityAuthoritySystem implements UpdateSubscriberSystem {
     @Override
     public void shutdown() {
     }
-
-    private long tickLength = 5000;
-    private long lastModified;
 
     @Override
     public void update(float delta) {

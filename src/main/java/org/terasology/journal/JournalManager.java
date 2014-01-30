@@ -34,8 +34,8 @@ public interface JournalManager {
     Map<JournalChapter, List<String>> getPlayerEntries(EntityRef player);
 
     public interface JournalChapter {
-        public String getChapterName();
+        String getChapterName();
 
-        public Texture getTexture();
+        Texture getTexture();
     }
 }
