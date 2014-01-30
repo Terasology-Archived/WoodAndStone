@@ -1,7 +1,7 @@
 {
     "Item": {
         "name": "Copper Ore Dust",
-        "icon": "WoodAndStone:items.CopperOreDust",
+        "icon": "WoodAndStone:bronze.CopperOreDust",
         "renderWithIcon": true,
         "stackId": "WoodAndStone:CopperOreDust"
     }
