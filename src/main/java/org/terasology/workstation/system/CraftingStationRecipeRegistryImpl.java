@@ -24,6 +24,8 @@ import org.terasology.workstation.system.recipe.UpgradeRecipe;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +36,7 @@ import java.util.Map;
 public class CraftingStationRecipeRegistryImpl implements ComponentSystem, CraftingStationRecipeRegistry {
     private Map<String, Map<String, CraftingStationRecipe>> stationRecipes = new HashMap<>();
     private Map<String, Map<String, UpgradeRecipe>> upgradeRecipes = new HashMap<>();
+    private Map<String, List<String>> upgradeReverse = new HashMap<>();
 
     @Override
     public void initialise() {
@@ -54,22 +57,40 @@ public class CraftingStationRecipeRegistryImpl implements ComponentSystem, Craft
     }
 
     @Override
-    public void addStationUpgradeRecipe(String stationType, String recipeId, UpgradeRecipe recipe) {
+    public void addStationUpgradeRecipe(String stationType, String newStationType, String recipeId, UpgradeRecipe recipe) {
         Map<String, UpgradeRecipe> stationTypeUpgrades = upgradeRecipes.get(stationType);
         if (stationTypeUpgrades == null) {
             stationTypeUpgrades = new LinkedHashMap<>();
             upgradeRecipes.put(stationType, stationTypeUpgrades);
         }
         stationTypeUpgrades.put(recipeId, recipe);
+
+        List<String> downgraded = upgradeReverse.get(newStationType);
+        if (downgraded == null) {
+            downgraded = new LinkedList<>();
+            upgradeReverse.put(newStationType, downgraded);
+        }
+        downgraded.add(stationType);
     }
 
     @Override
     public Map<String, CraftingStationRecipe> getCraftingRecipes(String stationType) {
-        Map<String, CraftingStationRecipe> recipeMap = stationRecipes.get(stationType);
-        if (recipeMap == null) {
-            return Collections.emptyMap();
+        Map<String, CraftingStationRecipe> result = new HashMap<>();
+        appendCraftingRecipes(result, stationType);
+        return result;
+    }
+
+    private void appendCraftingRecipes(Map<String, CraftingStationRecipe> result, String stationType) {
+        List<String> basicWorkstations = upgradeReverse.get(stationType);
+        if (basicWorkstations != null) {
+            for (String basicWorkstation : basicWorkstations) {
+                appendCraftingRecipes(result, basicWorkstation);
+            }
         }
-        return recipeMap;
+        Map<String, CraftingStationRecipe> recipesForThisWorkstation = stationRecipes.get(stationType);
+        if (recipesForThisWorkstation != null) {
+            result.putAll(recipesForThisWorkstation);
+        }
     }
 
     public Map<String, UpgradeRecipe> getUpgradeRecipes(String stationType) {
