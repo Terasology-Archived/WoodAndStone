@@ -53,8 +53,6 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
     private int componentSlots;
     private UpgradeCompleteCallback upgradeCompleteCallback;
 
-    private UIAvailableStationRecipesDisplay availableRecipes;
-
     private String upgradeRecipeDisplayed;
 
     private int windowWidth = 500;
@@ -92,7 +90,6 @@ public class UICraftOnStationInterior extends UIDisplayContainer {
         outputGrid = new UIInventoryGrid(1);
         outputGrid.linkToEntity(entity, upgradeSlots + toolSlots + componentSlots, 1);
         outputGrid.setPosition(new Vector2f(windowWidth - 48, windowHeight - 48));
-
 
         CraftingStationRecipeRegistry craftingRegistry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
         recipesDisplay = new UIAvailableStationRecipesDisplay(new Vector2f(windowWidth - 150, windowHeight - 50), craftingRegistry, stationType, station,
