@@ -27,7 +27,6 @@ import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.placement.PlaceBlocks;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
@@ -42,12 +41,12 @@ public class SurroundMultiBlockFormItemRecipe implements MultiBlockFormItemRecip
     private Filter<EntityRef> insideBlock;
     private Filter<Vector3i> sizeFilter;
     private Filter<ActivateEvent> activateEventFilter;
-    private Callback callback;
+    private MultiBlockCallback<Void> callback;
     private String prefab;
 
     public SurroundMultiBlockFormItemRecipe(Filter<EntityRef> activator, Filter<EntityRef> outsideBlock, Filter<EntityRef> insideBlock,
                                             Filter<Vector3i> sizeFilter, Filter<ActivateEvent> activateEventFilter,
-                                            String prefab, Callback callback) {
+                                            String prefab, MultiBlockCallback<Void> callback) {
         this.activator = activator;
         this.outsideBlock = outsideBlock;
         this.insideBlock = insideBlock;
@@ -114,8 +113,7 @@ public class SurroundMultiBlockFormItemRecipe implements MultiBlockFormItemRecip
         }
 
         // Ok, we got matching blocks now we can form the multi-block
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        Map<Vector3i, Block> replacementBlockMap = callback.createReplacementBlockMap(outsideBlockRegion);
+        Map<Vector3i, Block> replacementBlockMap = callback.getReplacementMap(outsideBlockRegion, null);
 
         WorldProvider worldProvider = CoreRegistry.get(WorldProvider.class);
 
@@ -133,7 +131,7 @@ public class SurroundMultiBlockFormItemRecipe implements MultiBlockFormItemRecip
         multiBlockEntity.addComponent(new BlockRegionComponent(outsideBlockRegion));
         multiBlockEntity.addComponent(new LocationComponent(outsideBlockRegion.center()));
 
-        callback.multiBlockFormed(multiBlockEntity, outsideBlockRegion);
+        callback.multiBlockFormed(outsideBlockRegion, multiBlockEntity, null);
 
         multiBlockEntity.send(new MultiBlockFormed(event.getInstigator()));
 
@@ -151,11 +149,5 @@ public class SurroundMultiBlockFormItemRecipe implements MultiBlockFormItemRecip
             }
             result = testedLocation;
         }
-    }
-
-    public interface Callback {
-        Map<Vector3i, Block> createReplacementBlockMap(Region3i region);
-
-        void multiBlockFormed(EntityRef entity, Region3i region);
     }
 }

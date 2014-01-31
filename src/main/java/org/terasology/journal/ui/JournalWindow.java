@@ -80,16 +80,16 @@ public class JournalWindow extends UIWindow {
 
         JournalManager journalManager = CoreRegistry.get(JournalManager.class);
         EntityRef playerEntity = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-        Map<JournalManager.JournalChapter, List<String>> playerEntries = journalManager.getPlayerEntries(playerEntity);
-        for (List<String> chapterContents : playerEntries.values()) {
+        Map<JournalManager.JournalChapter, List<JournalManager.JournalEntry>> playerEntries = journalManager.getPlayerEntries(playerEntity);
+        for (List<JournalManager.JournalEntry> chapterContents : playerEntries.values()) {
             boolean first = true;
-            for (String chapterEntry : chapterContents) {
+            for (JournalManager.JournalEntry chapterEntry : chapterContents) {
                 if (!first) {
                     sb.append("\n\n");
                 } else {
                     first = false;
                 }
-                sb.append(chapterEntry);
+                sb.append(chapterEntry.getText());
             }
         }
 

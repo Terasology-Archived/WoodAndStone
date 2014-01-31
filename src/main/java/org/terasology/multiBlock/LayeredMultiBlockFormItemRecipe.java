@@ -32,7 +32,6 @@ import org.terasology.world.block.entity.placement.PlaceBlocks;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,12 +43,12 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
     private Filter<Vector2i> sizeFilter;
     private Filter<ActivateEvent> activateEventFilter;
     private String prefab;
-    private Callback callback;
+    private MultiBlockCallback<int[]> callback;
 
     private List<LayerDefinition> layerDefinitions = new ArrayList<>();
 
     public LayeredMultiBlockFormItemRecipe(Filter<EntityRef> itemFilter, Filter<Vector2i> sizeFilter,
-                                           Filter<ActivateEvent> activateEventFilter, String prefab, Callback callback) {
+                                           Filter<ActivateEvent> activateEventFilter, String prefab, MultiBlockCallback<int[]> callback) {
         this.itemFilter = itemFilter;
         this.sizeFilter = sizeFilter;
         this.activateEventFilter = activateEventFilter;
@@ -62,11 +61,11 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         return itemFilter.accepts(item);
     }
 
-    public void addLayer(int minHeight, int maxHeight, Filter<EntityRef> entityFilter, Block blockToReplaceWith) {
+    public void addLayer(int minHeight, int maxHeight, Filter<EntityRef> entityFilter) {
         if (minHeight > maxHeight || minHeight < 0) {
             throw new IllegalArgumentException("Invalid values for minHeight and maxHeight");
         }
-        layerDefinitions.add(new LayerDefinition(minHeight, maxHeight, entityFilter, blockToReplaceWith));
+        layerDefinitions.add(new LayerDefinition(minHeight, maxHeight, entityFilter));
     }
 
     @Override
@@ -152,7 +151,6 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
 
         // We detected the boundaries of the possible multi-block, now we need to validate that all blocks in the region (for each layer) match
         int validationY = lastLayerYDown;
-        Map<Vector3i, Block> blocksToReplace = new HashMap<>();
         for (int i = 0; i < layerHeights.length; i++) {
             if (layerHeights[i] > 0) {
                 Region3i layerRegion = Region3i.createBounded(new Vector3i(minX, validationY, minZ),
@@ -162,23 +160,24 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
                     if (!validateLayerDefinition.entityFilter.accepts(blockEntityRegistry.getBlockEntityAt(position))) {
                         return false;
                     }
-                    blocksToReplace.put(position, validateLayerDefinition.blockToReplaceWith);
                 }
                 validationY += layerHeights[i];
             }
         }
 
+        Region3i multiBlockRegion = Region3i.createBounded(new Vector3i(minX, lastLayerYDown, minZ), new Vector3i(maxX, lastLayerYUp, maxZ));
+
+        Map<Vector3i, Block> replacementMap = callback.getReplacementMap(multiBlockRegion, layerHeights);
+
         // Ok, now we can replace the blocks
         WorldProvider worldProvider = CoreRegistry.get(WorldProvider.class);
         EntityRef worldEntity = worldProvider.getWorldEntity();
-        PlaceBlocks event = new PlaceBlocks(blocksToReplace);
+        PlaceBlocks event = new PlaceBlocks(replacementMap);
         worldEntity.send(event);
 
         if (event.isConsumed()) {
             return false;
         }
-
-        Region3i multiBlockRegion = Region3i.createBounded(new Vector3i(minX, lastLayerYDown, minZ), new Vector3i(maxX, lastLayerYUp, maxZ));
 
         // Create the block region entity
         EntityManager entityManager = CoreRegistry.get(EntityManager.class);
@@ -186,7 +185,7 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         multiBlockEntity.addComponent(new BlockRegionComponent(multiBlockRegion));
         multiBlockEntity.addComponent(new LocationComponent(multiBlockRegion.center()));
 
-        callback.multiBlockFormed(multiBlockEntity, multiBlockHorizontalSize, layerHeights);
+        callback.multiBlockFormed(multiBlockRegion, multiBlockEntity, layerHeights);
 
         multiBlockEntity.send(new MultiBlockFormed(event.getInstigator()));
 
@@ -209,17 +208,11 @@ public class LayeredMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         private int minHeight;
         private int maxHeight;
         private Filter<EntityRef> entityFilter;
-        private Block blockToReplaceWith;
 
-        private LayerDefinition(int minHeight, int maxHeight, Filter<EntityRef> entityFilter, Block blockToReplaceWith) {
+        private LayerDefinition(int minHeight, int maxHeight, Filter<EntityRef> entityFilter) {
             this.minHeight = minHeight;
             this.maxHeight = maxHeight;
             this.entityFilter = entityFilter;
-            this.blockToReplaceWith = blockToReplaceWith;
         }
-    }
-
-    public interface Callback {
-        void multiBlockFormed(EntityRef entity, Vector2i size, int[] layerSetup);
     }
 }

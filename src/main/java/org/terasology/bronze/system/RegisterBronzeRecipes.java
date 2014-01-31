@@ -22,8 +22,11 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
+import org.terasology.multiBlock.BasicHorizontalSizeFilter;
+import org.terasology.multiBlock.MultiBlockCallback;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.SurroundMultiBlockFormItemRecipe;
+import org.terasology.multiBlock.UniformBlockReplacementCallback;
 import org.terasology.multiBlock.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
@@ -48,6 +51,8 @@ public class RegisterBronzeRecipes implements ComponentSystem {
     private CraftingStationRecipeRegistry craftingStationRecipeRegistry;
     @In
     private MultiBlockFormRecipeRegistry multiBlockRecipeRegistry;
+    @In
+    private BlockManager blockManager;
 
     @Override
     public void initialise() {
@@ -72,8 +77,9 @@ public class RegisterBronzeRecipes implements ComponentSystem {
         multiBlockRecipeRegistry.addMultiBlockFormItemRecipe(
                 new UniformMultiBlockFormItemRecipe(
                         new ToolTypeEntityFilter("stone"), new UseOnTopFilter(),
-                        new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")), new Vector3i(2, 1, 1),
-                        "WoodAndStone:BasicMetalcrafting", "WoodAndStone:BasicMetalStation"));
+                        new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")), new BasicHorizontalSizeFilter(2, 1, 1, 1),
+                        "WoodAndStone:BasicMetalcrafting",
+                        new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicMetalStation"))));
     }
 
     private void addMultiblockRecipes() {
@@ -94,9 +100,9 @@ public class RegisterBronzeRecipes implements ComponentSystem {
     public void shutdown() {
     }
 
-    private final static class CharcoalPitCallback implements SurroundMultiBlockFormItemRecipe.Callback {
+    private final static class CharcoalPitCallback implements MultiBlockCallback<Void> {
         @Override
-        public Map<Vector3i, Block> createReplacementBlockMap(Region3i region) {
+        public Map<Vector3i, Block> getReplacementMap(Region3i region, Void designDetails) {
             BlockManager blockManager = CoreRegistry.get(BlockManager.class);
             Block cobbleStone = blockManager.getBlock("Core:CobbleStone");
 
@@ -144,7 +150,7 @@ public class RegisterBronzeRecipes implements ComponentSystem {
         }
 
         @Override
-        public void multiBlockFormed(EntityRef entity, Region3i region) {
+        public void multiBlockFormed(Region3i region, EntityRef entity, Void designDetails) {
         }
     }
 

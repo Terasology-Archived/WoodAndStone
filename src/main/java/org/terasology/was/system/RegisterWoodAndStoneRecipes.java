@@ -32,7 +32,9 @@ import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
+import org.terasology.multiBlock.BasicHorizontalSizeFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
+import org.terasology.multiBlock.UniformBlockReplacementCallback;
 import org.terasology.multiBlock.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
@@ -60,6 +62,8 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private MultiBlockFormRecipeRegistry multiBlockFormRecipeRegistry;
     @In
     private SlotBasedInventoryManager inventoryManager;
+    @In
+    private BlockManager blockManager;
 
     @Override
     public void initialise() {
@@ -78,10 +82,14 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private void addWorkstationRecipes() {
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(
                 new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("wood"), new UseOnTopFilter(),
-                        new StationTypeFilter("WoodAndStone:BasicWoodcrafting"), new Vector3i(2, 1, 1), "WoodAndStone:BasicWoodcrafting", "WoodAndStone:BasicWoodStation"));
+                        new StationTypeFilter("WoodAndStone:BasicWoodcrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
+                        "WoodAndStone:BasicWoodcrafting",
+                        new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicWoodStation"))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(
                 new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("stone"), new UseOnTopFilter(),
-                        new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new Vector3i(2, 1, 1), "WoodAndStone:BasicStonecrafting", "WoodAndStone:StoneStation"));
+                        new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
+                        "WoodAndStone:BasicStonecrafting",
+                        new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:StoneStation"))));
     }
 
     private void addWorkstationBlockShapesRecipe(String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,

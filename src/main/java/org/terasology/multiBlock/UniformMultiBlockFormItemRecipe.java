@@ -27,11 +27,9 @@ import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.entity.placement.PlaceBlocks;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,21 +39,18 @@ public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
     private Filter<EntityRef> activatorFilter;
     private Filter<ActivateEvent> activateEventFilter;
     private Filter<EntityRef> blockFilter;
-    private int requiredHeight;
-    private int requiredMinSize;
-    private int requiredMaxSize;
+    private Filter<Vector3i> sizeFilter;
     private String prefab;
-    private String replaceBlockUri;
+    private MultiBlockCallback<Void> callback;
 
-    public UniformMultiBlockFormItemRecipe(Filter<EntityRef> activatorFilter, Filter<ActivateEvent> activateEventFilter, Filter<EntityRef> blockFilter, Vector3i size,
-                                           String multiBlockPrefab, String replaceBlockUri) {
+    public UniformMultiBlockFormItemRecipe(Filter<EntityRef> activatorFilter, Filter<ActivateEvent> activateEventFilter,
+                                           Filter<EntityRef> blockFilter, Filter<Vector3i> sizeFilter,
+                                           String multiBlockPrefab, MultiBlockCallback<Void> callback) {
         this.activatorFilter = activatorFilter;
         this.activateEventFilter = activateEventFilter;
         this.blockFilter = blockFilter;
-        this.replaceBlockUri = replaceBlockUri;
-        this.requiredHeight = size.y;
-        this.requiredMinSize = Math.min(size.x, size.z);
-        this.requiredMaxSize = Math.max(size.x, size.z);
+        this.sizeFilter = sizeFilter;
+        this.callback = callback;
         this.prefab = multiBlockPrefab;
     }
 
@@ -90,19 +85,14 @@ public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         int minZ = getLastMatchingInDirection(blockEntityRegistry, blockPosition, Vector3i.south()).z;
         int maxZ = getLastMatchingInDirection(blockEntityRegistry, blockPosition, Vector3i.north()).z;
 
-        // Check if the outside boundaries match the required size
-        if (Math.min(maxX - minX, maxZ - minZ) + 1 != requiredMinSize) {
-            return false;
-        }
-        if (Math.max(maxX - minX, maxZ - minZ) + 1 != requiredMaxSize) {
-            return false;
-        }
-        if (maxY - minY + 1 != requiredHeight) {
+        Region3i multiBlockRegion = Region3i.createBounded(new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
+
+        // Check if the size is accepted
+        if (!sizeFilter.accepts(multiBlockRegion.size())) {
             return false;
         }
 
         // Now check that all the blocks in the region defined by these boundaries match the criteria
-        Region3i multiBlockRegion = Region3i.createBounded(new Vector3i(minX, minY, minZ), new Vector3i(maxX, maxY, maxZ));
         for (Vector3i blockLocation : multiBlockRegion) {
             if (!blockFilter.accepts(blockEntityRegistry.getBlockEntityAt(blockLocation))) {
                 return false;
@@ -110,13 +100,12 @@ public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         }
 
         // Ok, we got matching blocks now we can form the multi-block
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        Block block = blockManager.getBlock(replaceBlockUri);
-
         WorldProvider worldProvider = CoreRegistry.get(WorldProvider.class);
 
+        Map<Vector3i, Block> replacementMap = callback.getReplacementMap(multiBlockRegion, null);
+
         // First, replace the blocks in world
-        PlaceBlocks placeBlocksEvent = new PlaceBlocks(getBlockLocationMap(multiBlockRegion, block), event.getInstigator());
+        PlaceBlocks placeBlocksEvent = new PlaceBlocks(replacementMap, event.getInstigator());
         worldProvider.getWorldEntity().send(placeBlocksEvent);
 
         if (placeBlocksEvent.isConsumed()) {
@@ -129,17 +118,11 @@ public class UniformMultiBlockFormItemRecipe implements MultiBlockFormItemRecipe
         multiBlockEntity.addComponent(new BlockRegionComponent(multiBlockRegion));
         multiBlockEntity.addComponent(new LocationComponent(multiBlockRegion.center()));
 
+        callback.multiBlockFormed(multiBlockRegion, multiBlockEntity, null);
+
         multiBlockEntity.send(new MultiBlockFormed(event.getInstigator()));
 
         return true;
-    }
-
-    private Map<Vector3i, Block> getBlockLocationMap(Region3i multiBlockRegion, Block block) {
-        Map<Vector3i, Block> blocksToPlace = new HashMap<>();
-        for (Vector3i location : multiBlockRegion) {
-            blocksToPlace.put(location, block);
-        }
-        return blocksToPlace;
     }
 
     private Vector3i getLastMatchingInDirection(BlockEntityRegistry blockEntityRegistry, Vector3i location, Vector3i direction) {
