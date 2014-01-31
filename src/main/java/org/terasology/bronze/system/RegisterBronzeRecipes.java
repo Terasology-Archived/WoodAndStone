@@ -16,10 +16,13 @@
 package org.terasology.bronze.system;
 
 import org.terasology.anotherWorld.util.Filter;
+import org.terasology.bronze.component.CharcoalPitComponent;
+import org.terasology.core.logic.blockDropGrammar.BlockDropGrammarComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
+import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
 import org.terasology.multiBlock.BasicHorizontalSizeFilter;
@@ -39,6 +42,7 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 
 import javax.vecmath.Vector3f;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,6 +155,28 @@ public class RegisterBronzeRecipes implements ComponentSystem {
 
         @Override
         public void multiBlockFormed(Region3i region, EntityRef entity, Void designDetails) {
+            Vector3i size = region.size();
+            int airBlockCount = (size.x - 2) * (size.y - 2) * (size.z - 2);
+
+            // Setup minimum and maximum log count based on size of the multi-block
+            CharcoalPitComponent charcoalPit = new CharcoalPitComponent();
+            charcoalPit.minimumLogCount = 8 * airBlockCount;
+            charcoalPit.maximumLogCount = 16 * airBlockCount;
+            charcoalPit.inputSlotCount = airBlockCount;
+            charcoalPit.outputSlotCount = airBlockCount;
+            entity.addComponent(charcoalPit);
+
+            // Setup inventory size based on size of the multi-block
+            InventoryComponent inventory = new InventoryComponent(airBlockCount * 2);
+            inventory.privateToOwner = false;
+            entity.addComponent(inventory);
+
+            // We drop CobbleStone equal to what was used minus top layer (it is rendered unusable in the process)
+            int cobbleStoneCount = 2 * (size.x + size.z - 2) * (size.y - 1) + (size.x - 2) * (size.z - 2);
+
+            BlockDropGrammarComponent drop = new BlockDropGrammarComponent();
+            drop.blockDrops = Arrays.asList(cobbleStoneCount + "*Core:CobbleStone");
+            entity.addComponent(drop);
         }
     }
 

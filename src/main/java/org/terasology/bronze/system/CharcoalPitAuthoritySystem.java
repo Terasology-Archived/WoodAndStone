@@ -1,0 +1,101 @@
+/*
+ * Copyright 2014 MovingBlocks
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.terasology.bronze.system;
+
+import org.terasology.bronze.component.CharcoalPitComponent;
+import org.terasology.bronze.event.OpenCharcoalPitRequest;
+import org.terasology.bronze.event.ProduceCharcoalRequest;
+import org.terasology.engine.Time;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
+import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.common.ActivateEvent;
+import org.terasology.logic.delay.AddDelayedActionEvent;
+import org.terasology.logic.delay.DelayedActionTriggeredEvent;
+import org.terasology.logic.inventory.InventoryComponent;
+import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.particles.BlockParticleEffectComponent;
+import org.terasology.registry.In;
+import org.terasology.world.block.regions.BlockRegionComponent;
+
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+@RegisterSystem(value = RegisterMode.AUTHORITY)
+public class CharcoalPitAuthoritySystem extends BaseComponentSystem {
+    public static final String PRODUCE_CHARCOAL_ACTION_PREFIX = "Bronze:ProduceCharcoal|";
+    @In
+    private SlotBasedInventoryManager inventoryManager;
+    @In
+    private Time time;
+    @In
+    private PrefabManager prefabManager;
+
+    @ReceiveEvent(components = {CharcoalPitComponent.class})
+    public void userActivatesCharcoalPit(ActivateEvent event, EntityRef entity) {
+        entity.send(new OpenCharcoalPitRequest());
+    }
+
+    @ReceiveEvent(components = {CharcoalPitComponent.class, BlockRegionComponent.class, InventoryComponent.class})
+    public void startBurningCharcoal(ProduceCharcoalRequest event, EntityRef entity) {
+        CharcoalPitComponent charcoalPit = entity.getComponent(CharcoalPitComponent.class);
+
+        int logCount = CharcoalPitUtils.getLogCount(inventoryManager, entity);
+
+        if (CharcoalPitUtils.canBurnCharcoal(inventoryManager, logCount, entity)) {
+            // Remove logs from inventory
+            for (int i = 0; i < charcoalPit.inputSlotCount; i++) {
+                EntityRef itemInSlot = inventoryManager.getItemInSlot(entity, i);
+                if (itemInSlot.exists()) {
+                    inventoryManager.removeItem(entity, itemInSlot);
+                }
+            }
+
+            int charcoalCount = CharcoalPitUtils.getResultCharcoalCount(logCount, entity);
+
+            int burnLength = 5 * 60 * 1000;
+
+            // Set burn length
+            charcoalPit.burnFinishWorldTime = time.getGameTimeInMs() + burnLength;
+            entity.saveComponent(charcoalPit);
+
+            Prefab prefab = prefabManager.getPrefab("Engine:smokeExplosion");
+            BlockParticleEffectComponent particles = prefab.getComponent(BlockParticleEffectComponent.class);
+            entity.addComponent(particles);
+
+            entity.send(new AddDelayedActionEvent(PRODUCE_CHARCOAL_ACTION_PREFIX + charcoalCount, burnLength));
+        }
+    }
+
+    @ReceiveEvent(components = {CharcoalPitComponent.class, BlockRegionComponent.class, InventoryComponent.class})
+    public void charcoalBurningFinished(DelayedActionTriggeredEvent event, EntityRef entity) {
+        String actionId = event.getActionId();
+        if (actionId.startsWith(PRODUCE_CHARCOAL_ACTION_PREFIX)) {
+            CharcoalPitComponent charcoalPit = entity.getComponent(CharcoalPitComponent.class);
+
+            entity.removeComponent(BlockParticleEffectComponent.class);
+
+            int count = Integer.parseInt(actionId.substring(PRODUCE_CHARCOAL_ACTION_PREFIX.length()));
+            for (int i = charcoalPit.inputSlotCount; i < charcoalPit.inputSlotCount + charcoalPit.outputSlotCount; i++) {
+                // TODO: Add count of Charcoal to CharcoalPit inventory
+            }
+        }
+    }
+}
