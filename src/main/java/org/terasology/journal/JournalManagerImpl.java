@@ -81,7 +81,7 @@ public class JournalManagerImpl implements ComponentSystem, JournalManager {
                 List<JournalManager.JournalEntry> chapterEntries = new LinkedList<>();
 
                 for (String discoveredChapterEntryId : discoveredChapterEntries) {
-                    String[] entrySplit = discoveredChapterEntryId.split("|", 2);
+                    String[] entrySplit = discoveredChapterEntryId.split("\\|", 2);
                     long date = Long.parseLong(entrySplit[0]);
                     String id = entrySplit[1];
                     chapterEntries.add(new JournalEntry(journalEntries.get(chapterId).get(id), date));

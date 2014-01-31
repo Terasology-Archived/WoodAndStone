@@ -19,6 +19,7 @@ import org.terasology.bronze.component.CharcoalPitComponent;
 import org.terasology.bronze.event.OpenCharcoalPitRequest;
 import org.terasology.bronze.event.ProduceCharcoalRequest;
 import org.terasology.engine.Time;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -26,20 +27,25 @@ import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.delay.AddDelayedActionEvent;
 import org.terasology.logic.delay.DelayedActionTriggeredEvent;
 import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.particles.BlockParticleEffectComponent;
+import org.terasology.math.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.world.block.regions.BlockRegionComponent;
+
+import javax.vecmath.Vector3f;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
-public class CharcoalPitAuthoritySystem extends BaseComponentSystem {
+public class CharcoalPitAuthoritySystem extends BaseComponentSystem implements UpdateSubscriberSystem {
     public static final String PRODUCE_CHARCOAL_ACTION_PREFIX = "Bronze:ProduceCharcoal|";
     @In
     private SlotBasedInventoryManager inventoryManager;
@@ -47,10 +53,28 @@ public class CharcoalPitAuthoritySystem extends BaseComponentSystem {
     private Time time;
     @In
     private PrefabManager prefabManager;
+    @In
+    private EntityManager entityManager;
+
+    private long lastUpdate;
 
     @ReceiveEvent(components = {CharcoalPitComponent.class})
     public void userActivatesCharcoalPit(ActivateEvent event, EntityRef entity) {
         entity.send(new OpenCharcoalPitRequest());
+    }
+
+    @Override
+    public void update(float delta) {
+        long gameTimeInMs = time.getGameTimeInMs();
+        if (gameTimeInMs + 250 > lastUpdate) {
+            for (EntityRef charcoalPit : entityManager.getEntitiesWith(CharcoalPitComponent.class, BlockParticleEffectComponent.class)) {
+                BlockParticleEffectComponent particles = charcoalPit.getComponent(BlockParticleEffectComponent.class);
+                particles.spawnCount += 5;
+                charcoalPit.saveComponent(particles);
+            }
+
+            lastUpdate = gameTimeInMs;
+        }
     }
 
     @ReceiveEvent(components = {CharcoalPitComponent.class, BlockRegionComponent.class, InventoryComponent.class})
@@ -76,9 +100,17 @@ public class CharcoalPitAuthoritySystem extends BaseComponentSystem {
             charcoalPit.burnFinishWorldTime = time.getGameTimeInMs() + burnLength;
             entity.saveComponent(charcoalPit);
 
-            Prefab prefab = prefabManager.getPrefab("Engine:smokeExplosion");
+            Prefab prefab = prefabManager.getPrefab("WoodAndStone:CharcoalPitSmoke");
             BlockParticleEffectComponent particles = prefab.getComponent(BlockParticleEffectComponent.class);
             entity.addComponent(particles);
+
+            BlockRegionComponent region = entity.getComponent(BlockRegionComponent.class);
+            Vector3f center = region.region.center();
+            Vector3i max = region.region.max();
+
+            LocationComponent location = entity.getComponent(LocationComponent.class);
+            location.setWorldPosition(new Vector3f(center.x - 0.5f, max.y + 1, center.z - 0.5f));
+            entity.saveComponent(location);
 
             entity.send(new AddDelayedActionEvent(PRODUCE_CHARCOAL_ACTION_PREFIX + charcoalCount, burnLength));
         }

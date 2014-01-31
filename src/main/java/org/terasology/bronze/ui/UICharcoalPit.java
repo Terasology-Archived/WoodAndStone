@@ -44,6 +44,12 @@ public class UICharcoalPit extends UIScreenInventory {
     private UIInventoryGrid outputGrid;
     private UIButton processButton;
 
+    public UICharcoalPit() {
+        super();
+        setId("Bronze:CharcoalPit");
+        setModal(true);
+    }
+
     public void setCharcoalPit(final EntityRef entity) {
         this.charcoalPitEntity = entity;
 
