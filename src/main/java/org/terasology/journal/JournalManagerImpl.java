@@ -70,18 +70,21 @@ public class JournalManagerImpl implements ComponentSystem, JournalManager {
     }
 
     @Override
-    public Map<JournalManager.JournalChapter, List<String>> getPlayerEntries(EntityRef player) {
-        Map<JournalManager.JournalChapter, List<String>> result = new LinkedHashMap<>();
+    public Map<JournalManager.JournalChapter, List<JournalManager.JournalEntry>> getPlayerEntries(EntityRef player) {
+        Map<JournalManager.JournalChapter, List<JournalManager.JournalEntry>> result = new LinkedHashMap<>();
         for (Map.Entry<String, JournalChapter> chapterEntry : journalChapters.entrySet()) {
             JournalAccessComponent journal = player.getComponent(JournalAccessComponent.class);
             Map<String, List<String>> discoveredEntries = journal.discoveredJournalEntries;
             String chapterId = chapterEntry.getKey();
             List<String> discoveredChapterEntries = discoveredEntries.get(chapterId);
             if (discoveredChapterEntries != null) {
-                List<String> chapterEntries = new LinkedList<>();
+                List<JournalManager.JournalEntry> chapterEntries = new LinkedList<>();
 
                 for (String discoveredChapterEntryId : discoveredChapterEntries) {
-                    chapterEntries.add(journalEntries.get(chapterId).get(discoveredChapterEntryId));
+                    String[] entrySplit = discoveredChapterEntryId.split("|", 2);
+                    long date = Long.parseLong(entrySplit[0]);
+                    String id = entrySplit[1];
+                    chapterEntries.add(new JournalEntry(journalEntries.get(chapterId).get(id), date));
                 }
 
                 result.put(chapterEntry.getValue(), chapterEntries);
@@ -89,6 +92,26 @@ public class JournalManagerImpl implements ComponentSystem, JournalManager {
         }
 
         return result;
+    }
+
+    private final class JournalEntry implements JournalManager.JournalEntry {
+        private final String text;
+        private final long date;
+
+        private JournalEntry(String text, long date) {
+            this.text = text;
+            this.date = date;
+        }
+
+        @Override
+        public long getDate() {
+            return date;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
     }
 
     private final class JournalChapter implements JournalManager.JournalChapter {

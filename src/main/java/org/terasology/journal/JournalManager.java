@@ -31,11 +31,17 @@ public interface JournalManager {
 
     boolean hasEntry(EntityRef player, String chapterId, String entryId);
 
-    Map<JournalChapter, List<String>> getPlayerEntries(EntityRef player);
+    Map<JournalChapter, List<JournalEntry>> getPlayerEntries(EntityRef player);
 
     public interface JournalChapter {
         String getChapterName();
 
         Texture getTexture();
+    }
+
+    public interface JournalEntry {
+        long getDate();
+
+        String getText();
     }
 }

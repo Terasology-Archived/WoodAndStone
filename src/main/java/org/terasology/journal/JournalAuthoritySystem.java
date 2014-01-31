@@ -58,7 +58,7 @@ public class JournalAuthoritySystem implements ComponentSystem {
             entries = new LinkedList<>();
             journalAccess.discoveredJournalEntries.put(chapterId, entries);
         }
-        entries.add(event.getEntryId());
+        entries.add(System.currentTimeMillis() + "|" + event.getEntryId());
         character.saveComponent(journalAccess);
 
         // Notify the client
