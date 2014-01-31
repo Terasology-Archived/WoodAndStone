@@ -15,6 +15,8 @@
  */
 package org.terasology.multiBlock;
 
+import org.terasology.multiBlock.recipe.MultiBlockFormItemRecipe;
+
 import java.util.Collection;
 
 /**

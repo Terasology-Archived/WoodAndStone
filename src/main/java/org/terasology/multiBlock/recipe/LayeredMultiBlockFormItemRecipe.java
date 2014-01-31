@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.multiBlock;
+package org.terasology.multiBlock.recipe;
 
 import org.terasology.anotherWorld.util.Filter;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -23,6 +23,8 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector2i;
 import org.terasology.math.Vector3i;
+import org.terasology.multiBlock.MultiBlockCallback;
+import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;

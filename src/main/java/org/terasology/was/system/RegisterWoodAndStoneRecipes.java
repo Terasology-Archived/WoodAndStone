@@ -35,7 +35,7 @@ import org.terasology.math.Vector3i;
 import org.terasology.multiBlock.BasicHorizontalSizeFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformBlockReplacementCallback;
-import org.terasology.multiBlock.UniformMultiBlockFormItemRecipe;
+import org.terasology.multiBlock.recipe.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;

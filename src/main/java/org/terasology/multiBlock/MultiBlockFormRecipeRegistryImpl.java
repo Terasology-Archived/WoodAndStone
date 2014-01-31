@@ -17,6 +17,7 @@ package org.terasology.multiBlock;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.multiBlock.recipe.MultiBlockFormItemRecipe;
 import org.terasology.registry.Share;
 
 import java.util.Collection;

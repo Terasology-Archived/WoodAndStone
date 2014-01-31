@@ -22,6 +22,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.ItemComponent;
+import org.terasology.multiBlock.recipe.MultiBlockFormItemRecipe;
 import org.terasology.registry.In;
 
 /**
