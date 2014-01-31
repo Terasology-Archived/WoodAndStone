@@ -27,7 +27,6 @@ import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.delay.AddDelayedActionEvent;
 import org.terasology.logic.delay.DelayedActionTriggeredEvent;
@@ -46,7 +45,7 @@ import javax.vecmath.Vector3f;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(value = RegisterMode.AUTHORITY)
-public class CharcoalPitAuthoritySystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+public class CharcoalPitAuthoritySystem extends BaseComponentSystem {
     public static final String PRODUCE_CHARCOAL_ACTION_PREFIX = "Bronze:ProduceCharcoal|";
     @In
     private SlotBasedInventoryManager inventoryManager;
@@ -57,25 +56,9 @@ public class CharcoalPitAuthoritySystem extends BaseComponentSystem implements U
     @In
     private EntityManager entityManager;
 
-    private long lastUpdate;
-
     @ReceiveEvent(components = {CharcoalPitComponent.class})
     public void userActivatesCharcoalPit(ActivateEvent event, EntityRef entity) {
         entity.send(new OpenCharcoalPitRequest());
-    }
-
-    @Override
-    public void update(float delta) {
-        long gameTimeInMs = time.getGameTimeInMs();
-        if (gameTimeInMs + 250 > lastUpdate) {
-            for (EntityRef charcoalPit : entityManager.getEntitiesWith(CharcoalPitComponent.class, BlockParticleEffectComponent.class)) {
-                BlockParticleEffectComponent particles = charcoalPit.getComponent(BlockParticleEffectComponent.class);
-                particles.spawnCount += 5;
-                charcoalPit.saveComponent(particles);
-            }
-
-            lastUpdate = gameTimeInMs;
-        }
     }
 
     @ReceiveEvent(components = {CharcoalPitComponent.class, BlockRegionComponent.class, InventoryComponent.class})
