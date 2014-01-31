@@ -21,7 +21,6 @@ import org.terasology.bronze.system.CharcoalPitUtils;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.math.Vector2i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.ClickListener;
@@ -77,10 +76,6 @@ public class UICharcoalPit extends UIScreenInventory {
         addDisplayElement(inputGrid);
         addDisplayElement(processButton);
         addDisplayElement(outputGrid);
-
-        Vector2i displaySize = getDisplaySize();
-        setSize(new Vector2f(windowWidth, windowHeight));
-        setPosition(new Vector2f((displaySize.x - windowWidth) / 2, (displaySize.y - windowHeight) / 2));
     }
 
     public void update() {

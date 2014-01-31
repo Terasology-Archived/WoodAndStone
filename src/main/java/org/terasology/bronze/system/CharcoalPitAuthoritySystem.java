@@ -32,6 +32,7 @@ import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.delay.AddDelayedActionEvent;
 import org.terasology.logic.delay.DelayedActionTriggeredEvent;
 import org.terasology.logic.inventory.InventoryComponent;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.particles.BlockParticleEffectComponent;
@@ -126,7 +127,19 @@ public class CharcoalPitAuthoritySystem extends BaseComponentSystem implements U
 
             int count = Integer.parseInt(actionId.substring(PRODUCE_CHARCOAL_ACTION_PREFIX.length()));
             for (int i = charcoalPit.inputSlotCount; i < charcoalPit.inputSlotCount + charcoalPit.outputSlotCount; i++) {
-                // TODO: Add count of Charcoal to CharcoalPit inventory
+                EntityRef itemInSlot = inventoryManager.getItemInSlot(entity, i);
+                if (!itemInSlot.exists()) {
+                    int toAdd = Math.min(count, 99);
+                    EntityRef charcoalItem = entityManager.create("WoodAndStone:Charcoal");
+                    ItemComponent item = charcoalItem.getComponent(ItemComponent.class);
+                    item.stackCount = (byte) toAdd;
+                    charcoalItem.saveComponent(item);
+                    inventoryManager.putItemInSlot(entity, i, charcoalItem);
+                    count -= toAdd;
+                }
+                if (count == 0) {
+                    break;
+                }
             }
         }
     }
