@@ -15,12 +15,14 @@
  */
 package org.terasology.journal;
 
+import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeEntityCreated;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.registry.In;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -31,6 +33,9 @@ import java.util.List;
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class JournalAuthoritySystem implements ComponentSystem {
+    @In
+    private Time time;
+
     @Override
     public void initialise() {
     }
@@ -58,7 +63,7 @@ public class JournalAuthoritySystem implements ComponentSystem {
             entries = new LinkedList<>();
             journalAccess.discoveredJournalEntries.put(chapterId, entries);
         }
-        entries.add(System.currentTimeMillis() + "|" + event.getEntryId());
+        entries.add(time.getGameTimeInMs() + "|" + event.getEntryId());
         character.saveComponent(journalAccess);
 
         // Notify the client
