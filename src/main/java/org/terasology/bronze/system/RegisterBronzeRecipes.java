@@ -35,6 +35,7 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 
+import javax.vecmath.Vector3f;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,35 +102,43 @@ public class RegisterBronzeRecipes implements ComponentSystem {
 
             Vector3i min = region.min();
             Vector3i max = region.max();
+            Vector3i size = region.size();
+            Vector3f center = region.center();
 
-            // Edges of top layer will be different
+            // Generate map of blocks
             Map<Vector3i, Block> result = new HashMap<>();
-            for (Vector3i vector3i : region) {
-                if (vector3i.y != max.y
-                        || (vector3i.x > min.x && vector3i.x < max.x && vector3i.z > min.z && vector3i.z < max.z)) {
-                    result.put(vector3i, cobbleStone);
-                } else {
-                    if (vector3i.x == min.x && vector3i.z == min.z) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:SlopeCorner.LEFT"));
-                    } else if (vector3i.x == max.x && vector3i.z == max.z) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:SlopeCorner.RIGHT"));
-                    } else if (vector3i.x == min.x && vector3i.z == max.z) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:SlopeCorner.BACK"));
-                    } else if (vector3i.x == max.x && vector3i.z == min.z) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:SlopeCorner.FRONT"));
-                    } else if (vector3i.x == min.x) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:Slope.LEFT"));
-                    } else if (vector3i.x == max.x) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:Slope.RIGHT"));
-                    } else if (vector3i.z == min.z) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:Slope.FRONT"));
-                    } else if (vector3i.z == max.z) {
-                        result.put(vector3i, blockManager.getBlock("Core:CobbleStone:Engine:Slope.BACK"));
-                    } else {
-                        result.put(vector3i, BlockManager.getAir());
-                    }
-                }
+
+            // Fill up the non-top layer blocks
+            Region3i nonTopLayer = Region3i.createFromMinAndSize(min, new Vector3i(size.x, size.y - 1, size.z));
+            for (Vector3i position : nonTopLayer) {
+                result.put(position, cobbleStone);
             }
+
+            // Fill up the internal blocks of top layer
+            Block halfBlock = blockManager.getBlock("Core:CobbleStone:Engine:HalfBlock");
+            Region3i topLayerInternal = Region3i.createFromMinAndSize(new Vector3i(min.x, max.y, min.z), new Vector3i(size.x, 1, size.z));
+            for (Vector3i position : topLayerInternal) {
+                result.put(position, halfBlock);
+            }
+
+            // Top layer sides
+            for (int x = min.x + 1; x < max.x; x++) {
+                result.put(new Vector3i(x, max.y, min.z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlope.FRONT"));
+                result.put(new Vector3i(x, max.y, max.z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlope.BACK"));
+            }
+            for (int z = min.z + 1; z < max.z; z++) {
+                result.put(new Vector3i(min.x, max.y, z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlope.LEFT"));
+                result.put(new Vector3i(max.x, max.y, z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlope.RIGHT"));
+            }
+
+            // Top layer corners
+            result.put(new Vector3i(min.x, max.y, min.z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlopeCorner.LEFT"));
+            result.put(new Vector3i(max.x, max.y, max.z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlopeCorner.RIGHT"));
+            result.put(new Vector3i(min.x, max.y, max.z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlopeCorner.BACK"));
+            result.put(new Vector3i(max.x, max.y, min.z), blockManager.getBlock("Core:CobbleStone:Engine:HalfSlopeCorner.FRONT"));
+
+            // Chimney
+            result.put(new Vector3i(center.x, max.y, center.z), blockManager.getBlock("Core:CobbleStone:Engine:PillarBase"));
 
             return result;
         }
@@ -142,10 +151,10 @@ public class RegisterBronzeRecipes implements ComponentSystem {
     private final static class AllowableCharcoalPitSize implements Filter<Vector3i> {
         @Override
         public boolean accepts(Vector3i value) {
-            if (value.x < 3 || value.y < 3 || value.z < 3) {
-                return false;
-            }
-            return true;
+            // Minimum size 3x3x3
+            return (value.x >= 3 && value.y >= 3 && value.z >= 3
+                    // X and Z are odd to allow finding center block
+                    && value.x % 2 == 1 && value.z % 2 == 1);
         }
     }
 }
