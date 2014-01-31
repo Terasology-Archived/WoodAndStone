@@ -1,14 +1,4 @@
 {
-    "BlockDropGrammar": {
-        "blockDrops": "2*Core:CobbleStone"
-    },
-    "CraftingStation": {
-        "type": "WoodAndStone:BasicMetalcrafting",
-        "workstationUITexture": "WoodAndStone:BasicMetalworking",
-        "upgradeSlots": 1,
-        "toolSlots": 1,
-        "ingredientSlots": 3
-    },
     "Inventory": {
         "privateToOwner": false,
         "itemSlots": [

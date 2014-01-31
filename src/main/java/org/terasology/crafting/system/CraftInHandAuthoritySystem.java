@@ -60,7 +60,7 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
             CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(resultId);
             EntityRef resultEntity = result.craftOne(character);
             if (resultEntity.exists()) {
-                pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200);
+                pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200, true);
             }
         }
     }

@@ -173,7 +173,8 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     }
 
     private void addWorkstationUpgradeRecipes() {
-        stationRecipeRegistry.addStationUpgradeRecipe("WoodAndStone:BasicWoodcrafting", "WoodAndStone:StandardWoodStation",
+        stationRecipeRegistry.addStationUpgradeRecipe("WoodAndStone:BasicWoodcrafting", "WoodAndStone:StandardWoodcrafting",
+                "WoodAndStone:StandardWoodStation",
                 new UpgradeRecipe() {
                     @Override
                     public boolean isUpgradeComponent(EntityRef item) {

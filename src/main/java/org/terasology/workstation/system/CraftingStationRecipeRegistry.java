@@ -27,7 +27,7 @@ public interface CraftingStationRecipeRegistry {
 
     void addCraftingStationRecipe(String stationType, String recipeId, CraftingStationRecipe recipe);
 
-    void addStationUpgradeRecipe(String stationType, String recipeId, UpgradeRecipe recipe);
+    void addStationUpgradeRecipe(String stationType, String newStationType, String recipeId, UpgradeRecipe recipe);
 
     Map<String, CraftingStationRecipe> getCraftingRecipes(String stationType);
 
