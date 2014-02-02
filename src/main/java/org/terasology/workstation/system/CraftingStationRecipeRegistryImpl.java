@@ -75,7 +75,7 @@ public class CraftingStationRecipeRegistryImpl implements ComponentSystem, Craft
 
     @Override
     public Map<String, CraftingStationRecipe> getCraftingRecipes(String stationType) {
-        Map<String, CraftingStationRecipe> result = new HashMap<>();
+        Map<String, CraftingStationRecipe> result = new LinkedHashMap<>();
         appendCraftingRecipes(result, stationType);
         return result;
     }

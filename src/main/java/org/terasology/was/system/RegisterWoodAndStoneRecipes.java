@@ -322,6 +322,14 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
         addStandardWoodworkingRecipe("WoodAndStone:WoodenTable", woodenTableRecipe);
 
+        SimpleWorkstationRecipe fenceRecipe = new SimpleWorkstationRecipe();
+        fenceRecipe.addIngredient("WoodAndStone:plank", 4);
+        fenceRecipe.addRequiredTool("wood", 1);
+        fenceRecipe.addRequiredTool("stone", 1);
+        fenceRecipe.setBlockResult("Fences:Fence", (byte) 8);
+
+        addStandardWoodworkingRecipe("WoodAndStone:Fence", fenceRecipe);
+
         addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:PlankBlock",
                 "WoodAndStone:plank", 2, "wood", 1, "Core:Plank", 4);
     }
