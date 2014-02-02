@@ -1,5 +1,5 @@
 {
     "BlockDropGrammar": {
-        "itemDrops": ["WoodAndStone:ChalcopyriteOreCrystal"]
+        "itemDrops": ["2-3*WoodAndStone:ChalcopyriteOreCrystal"]
     }
 }
