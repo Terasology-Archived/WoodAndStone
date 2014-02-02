@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator;
+package org.terasology.was.generator.tundra;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
 import org.terasology.plantPack.PineGrowthDefinition;
+import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class PineForestSpawnDefinition extends BlockFloraSpawnDefinition {
-    public PineForestSpawnDefinition() {
-        super(PlantType.TREE, PineGrowthDefinition.ID, ForestBiome.ID, 0.1f, 0.8f,
-                new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+public class PineTundraSpawnDefinition extends BlockFloraSpawnDefinition {
+    public PineTundraSpawnDefinition() {
+        super(PlantType.TREE, PineGrowthDefinition.ID, TundraBiome.ID, 0.45f, 0.6f,
+                new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

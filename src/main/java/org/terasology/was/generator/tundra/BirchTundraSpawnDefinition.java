@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator;
+package org.terasology.was.generator.tundra;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
-import org.terasology.plantPack.OakGrowthDefinition;
+import org.terasology.plantPack.BirchGrowthDefinition;
+import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class OakTundraSpawnDefinition extends BlockFloraSpawnDefinition {
-    public OakTundraSpawnDefinition() {
-        super(PlantType.TREE, OakGrowthDefinition.ID, ForestBiome.ID, 0.1f, 0.1f,
+public class BirchTundraSpawnDefinition extends BlockFloraSpawnDefinition {
+    public BirchTundraSpawnDefinition() {
+        super(PlantType.TREE, BirchGrowthDefinition.ID, TundraBiome.ID, 0.3f, 0.6f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

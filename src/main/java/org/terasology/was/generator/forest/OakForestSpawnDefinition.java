@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator;
+package org.terasology.was.generator.forest;
 
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
 import org.terasology.plantPack.OakGrowthDefinition;
+import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
