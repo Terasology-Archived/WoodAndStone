@@ -41,7 +41,7 @@ public final class CharcoalPitUtils {
             if (itemInSlot.hasComponent(CraftingStationIngredientComponent.class)
                     && itemInSlot.getComponent(CraftingStationIngredientComponent.class).type.equals("WoodAndStone:wood")) {
                 logCount += itemInSlot.getComponent(ItemComponent.class).stackCount;
-            } else {
+            } else if (itemInSlot.exists()) {
                 return -1;
             }
         }
