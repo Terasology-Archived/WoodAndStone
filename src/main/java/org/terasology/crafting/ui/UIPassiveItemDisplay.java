@@ -17,9 +17,8 @@ package org.terasology.crafting.ui;
 
 import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.common.DisplayInformationComponent;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.MouseMoveListener;
@@ -92,7 +91,7 @@ public class UIPassiveItemDisplay extends UIDisplayContainer {
     }
 
     private String getLabelFor(EntityRef item) {
-        DisplayInformationComponent info = item.getComponent(DisplayInformationComponent.class);
+        DisplayNameComponent info = item.getComponent(DisplayNameComponent.class);
         if (info != null) {
             return info.name;
         }
@@ -100,10 +99,7 @@ public class UIPassiveItemDisplay extends UIDisplayContainer {
         if (blockItem != null) {
             return blockItem.blockFamily.getDisplayName();
         }
-        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
-        if (itemComponent != null) {
-            return itemComponent.name;
-        }
+
         return "";
     }
 }
