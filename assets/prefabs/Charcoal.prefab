@@ -1,8 +1,10 @@
 {
     "Item": {
-        "name": "Charcoal",
         "icon": "WoodAndStone:bronze.Charcoal",
         "renderWithIcon": true,
         "stackId": "Bronze:charcoal"
+    },
+    "DisplayName" : {
+        "name" : "Charcoal"
     }
 }

@@ -1,9 +1,11 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Flint",
         "icon": "WoodAndStone:items.Flint",
         "renderWithIcon": true
+    },
+    "DisplayName" : {
+        "name" : "Flint"
     },
     "Durability": {
         "durability": 20,

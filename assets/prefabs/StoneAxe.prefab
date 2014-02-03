@@ -1,10 +1,12 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Stone Axe",
         "icon": "WoodAndStone:items.StoneAxe",
         "renderWithIcon": true,
         "damageType": "axeDamage"
+    },
+    "DisplayName" : {
+        "name" : "Stone Axe"
     },
     "Durability": {
         "durability": 100,

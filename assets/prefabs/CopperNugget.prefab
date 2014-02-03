@@ -1,8 +1,10 @@
 {
     "Item": {
-        "name": "Native Copper Nugget",
         "icon": "WoodAndStone:bronze.CopperNugget",
         "renderWithIcon": true,
         "stackId": "WoodAndStone:CopperNugget"
+    },
+    "DisplayName" : {
+        "name" : "Native Copper Nugger"
     }
 }

@@ -1,9 +1,11 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Crude Hammer",
         "icon": "WoodAndStone:items.CrudeHammer",
         "renderWithIcon": true
+    },
+    "DisplayName" : {
+        "name" : "Crude Hammer"
     },
     "Durability": {
         "durability": 20,

@@ -1,9 +1,11 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Resin",
         "icon": "WoodAndStone:items.Resin",
         "renderWithIcon": true
+    },
+    "DisplayName" : {
+        "name" : "Resin"
     },
     "Durability": {
         "durability": 20,

@@ -1,10 +1,12 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Stick",
         "icon": "WoodAndStone:items.Stick",
         "stackId": "WoodAndStone:items.Stick",
         "renderWithIcon": true
+    },
+    "DisplayName" : {
+        "name" : "Stick"
     },
     "CraftInHandRecipe": {
         "componentType": "stick"

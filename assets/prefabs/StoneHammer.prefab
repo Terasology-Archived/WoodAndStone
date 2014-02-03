@@ -1,9 +1,11 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "name": "Stone Hammer",
         "icon": "WoodAndStone:items.StoneHammer",
         "renderWithIcon": true
+    },
+    "DisplayName" : {
+        "name" : "Stone Hammer"
     },
     "Durability": {
         "durability": 100,
