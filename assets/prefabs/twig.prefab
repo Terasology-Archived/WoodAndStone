@@ -1,12 +1,12 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.PlantFibre",
-        "stackId": "WoodAndStone:items.PlantFibre",
+        "icon": "WoodAndStone:items.Twig",
+        "stackId": "WoodAndStone:items.Twig",
         "renderWithIcon": true
     },
     "DisplayName" : {
-        "name" : "Plant Fibre"
+        "name" : "Twig"
     },
     "CraftInHandRecipe": {
         "componentType": "binding"

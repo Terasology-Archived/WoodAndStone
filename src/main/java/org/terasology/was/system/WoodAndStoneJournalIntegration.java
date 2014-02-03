@@ -48,7 +48,7 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
                 "How am I going to survive the night? ...\n\nI should probably start off with building a safe shelter. " +
                 "I need some tools for that.\n\nI should get some sticks from the nearby tree branches and dig in the ground for some " +
                 "stones I might have a use for.\n\nWhile I'm at it, I will probably need something to bind the stick and stone together - " +
-                "plant fibres, also from branches, should be good for that.\n\nOnce I get a Stick, Stone and a Plant Fibre, I will be able " +
+                "twigs, should be good for that.\n\nOnce I get a Stick, Stone and a Plant Fibre, I will be able " +
                 "to make a Crude Hammer (press G to open crafting window).");
 
         journalManager.registerJournalEntry(chapterId, "2", "Excellent! I got a hammer, I should be able to sharpen one of the stones " +
@@ -75,8 +75,8 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
                 "on the ground next to each other and put my hammer on top of one of them (same as with axe before).");
 
         journalManager.registerJournalEntry(chapterId, "7", "Now! I should be able to sharpen a stone and use it to attach another " +
-                "stone directly to a stick to make a hammer without binding it with fibre. I can use the same technique to " +
-                "create other tools. These stones are much more sturdy than the ones I've been using so far.");
+                "stone directly to a stick to make a hammer without binding it with twigs to strengthen the connection. " +
+                "I can use the same technique to create other tools. These stones are much more sturdy than the ones I've been using so far.");
     }
 
     @Override
