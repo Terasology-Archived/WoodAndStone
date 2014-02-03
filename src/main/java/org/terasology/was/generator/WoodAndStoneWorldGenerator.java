@@ -32,12 +32,15 @@ import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
 import org.terasology.anotherWorld.util.Filter;
 import org.terasology.anotherWorld.util.PDist;
+import org.terasology.anotherWorld.util.Provider;
 import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.engine.SimpleUri;
 import org.terasology.gf.generator.FloraFeatureGenerator;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.utilities.procedural.Noise3D;
+import org.terasology.utilities.procedural.PerlinNoise;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -75,6 +78,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block stone = blockManager.getBlock("Core:Stone");
         final Block water = blockManager.getBlock("Core:Water");
         final Block sand = blockManager.getBlock("Core:Sand");
+        final Block clay = blockManager.getBlock("WoodAndStone:ClayStone");
         final Block dirt = blockManager.getBlock("Core:Dirt");
         final Block grass = blockManager.getBlock("Core:Grass");
         final Block snow = blockManager.getBlock("Core:Snow");
@@ -93,7 +97,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), sand, 2, 5));
+                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.3f, clay, sand), 2, 5));
 
         Filter<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
@@ -159,5 +163,29 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         layering.addBiomeLayers(alpineDef);
 
         addChunkDecorator(layering);
+    }
+
+    private final class BeachBlockProvider implements Provider<Block> {
+        private Noise3D noise;
+        private float chance;
+        private Block block1;
+        private Block block2;
+
+        public BeachBlockProvider(float chance, Block block1, Block block2) {
+            this.chance = chance;
+            this.block1 = block1;
+            this.block2 = block2;
+        }
+
+        @Override
+        public void initializeWithSeed(String seed) {
+            noise = new PerlinNoise(seed.hashCode() + 2349873);
+        }
+
+        @Override
+        public Block provide(int x, int y, int z) {
+            double noiseValue = (1 + noise.noise(x * 0.04f, y * 0.04f, z * 0.04f)) / 2f;
+            return (noiseValue < chance) ? block1 : block2;
+        }
     }
 }
