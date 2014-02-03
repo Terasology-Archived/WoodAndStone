@@ -36,6 +36,7 @@ import org.terasology.anotherWorld.util.Provider;
 import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
+import org.terasology.anotherWorld.util.alpha.UniformNoiseAlpha;
 import org.terasology.engine.SimpleUri;
 import org.terasology.gf.generator.FloraFeatureGenerator;
 import org.terasology.registry.CoreRegistry;
@@ -66,11 +67,11 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Make sure that area on the sea level is not dry, this will prevent deserts spawning next to sea
         setHumidityFunction(
-                new MinMaxAlphaFunction(IdentityAlphaFunction.singleton(), 0.3f, 1f));
+                new MinMaxAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 0.3f, 1f));
         // Make sure that area on the sea level in not too cold, so that colder areas (with snow) will
         // only exist in higher Y-levels
         setTemperatureFunction(
-                new MinMaxAlphaFunction(IdentityAlphaFunction.singleton(), 0.4f, 1f));
+                new MinMaxAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 0.4f, 1f));
 
         blockManager = CoreRegistry.get(BlockManager.class);
 
@@ -86,9 +87,14 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         setLandscapeProvider(
                 new PerlinLandscapeGenerator(
+                        // 40% of the landscape is under water
                         0.4f,
+                        // Height is distributed uniformly between 0 and maxLevel
+                        new UniformNoiseAlpha(IdentityAlphaFunction.singleton()),
+                        // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel height
+                        new MinMaxAlphaFunction(new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.7f), 0.3f, 1f),
                         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 1.3f),
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 1.5f),
                         // Smoothen the terrain a bit
                         0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.5f)));
 
