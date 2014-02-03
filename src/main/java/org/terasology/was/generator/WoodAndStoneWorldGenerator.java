@@ -89,21 +89,23 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 new PerlinLandscapeGenerator(
                         // 40% of the landscape is under water
                         0.4f,
+                        // Semi high continent size
+                        0.1f,
                         // Height is distributed uniformly between 0 and maxLevel
                         new UniformNoiseAlpha(IdentityAlphaFunction.singleton()),
                         // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel height
                         new MinMaxAlphaFunction(new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.7f), 0.3f, 1f),
                         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 1.5f),
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 2f),
                         // Smoothen the terrain a bit
-                        0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.5f)));
+                        0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f)));
 
         // Setup biome terrain layers
         setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.3f, clay, sand), 2, 5));
+                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.03f, clay, sand), 2, 5));
 
         Filter<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
@@ -172,6 +174,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     private final class BeachBlockProvider implements Provider<Block> {
+        private UniformNoiseAlpha alpha = new UniformNoiseAlpha(IdentityAlphaFunction.singleton());
         private Noise3D noise;
         private float chance;
         private Block block1;
@@ -190,7 +193,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         @Override
         public Block provide(int x, int y, int z) {
-            double noiseValue = (1 + noise.noise(x * 0.04f, y * 0.04f, z * 0.04f)) / 2f;
+            float noiseValue = alpha.execute((float) (1 + noise.noise(x * 0.04f, y * 0.04f, z * 0.04f)) / 2f);
             return (noiseValue < chance) ? block1 : block2;
         }
     }
