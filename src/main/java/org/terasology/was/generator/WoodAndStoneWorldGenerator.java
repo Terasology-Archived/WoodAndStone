@@ -93,7 +93,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionFilter(stone), sand, 2, 5));
+                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), sand, 2, 5));
 
         Filter<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
