@@ -41,7 +41,7 @@ import org.terasology.engine.SimpleUri;
 import org.terasology.gf.generator.FloraFeatureGenerator;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.utilities.procedural.Noise3D;
-import org.terasology.utilities.procedural.PerlinNoise;
+import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -105,7 +105,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.03f, clay, sand), 2, 5));
+                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), 2, 5));
 
         Filter<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
@@ -188,12 +188,12 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         @Override
         public void initializeWithSeed(String seed) {
-            noise = new PerlinNoise(seed.hashCode() + 2349873);
+            noise = new SimplexNoise(seed.hashCode() + 2349873);
         }
 
         @Override
         public Block provide(int x, int y, int z) {
-            float noiseValue = alpha.execute((float) (1 + noise.noise(x * 0.04f, y * 0.04f, z * 0.04f)) / 2f);
+            float noiseValue = alpha.execute((float) (1 + noise.noise(x * 0.01f, y * 0.01f, z * 0.01f)) / 2f);
             return (noiseValue < chance) ? block1 : block2;
         }
     }
