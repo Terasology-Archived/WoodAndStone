@@ -58,7 +58,8 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
     @Override
     protected void setupGenerator() {
-        setSeaLevel(50);
+        setSeaLevel(100);
+        setMaxLevel(200);
 
         // Make sure that area on the sea level is not dry, this will prevent deserts spawning next to sea
         setHumidityFunction(
@@ -81,11 +82,11 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         setLandscapeProvider(
                 new PerlinLandscapeGenerator(
-                        0.3f,
+                        0.4f,
                         // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 1.5f),
-                        // Make flat land a bit more prevalent than hills or mountains
-                        0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 1.2f)));
+                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 1.3f),
+                        // Smoothen the terrain a bit
+                        0.5f, new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.5f)));
 
         // Setup biome terrain layers
         setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);
@@ -98,7 +99,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Dig some caves in the terrain
         addChunkDecorator(
-                new CaveDecorator(removableBlocks, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(70f, 60f), new PDist(70f, 10f), new PDist(2f, 0.5f)));
+                new CaveDecorator(removableBlocks, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(100f, 70f), new PDist(70f, 10f), new PDist(2f, 0.5f)));
 
         // Setup ore spawning
         setupOreGenerator(stone);

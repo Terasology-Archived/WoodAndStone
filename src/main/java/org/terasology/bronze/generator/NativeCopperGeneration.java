@@ -30,7 +30,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 public class NativeCopperGeneration extends PocketStructureDefinition implements OreDefinition {
     public NativeCopperGeneration() {
         super(new UniformPocketBlockProvider(CoreRegistry.get(BlockManager.class).getBlock("WoodAndStone:NativeCopper")),
-                new PDist(0.3f, 0.08f), new PDist(3f, 1f), new PDist(2f, 0.5f), new PDist(40f, 10f), new PDist(0f, 0.35f),
+                new PDist(0.3f, 0.08f), new PDist(3f, 1f), new PDist(2f, 0.5f), new PDist(80f, 10f), new PDist(0f, 0.35f),
                 new PDist(1f, 0f), new PDist(0.7f, 0.1f), new PDist(0.2f, 0f), new PDist(0f, 0f));
     }
 
