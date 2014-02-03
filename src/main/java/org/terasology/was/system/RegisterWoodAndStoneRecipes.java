@@ -81,12 +81,12 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
     private void addWorkstationRecipes() {
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(
-                new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("wood"), new UseOnTopFilter(),
+                new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("axe"), new UseOnTopFilter(),
                         new StationTypeFilter("WoodAndStone:BasicWoodcrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicWoodcrafting",
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicWoodStation"))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(
-                new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("stone"), new UseOnTopFilter(),
+                new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("hammer"), new UseOnTopFilter(),
                         new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicStonecrafting",
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:StoneStation"))));
@@ -145,7 +145,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private void addBasicStoneWorkstationRecipes() {
         SimpleWorkstationRecipe sharpStoneRecipe = new SimpleWorkstationRecipe();
         sharpStoneRecipe.addIngredient("WoodAndStone:stone", 1);
-        sharpStoneRecipe.addRequiredTool("stone", 1);
+        sharpStoneRecipe.addRequiredTool("hammer", 1);
         sharpStoneRecipe.setItemResult("WoodAndStone:sharpStone", (byte) 2);
 
         addBasicStoneworkingRecipe("WoodAndStone:SharpStone", sharpStoneRecipe);
@@ -153,7 +153,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         SimpleWorkstationRecipe stoneAxeRecipe = new SimpleWorkstationRecipe();
         stoneAxeRecipe.addIngredient("WoodAndStone:sharpStone", 2);
         stoneAxeRecipe.addIngredient("WoodAndStone:stick", 1);
-        stoneAxeRecipe.addRequiredTool("stone", 1);
+        stoneAxeRecipe.addRequiredTool("hammer", 1);
         stoneAxeRecipe.setItemResult("WoodAndStone:StoneAxe", (byte) 1);
 
         addBasicStoneworkingRecipe("WoodAndStone:StoneAxe", stoneAxeRecipe);
@@ -162,7 +162,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         stoneHammerRecipe.addIngredient("WoodAndStone:sharpStone", 1);
         stoneHammerRecipe.addIngredient("WoodAndStone:stone", 1);
         stoneHammerRecipe.addIngredient("WoodAndStone:stick", 1);
-        stoneHammerRecipe.addRequiredTool("stone", 1);
+        stoneHammerRecipe.addRequiredTool("hammer", 1);
         stoneHammerRecipe.setItemResult("WoodAndStone:StoneHammer", (byte) 1);
 
         addBasicStoneworkingRecipe("WoodAndStone:StoneHammer", stoneHammerRecipe);
@@ -171,13 +171,13 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         stonePickaxeRecipe.addIngredient("WoodAndStone:sharpStone", 2);
         stonePickaxeRecipe.addIngredient("WoodAndStone:stone", 1);
         stonePickaxeRecipe.addIngredient("WoodAndStone:stick", 1);
-        stonePickaxeRecipe.addRequiredTool("stone", 1);
+        stonePickaxeRecipe.addRequiredTool("hammer", 1);
         stonePickaxeRecipe.setItemResult("WoodAndStone:StonePickaxe", (byte) 1);
 
         addBasicStoneworkingRecipe("WoodAndStone:StonePickaxe", stonePickaxeRecipe);
 
         addWorkstationBlockShapesRecipe("WoodAndStone:BasicStonecrafting", "WoodAndStone:CobbleBlock",
-                "WoodAndStone:stone", 2, "stone", 1, "Core:CobbleStone", 1);
+                "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
     }
 
     private void addWorkstationUpgradeRecipes() {
@@ -292,7 +292,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private void addBasicWorkstationRecipes() {
         SimpleWorkstationRecipe plankRecipe = new SimpleWorkstationRecipe();
         plankRecipe.addIngredient("WoodAndStone:wood", 1);
-        plankRecipe.addRequiredTool("wood", 1);
+        plankRecipe.addRequiredTool("axe", 1);
         plankRecipe.setItemResult("WoodAndStone:WoodPlank", (byte) 2);
 
         addBasicWoodworkingRecipe("WoodAndStone:WoodPlank", plankRecipe);
@@ -301,14 +301,14 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private void addStandardWorkstationRecipes() {
         SimpleWorkstationRecipe stickRecipe = new SimpleWorkstationRecipe();
         stickRecipe.addIngredient("WoodAndStone:wood", 1);
-        stickRecipe.addRequiredTool("wood", 1);
+        stickRecipe.addRequiredTool("axe", 1);
         stickRecipe.setItemResult("WoodAndStone:Stick", (byte) 6);
 
         addStandardWoodworkingRecipe("WoodAndStone:Stick", stickRecipe);
 
         SimpleWorkstationRecipe plankRecipe = new SimpleWorkstationRecipe();
         plankRecipe.addIngredient("WoodAndStone:wood", 1);
-        plankRecipe.addRequiredTool("wood", 1);
+        plankRecipe.addRequiredTool("axe", 1);
         plankRecipe.setItemResult("WoodAndStone:WoodPlank", (byte) 3);
 
         addStandardWoodworkingRecipe("WoodAndStone:WoodPlank", plankRecipe);
@@ -316,22 +316,22 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         SimpleWorkstationRecipe woodenTableRecipe = new SimpleWorkstationRecipe();
         woodenTableRecipe.addIngredient("WoodAndStone:plank", 4);
         woodenTableRecipe.addIngredient("WoodAndStone:stick", 4);
-        woodenTableRecipe.addRequiredTool("wood", 1);
-        woodenTableRecipe.addRequiredTool("stone", 1);
+        woodenTableRecipe.addRequiredTool("axe", 1);
+        woodenTableRecipe.addRequiredTool("hammer", 1);
         woodenTableRecipe.setBlockResult("WoodAndStone:WoodenTable", (byte) 1);
 
         addStandardWoodworkingRecipe("WoodAndStone:WoodenTable", woodenTableRecipe);
 
         SimpleWorkstationRecipe fenceRecipe = new SimpleWorkstationRecipe();
         fenceRecipe.addIngredient("WoodAndStone:plank", 4);
-        fenceRecipe.addRequiredTool("wood", 1);
-        fenceRecipe.addRequiredTool("stone", 1);
+        fenceRecipe.addRequiredTool("axe", 1);
+        fenceRecipe.addRequiredTool("hammer", 1);
         fenceRecipe.setBlockResult("Fences:Fence", (byte) 8);
 
         addStandardWoodworkingRecipe("WoodAndStone:Fence", fenceRecipe);
 
         addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:PlankBlock",
-                "WoodAndStone:plank", 2, "wood", 1, "Core:Plank", 4);
+                "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
     }
 
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {

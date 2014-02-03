@@ -17,8 +17,7 @@ package org.terasology.was.system;
 
 import org.terasology.anotherWorld.util.Filter;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
+import org.terasology.workstation.component.CraftingStationToolComponent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -32,11 +31,7 @@ public class ToolTypeEntityFilter implements Filter<EntityRef> {
 
     @Override
     public boolean accepts(EntityRef item) {
-        ItemComponent component = item.getComponent(ItemComponent.class);
-        if (component != null) {
-            BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
-            return blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType);
-        }
-        return false;
+        CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
+        return tool != null && tool.type.equals(toolType);
     }
 }

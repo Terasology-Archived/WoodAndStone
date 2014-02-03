@@ -70,7 +70,7 @@ public class RegisterBronzeRecipes implements ComponentSystem {
     private void addBasicMetalcraftingRecipes() {
         SimpleWorkstationRecipe chalcopyriteDustRecipe = new SimpleWorkstationRecipe();
         chalcopyriteDustRecipe.addIngredient("WoodAndStone:copperOre", 1);
-        chalcopyriteDustRecipe.addRequiredTool("stone", 1);
+        chalcopyriteDustRecipe.addRequiredTool("hammer", 1);
         chalcopyriteDustRecipe.setItemResult("WoodAndStone:CopperOreDust", (byte) 1);
 
         craftingStationRecipeRegistry.addCraftingStationRecipe(
@@ -80,7 +80,7 @@ public class RegisterBronzeRecipes implements ComponentSystem {
     private void addWorkstationRecipes() {
         multiBlockRecipeRegistry.addMultiBlockFormItemRecipe(
                 new UniformMultiBlockFormItemRecipe(
-                        new ToolTypeEntityFilter("stone"), new UseOnTopFilter(),
+                        new ToolTypeEntityFilter("hammer"), new UseOnTopFilter(),
                         new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")), new BasicHorizontalSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicMetalcrafting",
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicMetalStation"))));
@@ -89,7 +89,7 @@ public class RegisterBronzeRecipes implements ComponentSystem {
     private void addMultiblockRecipes() {
         multiBlockRecipeRegistry.addMultiBlockFormItemRecipe(
                 new SurroundMultiBlockFormItemRecipe(
-                        new ToolTypeEntityFilter("stone"), new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")),
+                        new ToolTypeEntityFilter("hammer"), new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")),
                         new BlockUriEntityFilter(new BlockUri("Engine", "Air")), new AllowableCharcoalPitSize(),
                         new Filter<ActivateEvent>() {
                             @Override

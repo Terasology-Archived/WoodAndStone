@@ -23,8 +23,8 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
+import org.terasology.workstation.component.CraftingStationToolComponent;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
@@ -73,20 +73,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public boolean hasAsTool(EntityRef item) {
-        ItemComponent component = item.getComponent(ItemComponent.class);
-        if (component == null) {
-            return false;
-        }
-        BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
-        if (blockDamage == null) {
-            return false;
-        }
-        for (String tool : toolsMap.keySet()) {
-            if (blockDamage.materialDamageMultiplier.containsKey(tool)) {
-                return true;
-            }
-        }
-        return false;
+        CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
+        return tool != null && toolsMap.keySet().contains(tool.type);
     }
 
     @Override
@@ -146,14 +134,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     private boolean hasToolInSlot(EntityRef station, String toolType, int slot, int durability) {
         EntityRef item = inventoryManager.getItemInSlot(station, slot);
-        ItemComponent component = item.getComponent(ItemComponent.class);
-        if (component == null) {
-            return false;
-        }
 
-        BlockDamageModifierComponent blockDamage = component.damageType.getComponent(BlockDamageModifierComponent.class);
-
-        return blockDamage != null && blockDamage.materialDamageMultiplier.containsKey(toolType)
+        CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
+        return tool != null && tool.type.equals(toolType)
                 && item.hasComponent(DurabilityComponent.class) && item.getComponent(DurabilityComponent.class).durability >= durability;
     }
 

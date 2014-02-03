@@ -12,5 +12,8 @@
     },
     "CraftInHandRecipe": {
         "componentType": "axe"
+    },
+    "CraftingStationTool": {
+        "type": "axe"
     }
 }
