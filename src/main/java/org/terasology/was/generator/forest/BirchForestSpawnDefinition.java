@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class BirchForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public BirchForestSpawnDefinition() {
-        super(PlantType.TREE, BirchGrowthDefinition.ID, ForestBiome.ID, 0.2f, 0.8f,
+        super(PlantType.TREE, BirchGrowthDefinition.ID, ForestBiome.ID, 0.6f, 0.8f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class OakTundraSpawnDefinition extends BlockFloraSpawnDefinition {
     public OakTundraSpawnDefinition() {
-        super(PlantType.TREE, OakGrowthDefinition.ID, TundraBiome.ID, 0.1f, 0.6f,
+        super(PlantType.TREE, OakGrowthDefinition.ID, TundraBiome.ID, 0.1f, 0.4f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

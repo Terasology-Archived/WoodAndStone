@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class MaplePlainsSpawnDefinition extends BlockFloraSpawnDefinition {
     public MaplePlainsSpawnDefinition() {
-        super(PlantType.TREE, MapleGrowthDefinition.ID, PlainsBiome.ID, 1f, 0.3f,
+        super(PlantType.TREE, MapleGrowthDefinition.ID, PlainsBiome.ID, 0.5f, 0.2f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

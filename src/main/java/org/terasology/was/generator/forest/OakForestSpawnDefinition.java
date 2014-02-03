@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class OakForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public OakForestSpawnDefinition() {
-        super(PlantType.TREE, OakGrowthDefinition.ID, ForestBiome.ID, 0.9f, 0.8f,
+        super(PlantType.TREE, OakGrowthDefinition.ID, ForestBiome.ID, 1f, 0.8f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }
