@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class CypressForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public CypressForestSpawnDefinition() {
-        super(PlantType.TREE, CypressGrowthDefinition.ID, ForestBiome.ID, 0.2f, 0.8f,
+        super(PlantType.TREE, CypressGrowthDefinition.ID, ForestBiome.ID, 0.4f, 0.8f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

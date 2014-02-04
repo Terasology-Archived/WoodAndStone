@@ -19,16 +19,16 @@ import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
-import org.terasology.plantPack.OakGrowthDefinition;
+import org.terasology.plantPack.GrandMapleGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class OakForestSpawnDefinition extends BlockFloraSpawnDefinition {
-    public OakForestSpawnDefinition() {
-        super(PlantType.TREE, OakGrowthDefinition.ID, ForestBiome.ID, 1f, 0.8f,
+public class GrandMapleForestSpawnDefinition extends BlockFloraSpawnDefinition {
+    public GrandMapleForestSpawnDefinition() {
+        super(PlantType.TREE, GrandMapleGrowthDefinition.ID, ForestBiome.ID, 0.4f, 0.6f,
                 new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }
