@@ -1,0 +1,11 @@
+{
+    "CraftingStationRecipe": {
+        "stationType": "WoodAndStone:BasicStonecrafting",
+        "recipeId": "WoodAndStone:StoneHammer",
+        
+        "recipeComponents": ["1*WoodAndStone:sharpStone", "1*WoodAndStone:stone", "1*WoodAndStone:stick"]
+        "recipeTools": "1*hammer",
+
+        "itemResult": "1*WoodAndStone:StoneHammer"
+    }
+}

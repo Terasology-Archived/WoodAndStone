@@ -15,10 +15,15 @@
  */
 package org.terasology.workstation.system;
 
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.registry.In;
 import org.terasology.registry.Share;
+import org.terasology.workstation.component.CraftingStationRecipeComponent;
 import org.terasology.workstation.system.recipe.CraftingStationRecipe;
+import org.terasology.workstation.system.recipe.SimpleWorkstationRecipe;
 import org.terasology.workstation.system.recipe.UpgradeRecipe;
 
 import java.util.Collections;
@@ -38,12 +43,51 @@ public class CraftingStationRecipeRegistryImpl implements ComponentSystem, Craft
     private Map<String, Map<String, UpgradeRecipe>> upgradeRecipes = new HashMap<>();
     private Map<String, List<String>> upgradeReverse = new HashMap<>();
 
+    @In
+    private PrefabManager prefabManager;
+
     @Override
     public void initialise() {
+        registerPrefabRecipes();
     }
 
     @Override
     public void shutdown() {
+    }
+
+    private void registerPrefabRecipes() {
+        for (Prefab prefab : prefabManager.listPrefabs(CraftingStationRecipeComponent.class)) {
+            CraftingStationRecipeComponent recipe = prefab.getComponent(CraftingStationRecipeComponent.class);
+
+            SimpleWorkstationRecipe workstationRecipe = new SimpleWorkstationRecipe();
+            for (String recipeComponent : recipe.recipeComponents) {
+                String[] split = recipeComponent.split("\\*", 2);
+                int count = Integer.parseInt(split[0]);
+                String type = split[1];
+                workstationRecipe.addIngredient(type, count);
+            }
+            for (String recipeTool : recipe.recipeTools) {
+                String[] split = recipeTool.split("\\*", 2);
+                int count = Integer.parseInt(split[0]);
+                String type = split[1];
+                workstationRecipe.addRequiredTool(type, count);
+            }
+
+            if (recipe.blockResult != null) {
+                String[] split = recipe.blockResult.split("\\*", 2);
+                int count = Integer.parseInt(split[0]);
+                String block = split[1];
+                workstationRecipe.setBlockResult(block, (byte) count);
+            }
+            if (recipe.itemResult != null) {
+                String[] split = recipe.itemResult.split("\\*", 2);
+                int count = Integer.parseInt(split[0]);
+                String item = split[1];
+                workstationRecipe.setItemResult(item, (byte) count);
+            }
+
+            addCraftingStationRecipe(recipe.stationType, recipe.recipeId, workstationRecipe);
+        }
     }
 
     @Override
