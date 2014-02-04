@@ -1,6 +1,0 @@
-{
-    "basedOn": "core:mineral",
-    "entity": {
-        "prefab": "WoodAndStone:ChrysocollaOre"
-    }
-}
