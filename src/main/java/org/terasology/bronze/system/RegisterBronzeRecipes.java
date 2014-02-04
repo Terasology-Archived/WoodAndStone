@@ -69,12 +69,12 @@ public class RegisterBronzeRecipes implements ComponentSystem {
 
     private void addBasicMetalcraftingRecipes() {
         SimpleWorkstationRecipe chalcopyriteDustRecipe = new SimpleWorkstationRecipe();
-        chalcopyriteDustRecipe.addIngredient("WoodAndStone:copperOre", 1);
+        chalcopyriteDustRecipe.addIngredient("WoodAndStone:chalcopyriteCrystal", 1);
         chalcopyriteDustRecipe.addRequiredTool("hammer", 1);
-        chalcopyriteDustRecipe.setItemResult("WoodAndStone:CopperOreDust", (byte) 1);
+        chalcopyriteDustRecipe.setItemResult("WoodAndStone:ChalcopyriteCrystalDust", (byte) 1);
 
         craftingStationRecipeRegistry.addCraftingStationRecipe(
-                "WoodAndStone:BasicMetalcrafting", "WoodAndStone:ChalcopyriteDust", chalcopyriteDustRecipe);
+                "WoodAndStone:BasicMetalcrafting", "WoodAndStone:ChalcopyriteCrystalDust", chalcopyriteDustRecipe);
     }
 
     private void addWorkstationRecipes() {

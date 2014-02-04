@@ -15,7 +15,6 @@
  */
 package org.terasology.bronze.system;
 
-import org.terasology.core.logic.blockDropGrammar.BlockDropGrammarComponent;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeEntityCreated;
@@ -25,8 +24,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
-
-import java.util.Arrays;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -49,14 +46,6 @@ public class BronzeAgeBlockDrops implements ComponentSystem {
             if (component instanceof BlockComponent) {
                 BlockComponent comp = (BlockComponent) component;
                 blockUri = comp.getBlock().getBlockFamily().getURI();
-            }
-        }
-
-        if (blockUri != null) {
-            if (blockUri.equals(new BlockUri("Core", "CoalOre"))) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.itemDrops = Arrays.asList("2-3|WoodAndStone:Coal");
-                event.addComponent(dropGrammar);
             }
         }
     }

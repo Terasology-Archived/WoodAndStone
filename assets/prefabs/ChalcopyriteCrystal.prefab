@@ -1,0 +1,14 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:bronze.ChalcopyriteCrystal",
+        "renderWithIcon": true,
+        "stackId": "WoodAndStone:ChalcopyriteCrystal"
+    },
+    "DisplayName" : {
+        "name" : "Chalcopyrite Crystal"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:chalcopyriteCrystal"
+    }
+}

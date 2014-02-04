@@ -1,0 +1,10 @@
+{
+    "Item": {
+        "icon": "WoodAndStone:bronze.ChalcopyriteCrystalDust",
+        "renderWithIcon": true,
+        "stackId": "WoodAndStone:ChalcopyriteCrystalDust"
+    },
+    "DisplayName" : {
+        "name" : "Chalcopyrite Crystal Dust"
+    }
+}
