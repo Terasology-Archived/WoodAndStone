@@ -2,9 +2,9 @@
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:BasicStonecrafting",
         "recipeId": "WoodAndStone:StoneAxe",
-        
-        "recipeComponents": ["2*WoodAndStone:sharpStone", "1*WoodAndStone:stick"]
-        "recipeTools": "1*hammer",
+
+        "recipeComponents": ["2*WoodAndStone:sharpStone", "1*WoodAndStone:stick"],
+        "recipeTools": ["1*hammer"],
 
         "itemResult": "1*WoodAndStone:StoneAxe"
     }

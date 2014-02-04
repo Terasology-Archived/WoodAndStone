@@ -2,9 +2,9 @@
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:StandardWoodcrafting",
         "recipeId": "WoodAndStone:WoodPlank",
-        
-        "recipeComponents": "1*WoodAndStone:wood",
-        "recipeTools": "1*axe",
+
+        "recipeComponents": ["1*WoodAndStone:wood"],
+        "recipeTools": ["1*axe"],
 
         "itemResult": "3*WoodAndStone:WoodPlank"
     }

@@ -17,11 +17,13 @@ package org.terasology.workstation.component;
 
 import org.terasology.entitySystem.Component;
 
+import java.util.List;
+
 public class CraftingStationRecipeComponent implements Component {
     public String stationType;
     public String recipeId;
-    public String[] recipeComponents;
-    public String[] recipeTools;
+    public List<String> recipeComponents;
+    public List<String> recipeTools;
 
     public String itemResult;
     public String blockResult;
