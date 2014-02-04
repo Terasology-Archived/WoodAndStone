@@ -52,7 +52,7 @@ import java.util.Arrays;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RegisterWorldGenerator(id = "overTheAges", displayName = "Over the Ages", description = "Generates the world for playing 'Over the Ages' content mods.")
+@RegisterWorldGenerator(id = "throughoutTheAges", displayName = "Throughout the Ages", description = "Generates the world for playing 'Throughout the Ages' content mods.")
 public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     private BlockManager blockManager;
 
