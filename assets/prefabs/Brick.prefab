@@ -1,0 +1,14 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.Brick",
+        "stackId": "WoodAndStone:items.Brick",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Brick"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:brick"
+    }
+}

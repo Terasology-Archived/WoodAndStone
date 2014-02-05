@@ -18,6 +18,7 @@ package org.terasology.crafting.system.recipe.behaviour;
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.system.recipe.ItemCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.registry.CoreRegistry;
 
@@ -26,21 +27,29 @@ import org.terasology.registry.CoreRegistry;
  */
 public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
     private String itemType;
+    private int count;
 
     public ConsumeItemCraftBehaviour(String itemType) {
+        this(itemType, 1);
+    }
+
+    public ConsumeItemCraftBehaviour(String itemType, int count) {
         this.itemType = itemType;
+        this.count = count;
     }
 
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
+        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
         CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
-        return craftComponent != null && craftComponent.componentType.equals(itemType);
+        return craftComponent != null && craftComponent.componentType.equals(itemType)
+                && itemComponent != null && itemComponent.stackCount >= count;
     }
 
     @Override
     public void processForItem(EntityRef character, EntityRef item) {
         SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
 
-        inventoryManager.removeItem(character, item, 1);
+        inventoryManager.removeItem(character, item, count);
     }
 }

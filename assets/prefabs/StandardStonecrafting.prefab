@@ -1,13 +1,13 @@
 {
     "BlockDropGrammar": {
-        "blockDrops": "2*WoodAndStone:WoodenTable"
+        "itemDrops": "10*WoodAndStone:Brick"
     },
     "CraftingStation": {
-        "type": "WoodAndStone:BasicStonecrafting",
-        "workstationUITexture": "WoodAndStone:BasicStoneworking",
+        "type": "WoodAndStone:StandardStonecrafting",
+        "workstationUITexture": "WoodAndStone:StandardStoneworking",
         "upgradeSlots": 1,
         "toolSlots": 1,
-        "ingredientSlots": 6
+        "ingredientSlots": 9
     },
     "Inventory": {
         "privateToOwner": false,
@@ -17,6 +17,9 @@
             // Tool slot
             0,
             // Component slots
+            0,
+            0,
+            0,
             0,
             0,
             0,

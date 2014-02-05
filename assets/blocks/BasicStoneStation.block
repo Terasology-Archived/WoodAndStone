@@ -1,0 +1,16 @@
+{
+    "shape": "WoodAndStone:Table",
+
+    "hardness": 16,
+
+    "displayName": "Basic Stone Station",
+
+    "categories": ["stone"],
+
+    "tiles": {
+        "top": "WoodAndStone:WoodenTableTopWithHammer",
+        "bottom": "WoodAndStone:WoodenTableBottom",
+        "sides": "WoodAndStone:WoodenTableSides",
+        "center": "WoodAndStone:WoodenTableSides"
+    }
+}

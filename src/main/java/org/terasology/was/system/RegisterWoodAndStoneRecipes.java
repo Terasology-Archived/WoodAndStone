@@ -23,30 +23,20 @@ import org.terasology.crafting.system.recipe.SimpleConsumingCraftInHandRecipe;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.DoNothingCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceItemDurabilityCraftBehaviour;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.Region3i;
-import org.terasology.math.Vector3i;
 import org.terasology.multiBlock.BasicHorizontalSizeFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformBlockReplacementCallback;
 import org.terasology.multiBlock.recipe.UniformMultiBlockFormItemRecipe;
-import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.component.CraftingStationMaterialComponent;
 import org.terasology.workstation.system.CraftingStationRecipeRegistry;
+import org.terasology.workstation.system.recipe.SimpleUpgradeRecipe;
 import org.terasology.workstation.system.recipe.SimpleWorkstationRecipe;
-import org.terasology.workstation.system.recipe.UpgradeRecipe;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.regions.BlockRegionComponent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -72,7 +62,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
         addStandardWorkstationRecipes();
 
-        addBasicStoneWorkstationRecipes();
+        addStoneWorkstationRecipes();
 
         addWorkstationUpgradeRecipes();
     }
@@ -87,7 +77,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                 new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("hammer"), new UseOnTopFilter(),
                         new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicStonecrafting",
-                        new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:StoneStation"))));
+                        new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicStoneStation"))));
     }
 
     private void addWorkstationBlockShapesRecipe(String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
@@ -140,90 +130,25 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         stationRecipeRegistry.addCraftingStationRecipe(workstationType, recipeNamePrefix + shape, stairRecipe);
     }
 
-    private void addBasicStoneWorkstationRecipes() {
+    private void addStoneWorkstationRecipes() {
         addWorkstationBlockShapesRecipe("WoodAndStone:BasicStonecrafting", "WoodAndStone:CobbleBlock",
                 "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
+        addWorkstationBlockShapesRecipe("WoodAndStone:StandardStonecrafting", "WoodAndStone:BrickBlock",
+                "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
     }
 
     private void addWorkstationUpgradeRecipes() {
+        SimpleUpgradeRecipe woodStationUpgradeRecipe = new SimpleUpgradeRecipe("WoodAndStone:StandardWoodcrafting",
+                "WoodAndStone:StandardWoodcrafting", "WoodAndStone:StandardWoodStation");
+        woodStationUpgradeRecipe.addIngredient("WoodAndStone:plank", 10);
         stationRecipeRegistry.addStationUpgradeRecipe("WoodAndStone:BasicWoodcrafting", "WoodAndStone:StandardWoodcrafting",
-                "WoodAndStone:StandardWoodStation",
-                new UpgradeRecipe() {
-                    @Override
-                    public boolean isUpgradeComponent(EntityRef item) {
-                        CraftingStationIngredientComponent ingredient = item.getComponent(CraftingStationIngredientComponent.class);
-                        return ingredient != null && ingredient.type.equals("WoodAndStone:plank");
-                    }
+                "WoodAndStone:StandardWoodStation", woodStationUpgradeRecipe);
 
-                    @Override
-                    public UpgradeResult getMatchingUpgradeResult(EntityRef station, final int upgradeSlotFrom, final int upgradeSlotCount) {
-                        int planksCount = 0;
-                        for (int i = upgradeSlotFrom; i < upgradeSlotFrom + upgradeSlotCount; i++) {
-                            EntityRef item = inventoryManager.getItemInSlot(station, i);
-                            CraftingStationIngredientComponent ingredient = item.getComponent(CraftingStationIngredientComponent.class);
-                            if (ingredient != null && ingredient.type.equals("WoodAndStone:plank")) {
-                                planksCount += item.getComponent(ItemComponent.class).stackCount;
-                            }
-                        }
-                        if (planksCount < 10) {
-                            return null;
-                        }
-
-                        return new UpgradeResult() {
-                            @Override
-                            public String getResultStationType() {
-                                return "WoodAndStone:StandardWoodcrafting";
-                            }
-
-                            @Override
-                            public EntityRef processUpgrade(EntityRef station) {
-                                removeUpgradeIngredients(station);
-
-                                WorldProvider worldProvider = CoreRegistry.get(WorldProvider.class);
-                                BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-                                EntityManager entityManager = CoreRegistry.get(EntityManager.class);
-
-                                Block block = blockManager.getBlock("WoodAndStone:StandardWoodStation");
-                                Region3i region = station.getComponent(BlockRegionComponent.class).region;
-                                for (Vector3i location : region) {
-                                    worldProvider.setBlock(location, block);
-                                }
-
-                                final EntityRef newStation = entityManager.create("WoodAndStone:StandardWoodcrafting");
-
-                                inventoryManager.moveItem(station, 0, newStation, 0);
-                                inventoryManager.moveItem(station, 1, newStation, 2);
-                                inventoryManager.moveItem(station, 2, newStation, 4);
-                                inventoryManager.moveItem(station, 3, newStation, 5);
-                                inventoryManager.moveItem(station, 4, newStation, 6);
-                                inventoryManager.moveItem(station, 5, newStation, 10);
-
-                                station.destroy();
-
-                                newStation.addComponent(new BlockRegionComponent(region));
-                                newStation.addComponent(new LocationComponent(region.center()));
-
-                                return newStation;
-                            }
-
-                            private void removeUpgradeIngredients(EntityRef station) {
-                                int leftToRemote = 10;
-                                for (int i = upgradeSlotFrom; i < upgradeSlotFrom + upgradeSlotCount; i++) {
-                                    EntityRef item = inventoryManager.getItemInSlot(station, i);
-                                    CraftingStationIngredientComponent ingredient = item.getComponent(CraftingStationIngredientComponent.class);
-                                    if (ingredient != null && ingredient.type.equals("WoodAndStone:plank")) {
-                                        int toRemove = Math.min(inventoryManager.getStackSize(item), leftToRemote);
-                                        inventoryManager.removeItem(station, item, toRemove);
-                                        leftToRemote -= toRemove;
-                                    }
-                                    if (leftToRemote == 0) {
-                                        break;
-                                    }
-                                }
-                            }
-                        };
-                    }
-                });
+        SimpleUpgradeRecipe stoneStationUpgradeRecipe = new SimpleUpgradeRecipe("WoodAndStone:StandardStonecrafting",
+                "WoodAndStone:StandardStonecrafting", "WoodAndStone:StandardStoneStation");
+        stoneStationUpgradeRecipe.addIngredient("WoodAndStone:brick", 10);
+        stationRecipeRegistry.addStationUpgradeRecipe("WoodAndStone:BasicStonecrafting", "WoodAndStone:StandardStonecrafting",
+                "WoodAndStone:StandardStoneStation", stoneStationUpgradeRecipe);
     }
 
     private void addCraftInHandRecipes() {
@@ -252,6 +177,13 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         "WoodAndStone:flint", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:flint", 1),
                         null, new DoNothingCraftBehaviour(),
                         "WoodAndStone:LitTorch", true));
+
+        addCraftInHandRecipe("WoodAndStone:clayHearth",
+                new CompositeTypeBasedCraftInHandRecipe(
+                        "WoodAndStone:clay", new ConsumeItemCraftBehaviour("WoodAndStone:clay", 9),
+                        null, new DoNothingCraftBehaviour(),
+                        null, new DoNothingCraftBehaviour(),
+                        "WoodAndStone:ClayHearth", true));
     }
 
     private void addStandardWorkstationRecipes() {

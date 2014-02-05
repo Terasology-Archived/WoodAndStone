@@ -1,0 +1,16 @@
+{
+    "hardness": 12,
+
+    "displayName": "Clay Hearth",
+
+    "categories": ["stone"],
+
+    "entity": {
+        "prefab": "WoodAndStone:ClayHearth"
+    },
+
+    "tiles": {
+        "sides": "WoodAndStone:ClayHearthSides",
+        "topBottom": "WoodAndStone:ClayHearthTop"
+    }
+}

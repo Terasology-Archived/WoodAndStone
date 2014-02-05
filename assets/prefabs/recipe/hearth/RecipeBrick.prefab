@@ -1,0 +1,11 @@
+{
+    "CraftingStationRecipe": {
+        "stationType": "WoodAndStone:ClayHearth",
+        "recipeId": "WoodAndStone:Brick",
+
+        "recipeComponents": ["1*WoodAndStone:clay"],
+        "recipeTools": [],
+
+        "itemResult": "1*WoodAndStone:Brick"
+    }
+}

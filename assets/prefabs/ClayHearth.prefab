@@ -1,0 +1,28 @@
+{
+    "CraftingStation": {
+        "type": "WoodAndStone:ClayHearth",
+        "workstationUITexture": "WoodAndStone:ClayHearth",
+        "upgradeSlots": 0,
+        "toolSlots": 0,
+        "ingredientSlots": 3
+    },
+    "Inventory": {
+        "privateToOwner": false,
+        "itemSlots": [
+            // Component slots
+            0,
+            0,
+            0,
+            // Output slot
+            0
+        ]
+    },
+    "Health": {
+        "currentHealth": 5,
+        "maxHealth": 5,
+        "regenRate": 1,
+        "waitBeforeRegen": 2,
+        "destroyEntityOnNoHealth": true
+    },
+    "DropBlockInventory": {}
+}
