@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.Clay",
+        "stackId": "WoodAndStone:items.Clay",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Ball of Clay"
+    },
+    "Durability": {
+        "durability": 20,
+        "maxDurability": 20
+    }
+}

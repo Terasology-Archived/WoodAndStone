@@ -43,6 +43,7 @@ public class ModifyBlockDestruction implements ComponentSystem {
         exceptions.add(new BlockUri("Core", "Grass"));
         exceptions.add(new BlockUri("Core", "Dirt"));
         exceptions.add(new BlockUri("Core", "Sand"));
+        exceptions.add(new BlockUri("WoodAndStone", "ClayStone"));
     }
 
     @Override
