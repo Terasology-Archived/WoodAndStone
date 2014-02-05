@@ -61,6 +61,9 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint");
                 event.addComponent(dropGrammar);
+            } else if (blockUri.equals(new BlockUri("Core", "Sand"))) {
+                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
+                event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("Core", "Stone"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("3*WoodAndStone:stone");
