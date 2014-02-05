@@ -1,0 +1,11 @@
+{
+    "CraftingStationRecipe": {
+        "stationType": "WoodAndStone:StandardWoodcrafting",
+        "recipeId": "WoodAndStone:TwigBasket",
+
+        "recipeComponents": ["4*WoodAndStone:", "4*WoodAndStone:stick"],
+        "recipeTools": ["1*axe", "1*hammer"],
+
+        "blockResult": "1*WoodAndStone:TwigBasket"
+    }
+}

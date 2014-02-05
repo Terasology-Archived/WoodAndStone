@@ -5,11 +5,11 @@
         "stackId": "WoodAndStone:items.Stick",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Stick"
+    "DisplayName": {
+        "name": "Stick"
     },
     "CraftInHandRecipe": {
-        "componentType": "stick"
+        "componentType": "WoodAndStone:stick"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:stick"

@@ -2,7 +2,7 @@
     "id" : "WoodAndStone",
     "version" : "0.1.0",
     "author" : "Marcin Sciesinski <marcins78@gmail.com>",
-    "displayName" : "Throughout the Ages - II",
+    "displayName" : "Throughout the Ages - I",
     "description" : "Basic 'Stone Age' crafting",
     "dependencies" : [
             {

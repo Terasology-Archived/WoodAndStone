@@ -4,15 +4,15 @@
         "icon": "WoodAndStone:items.StoneHammer",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Stone Hammer"
+    "DisplayName": {
+        "name": "Stone Hammer"
     },
     "Durability": {
         "durability": 100,
         "maxDurability": 100
     },
     "CraftInHandRecipe": {
-        "componentType": "hammer"
+        "componentType": "WoodAndStone:hammer"
     },
     "CraftingStationTool": {
         "type": "hammer"

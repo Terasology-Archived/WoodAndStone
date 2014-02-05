@@ -5,10 +5,10 @@
         "stackId": "WoodAndStone:items.UnlitTorch",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Unlit Torch"
+    "DisplayName": {
+        "name": "Unlit Torch"
     },
     "CraftInHandRecipe": {
-        "componentType": "unlitTorch"
+        "componentType": "WoodAndStone:unlitTorch"
     }
 }

@@ -4,14 +4,14 @@
         "icon": "WoodAndStone:items.Resin",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Resin"
+    "DisplayName": {
+        "name": "Resin"
     },
     "Durability": {
         "durability": 20,
         "maxDurability": 20
     },
     "CraftInHandRecipe": {
-        "componentType": "resin"
+        "componentType": "WoodAndStone:resin"
     }
 }

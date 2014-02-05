@@ -4,14 +4,14 @@
         "icon": "WoodAndStone:items.Flint",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Flint"
+    "DisplayName": {
+        "name": "Flint"
     },
     "Durability": {
         "durability": 20,
         "maxDurability": 20
     },
     "CraftInHandRecipe": {
-        "componentType": "flint"
+        "componentType": "WoodAndStone:flint"
     }
 }

@@ -5,11 +5,11 @@
         "stackId": "WoodAndStone:items.SharpStone",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Sharp-edged Stone"
+    "DisplayName": {
+        "name": "Sharp-edged Stone"
     },
     "CraftInHandRecipe": {
-        "componentType": "sharpStone"
+        "componentType": "WoodAndStone:sharpStone"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:sharpStone"

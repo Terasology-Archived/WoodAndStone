@@ -5,11 +5,11 @@
         "stackId": "WoodAndStone:items.Stone",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Stone"
+    "DisplayName": {
+        "name": "Stone"
     },
     "CraftInHandRecipe": {
-        "componentType": "stone"
+        "componentType": "WoodAndStone:stone"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:stone"

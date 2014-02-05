@@ -15,7 +15,6 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -28,6 +27,7 @@ import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
+import org.terasology.workstation.component.CraftingStationToolComponent;
 import org.terasology.workstation.event.CraftingStationUpgraded;
 
 /**
@@ -110,13 +110,13 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
 
     @ReceiveEvent
     public void playerPickedUpItem(PickedUpItem event, EntityRef character) {
-        CraftInHandRecipeComponent handRecipeComponent = event.getItem().getComponent(CraftInHandRecipeComponent.class);
+        CraftingStationToolComponent toolComponent = event.getItem().getComponent(CraftingStationToolComponent.class);
         CraftingStationIngredientComponent ingredientComponent = event.getItem().getComponent(CraftingStationIngredientComponent.class);
-        if (handRecipeComponent != null) {
-            String componentType = handRecipeComponent.componentType;
-            if (componentType.equals("hammer") && !journalManager.hasEntry(character, chapterId, "2")) {
+        if (toolComponent != null) {
+            String toolType = toolComponent.type;
+            if (toolType.equals("hammer") && !journalManager.hasEntry(character, chapterId, "2")) {
                 character.send(new DiscoveredNewJournalEntry(chapterId, "2"));
-            } else if (componentType.equals("axe") && !journalManager.hasEntry(character, chapterId, "3")) {
+            } else if (toolType.equals("axe") && !journalManager.hasEntry(character, chapterId, "3")) {
                 character.send(new DiscoveredNewJournalEntry(chapterId, "3"));
             }
         }

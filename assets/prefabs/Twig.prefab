@@ -5,10 +5,10 @@
         "stackId": "WoodAndStone:items.Twig",
         "renderWithIcon": true
     },
-    "DisplayName" : {
-        "name" : "Twig"
+    "DisplayName": {
+        "name": "Twig"
     },
     "CraftInHandRecipe": {
-        "componentType": "binding"
+        "componentType": "WoodAndStone:twig"
     }
 }
