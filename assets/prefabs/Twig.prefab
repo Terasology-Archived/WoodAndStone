@@ -10,5 +10,8 @@
     },
     "CraftInHandRecipe": {
         "componentType": "WoodAndStone:twig"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:twig"
     }
 }
