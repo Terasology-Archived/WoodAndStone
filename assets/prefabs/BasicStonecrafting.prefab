@@ -35,7 +35,7 @@
         "destroyEntityOnNoHealth": true
     },
     "ActAsBlock": {
-        "block": "WoodAndStone:StoneStation"
+        "block": "WoodAndStone:BasicStoneStation"
     },
     "DropBlockInventory": {}
 }
