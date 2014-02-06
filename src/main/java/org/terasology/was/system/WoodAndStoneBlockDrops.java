@@ -75,7 +75,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
                 String treeType = familyName.substring(0, familyName.length() - 4);
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("0.1|PlantPack:" + treeType + "Sapling");
-                dropGrammar.itemDrops = Arrays.asList("0.3|WoodAndStone:stick", "0.8|WoodAndStone:twig");
+                dropGrammar.itemDrops = Arrays.asList("0.2|WoodAndStone:stick", "0.3|WoodAndStone:twig");
                 event.addComponent(dropGrammar);
             }
         }
@@ -84,7 +84,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
         if (component != null) {
             if (component.part == PartOfTreeComponent.Part.BRANCH) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.itemDrops = Arrays.asList("WoodAndStone:stick");
+                dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stick");
                 event.addComponent(dropGrammar);
             } else if (component.part == PartOfTreeComponent.Part.TRUNK) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
