@@ -75,7 +75,7 @@ public class WoodAndStoneBlockDrops implements ComponentSystem {
                 String treeType = familyName.substring(0, familyName.length() - 4);
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("0.05|PlantPack:" + treeType + "Sapling");
-                dropGrammar.itemDrops = Arrays.asList("0.2|WoodAndStone:stick", "0.3|WoodAndStone:twig");
+                dropGrammar.itemDrops = Arrays.asList("0.2|WoodAndStone:twig");
                 event.addComponent(dropGrammar);
             }
         }
