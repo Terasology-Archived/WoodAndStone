@@ -23,7 +23,7 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.input.ButtonState;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.manager.GUIManager;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.network.ClientComponent;
@@ -40,7 +40,7 @@ public class CraftInHandClientSystem implements ComponentSystem {
     @In
     private GUIManager guiManager;
     @In
-    private SlotBasedInventoryManager inventoryManager;
+    private InventoryManager inventoryManager;
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
 

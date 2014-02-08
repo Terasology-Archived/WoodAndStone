@@ -20,7 +20,8 @@ import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.registry.In;
 
@@ -30,7 +31,7 @@ import org.terasology.registry.In;
 @RegisterSystem
 public class ResetStartingInventorySystem implements ComponentSystem {
     @In
-    private SlotBasedInventoryManager manager;
+    private InventoryManager manager;
 
     @Override
     public void initialise() {
@@ -43,7 +44,8 @@ public class ResetStartingInventorySystem implements ComponentSystem {
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
     public void resetStartingInventory(OnPlayerSpawnedEvent event, EntityRef character) {
         for (int i = 0; i < manager.getNumSlots(character); i++) {
-            manager.destroyItem(character, manager.getItemInSlot(character, i));
+            RemoveItemAction removeAction = new RemoveItemAction(manager.getItemInSlot(character, i), true);
+            character.send(removeAction);
         }
     }
 }

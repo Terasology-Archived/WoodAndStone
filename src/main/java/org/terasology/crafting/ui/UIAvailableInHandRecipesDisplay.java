@@ -21,7 +21,7 @@ import org.terasology.crafting.event.UserCraftInHandRequest;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.recipe.CraftInHandRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
@@ -85,7 +85,7 @@ public class UIAvailableInHandRecipesDisplay extends UIDisplayContainerScrollabl
         int rowIndex = 0;
 
         displayedRecipes.clear();
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+        InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
             List<CraftInHandRecipe.CraftInHandResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(character);

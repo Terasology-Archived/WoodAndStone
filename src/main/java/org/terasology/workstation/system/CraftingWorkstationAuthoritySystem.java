@@ -21,8 +21,7 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.registry.CoreRegistry;
+import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.registry.In;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.event.CraftingStationUpgraded;
@@ -64,8 +63,10 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
                 craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
                 craftingStation.upgradeSlots, craftingStation.toolSlots, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots);
         if (resultEntity.exists()) {
-            SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-            inventoryManager.putItemInSlot(station, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots, resultEntity);
+            int outputSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
+            GiveItemAction action = new GiveItemAction(resultEntity, outputSlot);
+            action.setForce(true);
+            station.send(action);
         }
     }
 

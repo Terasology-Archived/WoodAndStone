@@ -75,7 +75,7 @@ public class UIPassiveItemDisplay extends UIDisplayContainer {
         itemLabel.setPosition(ITEM_LABEL_POSITION);
         itemLabel.setText(getLabelFor(item));
 
-        icon = new UIItemIcon(inventoryManager);
+        icon = new UIItemIcon();
         icon.setPosition(DEFAULT_ICON_POSITION);
         if (count != null) {
             icon.setFixedItemCount(count);

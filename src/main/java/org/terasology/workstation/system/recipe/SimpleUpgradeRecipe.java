@@ -2,8 +2,10 @@ package org.terasology.workstation.system.recipe;
 
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryComponent;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
@@ -29,7 +31,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
     private String resultStationPrefab;
     private String resultBlockUri;
 
-    private SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+    private InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
 
     public SimpleUpgradeRecipe(String resultStationType, String resultStationPrefab, String resultBlockUri) {
         this.resultStationType = resultStationType;
@@ -102,7 +104,8 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                inventoryManager.removeItem(station, inventoryManager.getItemInSlot(station, items.get(index)), ingredientCount.getValue());
+                RemoveItemAction removeAction = new RemoveItemAction(inventoryManager.getItemInSlot(station, items.get(index)), true, ingredientCount.getValue());
+                station.send(removeAction);
                 index++;
             }
 
@@ -120,22 +123,32 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             CraftingStationComponent oldStationSettings = station.getComponent(CraftingStationComponent.class);
             CraftingStationComponent newStationSettings = newStation.getComponent(CraftingStationComponent.class);
 
+            InventoryComponent oldStationInventory = station.getComponent(InventoryComponent.class);
+            InventoryComponent newStationInventory = newStation.getComponent(InventoryComponent.class);
+
             // Moving upgrades
             for (int i = 0; i < oldStationSettings.upgradeSlots; i++) {
-                inventoryManager.moveItem(station, i, newStation, i);
+                newStationInventory.itemSlots.set(i, oldStationInventory.itemSlots.get(i));
             }
             // Moving tools
             for (int i = 0; i < oldStationSettings.toolSlots; i++) {
-                inventoryManager.moveItem(station, oldStationSettings.upgradeSlots + i, newStation, newStationSettings.upgradeSlots + i);
+                newStationInventory.itemSlots.set(newStationSettings.upgradeSlots + i,
+                        oldStationInventory.itemSlots.get(oldStationSettings.upgradeSlots + i));
             }
             // Moving ingredients
             for (int i = 0; i < oldStationSettings.ingredientSlots; i++) {
-                inventoryManager.moveItem(station, oldStationSettings.upgradeSlots + oldStationSettings.toolSlots + i,
-                        newStation, newStationSettings.upgradeSlots + newStationSettings.toolSlots + i);
+                newStationInventory.itemSlots.set(newStationSettings.upgradeSlots + newStationSettings.toolSlots + i,
+                        oldStationInventory.itemSlots.get(oldStationSettings.upgradeSlots + oldStationSettings.toolSlots + i));
             }
             // Moving output
-            inventoryManager.moveItem(station, oldStationSettings.upgradeSlots + oldStationSettings.toolSlots + oldStationSettings.ingredientSlots,
-                    newStation, newStationSettings.upgradeSlots + newStationSettings.toolSlots + newStationSettings.ingredientSlots);
+            newStationInventory.itemSlots.set(newStationSettings.upgradeSlots + newStationSettings.toolSlots + newStationSettings.ingredientSlots,
+                    oldStationInventory.itemSlots.get(oldStationSettings.upgradeSlots + oldStationSettings.toolSlots + oldStationSettings.ingredientSlots));
+
+            newStation.saveComponent(newStationInventory);
+
+            for (int i = 0; i < oldStationInventory.itemSlots.size(); i++) {
+                oldStationInventory.itemSlots.set(i, EntityRef.NULL);
+            }
 
             station.destroy();
 

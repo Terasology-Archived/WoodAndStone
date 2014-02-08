@@ -26,7 +26,6 @@ import org.terasology.crafting.system.recipe.behaviour.ReduceItemDurabilityCraft
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.multiBlock.BasicHorizontalSizeFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformBlockReplacementCallback;
@@ -49,8 +48,6 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private CraftingStationRecipeRegistry stationRecipeRegistry;
     @In
     private MultiBlockFormRecipeRegistry multiBlockFormRecipeRegistry;
-    @In
-    private SlotBasedInventoryManager inventoryManager;
     @In
     private BlockManager blockManager;
 

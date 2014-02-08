@@ -19,8 +19,7 @@ import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.system.recipe.ItemCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
-import org.terasology.registry.CoreRegistry;
+import org.terasology.logic.inventory.action.RemoveItemAction;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -48,8 +47,7 @@ public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
 
     @Override
     public void processForItem(EntityRef character, EntityRef item) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
-
-        inventoryManager.removeItem(character, item, count);
+        RemoveItemAction removeAction = new RemoveItemAction(item, true, count);
+        character.send(removeAction);
     }
 }

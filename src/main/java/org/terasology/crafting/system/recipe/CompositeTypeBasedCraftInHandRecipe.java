@@ -18,7 +18,7 @@ package org.terasology.crafting.system.recipe;
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
@@ -82,7 +82,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     }
 
     private int hasItem(EntityRef character, String itemType) {
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+        InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
         int numSlots = inventoryManager.getNumSlots(character);
         for (int i = 0; i < numSlots; i++) {
             if (hasItemInSlot(character, itemType, inventoryManager, i)) {
@@ -93,7 +93,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         return -1;
     }
 
-    private boolean hasItemInSlot(EntityRef character, String itemType, SlotBasedInventoryManager inventoryManager, int slot) {
+    private boolean hasItemInSlot(EntityRef character, String itemType, InventoryManager inventoryManager, int slot) {
         CraftInHandRecipeComponent component = inventoryManager.getItemInSlot(character, slot).getComponent(CraftInHandRecipeComponent.class);
         if (component != null && component.componentType.equals(itemType)) {
             return true;
@@ -149,7 +149,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
         @Override
         public EntityRef craftOne(EntityRef character) {
-            SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+            InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
             EntityRef item1 = inventoryManager.getItemInSlot(character, slot1);
             EntityRef item2 = inventoryManager.getItemInSlot(character, slot2);
             EntityRef item3 = inventoryManager.getItemInSlot(character, slot3);

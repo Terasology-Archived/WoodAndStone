@@ -19,8 +19,9 @@ import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.component.CraftingStationToolComponent;
@@ -44,8 +45,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     private String blockResult;
     private String itemResult;
     private byte resultCount;
-
-    private SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
 
     public void addIngredient(String type, int count) {
         ingredientsMap.put(type, count);
@@ -124,7 +123,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     private boolean hasItemInSlot(EntityRef station, String itemType, int slot, int count) {
-        EntityRef item = inventoryManager.getItemInSlot(station, slot);
+        EntityRef item = InventoryUtils.getItemAt(station, slot);
         CraftingStationIngredientComponent component = item.getComponent(CraftingStationIngredientComponent.class);
         if (component != null && component.type.equals(itemType) && item.getComponent(ItemComponent.class).stackCount >= count) {
             return true;
@@ -133,7 +132,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     private boolean hasToolInSlot(EntityRef station, String toolType, int slot, int durability) {
-        EntityRef item = inventoryManager.getItemInSlot(station, slot);
+        EntityRef item = InventoryUtils.getItemAt(station, slot);
 
         CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
         return tool != null && tool.type.equals(toolType)
@@ -181,12 +180,13 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                inventoryManager.removeItem(station, inventoryManager.getItemInSlot(station, items.get(index)), ingredientCount.getValue());
+                RemoveItemAction removeAction = new RemoveItemAction(InventoryUtils.getItemAt(station, items.get(index)), true, ingredientCount.getValue());
+                station.send(removeAction);
                 index++;
             }
             index = 0;
             for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
-                final EntityRef tool = inventoryManager.getItemInSlot(station, tools.get(index));
+                final EntityRef tool = InventoryUtils.getItemAt(station, tools.get(index));
                 tool.send(new ReduceDurabilityEvent(toolDurability.getValue()));
                 index++;
             }
@@ -212,11 +212,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
             EntityRef resultItem = createResultItemEntityForDisplayOne();
             try {
-                EntityRef itemInResultSlot = inventoryManager.getItemInSlot(station, resultSlot);
+                EntityRef itemInResultSlot = InventoryUtils.getItemAt(station, resultSlot);
                 if (!itemInResultSlot.exists()) {
                     return true;
                 }
-                return inventoryManager.canStackTogether(resultItem, itemInResultSlot)
+                return InventoryUtils.canStackInto(resultItem, itemInResultSlot)
                         && (resultItem.getComponent(ItemComponent.class).stackCount + itemInResultSlot.getComponent(ItemComponent.class).stackCount <= 99);
             } finally {
                 resultItem.destroy();

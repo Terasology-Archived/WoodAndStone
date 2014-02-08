@@ -21,7 +21,8 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
-import org.terasology.logic.inventory.PickedUpItem;
+import org.terasology.logic.characters.CharacterComponent;
+import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
@@ -108,10 +109,10 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
         }
     }
 
-    @ReceiveEvent
-    public void playerPickedUpItem(PickedUpItem event, EntityRef character) {
-        CraftingStationToolComponent toolComponent = event.getItem().getComponent(CraftingStationToolComponent.class);
-        CraftingStationIngredientComponent ingredientComponent = event.getItem().getComponent(CraftingStationIngredientComponent.class);
+    @ReceiveEvent(components = {CharacterComponent.class})
+    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef character) {
+        CraftingStationToolComponent toolComponent = event.getNewItem().getComponent(CraftingStationToolComponent.class);
+        CraftingStationIngredientComponent ingredientComponent = event.getNewItem().getComponent(CraftingStationIngredientComponent.class);
         if (toolComponent != null) {
             String toolType = toolComponent.type;
             if (toolType.equals("hammer") && !journalManager.hasEntry(character, chapterId, "2")) {

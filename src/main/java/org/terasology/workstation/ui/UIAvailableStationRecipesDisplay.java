@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
 import org.terasology.crafting.ui.CreationCallback;
 import org.terasology.crafting.ui.UIRecipeDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
@@ -100,7 +100,7 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainerScrollab
         int rowIndex = -1;
 
         displayedRecipes.clear();
-        SlotBasedInventoryManager inventoryManager = CoreRegistry.get(SlotBasedInventoryManager.class);
+        InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
         for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
             CraftingStationRecipe recipe = craftInHandRecipe.getValue();

@@ -17,7 +17,7 @@ package org.terasology.crafting.ui;
 
 import org.terasology.crafting.system.recipe.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.rendering.gui.framework.UIDisplayContainer;
 import org.terasology.rendering.gui.framework.UIDisplayElement;
 import org.terasology.rendering.gui.framework.events.ClickListener;
@@ -36,7 +36,7 @@ public class UIRecipeDisplay extends UIDisplayContainer {
     private String resultId;
     private EntityRef result;
 
-    public UIRecipeDisplay(String recipeId, String resultId, SlotBasedInventoryManager inventoryManager, EntityRef character,
+    public UIRecipeDisplay(String recipeId, String resultId, InventoryManager inventoryManager, EntityRef character,
                            CraftProcessDisplay craftingRecipe, CreationCallback callback) {
         this.recipeId = recipeId;
         this.resultId = resultId;

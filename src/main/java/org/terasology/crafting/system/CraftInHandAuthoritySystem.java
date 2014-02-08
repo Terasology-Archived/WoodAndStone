@@ -24,7 +24,6 @@ import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.PickupBuilder;
-import org.terasology.logic.inventory.SlotBasedInventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.registry.In;
 
@@ -33,8 +32,6 @@ import org.terasology.registry.In;
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class CraftInHandAuthoritySystem implements ComponentSystem {
-    @In
-    private SlotBasedInventoryManager inventoryManager;
     @In
     private EntityManager entityManager;
     @In
