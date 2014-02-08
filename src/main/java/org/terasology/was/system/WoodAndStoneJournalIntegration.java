@@ -15,21 +15,28 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
+import org.terasology.journal.part.ImageJournalPart;
+import org.terasology.journal.part.TextJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
+import org.terasology.rendering.nui.HorizontalAlign;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.component.CraftingStationToolComponent;
 import org.terasology.workstation.event.CraftingStationUpgraded;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -45,12 +52,16 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
     public void initialise() {
         journalManager.registerJournalChapter(chapterId, null, "Wood and Stone");
 
-        journalManager.registerJournalEntry(chapterId, "1", "Where am I? How did I get here? ...\nWhat am I going to do now? ...\n" +
-                "How am I going to survive the night? ...\n\nI should probably start off with building a safe shelter. " +
-                "I need some tools for that.\n\nI should get some sticks from the nearby tree branches and dig in the ground for some " +
-                "stones I might have a use for.\n\nWhile I'm at it, I will probably need something to bind the stick and stone together - " +
-                "twigs, should be good for that.\n\nOnce I get a Stick, Stone and a Plant Fibre, I will be able " +
-                "to make a Crude Hammer (press G to open crafting window).");
+        List<JournalManager.JournalEntryPart> firstEntry = Arrays.asList(
+                new TextJournalPart("Where am I? How did I get here? ...\nWhat am I going to do now? ...\n" +
+                        "How am I going to survive the night? ...\n\nI should probably start off with building a safe shelter. " +
+                        "I need some tools for that.\n\nI should get some sticks from the nearby tree branches and dig in the ground for some " +
+                        "stones I might have a use for.\n\nWhile I'm at it, I will probably need something to bind the stick and stone together - " +
+                        "twigs, should be good for that.\n\nOnce I get a Stick, Stone and a Plant Fibre, I will be able " +
+                        "to make a Crude Hammer (press G to open crafting window).", HorizontalAlign.LEFT),
+                new ImageJournalPart(Assets.getTexture("WoodAndStone:CrudeAxeRecipe"), HorizontalAlign.CENTER));
+
+        journalManager.registerJournalEntry(chapterId, "1", firstEntry);
 
         journalManager.registerJournalEntry(chapterId, "2", "Excellent! I got a hammer, I should be able to sharpen one of the stones " +
                 "and using the same technique as for the hammer, create a Crude Hammer! I can also dig stone with it to get stones more " +
