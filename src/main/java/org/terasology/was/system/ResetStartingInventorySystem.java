@@ -44,7 +44,7 @@ public class ResetStartingInventorySystem implements ComponentSystem {
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
     public void resetStartingInventory(OnPlayerSpawnedEvent event, EntityRef character) {
         for (int i = 0; i < manager.getNumSlots(character); i++) {
-            RemoveItemAction removeAction = new RemoveItemAction(manager.getItemInSlot(character, i), true);
+            RemoveItemAction removeAction = new RemoveItemAction(EntityRef.NULL, manager.getItemInSlot(character, i), true);
             character.send(removeAction);
         }
     }

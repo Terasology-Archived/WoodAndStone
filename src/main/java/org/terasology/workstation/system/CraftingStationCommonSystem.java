@@ -67,8 +67,10 @@ public class CraftingStationCommonSystem extends BaseComponentSystem {
 
             event.consume();
         } else if (isResultSlot(craftingStationComponent, slot)) {
-            // Nothing can be put into result slot
-            event.consume();
+            if (event.getInstigator() != craftingStation) {
+                // Nothing else can be put into result slot
+                event.consume();
+            }
         }
     }
 

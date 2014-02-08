@@ -64,9 +64,11 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
                 craftingStation.upgradeSlots, craftingStation.toolSlots, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots);
         if (resultEntity.exists()) {
             int outputSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
-            GiveItemAction action = new GiveItemAction(resultEntity, outputSlot);
-            action.setForce(true);
+            GiveItemAction action = new GiveItemAction(station, resultEntity, outputSlot);
             station.send(action);
+            if (!action.isConsumed()) {
+                resultEntity.destroy();
+            }
         }
     }
 

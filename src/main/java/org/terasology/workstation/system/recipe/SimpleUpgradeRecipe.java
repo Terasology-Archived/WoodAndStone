@@ -104,7 +104,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                RemoveItemAction removeAction = new RemoveItemAction(inventoryManager.getItemInSlot(station, items.get(index)), true, ingredientCount.getValue());
+                RemoveItemAction removeAction = new RemoveItemAction(station, inventoryManager.getItemInSlot(station, items.get(index)), true, ingredientCount.getValue());
                 station.send(removeAction);
                 index++;
             }

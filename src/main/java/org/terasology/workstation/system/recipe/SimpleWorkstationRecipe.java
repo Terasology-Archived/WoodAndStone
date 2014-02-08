@@ -180,7 +180,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                RemoveItemAction removeAction = new RemoveItemAction(InventoryUtils.getItemAt(station, items.get(index)), true, ingredientCount.getValue());
+                RemoveItemAction removeAction = new RemoveItemAction(station, InventoryUtils.getItemAt(station, items.get(index)), true, ingredientCount.getValue());
                 station.send(removeAction);
                 index++;
             }

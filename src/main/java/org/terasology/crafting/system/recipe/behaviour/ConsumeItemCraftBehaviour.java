@@ -47,7 +47,7 @@ public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
 
     @Override
     public void processForItem(EntityRef character, EntityRef item) {
-        RemoveItemAction removeAction = new RemoveItemAction(item, true, count);
+        RemoveItemAction removeAction = new RemoveItemAction(character, item, true, count);
         character.send(removeAction);
     }
 }
