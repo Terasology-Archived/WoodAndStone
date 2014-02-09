@@ -1,0 +1,10 @@
+{
+    "Item": {
+        "icon": "WoodAndStone:bronze.CopperOreDust",
+        "renderWithIcon": true,
+        "stackId": "WoodAndStone:CopperOreDust"
+    },
+    "DisplayName" : {
+        "name" : "Copper Ore Dust"
+    }
+}
