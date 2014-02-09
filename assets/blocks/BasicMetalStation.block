@@ -6,9 +6,9 @@
     "categories": ["stone"],
 
     "tiles": {
-        "top": "WoodAndStone:BasicMetalStation",
-        "bottom": "WoodAndStone:BasicMetalStation",
-        "sides": "WoodAndStone:BasicMetalStation"
+        "top": "WoodAndStone:BasicMetalStationTop",
+        "bottom": "WoodAndStone:BasicMetalStationBottom",
+        "sides": "WoodAndStone:BasicMetalStationSides"
     }
 
 }

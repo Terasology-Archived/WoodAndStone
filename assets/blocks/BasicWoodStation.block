@@ -6,9 +6,9 @@
     "categories": ["wood"],
 
     "tiles": {
-        "top": "WoodAndStone:BasicWoodStation",
-        "bottom": "Core:OakBark",
-        "sides": "Core:OakBark"
+        "top": "WoodAndStone:BasicWoodStationTop",
+        "bottom": "WoodAndStone:BasicWoodStationBottom",
+        "sides": "WoodAndStone:BasicWoodStationSides"
     }
 
 }
