@@ -50,7 +50,7 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
 
     @Override
     public void initialise() {
-        journalManager.registerJournalChapter(chapterId, null, "Wood and Stone");
+        journalManager.registerJournalChapter(chapterId, Assets.getTexture("WoodAndStone:WoodAndStoneJournal"), "Wood and Stone");
 
         List<JournalManager.JournalEntryPart> firstEntry = Arrays.asList(
                 new TextJournalPart("Where am I? How did I get here? ...\nWhat am I going to do now? ...\n" +
