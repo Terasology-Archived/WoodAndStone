@@ -179,43 +179,6 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         }
 
         appendRecipes(inventoryManager, 0, withoutCategory.entries());
-
-
-//        String lastCategory = null;
-//        for (Map.Entry<String, CraftingStationRecipe.CraftingStationResult> recipeResult : resultsToDisplay.entries()) {
-//            final String recipeId = recipeResult.getKey();
-//            final String category = getCategory(recipeId);
-//            int categoryLevel = getCategoryLevel(category);
-//            if (category != null && !category.equals(lastCategory)) {
-//                String categoryName = getCategoryName(category);
-//                RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(10 * categoryLevel, categoryName, 1,
-//                        new CategoryToggleCallback() {
-//                            @Override
-//                            public void categoryToggled() {
-//                                if (openCategories.contains(category)) {
-//                                    openCategories.remove(category);
-//                                } else {
-//                                    openCategories.add(category);
-//                                }
-//                            }
-//                        });
-//                layout.addWidget(categoryWidget);
-//                lastCategory = category;
-//            }
-//            CraftingStationRecipe.CraftingStationResult result = recipeResult.getValue();
-//            final String resultId = result.getResultId();
-//            availableRecipes.put(recipeId, resultId);
-//            if (category == null || openCategories.contains(category)) {
-//                CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(10 * categoryLevel, inventoryManager, station, result,
-//                        new CreationCallback() {
-//                            @Override
-//                            public void createOne() {
-//                                station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
-//                            }
-//                        });
-//                layout.addWidget(recipeDisplay);
-//            }
-//        }
     }
 
     private void appendCategory(Multimap<String, String> categoryRelationships,
