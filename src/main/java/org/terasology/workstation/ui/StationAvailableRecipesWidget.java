@@ -218,9 +218,11 @@ public class StationAvailableRecipesWidget extends CoreWidget {
 //        }
     }
 
-    private void appendCategory(Multimap<String, String> categoryRelationships, Map<String, Multimap<String, CraftingStationRecipe.CraftingStationResult>> categoryRecipesMap, InventoryManager inventoryManager, String topLevelCategory, int level) {
-        Multimap<String, CraftingStationRecipe.CraftingStationResult> directRecipes = categoryRecipesMap.get(topLevelCategory);
-        Collection<String> childCategories = categoryRelationships.get(topLevelCategory);
+    private void appendCategory(Multimap<String, String> categoryRelationships,
+                                Map<String, Multimap<String, CraftingStationRecipe.CraftingStationResult>> categoryRecipesMap,
+                                InventoryManager inventoryManager, String category, int level) {
+        Multimap<String, CraftingStationRecipe.CraftingStationResult> directRecipes = categoryRecipesMap.get(category);
+        Collection<String> childCategories = categoryRelationships.get(category);
 
         int count = 0;
         if (directRecipes != null) {
@@ -228,10 +230,10 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         }
         count += childCategories.size();
 
-        boolean isOpen = openCategories.contains(topLevelCategory);
+        boolean isOpen = openCategories.contains(category);
 
-        RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(isOpen, 30 * level, getCategoryName(topLevelCategory), count,
-                new CategoryToggleCallbackImpl(topLevelCategory));
+        RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(isOpen, 30 * level, getCategoryName(category), count,
+                new CategoryToggleCallbackImpl(category));
         layout.addWidget(categoryWidget);
 
         if (isOpen) {
@@ -239,7 +241,9 @@ public class StationAvailableRecipesWidget extends CoreWidget {
                 appendCategory(categoryRelationships, categoryRecipesMap, inventoryManager, childCategory, level + 1);
             }
 
-            appendRecipes(inventoryManager, level + 1, directRecipes.entries());
+            if (directRecipes != null) {
+                appendRecipes(inventoryManager, level + 1, directRecipes.entries());
+            }
         }
     }
 
