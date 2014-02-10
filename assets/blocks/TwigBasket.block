@@ -11,6 +11,7 @@
 
     "tiles": {
         "sides": "WoodAndStone:TwigBasketSides",
-        "topBottom": "WoodAndStone:TwigBasketTop"
+        "top": "WoodAndStone:TwigBasketTop",
+        "bottom": "WoodAndStone:TwigBasketBottom"
     }
 }

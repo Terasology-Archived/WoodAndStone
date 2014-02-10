@@ -1,0 +1,12 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "name": "Plant Fibre",
+        "icon": "WoodAndStone:items.PlantFibre",
+        "stackId": "WoodAndStone:items.PlantFibre",
+        "renderWithIcon": true
+    },
+    "CraftInHandRecipe": {
+        "componentType": "binding"
+    }
+}
