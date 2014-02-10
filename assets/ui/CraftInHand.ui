@@ -1,0 +1,22 @@
+{
+    "type": "CraftInHandWindow",
+    "skin": "WoodAndStone:CraftInHand",
+    "contents": {
+        "type": "relativeLayout",
+        "contents": [
+            {
+                "type": "ScrollableArea",
+                "content": {
+                    "type": "CraftInHandAvailableRecipesWidget",
+                    "id": "availableRecipes"
+                },
+                "layoutInfo": {
+                    "width": 350,
+                    "height": 300,
+                    "position-horizontal-center": {},
+                    "position-vertical-center": {}
+                }
+            }
+        ]
+    }
+}

@@ -54,10 +54,14 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
             String recipeId = event.getRecipeId();
             String resultId = event.getResultId();
             CraftInHandRecipe craftInHandRecipe = recipeRegistry.getRecipes().get(recipeId);
-            CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(resultId);
-            EntityRef resultEntity = result.craftOne(character);
-            if (resultEntity.exists()) {
-                pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200, true);
+            if (craftInHandRecipe != null) {
+                CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(resultId);
+                if (result != null) {
+                    EntityRef resultEntity = result.craftOne(character);
+                    if (resultEntity.exists()) {
+                        pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200, true);
+                    }
+                }
             }
         }
     }

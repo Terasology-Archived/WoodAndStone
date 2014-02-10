@@ -20,13 +20,11 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.manager.GUIManager;
 import org.terasology.registry.In;
+import org.terasology.rendering.nui.NUIManager;
 import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.event.OpenCraftingWorkstationRequest;
-import org.terasology.workstation.ui.UICraftOnStation;
-
-import javax.vecmath.Vector2f;
+import org.terasology.workstation.ui.CraftingStationWindow;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -34,11 +32,10 @@ import javax.vecmath.Vector2f;
 @RegisterSystem(RegisterMode.CLIENT)
 public class CraftingWorkstationClientSystem implements ComponentSystem {
     @In
-    private GUIManager guiManager;
+    private NUIManager nuiManager;
 
     @Override
     public void initialise() {
-        guiManager.registerWindow("WoodAndStone:CraftingStation", UICraftOnStation.class);
     }
 
     @Override
@@ -47,9 +44,9 @@ public class CraftingWorkstationClientSystem implements ComponentSystem {
 
     @ReceiveEvent
     public void openCraftingWorkstationWindow(OpenCraftingWorkstationRequest event, EntityRef workStation) {
-        final UICraftOnStation uiCraftOnStation = (UICraftOnStation) guiManager.openWindow("WoodAndStone:CraftingStation");
+        CraftingStationWindow stationWindow = (CraftingStationWindow) nuiManager.pushScreen("WoodAndStone:CraftInStation");
         final CraftingStationComponent craftingStationComponent = workStation.getComponent(CraftingStationComponent.class);
-        uiCraftOnStation.setCraftingStation(workStation, craftingStationComponent.type, craftingStationComponent.workstationUITexture, new Vector2f(0, 0),
+        stationWindow.setCraftingStation(workStation, craftingStationComponent.type, craftingStationComponent.workstationUITexture,
                 craftingStationComponent.upgradeSlots, craftingStationComponent.toolSlots, craftingStationComponent.ingredientSlots);
     }
 }

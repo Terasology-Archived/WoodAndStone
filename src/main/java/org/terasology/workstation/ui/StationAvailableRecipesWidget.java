@@ -18,55 +18,78 @@ package org.terasology.workstation.ui;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.terasology.crafting.ui.CreationCallback;
-import org.terasology.crafting.ui.UIRecipeDisplay;
+import org.terasology.crafting.ui.UICraftRecipeWidget;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.math.Vector2i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
-import org.terasology.rendering.gui.framework.UIDisplayElement;
+import org.terasology.rendering.nui.Canvas;
+import org.terasology.rendering.nui.CoreWidget;
+import org.terasology.rendering.nui.UIWidget;
+import org.terasology.rendering.nui.layouts.ColumnLayout;
 import org.terasology.workstation.event.UserCraftOnStationRequest;
 import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 import org.terasology.workstation.system.recipe.CraftingStationRecipe;
 
-import javax.vecmath.Vector2f;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UIAvailableStationRecipesDisplay extends UIDisplayContainerScrollable {
+public class StationAvailableRecipesWidget extends CoreWidget {
     private Multimap<String, String> displayedRecipes = HashMultimap.create();
     private CraftingStationRecipeRegistry registry;
     private String stationType;
+
     private EntityRef station;
     private int componentFromSlot;
     private int componentSlotCount;
     private int toolFromSlot;
     private int toolSlotCount;
 
-    public UIAvailableStationRecipesDisplay(Vector2f size, CraftingStationRecipeRegistry registry, String stationType, EntityRef station,
-                                            int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
-        super(size);
-        this.registry = registry;
-        this.stationType = stationType;
-        this.station = station;
-        this.componentFromSlot = componentFromSlot;
-        this.componentSlotCount = componentSlotCount;
-        this.toolFromSlot = toolFromSlot;
-        this.toolSlotCount = toolSlotCount;
-        loadRecipes();
+    private ColumnLayout layout;
+
+    public StationAvailableRecipesWidget() {
+        layout = new ColumnLayout();
+        layout.setColumns(1);
+
+        registry = CoreRegistry.get(CraftingStationRecipeRegistry.class);
     }
 
-    public void update() {
+    public void setStation(EntityRef station) {
+        this.station = station;
+    }
+
+    public void setStationType(String stationType) {
+        this.stationType = stationType;
+    }
+
+    public void setComponentFromSlot(int componentFromSlot) {
+        this.componentFromSlot = componentFromSlot;
+    }
+
+    public void setComponentSlotCount(int componentSlotCount) {
+        this.componentSlotCount = componentSlotCount;
+    }
+
+    public void setToolFromSlot(int toolFromSlot) {
+        this.toolFromSlot = toolFromSlot;
+    }
+
+    public void setToolSlotCount(int toolSlotCount) {
+        this.toolSlotCount = toolSlotCount;
+    }
+
+    @Override
+    public void update(float delta) {
         // TODO: Naive approach by comparing all the possible recipes to those currently displayed
         Multimap<String, String> recipes = HashMultimap.create();
-        for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
-            String recipeId = craftInHandRecipe.getKey();
-            CraftingStationRecipe recipe = craftInHandRecipe.getValue();
-            List<CraftingStationRecipe.CraftingStationResult> results =
-                    recipe.getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+        for (Map.Entry<String, CraftingStationRecipe> craftingStationRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
+            String recipeId = craftingStationRecipe.getKey();
+            List<CraftingStationRecipe.CraftingStationResult> results = craftingStationRecipe.getValue().getMatchingRecipeResults(station,
+                    componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
                 for (CraftingStationRecipe.CraftingStationResult result : results) {
                     String resultId = result.getResultId();
@@ -78,57 +101,48 @@ public class UIAvailableStationRecipesDisplay extends UIDisplayContainerScrollab
         if (!recipes.equals(displayedRecipes)) {
             reloadRecipes();
         }
-
-        super.update();
     }
 
     private void reloadRecipes() {
-        List<UIDisplayElement> uiDisplayElements = new LinkedList<>(getDisplayElements());
-        for (UIDisplayElement uiDisplayElement : uiDisplayElements) {
-            if (uiDisplayElement instanceof UIRecipeDisplay) {
-                UIRecipeDisplay recipeDisplay = (UIRecipeDisplay) uiDisplayElement;
-                removeDisplayElement(recipeDisplay);
-                recipeDisplay.dispose();
-            }
+        Iterator<UIWidget> oldWidgets = layout.iterator();
+        while (oldWidgets.hasNext()) {
+            oldWidgets.next();
+            oldWidgets.remove();
         }
 
         loadRecipes();
     }
 
-    public void loadRecipes() {
-        int rowHeight = 50;
-        int rowIndex = -1;
+    @Override
+    public void onDraw(Canvas canvas) {
+        canvas.drawWidget(layout);
+    }
 
+    @Override
+    public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
+        return layout.getPreferredContentSize(canvas, sizeHint);
+    }
+
+    public void loadRecipes() {
         displayedRecipes.clear();
         InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
         for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
-            CraftingStationRecipe recipe = craftInHandRecipe.getValue();
-            List<CraftingStationRecipe.CraftingStationResult> results =
-                    recipe.getMatchingRecipeResults(station, componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+            List<CraftingStationRecipe.CraftingStationResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(station,
+                    componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
-                for (final CraftingStationRecipe.CraftingStationResult result : results) {
+                for (CraftingStationRecipe.CraftingStationResult result : results) {
                     final String resultId = result.getResultId();
                     displayedRecipes.put(recipeId, resultId);
-                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, station, result,
+                    UICraftRecipeWidget recipeDisplay = new UICraftRecipeWidget(recipeId, resultId, inventoryManager, station, result,
                             new CreationCallback() {
                                 @Override
                                 public void createOne() {
                                     station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
                                 }
                             });
-                    recipeDisplay.setPosition(new Vector2f(0, 10 + rowIndex * rowHeight));
-                    addDisplayElement(recipeDisplay);
-                    rowIndex++;
+                    layout.addWidget(recipeDisplay);
                 }
-            }
-        }
-    }
-
-    public void dispose() {
-        for (UIDisplayElement displayElement : getDisplayElements()) {
-            if (displayElement instanceof UIRecipeDisplay) {
-                ((UIRecipeDisplay) displayElement).dispose();
             }
         }
     }

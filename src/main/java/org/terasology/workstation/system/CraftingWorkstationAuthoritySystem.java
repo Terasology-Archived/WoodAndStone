@@ -57,17 +57,21 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
         String recipeId = event.getRecipeId();
         String resultId = event.getResultId();
         CraftingStationRecipe craftingStationRecipe = recipeRegistry.getCraftingRecipes(event.getWorkstationType()).get(recipeId);
-        CraftingStationRecipe.CraftingStationResult result = craftingStationRecipe.getResultById(resultId);
-        final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
-        EntityRef resultEntity = result.craftOne(station,
-                craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
-                craftingStation.upgradeSlots, craftingStation.toolSlots, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots);
-        if (resultEntity.exists()) {
-            int outputSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
-            GiveItemAction action = new GiveItemAction(station, resultEntity, outputSlot);
-            station.send(action);
-            if (!action.isConsumed()) {
-                resultEntity.destroy();
+        if (craftingStationRecipe != null) {
+            CraftingStationRecipe.CraftingStationResult result = craftingStationRecipe.getResultById(resultId);
+            if (result != null) {
+                final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
+                EntityRef resultEntity = result.craftOne(station,
+                        craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
+                        craftingStation.upgradeSlots, craftingStation.toolSlots, craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots);
+                if (resultEntity.exists()) {
+                    int outputSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
+                    GiveItemAction action = new GiveItemAction(station, resultEntity, outputSlot);
+                    station.send(action);
+                    if (!action.isConsumed()) {
+                        resultEntity.destroy();
+                    }
+                }
             }
         }
     }
@@ -76,11 +80,13 @@ public class CraftingWorkstationAuthoritySystem implements ComponentSystem {
     public void upgradeWorkstationRequestReceived(UserUpgradeStationRequest event, EntityRef station) {
         String recipeId = event.getRecipeId();
         final UpgradeRecipe upgradeRecipe = recipeRegistry.getUpgradeRecipes(event.getStationType()).get(recipeId);
-        final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
-        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, craftingStation.upgradeSlots);
-        if (result != null) {
-            EntityRef newStation = result.processUpgrade(station);
-            event.getInstigator().send(new CraftingStationUpgraded(newStation));
+        if (upgradeRecipe != null) {
+            final CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
+            final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, craftingStation.upgradeSlots);
+            if (result != null) {
+                EntityRef newStation = result.processUpgrade(station);
+                event.getInstigator().send(new CraftingStationUpgraded(newStation));
+            }
         }
     }
 }

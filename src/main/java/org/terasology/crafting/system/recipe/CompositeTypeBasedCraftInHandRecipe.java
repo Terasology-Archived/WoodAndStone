@@ -15,11 +15,14 @@
  */
 package org.terasology.crafting.system.recipe;
 
+import org.terasology.asset.Assets;
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
@@ -133,18 +136,33 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public EntityRef createResultItemEntityForDisplayOne() {
+        public int getResultQuantity() {
+            return 1;
+        }
+
+        @Override
+        public Block getResultBlock() {
+            if (block) {
+                return CoreRegistry.get(BlockManager.class).getBlock(prefabName);
+            }
+            return null;
+        }
+
+        @Override
+        public Prefab getResultItem() {
+            if (!block) {
+                return Assets.getPrefab(prefabName);
+            }
+            return null;
+        }
+
+        private EntityRef createResult() {
             if (block) {
                 BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName);
                 return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, 1);
             } else {
                 return CoreRegistry.get(EntityManager.class).create(prefabName);
             }
-        }
-
-        @Override
-        public EntityRef getResultItemEntityForDisplayMax() {
-            return null;
         }
 
         @Override
@@ -160,7 +178,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
                 itemCraftBehaviour2.processForItem(character, item2);
                 itemCraftBehaviour3.processForItem(character, item3);
 
-                return createResultItemEntityForDisplayOne();
+                return createResult();
             }
 
             return EntityRef.NULL;

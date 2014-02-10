@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,31 +22,38 @@ import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.recipe.CraftInHandRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.players.LocalPlayer;
+import org.terasology.math.Vector2i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.gui.framework.UIDisplayContainerScrollable;
-import org.terasology.rendering.gui.framework.UIDisplayElement;
+import org.terasology.rendering.nui.Canvas;
+import org.terasology.rendering.nui.CoreWidget;
+import org.terasology.rendering.nui.UIWidget;
+import org.terasology.rendering.nui.layouts.ColumnLayout;
 
-import javax.vecmath.Vector2f;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UIAvailableInHandRecipesDisplay extends UIDisplayContainerScrollable {
+public class CraftInHandAvailableRecipesWidget extends CoreWidget {
     private Multimap<String, String> displayedRecipes = HashMultimap.create();
     private CraftInHandRecipeRegistry registry;
     private EntityRef character;
 
-    public UIAvailableInHandRecipesDisplay(Vector2f size, CraftInHandRecipeRegistry registry, EntityRef character) {
-        super(size);
-        this.registry = registry;
-        this.character = character;
-        loadRecipes();
+    private ColumnLayout layout;
+
+    public CraftInHandAvailableRecipesWidget() {
+        layout = new ColumnLayout();
+        layout.setColumns(1);
+
+        registry = CoreRegistry.get(CraftInHandRecipeRegistry.class);
+        character = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
     }
 
-    public void update() {
+    @Override
+    public void update(float delta) {
         // TODO: Naive approach by comparing all the possible recipes to those currently displayed
         Multimap<String, String> recipes = HashMultimap.create();
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
@@ -63,27 +70,29 @@ public class UIAvailableInHandRecipesDisplay extends UIDisplayContainerScrollabl
         if (!recipes.equals(displayedRecipes)) {
             reloadRecipes();
         }
-
-        super.update();
     }
 
     private void reloadRecipes() {
-        List<UIDisplayElement> uiDisplayElements = new LinkedList<>(getDisplayElements());
-        for (UIDisplayElement uiDisplayElement : uiDisplayElements) {
-            if (uiDisplayElement instanceof UIRecipeDisplay) {
-                UIRecipeDisplay recipeDisplay = (UIRecipeDisplay) uiDisplayElement;
-                removeDisplayElement(recipeDisplay);
-                recipeDisplay.dispose();
-            }
+        Iterator<UIWidget> oldWidgets = layout.iterator();
+        while (oldWidgets.hasNext()) {
+            oldWidgets.next();
+            oldWidgets.remove();
         }
 
         loadRecipes();
     }
 
-    public void loadRecipes() {
-        int rowHeight = 50;
-        int rowIndex = 0;
+    @Override
+    public void onDraw(Canvas canvas) {
+        canvas.drawWidget(layout);
+    }
 
+    @Override
+    public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
+        return layout.getPreferredContentSize(canvas, sizeHint);
+    }
+
+    public void loadRecipes() {
         displayedRecipes.clear();
         InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
@@ -93,25 +102,15 @@ public class UIAvailableInHandRecipesDisplay extends UIDisplayContainerScrollabl
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
                     final String resultId = result.getResultId();
                     displayedRecipes.put(recipeId, resultId);
-                    UIRecipeDisplay recipeDisplay = new UIRecipeDisplay(recipeId, resultId, inventoryManager, character, result,
+                    UICraftRecipeWidget recipeDisplay = new UICraftRecipeWidget(recipeId, resultId, inventoryManager, character, result,
                             new CreationCallback() {
                                 @Override
                                 public void createOne() {
                                     character.send(new UserCraftInHandRequest(recipeId, resultId));
                                 }
                             });
-                    recipeDisplay.setPosition(new Vector2f(0, rowIndex * rowHeight));
-                    addDisplayElement(recipeDisplay);
-                    rowIndex++;
+                    layout.addWidget(recipeDisplay);
                 }
-            }
-        }
-    }
-
-    public void dispose() {
-        for (UIDisplayElement displayElement : getDisplayElements()) {
-            if (displayElement instanceof UIRecipeDisplay) {
-                ((UIRecipeDisplay) displayElement).dispose();
             }
         }
     }

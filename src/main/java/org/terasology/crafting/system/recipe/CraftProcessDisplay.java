@@ -15,7 +15,8 @@
  */
 package org.terasology.crafting.system.recipe;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.world.block.Block;
 
 import java.util.Map;
 
@@ -30,18 +31,9 @@ public interface CraftProcessDisplay {
      */
     Map<Integer, Integer> getComponentSlotAndCount();
 
-    /**
-     * Returns an item entity that will be used to display a result of crafting the recipe once.
-     *
-     * @return
-     */
-    EntityRef createResultItemEntityForDisplayOne();
+    int getResultQuantity();
 
-    /**
-     * Returns an item entity that will be used to display a result of creating the recipe as many times
-     * as possible at the moment (taking into account available components and tools, space in result slot).
-     *
-     * @return
-     */
-    EntityRef getResultItemEntityForDisplayMax();
+    Block getResultBlock();
+
+    Prefab getResultItem();
 }

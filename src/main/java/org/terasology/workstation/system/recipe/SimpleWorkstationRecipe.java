@@ -15,16 +15,19 @@
  */
 package org.terasology.workstation.system.recipe;
 
+import org.terasology.asset.Assets;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.workstation.component.CraftingStationToolComponent;
+import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
@@ -191,7 +194,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 index++;
             }
 
-            return createResultItemEntityForDisplayOne();
+            return createResult();
         }
 
         private boolean validateCreation(EntityRef station, int resultSlot) {
@@ -210,7 +213,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 index++;
             }
 
-            EntityRef resultItem = createResultItemEntityForDisplayOne();
+            EntityRef resultItem = createResult();
             try {
                 EntityRef itemInResultSlot = InventoryUtils.getItemAt(station, resultSlot);
                 if (!itemInResultSlot.exists()) {
@@ -241,7 +244,27 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef createResultItemEntityForDisplayOne() {
+        public int getResultQuantity() {
+            return resultCount;
+        }
+
+        @Override
+        public Block getResultBlock() {
+            if (itemResult == null) {
+                return CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult).getArchetypeBlock();
+            }
+            return null;
+        }
+
+        @Override
+        public Prefab getResultItem() {
+            if (itemResult != null) {
+                return Assets.getPrefab(itemResult);
+            }
+            return null;
+        }
+
+        private EntityRef createResult() {
             if (itemResult != null) {
                 final EntityRef entity = CoreRegistry.get(EntityManager.class).create(itemResult);
                 final ItemComponent item = entity.getComponent(ItemComponent.class);
@@ -252,11 +275,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult);
                 return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, resultCount);
             }
-        }
-
-        @Override
-        public EntityRef getResultItemEntityForDisplayMax() {
-            return null;
         }
     }
 }
