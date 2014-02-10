@@ -230,7 +230,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
 
         boolean isOpen = openCategories.contains(topLevelCategory);
 
-        RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(isOpen, 15 * level, getCategoryName(topLevelCategory), count,
+        RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(isOpen, 30 * level, getCategoryName(topLevelCategory), count,
                 new CategoryToggleCallbackImpl(topLevelCategory));
         layout.addWidget(categoryWidget);
 
@@ -248,7 +248,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
             final String recipeId = recipeResult.getKey();
             CraftingStationRecipe.CraftingStationResult result = recipeResult.getValue();
             final String resultId = result.getResultId();
-            CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(15 * level, inventoryManager, station, result,
+            CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(30 * level, inventoryManager, station, result,
                     new CreationCallback() {
                         @Override
                         public void createOne() {
