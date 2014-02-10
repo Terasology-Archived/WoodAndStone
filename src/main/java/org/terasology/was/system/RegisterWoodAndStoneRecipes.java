@@ -186,6 +186,8 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private void addStandardWorkstationRecipes() {
         addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:PlankBlock",
                 "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
+        addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:FinePlankBlock",
+                "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
     }
 
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {

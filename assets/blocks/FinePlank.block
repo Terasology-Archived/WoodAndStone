@@ -1,0 +1,13 @@
+{
+    "hardness": 6,
+
+    "displayName": "Fine Plank",
+
+    "categories": ["wood"],
+
+    "tiles": {
+        "sides": "WoodAndStone:FinePlank",
+        "topBottom": "WoodAndStone:FinePlank",
+        "center": "WoodAndStone:FinePlank"
+    }
+}
