@@ -15,6 +15,15 @@
                 "left": 0,
                 "right": 0
             }
+        },
+        "RecipeCategoryWidget": {
+            "text-align-horizontal": "left",
+            "margin": {
+                "top": 5,
+                "bottom": 5,
+                "left": 5,
+                "right": 5
+            }
         }
     }
 }

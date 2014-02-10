@@ -1,7 +1,7 @@
 {
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:BasicStonecrafting",
-        "recipeId": "WoodAndStone:StonePickaxe",
+        "recipeId": "Tools|WoodAndStone:StonePickaxe",
 
         "recipeComponents": ["2*WoodAndStone:sharpStone", "1*WoodAndStone:stone", "1*WoodAndStone:stick"],
         "recipeTools": ["1*hammer"],

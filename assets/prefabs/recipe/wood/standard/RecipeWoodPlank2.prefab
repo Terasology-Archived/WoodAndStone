@@ -1,7 +1,7 @@
 {
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:StandardWoodcrafting",
-        "recipeId": "WoodAndStone:WoodPlank",
+        "recipeId": "Materials|WoodAndStone:WoodPlank",
 
         "recipeComponents": ["1*WoodAndStone:wood"],
         "recipeTools": ["1*axe"],

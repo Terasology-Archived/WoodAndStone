@@ -1,7 +1,7 @@
 {
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:StandardWoodcrafting",
-        "recipeId": "WoodAndStone:WoodenFence",
+        "recipeId": "Building|WoodAndStone:WoodenFence",
 
         "recipeComponents": ["4*WoodAndStone:plank"],
         "recipeTools": ["1*axe", "1*hammer"],

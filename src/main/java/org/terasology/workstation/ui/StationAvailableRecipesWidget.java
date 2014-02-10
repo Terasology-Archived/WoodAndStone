@@ -16,9 +16,13 @@
 package org.terasology.workstation.ui;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.TreeMultimap;
+import org.terasology.crafting.ui.CraftRecipeWidget;
 import org.terasology.crafting.ui.CreationCallback;
-import org.terasology.crafting.ui.UICraftRecipeWidget;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.math.Vector2i;
@@ -31,15 +35,21 @@ import org.terasology.workstation.event.UserCraftOnStationRequest;
 import org.terasology.workstation.system.CraftingStationRecipeRegistry;
 import org.terasology.workstation.system.recipe.CraftingStationRecipe;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class StationAvailableRecipesWidget extends CoreWidget {
-    private Multimap<String, String> displayedRecipes = HashMultimap.create();
+    private Set<String> openCategories = new HashSet<>();
+    private Set<String> displayedOpenCategories = new HashSet<>();
+    private Multimap<String, String> availableRecipes = HashMultimap.create();
     private CraftingStationRecipeRegistry registry;
     private String stationType;
 
@@ -98,7 +108,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
             }
         }
 
-        if (!recipes.equals(displayedRecipes)) {
+        if (!openCategories.equals(displayedOpenCategories) || !recipes.equals(availableRecipes)) {
             reloadRecipes();
         }
     }
@@ -124,7 +134,18 @@ public class StationAvailableRecipesWidget extends CoreWidget {
     }
 
     public void loadRecipes() {
-        displayedRecipes.clear();
+        availableRecipes.clear();
+        displayedOpenCategories.clear();
+
+        displayedOpenCategories.addAll(openCategories);
+
+        Multimap<String, CraftingStationRecipe.CraftingStationResult> withoutCategory = LinkedHashMultimap.create();
+        Multimap<String, String> categoryRelationships = TreeMultimap.create(Ordering.natural(), Ordering.natural());
+        Set<String> topLevelCategories = new TreeSet<>();
+
+        Map<String, Multimap<String, CraftingStationRecipe.CraftingStationResult>> categoryRecipesMap =
+                Maps.newHashMap();
+
         InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
         for (Map.Entry<String, CraftingStationRecipe> craftInHandRecipe : registry.getCraftingRecipes(stationType).entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
@@ -132,18 +153,152 @@ public class StationAvailableRecipesWidget extends CoreWidget {
                     componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
             if (results != null) {
                 for (CraftingStationRecipe.CraftingStationResult result : results) {
-                    final String resultId = result.getResultId();
-                    displayedRecipes.put(recipeId, resultId);
-                    UICraftRecipeWidget recipeDisplay = new UICraftRecipeWidget(recipeId, resultId, inventoryManager, station, result,
-                            new CreationCallback() {
-                                @Override
-                                public void createOne() {
-                                    station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
-                                }
-                            });
-                    layout.addWidget(recipeDisplay);
+                    availableRecipes.put(recipeId, result.getResultId());
+
+                    String category = getCategory(recipeId);
+                    if (category == null) {
+                        withoutCategory.put(recipeId, result);
+                    } else {
+                        Multimap<String, CraftingStationRecipe.CraftingStationResult> categoryRecipes = categoryRecipesMap.get(category);
+                        if (categoryRecipes == null) {
+                            categoryRecipes = LinkedHashMultimap.create();
+                            categoryRecipesMap.put(category, categoryRecipes);
+                        }
+                        categoryRecipes.put(recipeId, result);
+                        String topLevel = fillRelationships(categoryRelationships, category);
+                        topLevelCategories.add(topLevel);
+                    }
                 }
             }
         }
+
+        for (String topLevelCategory : topLevelCategories) {
+            int level = 0;
+
+            appendCategory(categoryRelationships, categoryRecipesMap, inventoryManager, topLevelCategory, level);
+        }
+
+        appendRecipes(inventoryManager, 0, withoutCategory.entries());
+
+
+//        String lastCategory = null;
+//        for (Map.Entry<String, CraftingStationRecipe.CraftingStationResult> recipeResult : resultsToDisplay.entries()) {
+//            final String recipeId = recipeResult.getKey();
+//            final String category = getCategory(recipeId);
+//            int categoryLevel = getCategoryLevel(category);
+//            if (category != null && !category.equals(lastCategory)) {
+//                String categoryName = getCategoryName(category);
+//                RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(10 * categoryLevel, categoryName, 1,
+//                        new CategoryToggleCallback() {
+//                            @Override
+//                            public void categoryToggled() {
+//                                if (openCategories.contains(category)) {
+//                                    openCategories.remove(category);
+//                                } else {
+//                                    openCategories.add(category);
+//                                }
+//                            }
+//                        });
+//                layout.addWidget(categoryWidget);
+//                lastCategory = category;
+//            }
+//            CraftingStationRecipe.CraftingStationResult result = recipeResult.getValue();
+//            final String resultId = result.getResultId();
+//            availableRecipes.put(recipeId, resultId);
+//            if (category == null || openCategories.contains(category)) {
+//                CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(10 * categoryLevel, inventoryManager, station, result,
+//                        new CreationCallback() {
+//                            @Override
+//                            public void createOne() {
+//                                station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
+//                            }
+//                        });
+//                layout.addWidget(recipeDisplay);
+//            }
+//        }
+    }
+
+    private void appendCategory(Multimap<String, String> categoryRelationships, Map<String, Multimap<String, CraftingStationRecipe.CraftingStationResult>> categoryRecipesMap, InventoryManager inventoryManager, String topLevelCategory, int level) {
+        Multimap<String, CraftingStationRecipe.CraftingStationResult> directRecipes = categoryRecipesMap.get(topLevelCategory);
+        Collection<String> childCategories = categoryRelationships.get(topLevelCategory);
+
+        int count = 0;
+        if (directRecipes != null) {
+            count += directRecipes.size();
+        }
+        count += childCategories.size();
+
+        boolean isOpen = openCategories.contains(topLevelCategory);
+
+        RecipeCategoryWidget categoryWidget = new RecipeCategoryWidget(isOpen, 15 * level, getCategoryName(topLevelCategory), count,
+                new CategoryToggleCallbackImpl(topLevelCategory));
+        layout.addWidget(categoryWidget);
+
+        if (isOpen) {
+            for (String childCategory : childCategories) {
+                appendCategory(categoryRelationships, categoryRecipesMap, inventoryManager, childCategory, level + 1);
+            }
+
+            appendRecipes(inventoryManager, level + 1, directRecipes.entries());
+        }
+    }
+
+    private void appendRecipes(InventoryManager inventoryManager, int level, Collection<Map.Entry<String, CraftingStationRecipe.CraftingStationResult>> recipes) {
+        for (Map.Entry<String, CraftingStationRecipe.CraftingStationResult> recipeResult : recipes) {
+            final String recipeId = recipeResult.getKey();
+            CraftingStationRecipe.CraftingStationResult result = recipeResult.getValue();
+            final String resultId = result.getResultId();
+            CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(15 * level, inventoryManager, station, result,
+                    new CreationCallback() {
+                        @Override
+                        public void createOne() {
+                            station.send(new UserCraftOnStationRequest(stationType, recipeId, resultId));
+                        }
+                    });
+            layout.addWidget(recipeDisplay);
+        }
+    }
+
+    private String fillRelationships(Multimap<String, String> categoryRelationships, String category) {
+        String parentCategory = getCategory(category);
+        if (parentCategory != null) {
+            categoryRelationships.put(parentCategory, category);
+            return fillRelationships(categoryRelationships, parentCategory);
+        }
+        return category;
+    }
+
+    private String getCategoryName(String category) {
+        if (category.lastIndexOf('|') < 0) {
+            return category;
+        } else {
+            return category.substring(category.lastIndexOf('|') + 1);
+        }
+    }
+
+    private String getCategory(String recipeId) {
+        if (recipeId.lastIndexOf('|') < 0) {
+            return null;
+        } else {
+            return recipeId.substring(0, recipeId.lastIndexOf('|'));
+        }
+    }
+
+    private final class CategoryToggleCallbackImpl implements CategoryToggleCallback {
+        private String category;
+
+        private CategoryToggleCallbackImpl(String category) {
+            this.category = category;
+        }
+
+        @Override
+        public void categoryToggled() {
+            if (openCategories.contains(category)) {
+                openCategories.remove(category);
+            } else {
+                openCategories.add(category);
+            }
+        }
+
     }
 }

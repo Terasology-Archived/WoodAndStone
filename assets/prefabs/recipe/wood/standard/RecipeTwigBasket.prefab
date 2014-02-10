@@ -1,7 +1,7 @@
 {
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:StandardWoodcrafting",
-        "recipeId": "WoodAndStone:TwigBasket",
+        "recipeId": "Storage|WoodAndStone:TwigBasket",
 
         "recipeComponents": ["9*WoodAndStone:twig"],
         "recipeTools": [],

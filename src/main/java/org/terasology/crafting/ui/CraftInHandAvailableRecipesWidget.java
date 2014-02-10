@@ -102,7 +102,7 @@ public class CraftInHandAvailableRecipesWidget extends CoreWidget {
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
                     final String resultId = result.getResultId();
                     displayedRecipes.put(recipeId, resultId);
-                    UICraftRecipeWidget recipeDisplay = new UICraftRecipeWidget(recipeId, resultId, inventoryManager, character, result,
+                    CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(0, inventoryManager, character, result,
                             new CreationCallback() {
                                 @Override
                                 public void createOne() {

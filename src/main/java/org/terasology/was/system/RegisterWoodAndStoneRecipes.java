@@ -128,9 +128,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     }
 
     private void addStoneWorkstationRecipes() {
-        addWorkstationBlockShapesRecipe("WoodAndStone:BasicStonecrafting", "WoodAndStone:CobbleBlock",
+        addWorkstationBlockShapesRecipe("WoodAndStone:BasicStonecrafting", "Building|Cobble Stone|WoodAndStone:CobbleBlock",
                 "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
-        addWorkstationBlockShapesRecipe("WoodAndStone:StandardStonecrafting", "WoodAndStone:BrickBlock",
+        addWorkstationBlockShapesRecipe("WoodAndStone:StandardStonecrafting", "Building|Bricks|WoodAndStone:BrickBlock",
                 "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
     }
 
@@ -184,9 +184,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     }
 
     private void addStandardWorkstationRecipes() {
-        addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:PlankBlock",
+        addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "Building|Planks|WoodAndStone:PlankBlock",
                 "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
-        addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "WoodAndStone:FinePlankBlock",
+        addWorkstationBlockShapesRecipe("WoodAndStone:StandardWoodcrafting", "Building|Fine Planks|WoodAndStone:FinePlankBlock",
                 "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
     }
 

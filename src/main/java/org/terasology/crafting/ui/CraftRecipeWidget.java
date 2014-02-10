@@ -40,10 +40,7 @@ import java.util.Map;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UICraftRecipeWidget extends CoreWidget {
-    private final String recipeId;
-    private final String resultId;
-    private final EntityRef character;
+public class CraftRecipeWidget extends CoreWidget {
     private final CreationCallback callback;
 
     private List<ItemIcon> ingredientsIcons = new LinkedList<>();
@@ -52,11 +49,11 @@ public class UICraftRecipeWidget extends CoreWidget {
 
     private UIButton button;
 
-    public UICraftRecipeWidget(String recipeId, String resultId, InventoryManager inventoryManager, EntityRef character,
-                               CraftProcessDisplay craftingRecipe, CreationCallback callback) {
-        this.recipeId = recipeId;
-        this.resultId = resultId;
-        this.character = character;
+    private int leftIndent;
+
+    public CraftRecipeWidget(int leftIndent, InventoryManager inventoryManager, EntityRef character,
+                             CraftProcessDisplay craftingRecipe, CreationCallback callback) {
+        this.leftIndent = leftIndent;
         this.callback = callback;
 
         for (Map.Entry<Integer, Integer> craftingComponents : craftingRecipe.getComponentSlotAndCount().entrySet()) {
@@ -113,7 +110,7 @@ public class UICraftRecipeWidget extends CoreWidget {
 
     @Override
     public void onDraw(Canvas canvas) {
-        int x = 0;
+        int x = leftIndent;
         Vector2i size = canvas.size();
         for (ItemIcon ingredientsIcon : ingredientsIcons) {
             Vector2i iconSize = canvas.calculatePreferredSize(ingredientsIcon);
