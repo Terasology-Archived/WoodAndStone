@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system;
+package org.terasology.crafting.system.recipe.hand.behaviour;
 
-import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-
-import java.util.Map;
+import org.terasology.crafting.system.recipe.hand.ItemCraftBehaviour;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipeRegistry {
-    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
+public class DoNothingCraftBehaviour implements ItemCraftBehaviour {
+    @Override
+    public boolean isValid(EntityRef character, EntityRef item) {
+        return true;
+    }
 
-    Map<String, CraftInHandRecipe> getRecipes();
-
-    void disableCraftingInHand();
-
-    boolean isCraftingInHandDisabled();
+    @Override
+    public void processForItem(EntityRef character, EntityRef item) {
+    }
 }

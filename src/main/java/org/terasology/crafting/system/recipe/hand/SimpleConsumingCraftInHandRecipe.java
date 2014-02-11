@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system;
+package org.terasology.crafting.system.recipe.hand;
 
-import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-
-import java.util.Map;
+import org.terasology.crafting.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipeRegistry {
-    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
-
-    Map<String, CraftInHandRecipe> getRecipes();
-
-    void disableCraftingInHand();
-
-    boolean isCraftingInHandDisabled();
+public class SimpleConsumingCraftInHandRecipe extends CompositeTypeBasedCraftInHandRecipe {
+    public SimpleConsumingCraftInHandRecipe(String item1Type, String item2Type, String item3Type, String resultPrefab) {
+        super(item1Type, new ConsumeItemCraftBehaviour(item1Type),
+                item2Type, new ConsumeItemCraftBehaviour(item2Type),
+                item3Type, new ConsumeItemCraftBehaviour(item3Type), resultPrefab);
+    }
 }

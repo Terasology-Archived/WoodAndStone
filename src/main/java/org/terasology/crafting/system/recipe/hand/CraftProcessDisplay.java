@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system;
+package org.terasology.crafting.system.recipe.hand;
 
-import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.world.block.Block;
 
 import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipeRegistry {
-    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
+public interface CraftProcessDisplay {
+    /**
+     * Returns components and their count that will be used in crafting this recipe.
+     *
+     * @return
+     */
+    Map<Integer, Integer> getComponentSlotAndCount();
 
-    Map<String, CraftInHandRecipe> getRecipes();
+    int getResultQuantity();
 
-    void disableCraftingInHand();
+    Block getResultBlock();
 
-    boolean isCraftingInHandDisabled();
+    Prefab getResultItem();
 }

@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system;
+package org.terasology.crafting.system.recipe.workstation;
 
-import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-
-import java.util.Map;
+import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipeRegistry {
-    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
+public interface UpgradeRecipe {
+    boolean isUpgradeComponent(EntityRef item);
 
-    Map<String, CraftInHandRecipe> getRecipes();
+    UpgradeResult getMatchingUpgradeResult(EntityRef station, int upgradeSlotFrom, int upgradeSlotCount);
 
-    void disableCraftingInHand();
+    public interface UpgradeResult {
+        String getResultStationType();
 
-    boolean isCraftingInHandDisabled();
+        EntityRef processUpgrade(EntityRef station);
+    }
 }

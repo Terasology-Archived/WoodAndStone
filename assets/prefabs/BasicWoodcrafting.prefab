@@ -2,6 +2,9 @@
     "BlockDropGrammar": {
         "blockDrops": "2*WoodAndStone:TreeLog"
     },
+    "Workstation": {
+        "uiPrefab": "WoodAndStone:CraftInStation"
+    },
     "CraftingStation": {
         "type": "WoodAndStone:BasicWoodcrafting",
         "workstationUITexture": "WoodAndStone:BasicWoodworking",

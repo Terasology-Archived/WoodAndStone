@@ -1,4 +1,7 @@
 {
+    "Workstation": {
+        "uiPrefab": "WoodAndStone:CraftInStation"
+    },
     "CraftingStation": {
         "type": "WoodAndStone:ClayHearth",
         "workstationUITexture": "WoodAndStone:ClayHearth",

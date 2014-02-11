@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system;
+package org.terasology.workstation.process;
 
-import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import java.util.List;
 
-import java.util.Map;
+public interface WorkstationProcess {
+    public String getDescription();
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public interface CraftInHandRecipeRegistry {
-    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
+    public String getId();
 
-    Map<String, CraftInHandRecipe> getRecipes();
-
-    void disableCraftingInHand();
-
-    boolean isCraftingInHandDisabled();
+    public List<ProcessPart> getProcessParts();
 }

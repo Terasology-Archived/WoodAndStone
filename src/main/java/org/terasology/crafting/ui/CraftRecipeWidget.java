@@ -16,11 +16,11 @@
 package org.terasology.crafting.ui;
 
 import org.terasology.asset.Assets;
-import org.terasology.crafting.system.recipe.CraftProcessDisplay;
+import org.terasology.crafting.system.recipe.hand.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
@@ -51,14 +51,14 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int leftIndent;
 
-    public CraftRecipeWidget(int leftIndent, InventoryManager inventoryManager, EntityRef character,
+    public CraftRecipeWidget(int leftIndent, EntityRef character,
                              CraftProcessDisplay craftingRecipe, CreationCallback callback) {
         this.leftIndent = leftIndent;
         this.callback = callback;
 
         for (Map.Entry<Integer, Integer> craftingComponents : craftingRecipe.getComponentSlotAndCount().entrySet()) {
             ItemIcon itemIcon = new ItemIcon();
-            EntityRef item = inventoryManager.getItemInSlot(character, craftingComponents.getKey());
+            EntityRef item = InventoryUtils.getItemAt(character, craftingComponents.getKey());
             ItemComponent itemComp = item.getComponent(ItemComponent.class);
             BlockItemComponent blockItemComp = item.getComponent(BlockItemComponent.class);
             if (itemComp != null && itemComp.renderWithIcon) {

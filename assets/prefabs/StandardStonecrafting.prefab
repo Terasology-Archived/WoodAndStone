@@ -2,6 +2,9 @@
     "BlockDropGrammar": {
         "itemDrops": "10*WoodAndStone:Brick"
     },
+    "Workstation": {
+        "uiPrefab": "WoodAndStone:CraftInStation"
+    },
     "CraftingStation": {
         "type": "WoodAndStone:StandardStonecrafting",
         "workstationUITexture": "WoodAndStone:StandardStoneworking",

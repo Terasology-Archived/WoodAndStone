@@ -17,12 +17,16 @@ package org.terasology.was.system;
 
 import org.terasology.anotherWorld.util.Filter;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
-import org.terasology.crafting.system.recipe.CompositeTypeBasedCraftInHandRecipe;
-import org.terasology.crafting.system.recipe.CraftInHandRecipe;
-import org.terasology.crafting.system.recipe.SimpleConsumingCraftInHandRecipe;
-import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.crafting.system.recipe.behaviour.DoNothingCraftBehaviour;
-import org.terasology.crafting.system.recipe.behaviour.ReduceItemDurabilityCraftBehaviour;
+import org.terasology.crafting.system.CraftingWorkstationProcess;
+import org.terasology.crafting.system.CraftingWorkstationUpgradeProcess;
+import org.terasology.crafting.system.recipe.hand.CompositeTypeBasedCraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.SimpleConsumingCraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.hand.behaviour.DoNothingCraftBehaviour;
+import org.terasology.crafting.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
+import org.terasology.crafting.system.recipe.workstation.SimpleUpgradeRecipe;
+import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -32,9 +36,7 @@ import org.terasology.multiBlock.UniformBlockReplacementCallback;
 import org.terasology.multiBlock.recipe.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.In;
 import org.terasology.workstation.component.CraftingStationMaterialComponent;
-import org.terasology.workstation.system.CraftingStationRecipeRegistry;
-import org.terasology.workstation.system.recipe.SimpleUpgradeRecipe;
-import org.terasology.workstation.system.recipe.SimpleWorkstationRecipe;
+import org.terasology.workstation.system.WorkstationRegistry;
 import org.terasology.world.block.BlockManager;
 
 /**
@@ -45,7 +47,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
     @In
-    private CraftingStationRecipeRegistry stationRecipeRegistry;
+    private WorkstationRegistry workstationRegistry;
     @In
     private MultiBlockFormRecipeRegistry multiBlockFormRecipeRegistry;
     @In
@@ -84,7 +86,7 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         fullBlockRecipe.addRequiredTool(tool, toolDurability);
         fullBlockRecipe.setBlockResult(blockResultPrefix, (byte) blockResultCount);
 
-        stationRecipeRegistry.addCraftingStationRecipe(workstationType, recipeNamePrefix, fullBlockRecipe);
+        workstationRegistry.registerProcess(new CraftingWorkstationProcess(workstationType, recipeNamePrefix, fullBlockRecipe));
 
         addShapeRecipe(workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "Stair", 3, 4, 2);
@@ -119,12 +121,12 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     private void addShapeRecipe(String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                 String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
                                 String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
-        SimpleWorkstationRecipe stairRecipe = new SimpleWorkstationRecipe();
-        stairRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
-        stairRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
-        stairRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
+        SimpleWorkstationRecipe shapeRecipe = new SimpleWorkstationRecipe();
+        shapeRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
+        shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
+        shapeRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
 
-        stationRecipeRegistry.addCraftingStationRecipe(workstationType, recipeNamePrefix + shape, stairRecipe);
+        workstationRegistry.registerProcess(new CraftingWorkstationProcess(workstationType, recipeNamePrefix + shape, shapeRecipe));
     }
 
     private void addStoneWorkstationRecipes() {
@@ -138,14 +140,14 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         SimpleUpgradeRecipe woodStationUpgradeRecipe = new SimpleUpgradeRecipe("WoodAndStone:StandardWoodcrafting",
                 "WoodAndStone:StandardWoodcrafting", "WoodAndStone:StandardWoodStation");
         woodStationUpgradeRecipe.addIngredient("WoodAndStone:plank", 10);
-        stationRecipeRegistry.addStationUpgradeRecipe("WoodAndStone:BasicWoodcrafting", "WoodAndStone:StandardWoodcrafting",
-                "WoodAndStone:StandardWoodStation", woodStationUpgradeRecipe);
+        workstationRegistry.registerProcess(new CraftingWorkstationUpgradeProcess("WoodAndStone:BasicWoodcrafting", "WoodAndStone:StandardWoodcrafting",
+                "WoodAndStone:StandardWoodStation", woodStationUpgradeRecipe));
 
         SimpleUpgradeRecipe stoneStationUpgradeRecipe = new SimpleUpgradeRecipe("WoodAndStone:StandardStonecrafting",
                 "WoodAndStone:StandardStonecrafting", "WoodAndStone:StandardStoneStation");
         stoneStationUpgradeRecipe.addIngredient("WoodAndStone:brick", 10);
-        stationRecipeRegistry.addStationUpgradeRecipe("WoodAndStone:BasicStonecrafting", "WoodAndStone:StandardStonecrafting",
-                "WoodAndStone:StandardStoneStation", stoneStationUpgradeRecipe);
+        workstationRegistry.registerProcess(new CraftingWorkstationUpgradeProcess("WoodAndStone:BasicStonecrafting", "WoodAndStone:StandardStonecrafting",
+                "WoodAndStone:StandardStoneStation", stoneStationUpgradeRecipe));
     }
 
     private void addCraftInHandRecipes() {

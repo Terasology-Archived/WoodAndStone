@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.system;
 
-import org.terasology.crafting.system.recipe.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.entitySystem.systems.ComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.Share;

@@ -13,21 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system;
+package org.terasology.workstation.event;
 
-import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-
-import java.util.Map;
+import org.terasology.network.NetworkEvent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipeRegistry {
-    void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe);
-
-    Map<String, CraftInHandRecipe> getRecipes();
-
-    void disableCraftingInHand();
-
-    boolean isCraftingInHandDisabled();
+public class OpenWorkstationRequest extends NetworkEvent {
 }
