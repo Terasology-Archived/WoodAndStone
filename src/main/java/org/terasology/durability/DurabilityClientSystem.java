@@ -64,15 +64,18 @@ public class DurabilityClientSystem implements ComponentSystem {
         int maxY = (int) (size.y * 0.9f);
 
         DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
-        float durabilityPercentage = durability.durability / durability.maxDurability;
+        float durabilityPercentage = 1f * durability.durability / durability.maxDurability;
 
         if (durabilityPercentage != 1f) {
             AssetUri backgroundTexture = TextureUtil.getTextureUriForColor(Color.WHITE);
-            AssetUri barTexture = TextureUtil.getTextureUriForColor(new Color(1 - durabilityPercentage, durabilityPercentage, 0));
+            float red = (durabilityPercentage < 0.5) ? 1 : (1f - durabilityPercentage) * 2;
+            float green = (durabilityPercentage < 0.5) ? (durabilityPercentage * 2) : 1;
+
+            AssetUri barTexture = TextureUtil.getTextureUriForColor(new Color(red, green, 0));
 
             canvas.drawTexture(Assets.get(backgroundTexture, Texture.class), Rect2i.createFromMinAndMax(minX, minY, maxX, maxY));
-            int durabilityBarLength = (int) (durabilityPercentage * (maxX - minX - 2));
-            int durabilityBarHeight = maxY - minY - 2;
+            int durabilityBarLength = (int) (durabilityPercentage * (maxX - minX - 1));
+            int durabilityBarHeight = maxY - minY - 1;
             canvas.drawTexture(Assets.get(barTexture, Texture.class), Rect2i.createFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
         }
     }
