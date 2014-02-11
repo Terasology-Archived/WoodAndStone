@@ -68,8 +68,8 @@ public class DurabilityClientSystem implements ComponentSystem {
 
         if (durabilityPercentage != 1f) {
             AssetUri backgroundTexture = TextureUtil.getTextureUriForColor(Color.WHITE);
-            float red = (durabilityPercentage < 0.5) ? 1 : (1f - durabilityPercentage) * 2;
-            float green = (durabilityPercentage < 0.5) ? (durabilityPercentage * 2) : 1;
+            float red = Math.min(1, (1f - durabilityPercentage) * 2);
+            float green = Math.min(1, durabilityPercentage * 2);
 
             AssetUri barTexture = TextureUtil.getTextureUriForColor(new Color(red, green, 0));
 
