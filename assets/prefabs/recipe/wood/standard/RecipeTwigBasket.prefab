@@ -1,4 +1,7 @@
 {
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:StandardWoodcrafting"
+    },
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:StandardWoodcrafting",
         "recipeId": "Storage|WoodAndStone:TwigBasket",

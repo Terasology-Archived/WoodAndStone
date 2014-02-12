@@ -17,32 +17,23 @@ package org.terasology.workstation.system;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.workstation.component.ProcessDefinitionComponent;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationProcess;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class WorkstationProcessFromPrefab implements WorkstationProcess {
+public class DefaultWorkstationProcess implements WorkstationProcess {
     private String id;
-    private String description;
     private List<ProcessPart> processParts = new LinkedList<>();
 
-    public WorkstationProcessFromPrefab(Prefab prefab) {
+    public DefaultWorkstationProcess(Prefab prefab) {
         id = "Prefab:" + prefab.getURI().toSimpleString();
         for (Component component : prefab.iterateComponents()) {
-            if (component instanceof ProcessDefinitionComponent) {
-                description = ((ProcessDefinitionComponent) component).description;
-            } else if (component instanceof ProcessPart) {
+            if (component instanceof ProcessPart) {
                 processParts.add((ProcessPart) component);
             }
         }
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 
     @Override

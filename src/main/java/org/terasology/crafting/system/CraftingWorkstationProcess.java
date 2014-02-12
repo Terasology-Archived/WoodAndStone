@@ -17,7 +17,6 @@ package org.terasology.crafting.system;
 
 import org.terasology.crafting.processPart.ProcessRecipeProcessPart;
 import org.terasology.crafting.processPart.ValidateRecipeProcessPart;
-import org.terasology.crafting.processPart.WorkstationTypeProcessPart;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationProcess;
@@ -34,7 +33,6 @@ public class CraftingWorkstationProcess implements WorkstationProcess {
         this.craftingRecipeId = craftingRecipeId;
         this.recipe = recipe;
 
-        processParts.add(new WorkstationTypeProcessPart(workstationType));
         processParts.add(new ValidateRecipeProcessPart(recipe));
         processParts.add(new ProcessRecipeProcessPart(recipe));
     }
@@ -42,11 +40,6 @@ public class CraftingWorkstationProcess implements WorkstationProcess {
     @Override
     public String getId() {
         return craftingRecipeId;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
     }
 
     @Override

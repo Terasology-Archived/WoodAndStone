@@ -17,55 +17,85 @@ package org.terasology.workstation.system;
 
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.In;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.Share;
 import org.terasology.workstation.component.ProcessDefinitionComponent;
 import org.terasology.workstation.process.WorkstationProcess;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem
 @Share(value = {WorkstationRegistry.class})
-public class WorkstationRegistryImpl implements ComponentSystem, WorkstationRegistry {
-    private Map<String, WorkstationProcess> workstationProcesses = new LinkedHashMap<>();
+public class WorkstationRegistryImpl extends BaseComponentSystem implements WorkstationRegistry {
+    private Set<String> scannedTypes = new HashSet<>();
 
-    @In
-    private PrefabManager prefabManager;
+    private Map<String, Map<String, WorkstationProcess>> workstationProcesses = new LinkedHashMap<>();
 
     @Override
-    public void initialise() {
-        registerPrefabRecipes();
+    public void registerProcessFactory(String processType, WorkstationProcessFactory factory) {
+        registerProcesses(processType, factory);
     }
 
     @Override
-    public void shutdown() {
-    }
-
-    @Override
-    public void registerProcess(WorkstationProcess workstationProcess) {
-        workstationProcesses.put(workstationProcess.getId(), workstationProcess);
-    }
-
-    @Override
-    public Collection<WorkstationProcess> getWorkstationProcesses() {
-        return workstationProcesses.values();
-    }
-
-    @Override
-    public WorkstationProcess getWorkstationProcessById(String processId) {
-        return workstationProcesses.get(processId);
-    }
-
-    private void registerPrefabRecipes() {
-        for (Prefab prefab : prefabManager.listPrefabs(ProcessDefinitionComponent.class)) {
-            registerProcess(new WorkstationProcessFromPrefab(prefab));
+    public Collection<WorkstationProcess> getWorkstationProcesses(Collection<String> processTypes) {
+        List<WorkstationProcess> processes = new LinkedList<>();
+        for (String processType : processTypes) {
+            if (!scannedTypes.contains(processType)) {
+                registerProcesses(processType, new DefaultWorkstationProcessFactory());
+            }
+            processes.addAll(workstationProcesses.get(processType).values());
         }
+
+        return processes;
+    }
+
+    @Override
+    public void registerProcess(String processType, WorkstationProcess workstationProcess) {
+        Map<String, WorkstationProcess> processes = workstationProcesses.get(processType);
+        if (processes == null) {
+            processes = new HashMap<>();
+            workstationProcesses.put(processType, processes);
+        }
+        processes.put(workstationProcess.getId(), workstationProcess);
+    }
+
+    @Override
+    public WorkstationProcess getWorkstationProcessById(Collection<String> supportedProcessTypes, String processId) {
+        for (WorkstationProcess workstationProcess : getWorkstationProcesses(supportedProcessTypes)) {
+            if (workstationProcess.getId().equals(processId)) {
+                return workstationProcess;
+            }
+        }
+        return null;
+    }
+
+    private void registerProcesses(String processType, WorkstationProcessFactory factory) {
+        Map<String, WorkstationProcess> processes = new HashMap<>();
+        if (workstationProcesses.containsKey(processType)) {
+            processes.putAll(workstationProcesses.get(processType));
+        }
+        PrefabManager prefabManager = CoreRegistry.get(PrefabManager.class);
+
+        for (Prefab prefab : prefabManager.listPrefabs(ProcessDefinitionComponent.class)) {
+            ProcessDefinitionComponent processDef = prefab.getComponent(ProcessDefinitionComponent.class);
+            if (processDef.processType.equals(processType)) {
+                WorkstationProcess process = factory.createProcess(prefab);
+                processes.put(process.getId(), process);
+            }
+        }
+        workstationProcesses.put(processType, processes);
+        scannedTypes.add(processType);
     }
 }

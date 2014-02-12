@@ -18,8 +18,6 @@ package org.terasology.workstation.process;
 import java.util.List;
 
 public interface WorkstationProcess {
-    public String getDescription();
-
     public String getId();
 
     public List<ProcessPart> getProcessParts();

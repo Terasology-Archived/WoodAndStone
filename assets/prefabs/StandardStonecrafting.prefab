@@ -3,7 +3,8 @@
         "itemDrops": "10*WoodAndStone:Brick"
     },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:CraftInStation"
+        "uiPrefab": "WoodAndStone:CraftInStation",
+        "supportedProcessTypes": ["WoodAndStone:StandardStonecrafting", "WoodAndStone:BasicStonecrafting", "Crafting:UpgradeCraftingWorkstation"]
     },
     "CraftingStation": {
         "type": "WoodAndStone:StandardStonecrafting",

@@ -17,7 +17,10 @@ package org.terasology.crafting.processPart;
 
 import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+
+import java.util.Set;
 
 public class WorkstationTypeProcessPart implements ProcessPart {
     private String workstationType;
@@ -27,21 +30,24 @@ public class WorkstationTypeProcessPart implements ProcessPart {
     }
 
     @Override
-    public boolean validate(EntityRef instigator, EntityRef workstation) {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
         CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
-        return craftingStation != null && craftingStation.equals(workstationType);
+        if (craftingStation == null || !craftingStation.type.equals(workstationType)) {
+            throw new InvalidProcessException();
+        }
+        return null;
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId) {
         return 0;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId) {
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
     }
 }

@@ -16,6 +16,7 @@
 package org.terasology.crafting.ui.workstation;
 
 import org.terasology.crafting.component.CraftingStationComponent;
+import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
 import org.terasology.crafting.system.CraftingWorkstationUpgradeProcess;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -32,6 +33,8 @@ import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
 import org.terasology.workstation.ui.WorkstationUI;
+
+import java.util.Collections;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -110,7 +113,7 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
                     @Override
                     public void onActivated(UIWidget widget) {
                         EntityRef character = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                        station.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe));
+                        station.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe, null));
                     }
                 });
         upgradeButton.setVisible(false);
@@ -120,6 +123,10 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
 
     @Override
     public void update(float delta) {
+        if (!station.exists()) {
+            CoreRegistry.get(NUIManager.class).closeScreen(this);
+            return;
+        }
         super.update(delta);
 
         WorkstationRegistry craftingRegistry = CoreRegistry.get(WorkstationRegistry.class);
@@ -135,9 +142,6 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
             upgradeRecipeDisplayed = matchingUpgradeRecipe;
         }
 
-        if (!station.exists()) {
-            CoreRegistry.get(NUIManager.class).closeScreen(this);
-        }
     }
 
     private boolean isSame(String recipe1, String recipe2) {
@@ -151,7 +155,7 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
     }
 
     private String getMatchingUpgradeRecipe(WorkstationRegistry craftingRegistry) {
-        for (WorkstationProcess workstationProcess : craftingRegistry.getWorkstationProcesses()) {
+        for (WorkstationProcess workstationProcess : craftingRegistry.getWorkstationProcesses(Collections.singleton(CraftingStationUpgradeRecipeComponent.PROCESS_TYPE))) {
             if (workstationProcess instanceof CraftingWorkstationUpgradeProcess) {
                 UpgradeRecipe upgradeRecipe = ((CraftingWorkstationUpgradeProcess) workstationProcess).getUpgradeRecipe();
                 final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, upgradeSlots);

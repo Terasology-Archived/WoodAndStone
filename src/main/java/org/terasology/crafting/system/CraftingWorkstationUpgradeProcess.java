@@ -15,6 +15,8 @@
  */
 package org.terasology.crafting.system;
 
+import org.terasology.crafting.processPart.ProcessUpgradeProcessPart;
+import org.terasology.crafting.processPart.ValidateUpgradeProcessPart;
 import org.terasology.crafting.processPart.WorkstationTypeProcessPart;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.workstation.process.ProcessPart;
@@ -30,23 +32,19 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess {
     private List<ProcessPart> processParts = new LinkedList<>();
 
     public CraftingWorkstationUpgradeProcess(String workstationType, String targetWorkstationType,
-                                             String blockFamilyName, UpgradeRecipe upgradeRecipe) {
+                                             UpgradeRecipe upgradeRecipe) {
         this.workstationType = workstationType;
         this.targetWorkstationType = targetWorkstationType;
         this.upgradeRecipe = upgradeRecipe;
 
         processParts.add(new WorkstationTypeProcessPart(workstationType));
-
+        processParts.add(new ValidateUpgradeProcessPart(upgradeRecipe));
+        processParts.add(new ProcessUpgradeProcessPart(upgradeRecipe));
     }
 
     @Override
     public String getId() {
         return "Upgrade:" + workstationType + "-" + targetWorkstationType;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
     }
 
     public UpgradeRecipe getUpgradeRecipe() {

@@ -1,4 +1,7 @@
 {
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:BasicStonecrafting"
+    },
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:BasicStonecrafting",
         "recipeId": "Tools|WoodAndStone:StonePickaxe",

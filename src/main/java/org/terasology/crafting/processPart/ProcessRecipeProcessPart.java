@@ -21,7 +21,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.workstation.process.ProcessPart;
 
-import java.util.List;
+import java.util.Set;
 
 public class ProcessRecipeProcessPart implements ProcessPart {
     private CraftingStationRecipe craftingStationRecipe;
@@ -31,22 +31,18 @@ public class ProcessRecipeProcessPart implements ProcessPart {
     }
 
     @Override
-    public boolean validate(EntityRef instigator, EntityRef workstation) {
-        return true;
+    public Set<String> validate(EntityRef instigator, EntityRef workstation) {
+        return null;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId) {
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
         CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
-        List<CraftingStationRecipe.CraftingStationResult> result = craftingStationRecipe.getMatchingRecipeResults(workstation,
-                craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
-                craftingStation.upgradeSlots, craftingStation.toolSlots);
-
-        CraftingStationRecipe.CraftingStationResult craftingStationResult = result.get(0);
+        CraftingStationRecipe.CraftingStationResult craftingStationResult = craftingStationRecipe.getResultById(resultId);
         int resultSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
         EntityRef resultItem = craftingStationResult.craftOne(workstation,
                 craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
@@ -62,7 +58,7 @@ public class ProcessRecipeProcessPart implements ProcessPart {
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId) {
         return 0;
     }
 }

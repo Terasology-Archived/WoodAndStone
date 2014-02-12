@@ -1,0 +1,14 @@
+{
+    "ProcessDefinition": {
+        "processType": "Crafting:UpgradeCraftingWorkstation"
+    },
+    "CraftingStationUpgradeRecipe": {
+        "stationType": "WoodAndStone:BasicStonecrafting",
+        "targetStationType": "WoodAndStone:StandardStonecrafting",
+        "targetStationPrefab": "WoodAndStone:StandardStonecrafting",
+
+        "recipeComponents": ["10*WoodAndStone:brick"],
+
+        "resultBlockUri": "WoodAndStone:StandardStoneStation"
+    }
+}

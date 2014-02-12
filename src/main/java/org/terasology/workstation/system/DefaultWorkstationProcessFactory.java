@@ -15,16 +15,15 @@
  */
 package org.terasology.workstation.system;
 
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.workstation.process.WorkstationProcess;
 
-import java.util.Collection;
-
-public interface WorkstationRegistry {
-    void registerProcessFactory(String processType, WorkstationProcessFactory factory);
-
-    void registerProcess(String processType, WorkstationProcess workstationProcess);
-
-    Collection<WorkstationProcess> getWorkstationProcesses(Collection<String> processType);
-
-    WorkstationProcess getWorkstationProcessById(Collection<String> supportedProcessTypes, String processId);
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public class DefaultWorkstationProcessFactory implements WorkstationProcessFactory {
+    @Override
+    public WorkstationProcess createProcess(Prefab prefab) {
+        return new DefaultWorkstationProcess(prefab);
+    }
 }

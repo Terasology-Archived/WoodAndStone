@@ -1,4 +1,7 @@
 {
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:Hearth"
+    },
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:ClayHearth",
         "recipeId": "WoodAndStone:Brick",

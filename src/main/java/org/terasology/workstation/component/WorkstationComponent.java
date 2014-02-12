@@ -19,13 +19,17 @@ import org.terasology.entitySystem.Component;
 import org.terasology.network.Replicate;
 import org.terasology.world.block.ForceBlockActive;
 
+import java.util.List;
+
 @ForceBlockActive
 @Replicate
 public class WorkstationComponent implements Component {
     public String uiPrefab;
+    public List<String> supportedProcessTypes;
 
     // Not to be set by prefabs
     public String processingProcessId;
+    public String processingResultId;
     public long processingStartTime;
     public long processingFinishTime;
 }

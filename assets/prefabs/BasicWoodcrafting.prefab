@@ -3,7 +3,8 @@
         "blockDrops": "2*WoodAndStone:TreeLog"
     },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:CraftInStation"
+        "uiPrefab": "WoodAndStone:CraftInStation",
+        "supportedProcessTypes": ["WoodAndStone:BasicWoodcrafting", "Crafting:UpgradeCraftingWorkstation"]
     },
     "CraftingStation": {
         "type": "WoodAndStone:BasicWoodcrafting",

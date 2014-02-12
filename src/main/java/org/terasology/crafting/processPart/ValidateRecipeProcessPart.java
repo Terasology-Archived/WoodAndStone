@@ -18,9 +18,12 @@ package org.terasology.crafting.processPart;
 import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ValidateRecipeProcessPart implements ProcessPart {
     private CraftingStationRecipe craftingStationRecipe;
@@ -30,28 +33,33 @@ public class ValidateRecipeProcessPart implements ProcessPart {
     }
 
     @Override
-    public boolean validate(EntityRef instigator, EntityRef workstation) {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
         CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
         if (craftingStation == null) {
-            return false;
+            throw new InvalidProcessException();
         }
         List<CraftingStationRecipe.CraftingStationResult> result = craftingStationRecipe.getMatchingRecipeResults(workstation,
                 craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
                 craftingStation.upgradeSlots, craftingStation.toolSlots);
 
-        return result != null;
+        Set<String> resultIds = new HashSet<>();
+        for (CraftingStationRecipe.CraftingStationResult craftingStationResult : result) {
+            resultIds.add(craftingStationResult.getResultId());
+        }
+
+        return resultIds;
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId) {
         return 0;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId) {
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
     }
 }

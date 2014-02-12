@@ -13,18 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.system;
+package org.terasology.workstation.process;
 
-import org.terasology.workstation.process.WorkstationProcess;
-
-import java.util.Collection;
-
-public interface WorkstationRegistry {
-    void registerProcessFactory(String processType, WorkstationProcessFactory factory);
-
-    void registerProcess(String processType, WorkstationProcess workstationProcess);
-
-    Collection<WorkstationProcess> getWorkstationProcesses(Collection<String> processType);
-
-    WorkstationProcess getWorkstationProcessById(Collection<String> supportedProcessTypes, String processId);
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public class InvalidProcessException extends Exception {
 }

@@ -3,7 +3,8 @@
         "blockDrops": "2*WoodAndStone:WoodenTable"
     },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:CraftInStation"
+        "uiPrefab": "WoodAndStone:CraftInStation",
+        "supportedProcessTypes": ["WoodAndStone:BasicStonecrafting", "Crafting:UpgradeCraftingWorkstation"]
     },
     "CraftingStation": {
         "type": "WoodAndStone:BasicStonecrafting",

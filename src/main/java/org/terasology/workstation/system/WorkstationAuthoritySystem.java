@@ -29,10 +29,13 @@ import org.terasology.registry.In;
 import org.terasology.workstation.component.WorkstationComponent;
 import org.terasology.workstation.event.OpenWorkstationRequest;
 import org.terasology.workstation.event.WorkstationProcessRequest;
+import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationProcess;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -63,34 +66,49 @@ public class WorkstationAuthoritySystem implements ComponentSystem {
     public void finishProcessing(DelayedActionTriggeredEvent event, EntityRef workstation, WorkstationComponent workstationComp) {
         if (event.getActionId().equals(WORKSTATION_PROCESSING)) {
             String processId = workstationComp.processingProcessId;
-            WorkstationProcess process = workstationRegistry.getWorkstationProcessById(processId);
+            WorkstationProcess process = workstationRegistry.getWorkstationProcessById(workstationComp.supportedProcessTypes, processId);
             for (ProcessPart processPart : process.getProcessParts()) {
-                processPart.executeEnd(workstation, workstation);
+                processPart.executeEnd(workstation, workstation, workstationComp.processingResultId);
             }
 
             workstationComp.processingProcessId = null;
+            workstationComp.processingResultId = null;
             workstation.saveComponent(workstationComp);
         }
     }
 
     @ReceiveEvent
-    public void craftOnWorkstationRequestReceived(WorkstationProcessRequest event, EntityRef workstation, WorkstationComponent workstationComp) {
+    public void manualWorkstationProcess(WorkstationProcessRequest event, EntityRef workstation, WorkstationComponent workstationComp) {
         String processId = event.getProcessId();
+        String resultId = event.getResultId();
 
-        WorkstationProcess process = workstationRegistry.getWorkstationProcessById(processId);
+        WorkstationProcess process = workstationRegistry.getWorkstationProcessById(workstationComp.supportedProcessTypes, processId);
         if (process != null) {
             List<ProcessPart> processParts = process.getProcessParts();
 
             long duration = 0;
+            Set<String> validResults = new HashSet<>();
             for (ProcessPart processPart : processParts) {
-                if (!processPart.validate(event.getInstigator(), workstation)) {
+                try {
+                    Set<String> results = processPart.validate(event.getInstigator(), workstation);
+                    if (results != null) {
+                        validResults.addAll(results);
+                    }
+                } catch (InvalidProcessException exp) {
                     return;
                 }
-                duration += processPart.getDuration(event.getInstigator(), workstation);
+            }
+
+            if (resultId != null && !validResults.contains(resultId)) {
+                return;
             }
 
             for (ProcessPart processPart : processParts) {
-                processPart.executeStart(event.getInstigator(), workstation);
+                duration += processPart.getDuration(event.getInstigator(), workstation, resultId);
+            }
+
+            for (ProcessPart processPart : processParts) {
+                processPart.executeStart(event.getInstigator(), workstation, resultId);
             }
 
             if (duration > 0) {
@@ -98,12 +116,13 @@ public class WorkstationAuthoritySystem implements ComponentSystem {
                 workstationComp.processingStartTime = gameTime;
                 workstationComp.processingFinishTime = gameTime + duration;
                 workstationComp.processingProcessId = processId;
+                workstationComp.processingResultId = resultId;
                 workstation.saveComponent(workstationComp);
 
                 workstation.send(new AddDelayedActionEvent(WORKSTATION_PROCESSING, duration));
             } else {
                 for (ProcessPart processPart : processParts) {
-                    processPart.executeEnd(event.getInstigator(), workstation);
+                    processPart.executeEnd(event.getInstigator(), workstation, resultId);
                 }
             }
         }

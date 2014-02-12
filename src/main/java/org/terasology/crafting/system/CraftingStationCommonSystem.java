@@ -16,6 +16,7 @@
 package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingStationComponent;
+import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -24,9 +25,11 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.events.BeforeItemPutInInventory;
 import org.terasology.registry.In;
+import org.terasology.workstation.component.WorkstationComponent;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,15 +41,25 @@ public class CraftingStationCommonSystem extends BaseComponentSystem {
     @In
     private WorkstationRegistry recipeRegistry;
 
+    @Override
+    public void initialise() {
+        recipeRegistry.registerProcessFactory(CraftingStationUpgradeRecipeComponent.PROCESS_TYPE, new CraftingWorkstationUpgradeProcessFactory());
+    }
+
     @ReceiveEvent(components = {CraftingStationComponent.class})
     public void craftStationGetsItem(BeforeItemPutInInventory event, EntityRef craftingStation) {
+        WorkstationComponent workstation = craftingStation.getComponent(WorkstationComponent.class);
         List<CraftingStationRecipe> recipes = new LinkedList<>();
         List<UpgradeRecipe> upgradeRecipes = new LinkedList<>();
 
-        for (WorkstationProcess workstationProcess : recipeRegistry.getWorkstationProcesses()) {
+        for (WorkstationProcess workstationProcess : recipeRegistry.getWorkstationProcesses(workstation.supportedProcessTypes)) {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 recipes.add(((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe());
-            } else if (workstationProcess instanceof CraftingWorkstationUpgradeProcess) {
+            }
+        }
+
+        for (WorkstationProcess workstationProcess : recipeRegistry.getWorkstationProcesses(Collections.singleton(CraftingStationUpgradeRecipeComponent.PROCESS_TYPE))) {
+            if (workstationProcess instanceof CraftingWorkstationUpgradeProcess) {
                 upgradeRecipes.add(((CraftingWorkstationUpgradeProcess) workstationProcess).getUpgradeRecipe());
             }
         }

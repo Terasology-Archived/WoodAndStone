@@ -17,12 +17,14 @@ package org.terasology.workstation.process;
 
 import org.terasology.entitySystem.entity.EntityRef;
 
+import java.util.Set;
+
 public interface ProcessPart {
-    public boolean validate(EntityRef instigator, EntityRef workstation);
+    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException;
 
-    public long getDuration(EntityRef instigator, EntityRef workstation);
+    public long getDuration(EntityRef instigator, EntityRef workstation, String result);
 
-    public void executeStart(EntityRef instigator, EntityRef workstation);
+    public void executeStart(EntityRef instigator, EntityRef workstation, String result);
 
-    public void executeEnd(EntityRef instigator, EntityRef workstation);
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String result);
 }

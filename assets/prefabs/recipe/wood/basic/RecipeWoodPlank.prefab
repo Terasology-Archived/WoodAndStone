@@ -1,4 +1,7 @@
 {
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:BasicWoodcrafting"
+    },
     "CraftingStationRecipe": {
         "stationType": "WoodAndStone:BasicWoodcrafting",
         "recipeId": "Materials|WoodAndStone:WoodPlank",
