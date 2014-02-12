@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:Hearth"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:ClayHearth",
         "recipeId": "WoodAndStone:Brick",
 
         "recipeComponents": ["1*WoodAndStone:clay"],

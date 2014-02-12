@@ -28,8 +28,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,15 +48,15 @@ public class WorkstationRegistryImpl extends BaseComponentSystem implements Work
 
     @Override
     public Collection<WorkstationProcess> getWorkstationProcesses(Collection<String> processTypes) {
-        List<WorkstationProcess> processes = new LinkedList<>();
+        Map<String, WorkstationProcess> processes = new LinkedHashMap<>();
         for (String processType : processTypes) {
             if (!scannedTypes.contains(processType)) {
                 registerProcesses(processType, new DefaultWorkstationProcessFactory());
             }
-            processes.addAll(workstationProcesses.get(processType).values());
+            processes.putAll(workstationProcesses.get(processType));
         }
 
-        return processes;
+        return processes.values();
     }
 
     @Override

@@ -55,6 +55,6 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
             String item = split[1];
             workstationRecipe.setItemResult(item, (byte) count);
         }
-        return new CraftingWorkstationProcess(recipe.stationType, recipe.recipeId, workstationRecipe);
+        return new CraftingWorkstationProcess(recipe.recipeId, workstationRecipe);
     }
 }

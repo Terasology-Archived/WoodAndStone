@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:StandardWoodcrafting"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:StandardWoodcrafting",
         "recipeId": "Building|WoodAndStone:WoodenFence",
 
         "recipeComponents": ["4*WoodAndStone:plank"],

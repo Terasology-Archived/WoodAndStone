@@ -29,7 +29,7 @@ public class CraftingWorkstationProcess implements WorkstationProcess {
     private CraftingStationRecipe recipe;
     private List<ProcessPart> processParts = new LinkedList<>();
 
-    public CraftingWorkstationProcess(String workstationType, String craftingRecipeId, CraftingStationRecipe recipe) {
+    public CraftingWorkstationProcess(String craftingRecipeId, CraftingStationRecipe recipe) {
         this.craftingRecipeId = craftingRecipeId;
         this.recipe = recipe;
 

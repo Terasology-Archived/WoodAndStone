@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:BasicStonecrafting"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:BasicStonecrafting",
         "recipeId": "Materials|WoodAndStone:SharpStone",
 
         "recipeComponents": ["1*WoodAndStone:stone"],

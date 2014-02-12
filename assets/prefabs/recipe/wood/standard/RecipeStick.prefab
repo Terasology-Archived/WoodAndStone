@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:StandardWoodcrafting"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:StandardWoodcrafting",
         "recipeId": "Materials|WoodAndStone:Stick",
 
         "recipeComponents": ["1*WoodAndStone:wood"],

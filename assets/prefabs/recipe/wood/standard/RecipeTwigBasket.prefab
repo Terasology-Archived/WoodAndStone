@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:StandardWoodcrafting"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:StandardWoodcrafting",
         "recipeId": "Storage|WoodAndStone:TwigBasket",
 
         "recipeComponents": ["9*WoodAndStone:twig"],

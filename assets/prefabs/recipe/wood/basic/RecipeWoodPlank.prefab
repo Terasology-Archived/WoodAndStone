@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:BasicWoodcrafting"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:BasicWoodcrafting",
         "recipeId": "Materials|WoodAndStone:WoodPlank",
 
         "recipeComponents": ["1*WoodAndStone:wood"],

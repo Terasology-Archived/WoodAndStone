@@ -3,7 +3,6 @@
         "processType": "WoodAndStone:BasicStonecrafting"
     },
     "CraftingStationRecipe": {
-        "stationType": "WoodAndStone:BasicStonecrafting",
         "recipeId": "Tools|WoodAndStone:StonePickaxe",
 
         "recipeComponents": ["2*WoodAndStone:sharpStone", "1*WoodAndStone:stone", "1*WoodAndStone:stick"],

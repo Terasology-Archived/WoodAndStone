@@ -20,7 +20,6 @@ import org.terasology.entitySystem.Component;
 import java.util.List;
 
 public class CraftingStationRecipeComponent implements Component {
-    public String stationType;
     public String recipeId;
     public List<String> recipeComponents;
     public List<String> recipeTools;

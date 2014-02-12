@@ -85,46 +85,46 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicStoneStation"))));
     }
 
-    private void addWorkstationBlockShapesRecipe(String processType, String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
+    private void addWorkstationBlockShapesRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                                  String tool, int toolDurability, String blockResultPrefix, int blockResultCount) {
         SimpleWorkstationRecipe fullBlockRecipe = new SimpleWorkstationRecipe();
         fullBlockRecipe.addIngredient(ingredient, ingredientBasicCount);
         fullBlockRecipe.addRequiredTool(tool, toolDurability);
         fullBlockRecipe.setBlockResult(blockResultPrefix, (byte) blockResultCount);
 
-        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(workstationType, recipeNamePrefix, fullBlockRecipe));
+        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(recipeNamePrefix, fullBlockRecipe));
 
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "Stair", 3, 4, 2);
 
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "Slope", 1, 2, 2);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "UpperHalfSlope", 1, 2, 2);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "SlopeCorner", 1, 2, 2);
 
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "SteepSlope", 1, 1, 2);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "QuarterSlope", 1, 8, 2);
 
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfBlock", 1, 2, 1);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfSlope", 1, 4, 2);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfSlopeCorner", 1, 6, 1);
 
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "PillarTop", 1, 1, 2);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "Pillar", 1, 1, 2);
-        addShapeRecipe(processType, workstationType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "PillarBase", 1, 1, 2);
     }
 
-    private void addShapeRecipe(String processType, String workstationType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
+    private void addShapeRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                 String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
                                 String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
         SimpleWorkstationRecipe shapeRecipe = new SimpleWorkstationRecipe();
@@ -132,13 +132,13 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
         shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
         shapeRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
 
-        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(workstationType, recipeNamePrefix + shape, shapeRecipe));
+        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(recipeNamePrefix + shape, shapeRecipe));
     }
 
     private void addStoneWorkstationRecipes() {
-        addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "WoodAndStone:BasicStonecrafting", "Building|Cobble Stone|WoodAndStone:CobbleBlock",
+        addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "Building|Cobble Stone|WoodAndStone:CobbleBlock",
                 "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "WoodAndStone:StandardStonecrafting", "Building|Bricks|WoodAndStone:BrickBlock",
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
                 "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
     }
 
@@ -178,9 +178,9 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
     }
 
     private void addStandardWorkstationRecipes() {
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "WoodAndStone:StandardWoodcrafting", "Building|Planks|WoodAndStone:PlankBlock",
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
                 "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "WoodAndStone:StandardWoodcrafting", "Building|Fine Planks|WoodAndStone:FinePlankBlock",
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
                 "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
     }
 
