@@ -16,6 +16,8 @@
 package org.terasology.crafting.system.recipe.workstation;
 
 import org.terasology.asset.Assets;
+import org.terasology.crafting.component.CraftingStationIngredientComponent;
+import org.terasology.crafting.component.CraftingStationToolComponent;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -25,8 +27,6 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.workstation.component.CraftingStationIngredientComponent;
-import org.terasology.workstation.component.CraftingStationToolComponent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;

@@ -42,9 +42,9 @@ public class WorkstationClientSystem implements ComponentSystem {
     public void shutdown() {
     }
 
-    @ReceiveEvent(components = {WorkstationComponent.class})
+    @ReceiveEvent
     public void openCraftingWorkstationWindow(OpenWorkstationRequest event, EntityRef workstation, WorkstationComponent workstationComponent) {
-        WorkstationUI stationWindow = (WorkstationUI) nuiManager.pushScreen(workstationComponent.uiPrefab.getURI());
+        WorkstationUI stationWindow = (WorkstationUI) nuiManager.pushScreen(workstationComponent.uiPrefab);
         stationWindow.initializeWorkstation(workstation);
     }
 }

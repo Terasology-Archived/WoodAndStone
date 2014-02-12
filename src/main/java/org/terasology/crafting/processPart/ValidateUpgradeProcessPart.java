@@ -15,9 +15,9 @@
  */
 package org.terasology.crafting.processPart;
 
+import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.process.ProcessPart;
 
 public class ValidateUpgradeProcessPart implements ProcessPart {

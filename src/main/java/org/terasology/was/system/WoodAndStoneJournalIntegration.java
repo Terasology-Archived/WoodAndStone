@@ -16,6 +16,10 @@
 package org.terasology.was.system;
 
 import org.terasology.asset.Assets;
+import org.terasology.crafting.component.CraftingStationComponent;
+import org.terasology.crafting.component.CraftingStationIngredientComponent;
+import org.terasology.crafting.component.CraftingStationToolComponent;
+import org.terasology.crafting.event.CraftingStationUpgraded;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.ComponentSystem;
@@ -31,10 +35,6 @@ import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.HorizontalAlign;
-import org.terasology.workstation.component.CraftingStationComponent;
-import org.terasology.workstation.component.CraftingStationIngredientComponent;
-import org.terasology.workstation.component.CraftingStationToolComponent;
-import org.terasology.workstation.event.CraftingStationUpgraded;
 
 import java.util.Arrays;
 import java.util.List;

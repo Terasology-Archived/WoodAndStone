@@ -1,5 +1,7 @@
 package org.terasology.crafting.system.recipe.workstation;
 
+import org.terasology.crafting.component.CraftingStationComponent;
+import org.terasology.crafting.component.CraftingStationIngredientComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryComponent;
@@ -10,8 +12,6 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.workstation.component.CraftingStationComponent;
-import org.terasology.workstation.component.CraftingStationIngredientComponent;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;

@@ -15,6 +15,7 @@
  */
 package org.terasology.crafting.system;
 
+import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -23,7 +24,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.events.BeforeItemPutInInventory;
 import org.terasology.registry.In;
-import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
 
@@ -54,7 +54,6 @@ public class CraftingStationCommonSystem extends BaseComponentSystem {
         CraftingStationComponent craftingStationComponent = craftingStation.getComponent(CraftingStationComponent.class);
         int slot = event.getSlot();
 
-        String type = craftingStationComponent.type;
         if (isIngredientSlot(craftingStationComponent, slot)) {
             // Only valid ingredients can be put into ingredients slot
             for (CraftingStationRecipe craftingStationRecipe : recipes) {

@@ -13,39 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.event;
+package org.terasology.crafting.event;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.Event;
-import org.terasology.network.ServerEvent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@ServerEvent
-public class UserUpgradeStationRequest implements Event {
-    private String stationType;
-    private String recipeId;
-    private EntityRef instigator;
+public class CraftingStationUpgraded implements Event {
+    private EntityRef craftingStation;
 
-    public UserUpgradeStationRequest() {
+    public CraftingStationUpgraded(EntityRef craftingStation) {
+        this.craftingStation = craftingStation;
     }
 
-    public UserUpgradeStationRequest(EntityRef instigator, String stationType, String recipeId) {
-        this.instigator = instigator;
-        this.stationType = stationType;
-        this.recipeId = recipeId;
-    }
-
-    public EntityRef getInstigator() {
-        return instigator;
-    }
-
-    public String getStationType() {
-        return stationType;
-    }
-
-    public String getRecipeId() {
-        return recipeId;
+    public EntityRef getCraftingStation() {
+        return craftingStation;
     }
 }

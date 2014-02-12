@@ -16,8 +16,8 @@
 package org.terasology.was.system;
 
 import org.terasology.anotherWorld.util.Filter;
+import org.terasology.crafting.component.CraftingStationToolComponent;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.workstation.component.CraftingStationToolComponent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

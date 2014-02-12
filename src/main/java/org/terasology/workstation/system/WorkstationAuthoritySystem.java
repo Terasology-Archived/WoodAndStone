@@ -15,6 +15,7 @@
  */
 package org.terasology.workstation.system;
 
+import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -25,7 +26,6 @@ import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.delay.AddDelayedActionEvent;
 import org.terasology.logic.delay.DelayedActionTriggeredEvent;
 import org.terasology.registry.In;
-import org.terasology.workstation.component.CraftingStationComponent;
 import org.terasology.workstation.component.WorkstationComponent;
 import org.terasology.workstation.event.OpenWorkstationRequest;
 import org.terasology.workstation.event.WorkstationProcessRequest;

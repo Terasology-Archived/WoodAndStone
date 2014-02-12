@@ -16,14 +16,13 @@
 package org.terasology.workstation.component;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.network.Replicate;
 import org.terasology.world.block.ForceBlockActive;
 
 @ForceBlockActive
 @Replicate
 public class WorkstationComponent implements Component {
-    public Prefab uiPrefab;
+    public String uiPrefab;
 
     // Not to be set by prefabs
     public String processingProcessId;

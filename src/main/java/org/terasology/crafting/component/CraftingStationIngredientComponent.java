@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.component;
+package org.terasology.crafting.component;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.world.block.items.AddToBlockBasedItem;
 
-import java.util.List;
-
-public class CraftingStationRecipeComponent implements Component {
-    public String stationType;
-    public String recipeId;
-    public List<String> recipeComponents;
-    public List<String> recipeTools;
-
-    public String itemResult;
-    public String blockResult;
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+@AddToBlockBasedItem
+public class CraftingStationIngredientComponent implements Component {
+    public String type;
 }

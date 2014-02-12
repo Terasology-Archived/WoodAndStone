@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.component;
+package org.terasology.crafting.component;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.world.block.items.AddToBlockBasedItem;
+import org.terasology.rendering.assets.texture.Texture;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@AddToBlockBasedItem
-public class CraftingStationIngredientComponent implements Component {
+public class CraftingStationComponent implements Component {
     public String type;
+    public Texture workstationUITexture;
+    public int upgradeSlots;
+    public int toolSlots;
+    public int ingredientSlots;
 }

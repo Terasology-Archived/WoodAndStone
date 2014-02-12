@@ -16,6 +16,7 @@
 package org.terasology.was.system;
 
 import org.terasology.anotherWorld.util.Filter;
+import org.terasology.crafting.component.CraftingStationMaterialComponent;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.CraftingWorkstationProcess;
 import org.terasology.crafting.system.CraftingWorkstationUpgradeProcess;
@@ -35,7 +36,6 @@ import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformBlockReplacementCallback;
 import org.terasology.multiBlock.recipe.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.In;
-import org.terasology.workstation.component.CraftingStationMaterialComponent;
 import org.terasology.workstation.system.WorkstationRegistry;
 import org.terasology.world.block.BlockManager;
 

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,18 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.component;
+package org.terasology.crafting.component;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.rendering.assets.texture.Texture;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public class CraftingStationComponent implements Component {
+public class CraftingStationToolComponent implements Component {
     public String type;
-    public Texture workstationUITexture;
-    public int upgradeSlots;
-    public int toolSlots;
-    public int ingredientSlots;
 }

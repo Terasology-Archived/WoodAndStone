@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.workstation.event;
+package org.terasology.crafting.component;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.Event;
+import org.terasology.entitySystem.Component;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public class CraftingStationUpgraded implements Event {
-    private EntityRef craftingStation;
+import java.util.List;
 
-    public CraftingStationUpgraded(EntityRef craftingStation) {
-        this.craftingStation = craftingStation;
-    }
+public class CraftingStationRecipeComponent implements Component {
+    public String stationType;
+    public String recipeId;
+    public List<String> recipeComponents;
+    public List<String> recipeTools;
 
-    public EntityRef getCraftingStation() {
-        return craftingStation;
-    }
+    public String itemResult;
+    public String blockResult;
 }

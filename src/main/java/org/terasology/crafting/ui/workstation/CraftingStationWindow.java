@@ -15,12 +15,12 @@
  */
 package org.terasology.crafting.ui.workstation;
 
+import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.system.CraftingWorkstationUpgradeProcess;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
@@ -31,11 +31,12 @@ import org.terasology.rendering.nui.widgets.UIImage;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
+import org.terasology.workstation.ui.WorkstationUI;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CraftingStationWindow extends CoreScreenLayer {
+public class CraftingStationWindow extends CoreScreenLayer implements WorkstationUI {
     private InventoryGrid ingredients;
     private InventoryGrid upgrades;
     private UIButton upgradeButton;
@@ -66,10 +67,16 @@ public class CraftingStationWindow extends CoreScreenLayer {
         upgradeButton.setText("Upgrade");
     }
 
-    public void setCraftingStation(final EntityRef station, final String stationType, Texture texture, int upgradeSlots, int toolSlots, int componentSlots) {
+    @Override
+    public void initializeWorkstation(final EntityRef station) {
+        CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
+
         this.station = station;
-        this.stationType = stationType;
-        this.upgradeSlots = upgradeSlots;
+        this.stationType = craftingStation.type;
+        this.upgradeSlots = craftingStation.upgradeSlots;
+
+        int toolSlots = craftingStation.toolSlots;
+        int componentSlots = craftingStation.ingredientSlots;
 
         ingredients.setTargetEntity(station);
         ingredients.setCellOffset(upgradeSlots + toolSlots);
@@ -108,7 +115,7 @@ public class CraftingStationWindow extends CoreScreenLayer {
                 });
         upgradeButton.setVisible(false);
 
-        stationBackground.setImage(texture);
+        stationBackground.setImage(craftingStation.workstationUITexture);
     }
 
     @Override
