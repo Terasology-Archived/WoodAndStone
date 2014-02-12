@@ -32,6 +32,10 @@
             {
                 "id" : "Fences",
                 "minVersion" : "0.1.0"
+            },
+            {
+                "id" : "Workstation",
+                "minVersion" : "0.1.0"
             }],
     "isServerSideOnly" : false
 }
