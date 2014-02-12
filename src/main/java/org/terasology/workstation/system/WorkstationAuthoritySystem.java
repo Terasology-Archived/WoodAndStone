@@ -15,7 +15,6 @@
  */
 package org.terasology.workstation.system;
 
-import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -49,7 +48,7 @@ public class WorkstationAuthoritySystem extends BaseComponentSystem {
     @In
     private Time time;
 
-    @ReceiveEvent(components = {CraftingStationComponent.class})
+    @ReceiveEvent(components = {WorkstationComponent.class})
     public void userActivatesWorkstation(ActivateEvent event, EntityRef entity) {
         entity.send(new OpenWorkstationRequest());
     }

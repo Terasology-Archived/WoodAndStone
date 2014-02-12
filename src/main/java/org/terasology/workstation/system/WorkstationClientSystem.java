@@ -35,7 +35,7 @@ public class WorkstationClientSystem extends BaseComponentSystem {
     private NUIManager nuiManager;
 
     @ReceiveEvent
-    public void openCraftingWorkstationWindow(OpenWorkstationRequest event, EntityRef workstation, WorkstationComponent workstationComponent) {
+    public void openWorkstationWindow(OpenWorkstationRequest event, EntityRef workstation, WorkstationComponent workstationComponent) {
         WorkstationUI stationWindow = (WorkstationUI) nuiManager.pushScreen(workstationComponent.uiPrefab);
         stationWindow.initializeWorkstation(workstation);
     }
