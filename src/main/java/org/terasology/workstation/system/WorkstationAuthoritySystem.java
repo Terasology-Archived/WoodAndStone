@@ -19,7 +19,7 @@ import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
@@ -41,21 +41,13 @@ import java.util.Set;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class WorkstationAuthoritySystem implements ComponentSystem {
+public class WorkstationAuthoritySystem extends BaseComponentSystem {
     private static final String WORKSTATION_PROCESSING = "Workstation:Processing";
 
     @In
     private WorkstationRegistry workstationRegistry;
     @In
     private Time time;
-
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
 
     @ReceiveEvent(components = {CraftingStationComponent.class})
     public void userActivatesWorkstation(ActivateEvent event, EntityRef entity) {

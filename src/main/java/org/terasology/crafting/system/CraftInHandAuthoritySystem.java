@@ -20,7 +20,7 @@ import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.PickupBuilder;
@@ -31,7 +31,7 @@ import org.terasology.registry.In;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class CraftInHandAuthoritySystem implements ComponentSystem {
+public class CraftInHandAuthoritySystem extends BaseComponentSystem {
     @In
     private EntityManager entityManager;
     @In
@@ -42,10 +42,6 @@ public class CraftInHandAuthoritySystem implements ComponentSystem {
     @Override
     public void initialise() {
         pickupBuilder = new PickupBuilder();
-    }
-
-    @Override
-    public void shutdown() {
     }
 
     @ReceiveEvent

@@ -18,7 +18,7 @@ package org.terasology.crafting.system;
 import org.terasology.crafting.event.CraftInHandButton;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.input.ButtonState;
@@ -31,21 +31,13 @@ import org.terasology.rendering.nui.NUIManager;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.CLIENT)
-public class CraftInHandClientSystem implements ComponentSystem {
+public class CraftInHandClientSystem extends BaseComponentSystem {
     @In
     private NUIManager nuiManager;
     @In
     private InventoryManager inventoryManager;
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
-
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
 
     @ReceiveEvent(components = {ClientComponent.class})
     public void craftRequested(CraftInHandButton event, EntityRef entity) {

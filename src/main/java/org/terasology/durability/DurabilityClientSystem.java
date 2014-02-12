@@ -19,7 +19,7 @@ import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.Rect2i;
@@ -42,15 +42,7 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.CLIENT)
-public class DurabilityClientSystem implements ComponentSystem {
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
-
+public class DurabilityClientSystem extends BaseComponentSystem {
     @ReceiveEvent(components = {DurabilityComponent.class})
     public void drawDurabilityBar(InventoryCellRendered event, EntityRef entity) {
         Canvas canvas = event.getCanvas();

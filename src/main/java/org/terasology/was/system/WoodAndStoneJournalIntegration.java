@@ -22,7 +22,7 @@ import org.terasology.crafting.component.CraftingStationToolComponent;
 import org.terasology.crafting.event.CraftingStationUpgraded;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
@@ -43,7 +43,7 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem
-public class WoodAndStoneJournalIntegration implements ComponentSystem {
+public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
     @In
     private JournalManager journalManager;
 
@@ -93,10 +93,6 @@ public class WoodAndStoneJournalIntegration implements ComponentSystem {
 
         journalManager.registerJournalChapter(chapterId, Assets.getTexture("WoodAndStone:WoodAndStoneJournal"), "Wood and Stone",
                 chapterHandler);
-    }
-
-    @Override
-    public void shutdown() {
     }
 
     @ReceiveEvent

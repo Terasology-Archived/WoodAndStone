@@ -17,7 +17,7 @@ package org.terasology.workstation.system;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.In;
@@ -30,17 +30,9 @@ import org.terasology.workstation.ui.WorkstationUI;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.CLIENT)
-public class WorkstationClientSystem implements ComponentSystem {
+public class WorkstationClientSystem extends BaseComponentSystem {
     @In
     private NUIManager nuiManager;
-
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
 
     @ReceiveEvent
     public void openCraftingWorkstationWindow(OpenWorkstationRequest event, EntityRef workstation, WorkstationComponent workstationComponent) {

@@ -18,7 +18,7 @@ package org.terasology.was.system;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterComponent;
@@ -35,7 +35,7 @@ import java.util.Set;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
-public class ModifyBlockDestruction implements ComponentSystem {
+public class ModifyBlockDestruction extends BaseComponentSystem {
     private Set<BlockUri> exceptions = new HashSet<>();
 
     @Override
@@ -44,11 +44,6 @@ public class ModifyBlockDestruction implements ComponentSystem {
         exceptions.add(new BlockUri("Core", "Dirt"));
         exceptions.add(new BlockUri("Core", "Sand"));
         exceptions.add(new BlockUri("WoodAndStone", "ClayStone"));
-    }
-
-    @Override
-    public void shutdown() {
-
     }
 
     @ReceiveEvent

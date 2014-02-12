@@ -28,7 +28,7 @@ import org.terasology.crafting.system.recipe.hand.behaviour.DoNothingCraftBehavi
 import org.terasology.crafting.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.multiBlock.BasicHorizontalSizeFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
@@ -43,7 +43,7 @@ import org.terasology.world.block.BlockManager;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem
-public class RegisterWoodAndStoneRecipes implements ComponentSystem {
+public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
     @In
@@ -186,10 +186,6 @@ public class RegisterWoodAndStoneRecipes implements ComponentSystem {
 
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {
         recipeRegistry.addCraftInHandRecipe(recipeId, craftInHandRecipe);
-    }
-
-    @Override
-    public void shutdown() {
     }
 
     private final class StationTypeFilter implements Filter<EntityRef> {

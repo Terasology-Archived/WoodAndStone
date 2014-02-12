@@ -20,7 +20,7 @@ import org.terasology.durability.DurabilityExhaustedEvent;
 import org.terasology.durability.OverTimeDurabilityReduceComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -33,15 +33,7 @@ import org.terasology.world.block.items.OnBlockItemPlaced;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem
-public class LitTorchSystem implements ComponentSystem {
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
-
+public class LitTorchSystem extends BaseComponentSystem {
     @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class})
     public void whenTorchPlaced(OnBlockItemPlaced event, EntityRef item) {
         event.getPlacedBlock().saveComponent(item.getComponent(DurabilityComponent.class));

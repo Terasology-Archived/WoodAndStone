@@ -18,7 +18,7 @@ package org.terasology.was.system;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.action.RemoveItemAction;
@@ -29,17 +29,9 @@ import org.terasology.registry.In;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem
-public class ResetStartingInventorySystem implements ComponentSystem {
+public class ResetStartingInventorySystem extends BaseComponentSystem {
     @In
     private InventoryManager manager;
-
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
     public void resetStartingInventory(OnPlayerSpawnedEvent event, EntityRef character) {

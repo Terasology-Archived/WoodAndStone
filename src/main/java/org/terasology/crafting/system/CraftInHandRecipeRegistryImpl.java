@@ -16,7 +16,7 @@
 package org.terasology.crafting.system;
 
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-import org.terasology.entitySystem.systems.ComponentSystem;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.Share;
 
@@ -28,17 +28,9 @@ import java.util.Map;
  */
 @RegisterSystem
 @Share(value = CraftInHandRecipeRegistry.class)
-public class CraftInHandRecipeRegistryImpl implements CraftInHandRecipeRegistry, ComponentSystem {
+public class CraftInHandRecipeRegistryImpl extends BaseComponentSystem implements CraftInHandRecipeRegistry {
     private Map<String, CraftInHandRecipe> recipes = new LinkedHashMap<>();
     private boolean disabled;
-
-    @Override
-    public void initialise() {
-    }
-
-    @Override
-    public void shutdown() {
-    }
 
     @Override
     public void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {
