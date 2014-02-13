@@ -40,6 +40,10 @@ public class HeatFuelingComponent implements Component, ProcessPart {
 
     @Override
     public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
+        if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
+            throw new InvalidProcessException();
+        }
+
         Set<String> result = new LinkedHashSet<>();
         for (int slot : getFuelSlots(workstation)) {
             HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatFuelComponent.class);
