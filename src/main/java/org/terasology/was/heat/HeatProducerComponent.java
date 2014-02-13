@@ -15,20 +15,20 @@
  */
 package org.terasology.was.heat;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.Side;
 import org.terasology.network.Replicate;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.world.block.ForceBlockActive;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 @ForceBlockActive
 @Replicate
 public class HeatProducerComponent implements Component {
-    public List<FuelSourceConsume> fuelConsumed = new LinkedList<>();
+    public List<FuelSourceConsume> fuelConsumed = Lists.newArrayList();
     public float heatStorageEfficiency;
     public Set<Side> heatDirections;
 

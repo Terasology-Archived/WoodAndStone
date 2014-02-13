@@ -24,7 +24,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.machines.events.ProcessingMachineChanged;
+import org.terasology.machines.event.MachineStateChanged;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.In;
@@ -70,7 +70,7 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                     entity.saveComponent(heatConsumer);
                 }
 
-                entity.send(new ProcessingMachineChanged());
+                entity.send(new MachineStateChanged());
             }
 
             for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class)) {
@@ -80,7 +80,8 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                 Iterator<HeatProducerComponent.FuelSourceConsume> fuelConsumedIterator = producer.fuelConsumed.iterator();
                 while (fuelConsumedIterator.hasNext()) {
                     HeatProducerComponent.FuelSourceConsume fuelSourceConsume = fuelConsumedIterator.next();
-                    if (HeatUtils.doCalculationForOneFuelSourceConsume(producer.heatStorageEfficiency, currentTime, fuelSourceConsume) < REMOVE_FUEL_THRESHOLD) {
+                    if (fuelSourceConsume.startTime + fuelSourceConsume.burnLength < currentTime
+                            && HeatUtils.doCalculationForOneFuelSourceConsume(producer.heatStorageEfficiency, currentTime, fuelSourceConsume) < REMOVE_FUEL_THRESHOLD) {
                         fuelConsumedIterator.remove();
                         changed = true;
                     } else {
@@ -90,6 +91,8 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                 if (changed) {
                     entity.saveComponent(producer);
                 }
+
+                entity.send(new MachineStateChanged());
             }
         }
     }

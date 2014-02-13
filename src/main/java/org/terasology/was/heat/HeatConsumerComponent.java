@@ -15,13 +15,13 @@
  */
 package org.terasology.was.heat;
 
+import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.Side;
 import org.terasology.network.Replicate;
 import org.terasology.reflection.MappedContainer;
 import org.terasology.world.block.ForceBlockActive;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +30,7 @@ import java.util.Set;
 public class HeatConsumerComponent implements Component {
     public Set<Side> heatDirections;
     public float heatConsumptionEfficiency;
-    public List<ResidualHeat> residualHeat = new LinkedList<>();
+    public List<ResidualHeat> residualHeat = Lists.newArrayList();
 
     @MappedContainer
     public static class ResidualHeat {

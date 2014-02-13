@@ -65,7 +65,6 @@ public class HeatProcessingComponent implements Component, ProcessPart {
             if (processed != null) {
                 float heatRequired = processed.heatRequired;
                 if (heatRequired <= heat) {
-
                     appendResultIfCanStore(workstation, result, slot, processed.blockResult != null ? processed.blockResult : processed.itemResult);
                 }
             }
@@ -109,7 +108,8 @@ public class HeatProcessingComponent implements Component, ProcessPart {
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
-        EntityRef toGive = createResultItem(result);
+        String[] split = result.split("\\|");
+        EntityRef toGive = createResultItem(split[1]);
 
         for (int slot : getOutputSlots(workstation)) {
             GiveItemAction action = new GiveItemAction(instigator, toGive, slot);
@@ -121,19 +121,17 @@ public class HeatProcessingComponent implements Component, ProcessPart {
     }
 
     private EntityRef createResultItem(String itemResult) {
-        String[] split = itemResult.split("\\|");
-        String resultItem = split[1];
         int count = 1;
-        int starIndex = resultItem.indexOf("*");
+        int starIndex = itemResult.indexOf("*");
         if (starIndex > -1) {
-            count = Integer.parseInt(resultItem.substring(0, starIndex));
-            resultItem = resultItem.substring(starIndex + 1);
+            count = Integer.parseInt(itemResult.substring(0, starIndex));
+            itemResult = itemResult.substring(starIndex + 1);
         }
 
         EntityManager entityManager = CoreRegistry.get(EntityManager.class);
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         PrefabManager prefabManager = CoreRegistry.get(PrefabManager.class);
-        Prefab prefab = prefabManager.getPrefab(resultItem);
+        Prefab prefab = prefabManager.getPrefab(itemResult);
 
         EntityRef result;
         if (prefab != null) {
@@ -143,7 +141,7 @@ public class HeatProcessingComponent implements Component, ProcessPart {
             result.saveComponent(item);
         } else {
             BlockItemFactory blockItemFactory = new BlockItemFactory(entityManager);
-            BlockFamily blockFamily = blockManager.getBlockFamily(resultItem);
+            BlockFamily blockFamily = blockManager.getBlockFamily(itemResult);
             result = blockItemFactory.newInstance(blockFamily, count);
         }
         return result;

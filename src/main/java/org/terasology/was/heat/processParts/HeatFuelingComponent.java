@@ -20,6 +20,7 @@ import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.action.RemoveItemAction;
+import org.terasology.machines.event.MachineStateChanged;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.was.heat.HeatFuelComponent;
 import org.terasology.was.heat.HeatProducerComponent;
@@ -90,5 +91,6 @@ public class HeatFuelingComponent implements Component, ProcessPart {
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
+        workstation.send(new MachineStateChanged());
     }
 }

@@ -1,21 +1,26 @@
 {
     "Workstation": {
-        "uiPrefab": "WoodAndStone:CraftInStation",
-        "supportedProcessTypes": ["WoodAndStone:Hearth"]
+        "uiPrefab": "WoodAndStone:Furnace",
+        "supportedProcessTypes": ["Machines:Heater", "Machines:Furnace"]
     },
-    "CraftingStation": {
-        "type": "WoodAndStone:ClayHearth",
-        "workstationUITexture": "WoodAndStone:ClayHearth",
-        "upgradeSlots": 0,
-        "toolSlots": 0,
-        "ingredientSlots": 3
+    "WorkstationInventory": {
+        "slotAssignments": {
+            "INPUT": [0],
+            "FUEL": [1],
+            "OUTPUT": [2]
+        }
+    },
+    "Machine": { },
+    "HeatProducer": {
+        "heatStorageEfficiency": 10,
+        "heatDirections": ["TOP"]
     },
     "Inventory": {
         "privateToOwner": false,
         "itemSlots": [
-            // Component slots
+            // Input slots
             0,
-            0,
+            // Fuel slot
             0,
             // Output slot
             0

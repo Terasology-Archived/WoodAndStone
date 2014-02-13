@@ -42,7 +42,7 @@ public final class HeatUtils {
             // Finished burning - utilise formula for continuous compounding to calculate cumulative loss of heat - (e^(-(1/efficiency)*time))
             return fuelSourceConsume.heatProvided * (float) Math.pow(Math.E, -(1 / heatStorageEfficiency) * secondsSinceEnd);
         } else {
-            return fuelSourceConsume.heatProvided * (gameTime - fuelSourceConsume.startTime) / 1000f / fuelSourceConsume.burnLength;
+            return fuelSourceConsume.heatProvided * (gameTime - fuelSourceConsume.startTime) / fuelSourceConsume.burnLength;
         }
     }
 

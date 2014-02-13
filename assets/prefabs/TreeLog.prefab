@@ -4,5 +4,9 @@
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:wood"
+    },
+    "HeatFuel": {
+        "heatProvided": 1000,
+        "consumeTime": 20000
     }
 }

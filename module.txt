@@ -36,10 +36,6 @@
             {
                 "id" : "Workstation",
                 "minVersion" : "0.1.0"
-            },
-            {
-                "id" : "Machines",
-                "minVersion" : "0.1.0"
             }],
     "isServerSideOnly" : false
 }

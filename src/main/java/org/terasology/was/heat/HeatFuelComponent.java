@@ -16,7 +16,9 @@
 package org.terasology.was.heat;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.world.block.items.AddToBlockBasedItem;
 
+@AddToBlockBasedItem
 public class HeatFuelComponent implements Component {
     public float heatProvided;
     public long consumeTime;

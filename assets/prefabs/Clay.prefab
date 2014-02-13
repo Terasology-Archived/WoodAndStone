@@ -13,5 +13,10 @@
     },
     "CraftInHandRecipe": {
         "componentType": "WoodAndStone:clay"
+    },
+    "HeatProcessed": {
+        "heatRequired": 500,
+        "processingTime": 3000,
+        "itemResult": "1*WoodAndStone:Brick"
     }
 }
