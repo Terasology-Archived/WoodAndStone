@@ -167,8 +167,6 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         DefaultLayersDefinition taigaDef = new DefaultLayersDefinition(TaigaBiome.ID);
         tundraDef.addLayerDefinition(new PDist(1, 0), snow, false);
         taigaDef.addLayerDefinition(new PDist(1, 0), snow, false);
-        tundraDef.addLayerDefinition(new PDist(4, 2), dirt, true);
-        taigaDef.addLayerDefinition(new PDist(4, 2), dirt, true);
         layering.addBiomeLayers(tundraDef);
         layering.addBiomeLayers(taigaDef);
 
