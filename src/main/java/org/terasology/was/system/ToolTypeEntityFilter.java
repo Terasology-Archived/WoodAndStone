@@ -15,14 +15,14 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.anotherWorld.util.Filter;
+import com.google.common.base.Predicate;
 import org.terasology.crafting.component.CraftingStationToolComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ToolTypeEntityFilter implements Filter<EntityRef> {
+public class ToolTypeEntityFilter implements Predicate<EntityRef> {
     private String toolType;
 
     public ToolTypeEntityFilter(String toolType) {
@@ -30,7 +30,7 @@ public class ToolTypeEntityFilter implements Filter<EntityRef> {
     }
 
     @Override
-    public boolean accepts(EntityRef item) {
+    public boolean apply(EntityRef item) {
         CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
         return tool != null && tool.type.equals(toolType);
     }

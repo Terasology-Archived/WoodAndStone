@@ -15,7 +15,7 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.anotherWorld.util.Filter;
+import com.google.common.base.Predicate;
 import org.terasology.crafting.component.CraftingStationMaterialComponent;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.CraftingWorkstationProcess;
@@ -188,7 +188,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         recipeRegistry.addCraftInHandRecipe(recipeId, craftInHandRecipe);
     }
 
-    private final class StationTypeFilter implements Filter<EntityRef> {
+    private final class StationTypeFilter implements Predicate<EntityRef> {
         private String stationType;
 
         private StationTypeFilter(String stationType) {
@@ -196,7 +196,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         }
 
         @Override
-        public boolean accepts(EntityRef entity) {
+        public boolean apply(EntityRef entity) {
             CraftingStationMaterialComponent stationMaterial = entity.getComponent(CraftingStationMaterialComponent.class);
             return stationMaterial != null && stationMaterial.stationType.equals(stationType);
         }

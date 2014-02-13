@@ -16,6 +16,7 @@
 package org.terasology.was.generator;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.AlpineBiome;
@@ -31,7 +32,6 @@ import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringConfig;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
-import org.terasology.anotherWorld.util.Filter;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.anotherWorld.util.Provider;
 import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
@@ -109,7 +109,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(
                 new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), 2, 5));
 
-        Filter<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
+        Predicate<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
 
         // Dig some caves in the terrain
         addChunkDecorator(
@@ -135,7 +135,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
 
     private void setupOreGenerator(Block stone) {
-        Filter<Block> replacedBlocks = new BlockCollectionFilter(stone);
+        Predicate<Block> replacedBlocks = new BlockCollectionFilter(stone);
         OreDecorator oreDecorator = new OreDecorator(replacedBlocks);
 
         // Use plugin mechanism to setup required ores for the modules, by default WoodAndStone requires no

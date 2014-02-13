@@ -15,16 +15,16 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.anotherWorld.util.Filter;
+import com.google.common.base.Predicate;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.math.Side;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class UseOnTopFilter implements Filter<ActivateEvent> {
+public class UseOnTopFilter implements Predicate<ActivateEvent> {
     @Override
-    public boolean accepts(ActivateEvent event) {
+    public boolean apply(ActivateEvent event) {
         Side side = Side.inDirection(event.getHitNormal());
         return side == Side.TOP;
     }
