@@ -18,6 +18,7 @@ package org.terasology.crafting.system;
 import org.terasology.crafting.component.CraftingStationRecipeComponent;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.workstation.component.ProcessDefinitionComponent;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationProcessFactory;
 
@@ -27,6 +28,8 @@ import org.terasology.workstation.system.WorkstationProcessFactory;
 public class CraftingWorkstationProcessFactory implements WorkstationProcessFactory {
     @Override
     public WorkstationProcess createProcess(Prefab prefab) {
+        ProcessDefinitionComponent process = prefab.getComponent(ProcessDefinitionComponent.class);
+
         CraftingStationRecipeComponent recipe = prefab.getComponent(CraftingStationRecipeComponent.class);
 
         SimpleWorkstationRecipe workstationRecipe = new SimpleWorkstationRecipe();
@@ -55,6 +58,6 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
             String item = split[1];
             workstationRecipe.setItemResult(item, (byte) count);
         }
-        return new CraftingWorkstationProcess(recipe.recipeId, workstationRecipe);
+        return new CraftingWorkstationProcess(process.processType, recipe.recipeId, workstationRecipe);
     }
 }

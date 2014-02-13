@@ -15,6 +15,7 @@
  */
 package org.terasology.crafting.system;
 
+import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
 import org.terasology.crafting.processPart.ProcessUpgradeProcessPart;
 import org.terasology.crafting.processPart.ValidateUpgradeProcessPart;
 import org.terasology.crafting.processPart.WorkstationTypeProcessPart;
@@ -40,6 +41,11 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess {
         processParts.add(new WorkstationTypeProcessPart(workstationType));
         processParts.add(new ValidateUpgradeProcessPart(upgradeRecipe));
         processParts.add(new ProcessUpgradeProcessPart(upgradeRecipe));
+    }
+
+    @Override
+    public String getProcessType() {
+        return CraftingStationUpgradeRecipeComponent.PROCESS_TYPE;
     }
 
     @Override

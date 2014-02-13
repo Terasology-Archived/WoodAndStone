@@ -25,16 +25,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CraftingWorkstationProcess implements WorkstationProcess {
+    private String processType;
     private String craftingRecipeId;
     private CraftingStationRecipe recipe;
     private List<ProcessPart> processParts = new LinkedList<>();
 
-    public CraftingWorkstationProcess(String craftingRecipeId, CraftingStationRecipe recipe) {
+    public CraftingWorkstationProcess(String processType, String craftingRecipeId, CraftingStationRecipe recipe) {
+        this.processType = processType;
         this.craftingRecipeId = craftingRecipeId;
         this.recipe = recipe;
 
         processParts.add(new ValidateRecipeProcessPart(recipe));
         processParts.add(new ProcessRecipeProcessPart(recipe));
+    }
+
+    @Override
+    public String getProcessType() {
+        return processType;
     }
 
     @Override

@@ -92,7 +92,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         fullBlockRecipe.addRequiredTool(tool, toolDurability);
         fullBlockRecipe.setBlockResult(blockResultPrefix, (byte) blockResultCount);
 
-        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(recipeNamePrefix, fullBlockRecipe));
+        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix, fullBlockRecipe));
 
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "Stair", 3, 4, 2);
@@ -132,7 +132,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
         shapeRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
 
-        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(recipeNamePrefix + shape, shapeRecipe));
+        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix + shape, shapeRecipe));
     }
 
     private void addStoneWorkstationRecipes() {
