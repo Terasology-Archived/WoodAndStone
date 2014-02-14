@@ -53,7 +53,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                     @Override
                     public String get() {
                         float heat = HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
-                        return "Temperature: " + ((int) HeatUtils.heatToCelsius(heat)) + "C";
+                        return "Temperature: " + (Math.round(HeatUtils.heatToCelsius(heat))) + "C";
                     }
 
                     @Override

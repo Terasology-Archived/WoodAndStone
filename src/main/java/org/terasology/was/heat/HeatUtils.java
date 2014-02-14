@@ -55,17 +55,25 @@ public final class HeatUtils {
     public static float calculateHeatForProducer(HeatProducerComponent producer) {
         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
+        return calculateHeatForProducerAtTime(producer, gameTime);
+    }
+
+    private static float calculateHeatForProducerAtTime(HeatProducerComponent producer, long time) {
         float heat = 0;
         HeatProducerComponent.FuelSourceConsume lastConsume = null;
         for (HeatProducerComponent.FuelSourceConsume fuelSourceConsume : producer.fuelConsumed) {
-            if (lastConsume != null) {
+            boolean takeSourceIntoAccount = fuelSourceConsume.startTime < time;
+            if (lastConsume != null && takeSourceIntoAccount) {
                 heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, fuelSourceConsume.startTime, lastConsume);
+            }
+            if (!takeSourceIntoAccount) {
+                break;
             }
             lastConsume = fuelSourceConsume;
         }
 
         if (lastConsume != null) {
-            heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, gameTime, lastConsume);
+            heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, time, lastConsume);
         }
 
         return heat;
