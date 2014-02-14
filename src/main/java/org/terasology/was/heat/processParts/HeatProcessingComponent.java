@@ -30,6 +30,7 @@ import org.terasology.was.heat.HeatUtils;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
@@ -40,7 +41,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class HeatProcessingComponent implements Component, ProcessPart {
+public class HeatProcessingComponent implements Component, ProcessPart, ValidateInventoryItem {
     private Collection<Integer> getInputSlots(EntityRef workstation) {
         WorkstationInventoryComponent inventory = workstation.getComponent(WorkstationInventoryComponent.class);
         return Collections.unmodifiableCollection(inventory.slotAssignments.get("INPUT"));
@@ -49,6 +50,36 @@ public class HeatProcessingComponent implements Component, ProcessPart {
     private Collection<Integer> getOutputSlots(EntityRef workstation) {
         WorkstationInventoryComponent inventory = workstation.getComponent(WorkstationInventoryComponent.class);
         return Collections.unmodifiableCollection(inventory.slotAssignments.get("OUTPUT"));
+    }
+
+    @Override
+    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
+        if (isInputSlot(workstation, slotNo)) {
+            return true;
+        }
+        for (int slot : getOutputSlots(workstation)) {
+            if (slot == slotNo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
+        if (isInputSlot(workstation, slotNo)) {
+            return item.hasComponent(HeatProcessedComponent.class);
+        }
+        return workstation == instigator;
+    }
+
+    private boolean isInputSlot(EntityRef workstation, int slotNo) {
+        for (int slot : getInputSlots(workstation)) {
+            if (slot == slotNo) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

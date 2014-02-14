@@ -27,16 +27,32 @@ import org.terasology.was.heat.HeatProducerComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class HeatFuelingComponent implements Component, ProcessPart {
+public class HeatFuelingComponent implements Component, ProcessPart, ValidateInventoryItem {
     private Collection<Integer> getFuelSlots(EntityRef workstation) {
         WorkstationInventoryComponent inventory = workstation.getComponent(WorkstationInventoryComponent.class);
         return Collections.unmodifiableCollection(inventory.slotAssignments.get("FUEL"));
+    }
+
+    @Override
+    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
+        for (int slot : getFuelSlots(workstation)) {
+            if (slot == slotNo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
+        return item.hasComponent(HeatFuelComponent.class);
     }
 
     @Override
