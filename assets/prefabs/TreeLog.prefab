@@ -6,7 +6,7 @@
         "type": "WoodAndStone:wood"
     },
     "HeatFuel": {
-        "heatProvided": 1000,
+        "heatProvided": 600,
         "consumeTime": 20000
     }
 }

@@ -151,4 +151,8 @@ public final class HeatUtils {
 
         return result;
     }
+
+    public static float heatToCelsius(float heat) {
+        return 20 + (heat * 0.8f);
+    }
 }
