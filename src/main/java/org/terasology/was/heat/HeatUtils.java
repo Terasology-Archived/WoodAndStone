@@ -33,6 +33,7 @@ import java.util.Map;
 
 public final class HeatUtils {
     private static final Logger logger = LoggerFactory.getLogger(HeatUtils.class);
+    public static final float HEAT_MAGIC_VALUE = -800f;
 
     private HeatUtils() {
 
@@ -45,7 +46,7 @@ public final class HeatUtils {
     }
 
     public static float solveHeatEquation(float startingHeat, float appliedHeat, float heatTransferEfficiency, long duration) {
-        return startingHeat + (appliedHeat - startingHeat) * (float) Math.pow(Math.E, -heatTransferEfficiency * duration / 1000f);
+        return startingHeat + (appliedHeat - startingHeat) * (float) Math.pow(Math.E, HEAT_MAGIC_VALUE / (heatTransferEfficiency * duration));
     }
 
     private static float calculateHeatForProducerAtTime(HeatProducerComponent producer, long time) {
@@ -172,11 +173,8 @@ public final class HeatUtils {
     }
 
     public static void main(String[] args) {
-        for (int time = 0; time < 1000; time += 100) {
-            System.out.println("After: " + time + ", heat: " + HeatUtils.solveHeatEquation(0, 100f, 1f, time));
-        }
-        for (int time = 0; time < 1000; time += 100) {
-            System.out.println("After: " + time + ", heat: " + HeatUtils.solveHeatEquation(0, 100f, 2f, time));
+        for (int time = 0; time < 20000; time += 100) {
+            System.out.println("After: " + time + ", heat: " + HeatUtils.solveHeatEquation(0, 600f, 1f, time));
         }
     }
 }
