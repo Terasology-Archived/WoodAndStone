@@ -88,13 +88,17 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
             throw new InvalidProcessException();
         }
 
-        float heat = HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
+        // Defer the heat calculation until it is actually needed
+        Float heat = null;
 
         Set<String> result = new LinkedHashSet<>();
         for (int slot : getInputSlots(workstation)) {
             HeatProcessedComponent processed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
             if (processed != null) {
                 float heatRequired = processed.heatRequired;
+                if (heat == null) {
+                    heat = HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
+                }
                 if (heatRequired <= heat) {
                     appendResultIfCanStore(workstation, result, slot, processed.blockResult != null ? processed.blockResult : processed.itemResult);
                 }
