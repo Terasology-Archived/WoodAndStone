@@ -38,42 +38,35 @@ public final class HeatUtils {
 
     }
 
-    public static float doCalculationForOneFuelSourceConsume(float startingHeat, float heatStorageEfficiency, long endTime,
-                                                             HeatProducerComponent.FuelSourceConsume fuelSourceConsume) {
-        float secondsSinceEnd = (endTime - fuelSourceConsume.startTime - fuelSourceConsume.burnLength) / 1000f;
-
-        if (secondsSinceEnd > 0) {
-            // Finished burning - utilise formula for continuous compounding to calculate cumulative loss of heat - (e^(-(1/efficiency)*time))
-            return fuelSourceConsume.heatProvided * (float) Math.pow(Math.E, -(1 / heatStorageEfficiency) * secondsSinceEnd);
-        } else {
-            float progress = (endTime - fuelSourceConsume.startTime) * 1f / fuelSourceConsume.burnLength;
-
-            return startingHeat + (fuelSourceConsume.heatProvided - startingHeat) * (float) Math.pow(progress, 1 / Math.E);
-        }
-    }
-
     public static float calculateHeatForProducer(HeatProducerComponent producer) {
         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
         return calculateHeatForProducerAtTime(producer, gameTime);
     }
 
+    public static float solveHeatEquation(float startingHeat, float appliedHeat, float heatTransferEfficiency, long duration) {
+        return startingHeat + (appliedHeat - startingHeat) * (float) Math.pow(Math.E, -heatTransferEfficiency * duration / 1000f);
+    }
+
     private static float calculateHeatForProducerAtTime(HeatProducerComponent producer, long time) {
         float heat = 0;
-        HeatProducerComponent.FuelSourceConsume lastConsume = null;
+        long lastCalculated = 0;
         for (HeatProducerComponent.FuelSourceConsume fuelSourceConsume : producer.fuelConsumed) {
-            boolean takeSourceIntoAccount = fuelSourceConsume.startTime < time;
-            if (lastConsume != null && takeSourceIntoAccount) {
-                heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, fuelSourceConsume.startTime, lastConsume);
-            }
-            if (!takeSourceIntoAccount) {
+            if (fuelSourceConsume.startTime < time) {
+                if (lastCalculated < fuelSourceConsume.startTime) {
+                    heat = solveHeatEquation(heat, 0, producer.heatTransferEfficiency, fuelSourceConsume.startTime - lastCalculated);
+                    lastCalculated = fuelSourceConsume.startTime;
+                }
+                long heatEndTime = Math.min(fuelSourceConsume.startTime + fuelSourceConsume.burnLength, time);
+                heat = solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.heatTransferEfficiency, heatEndTime - lastCalculated);
+                lastCalculated = heatEndTime;
+            } else {
                 break;
             }
-            lastConsume = fuelSourceConsume;
         }
 
-        if (lastConsume != null) {
-            heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, time, lastConsume);
+        if (lastCalculated < time) {
+            heat = solveHeatEquation(heat, 0, producer.heatTransferEfficiency, time - lastCalculated);
         }
 
         return heat;
@@ -176,5 +169,14 @@ public final class HeatUtils {
 
     public static float heatToCelsius(float heat) {
         return 20 + (heat * 0.8f);
+    }
+
+    public static void main(String[] args) {
+        for (int time = 0; time < 1000; time += 100) {
+            System.out.println("After: " + time + ", heat: " + HeatUtils.solveHeatEquation(0, 100f, 1f, time));
+        }
+        for (int time = 0; time < 1000; time += 100) {
+            System.out.println("After: " + time + ", heat: " + HeatUtils.solveHeatEquation(0, 100f, 2f, time));
+        }
     }
 }

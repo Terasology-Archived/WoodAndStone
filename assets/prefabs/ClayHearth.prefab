@@ -12,7 +12,7 @@
     },
     "Machine": { },
     "HeatProducer": {
-        "heatStorageEfficiency": 10,
+        "heatTransferEfficiency": 1,
         "heatDirections": ["TOP"]
     },
     "Inventory": {

@@ -80,8 +80,10 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                 Iterator<HeatProducerComponent.FuelSourceConsume> fuelConsumedIterator = producer.fuelConsumed.iterator();
                 while (fuelConsumedIterator.hasNext()) {
                     HeatProducerComponent.FuelSourceConsume fuelSourceConsume = fuelConsumedIterator.next();
+                    // If the fuel no longer has any meaningful impact on the producer - remove it
                     if (fuelSourceConsume.startTime + fuelSourceConsume.burnLength < currentTime
-                            && HeatUtils.doCalculationForOneFuelSourceConsume(0, producer.heatStorageEfficiency, currentTime, fuelSourceConsume) < REMOVE_FUEL_THRESHOLD) {
+                            && HeatUtils.solveHeatEquation(fuelSourceConsume.heatProvided, 0, producer.heatTransferEfficiency,
+                            currentTime - (fuelSourceConsume.startTime + fuelSourceConsume.burnLength)) < REMOVE_FUEL_THRESHOLD) {
                         fuelConsumedIterator.remove();
                         changed = true;
                     } else {
