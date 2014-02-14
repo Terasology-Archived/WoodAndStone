@@ -15,6 +15,8 @@
  */
 package org.terasology.was.heat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.math.Region3i;
@@ -30,19 +32,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class HeatUtils {
+    private static final Logger logger = LoggerFactory.getLogger(HeatUtils.class);
+
     private HeatUtils() {
 
     }
 
-    public static float doCalculationForOneFuelSourceConsume(float heatStorageEfficiency, long gameTime,
+    public static float doCalculationForOneFuelSourceConsume(float startingHeat, float heatStorageEfficiency, long endTime,
                                                              HeatProducerComponent.FuelSourceConsume fuelSourceConsume) {
-        float secondsSinceEnd = (gameTime - fuelSourceConsume.startTime - fuelSourceConsume.burnLength) / 1000f;
+        float secondsSinceEnd = (endTime - fuelSourceConsume.startTime - fuelSourceConsume.burnLength) / 1000f;
 
         if (secondsSinceEnd > 0) {
             // Finished burning - utilise formula for continuous compounding to calculate cumulative loss of heat - (e^(-(1/efficiency)*time))
             return fuelSourceConsume.heatProvided * (float) Math.pow(Math.E, -(1 / heatStorageEfficiency) * secondsSinceEnd);
         } else {
-            return fuelSourceConsume.heatProvided * (gameTime - fuelSourceConsume.startTime) / fuelSourceConsume.burnLength;
+            float progress = (endTime - fuelSourceConsume.startTime) * 1f / fuelSourceConsume.burnLength;
+
+            return startingHeat + (fuelSourceConsume.heatProvided - startingHeat) * (float) Math.pow(progress, 1 / Math.E);
         }
     }
 
@@ -50,8 +56,16 @@ public final class HeatUtils {
         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
         float heat = 0;
+        HeatProducerComponent.FuelSourceConsume lastConsume = null;
         for (HeatProducerComponent.FuelSourceConsume fuelSourceConsume : producer.fuelConsumed) {
-            heat += doCalculationForOneFuelSourceConsume(producer.heatStorageEfficiency, gameTime, fuelSourceConsume);
+            if (lastConsume != null) {
+                heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, fuelSourceConsume.startTime, lastConsume);
+            }
+            lastConsume = fuelSourceConsume;
+        }
+
+        if (lastConsume != null) {
+            heat = doCalculationForOneFuelSourceConsume(heat, producer.heatStorageEfficiency, gameTime, lastConsume);
         }
 
         return heat;
