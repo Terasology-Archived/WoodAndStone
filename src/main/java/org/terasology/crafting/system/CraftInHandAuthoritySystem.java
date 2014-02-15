@@ -51,7 +51,7 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
             String resultId = event.getResultId();
             CraftInHandRecipe craftInHandRecipe = recipeRegistry.getRecipes().get(recipeId);
             if (craftInHandRecipe != null) {
-                CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(resultId);
+                CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(character, resultId);
                 if (result != null) {
                     EntityRef resultEntity = result.craftOne(character);
                     if (resultEntity.exists()) {

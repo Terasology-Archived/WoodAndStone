@@ -79,7 +79,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     }
 
     @Override
-    public CraftInHandResult getResultById(String resultId) {
+    public CraftInHandResult getResultById(EntityRef character, String resultId) {
         String[] slots = resultId.split("\\|");
         return new CraftResult(Integer.parseInt(slots[0]), Integer.parseInt(slots[1]), Integer.parseInt(slots[2]));
     }

@@ -25,7 +25,7 @@ import java.util.List;
 public interface CraftInHandRecipe {
     List<CraftInHandResult> getMatchingRecipeResults(EntityRef character);
 
-    CraftInHandResult getResultById(String resultId);
+    CraftInHandResult getResultById(EntityRef character, String resultId);
 
     public interface CraftInHandResult extends CraftProcessDisplay {
         String getResultId();
