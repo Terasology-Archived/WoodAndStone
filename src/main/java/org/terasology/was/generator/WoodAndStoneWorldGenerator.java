@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.AlpineBiome;
+import org.terasology.anotherWorld.coreBiome.CliffBiome;
 import org.terasology.anotherWorld.coreBiome.DesertBiome;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
@@ -174,6 +175,9 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         alpineDef.addLayerDefinition(new PDist(2f, 1f), ice, false);
         alpineDef.addLayerDefinition(new PDist(1f, 0f), snow, false);
         layering.addBiomeLayers(alpineDef);
+
+        DefaultLayersDefinition cliffDef = new DefaultLayersDefinition(CliffBiome.ID);
+        layering.addBiomeLayers(cliffDef);
 
         addChunkDecorator(layering);
     }
