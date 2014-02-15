@@ -27,7 +27,7 @@ import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.coreBiome.TaigaBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
-import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
+import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.anotherWorld.decorator.CaveDecorator;
 import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringConfig;
@@ -108,9 +108,9 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionFilter(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), 2, 5));
+                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), 2, 5));
 
-        Predicate<Block> removableBlocks = new BlockCollectionFilter(Arrays.asList(stone, sand, dirt, grass, snow));
+        Predicate<Block> removableBlocks = new BlockCollectionPredicate(Arrays.asList(stone, sand, dirt, grass, snow));
 
         // Dig some caves in the terrain
         addChunkDecorator(
@@ -136,7 +136,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
 
     private void setupOreGenerator(Block stone) {
-        Predicate<Block> replacedBlocks = new BlockCollectionFilter(stone);
+        Predicate<Block> replacedBlocks = new BlockCollectionPredicate(stone);
         OreDecorator oreDecorator = new OreDecorator(replacedBlocks);
 
         // Use plugin mechanism to setup required ores for the modules, by default WoodAndStone requires no

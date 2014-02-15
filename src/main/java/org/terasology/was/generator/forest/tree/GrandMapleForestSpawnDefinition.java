@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator.forest;
+package org.terasology.was.generator.forest.tree;
 
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
+import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
-import org.terasology.plantPack.BirchGrowthDefinition;
+import org.terasology.plantPack.tree.GrandMapleGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class BirchForestSpawnDefinition extends BlockFloraSpawnDefinition {
-    public BirchForestSpawnDefinition() {
-        super(PlantType.TREE, BirchGrowthDefinition.ID, ForestBiome.ID, 0.6f, 0.8f,
-                new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+public class GrandMapleForestSpawnDefinition extends BlockFloraSpawnDefinition {
+    public GrandMapleForestSpawnDefinition() {
+        super(PlantType.TREE, GrandMapleGrowthDefinition.ID, ForestBiome.ID, 0.4f, 0.6f,
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

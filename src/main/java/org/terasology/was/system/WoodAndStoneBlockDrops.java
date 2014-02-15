@@ -20,10 +20,13 @@ import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeEntityCreated;
 import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.gf.tree.PartOfTreeComponent;
+import org.terasology.plantPack.component.GrownCropComponent;
+import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
 
@@ -34,6 +37,9 @@ import java.util.Arrays;
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class WoodAndStoneBlockDrops extends BaseComponentSystem {
+    @In
+    private PrefabManager prefabManager;
+
     @ReceiveEvent
     public void overrideDropsForCoreBlocks(BeforeEntityCreated event, EntityRef entity) {
         BlockUri blockUri = null;
@@ -71,19 +77,37 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
             }
         }
 
-        PartOfTreeComponent component = getPartOfTree(event.getResultComponents());
-        if (component != null) {
-            if (component.part == PartOfTreeComponent.Part.BRANCH) {
+        PartOfTreeComponent partOfTree = getPartOfTree(event.getResultComponents());
+        if (partOfTree != null) {
+            if (partOfTree.part == PartOfTreeComponent.Part.BRANCH) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stick");
                 event.addComponent(dropGrammar);
-            } else if (component.part == PartOfTreeComponent.Part.TRUNK) {
+            } else if (partOfTree.part == PartOfTreeComponent.Part.TRUNK) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("1-2*WoodAndStone:TreeLog");
                 dropGrammar.itemDrops = Arrays.asList("0.1|WoodAndStone:Resin");
                 event.addComponent(dropGrammar);
             }
         }
+
+        GrownCropComponent grownCrop = getGrownCrop(event.getResultComponents());
+        if (grownCrop != null) {
+            if (prefabManager.exists("WoodAndStone:" + grownCrop.type)) {
+                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
+                dropGrammar.itemDrops = Arrays.asList("5*WoodAndStone:" + grownCrop.type);
+                event.addComponent(dropGrammar);
+            }
+        }
+    }
+
+    private GrownCropComponent getGrownCrop(Iterable<Component> resultComponents) {
+        for (Component resultComponent : resultComponents) {
+            if (resultComponent instanceof GrownCropComponent) {
+                return (GrownCropComponent) resultComponent;
+            }
+        }
+        return null;
     }
 
     private PartOfTreeComponent getPartOfTree(Iterable<Component> resultComponents) {

@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator.plains;
+package org.terasology.was.generator.tundra.tree;
 
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
-import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
+import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
-import org.terasology.plantPack.BroomGrowthDefinition;
+import org.terasology.plantPack.tree.BlueSpruceGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 import java.util.Arrays;
 
 @RegisterPlugin
-public class BroomPlainsSpawnDefinition extends BlockFloraSpawnDefinition {
-    public BroomPlainsSpawnDefinition() {
-        super(PlantType.TREE, BroomGrowthDefinition.ID, PlainsBiome.ID, 0.6f, 0.3f,
-                new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+public class BlueSpruceTundraSpawnDefinition extends BlockFloraSpawnDefinition {
+    public BlueSpruceTundraSpawnDefinition() {
+        super(PlantType.TREE, BlueSpruceGrowthDefinition.ID, TundraBiome.ID, 0.7f, 0.3f,
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

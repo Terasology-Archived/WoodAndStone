@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator.forest;
+package org.terasology.was.generator.forest.tree;
 
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.decorator.BlockCollectionFilter;
+import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.BlockFloraSpawnDefinition;
-import org.terasology.plantPack.BroomGrowthDefinition;
+import org.terasology.plantPack.tree.BroomGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class BroomForestSpawnDefinition extends BlockFloraSpawnDefinition {
     public BroomForestSpawnDefinition() {
         super(PlantType.TREE, BroomGrowthDefinition.ID, ForestBiome.ID, 0.6f, 0.6f,
-                new BlockCollectionFilter(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }
