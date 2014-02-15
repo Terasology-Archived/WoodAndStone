@@ -14,10 +14,25 @@
                             "width": 56,
                             "height": 56,
                             "position-left": {
-                                "offset": 5
+                                "offset": 150
                             },
                             "position-top": {
                                 "offset": 5
+                            }
+                        }
+                    },
+                    {
+                        "type": "VerticalTextureProgressWidget",
+                        "id": "burn",
+                        "image": "WoodAndStone:Fire",
+                        "layoutInfo": {
+                            "width": 80,
+                            "height": 80,
+                            "position-left": {
+                                "offset": 138
+                            },
+                            "position-top": {
+                                "offset": 66
                             }
                         }
                     },
@@ -28,10 +43,10 @@
                             "width": 56,
                             "height": 56,
                             "position-left": {
-                                "offset": 70
+                                "offset": 150
                             },
                             "position-top": {
-                                "offset": 5
+                                "offset": 151
                             }
                         }
                     },
@@ -42,24 +57,39 @@
                             "width": 56,
                             "height": 56,
                             "position-left": {
-                                "offset": 140
+                                "offset": 364
                             },
                             "position-top": {
-                                "offset": 5
+                                "offset": 78
                             }
                         }
                     },
                     {
-                        "type": "UILabel",
-                        "id": "heat",
+                        "type": "UIImage",
+                        "image": "WoodAndStone:TermometerBack",
                         "layoutInfo": {
-                            "width": 100,
-                            "height": 56,
+                            "width": 20,
+                            "height": 150,
                             "position-left": {
-                                "offset": 5
+                                "offset": 275
                             },
                             "position-top": {
-                                "offset": 70
+                                "offset": 31
+                            }
+                        }
+                    },
+                    {
+                        "type": "VerticalTextureProgressWidget",
+                        "id": "heat",
+                        "image": "WoodAndStone:TermometerFront",
+                        "layoutInfo": {
+                            "width": 20,
+                            "height": 150,
+                            "position-left": {
+                                "offset": 275
+                            },
+                            "position-top": {
+                                "offset": 31
                             }
                         }
                     },
@@ -73,14 +103,14 @@
                                 "offset": 5
                             },
                             "position-top": {
-                                "offset": 377
+                                "offset": 212
                             }
                         }
                     }
                 ],
                 "layoutInfo": {
-                    "width": 570,
-                    "height": 550,
+                    "width": 470,
+                    "height": 485,
                     "position-horizontal-center": {},
                     "position-vertical-center": {}
                 }

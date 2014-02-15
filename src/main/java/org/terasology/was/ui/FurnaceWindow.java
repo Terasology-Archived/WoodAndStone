@@ -1,15 +1,21 @@
 package org.terasology.was.ui;
 
+import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
-import org.terasology.rendering.nui.widgets.UILabel;
+import org.terasology.was.heat.HeatProcessedComponent;
+import org.terasology.was.heat.HeatProducerComponent;
 import org.terasology.was.heat.HeatUtils;
+import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.ui.WorkstationUI;
 import org.terasology.world.BlockEntityRegistry;
+
+import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -18,7 +24,8 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
     private InventoryGrid input;
     private InventoryGrid fuel;
     private InventoryGrid output;
-    private UILabel heatLabel;
+    private VerticalTextureProgressWidget heat;
+    private VerticalTextureProgressWidget burn;
 
     @Override
     public void initialise() {
@@ -31,7 +38,13 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
         player.setCellOffset(10);
         player.setMaxCellCount(30);
 
-        heatLabel = find("heat", UILabel.class);
+        heat = find("heat", VerticalTextureProgressWidget.class);
+        heat.setMinY(130);
+        heat.setMaxY(10);
+
+        burn = find("burn", VerticalTextureProgressWidget.class);
+        burn.setMinY(76);
+        burn.setMaxY(4);
     }
 
     @Override
@@ -48,16 +61,61 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
         output.setCellOffset(2);
         output.setMaxCellCount(1);
 
-        heatLabel.bindText(
-                new Binding<String>() {
+        heat.bindValue(
+                new Binding<Float>() {
                     @Override
-                    public String get() {
-                        float heat = HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
-                        return "Temperature: " + (Math.round(HeatUtils.heatToCelsius(heat))) + "C";
+                    public Float get() {
+                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class)) / 1000f;
                     }
 
                     @Override
-                    public void set(String value) {
+                    public void set(Float value) {
+                    }
+                });
+        heat.bindMark(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        WorkstationInventoryComponent workstationInventory = workstation.getComponent(WorkstationInventoryComponent.class);
+                        if (workstationInventory != null) {
+                            List<Integer> inputSlots = workstationInventory.slotAssignments.get("INPUT");
+                            if (inputSlots != null) {
+                                for (int slot : inputSlots) {
+                                    HeatProcessedComponent heatProcessed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
+                                    if (heatProcessed != null) {
+                                        return heatProcessed.heatRequired / 1000f;
+                                    }
+                                }
+                            }
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public void set(Float value) {
+                    }
+                });
+
+        burn.bindValue(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        HeatProducerComponent heatProducer = workstation.getComponent(HeatProducerComponent.class);
+                        List<HeatProducerComponent.FuelSourceConsume> consumedFuel = heatProducer.fuelConsumed;
+                        if (consumedFuel.size() == 0) {
+                            return 0f;
+                        }
+                        long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
+
+                        HeatProducerComponent.FuelSourceConsume lastConsumed = consumedFuel.get(consumedFuel.size() - 1);
+                        if (gameTime > lastConsumed.startTime + lastConsumed.burnLength) {
+                            return 0f;
+                        }
+                        return 1f * (gameTime - lastConsumed.startTime) / lastConsumed.burnLength;
+                    }
+
+                    @Override
+                    public void set(Float value) {
                     }
                 });
     }
