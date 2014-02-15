@@ -25,7 +25,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.gf.tree.PartOfTreeComponent;
-import org.terasology.plantPack.component.GrownCropComponent;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockUri;
@@ -90,24 +89,6 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
                 event.addComponent(dropGrammar);
             }
         }
-
-        GrownCropComponent grownCrop = getGrownCrop(event.getResultComponents());
-        if (grownCrop != null) {
-            if (prefabManager.exists("WoodAndStone:" + grownCrop.type)) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.itemDrops = Arrays.asList("5*WoodAndStone:" + grownCrop.type);
-                event.addComponent(dropGrammar);
-            }
-        }
-    }
-
-    private GrownCropComponent getGrownCrop(Iterable<Component> resultComponents) {
-        for (Component resultComponent : resultComponents) {
-            if (resultComponent instanceof GrownCropComponent) {
-                return (GrownCropComponent) resultComponent;
-            }
-        }
-        return null;
     }
 
     private PartOfTreeComponent getPartOfTree(Iterable<Component> resultComponents) {
