@@ -1,0 +1,18 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.WoodenBucket",
+        "stackId": "WoodAndStone:items.WoodenBucket",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Wooden Bucket"
+    },
+    "FluidContainerItem": {
+        "litres": 10,
+        "fluidRenderRect": {
+            "min": [7, 6, 0],
+            "size": [16, 10, 1]
+        }
+    }
+}
