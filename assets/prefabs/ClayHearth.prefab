@@ -10,7 +10,7 @@
             "OUTPUT": [2]
         }
     },
-    "Machine": { },
+    "AutomaticProcessing": { },
     "HeatProducer": {
         "heatTransferEfficiency": 1,
         "heatDirections": ["TOP"]

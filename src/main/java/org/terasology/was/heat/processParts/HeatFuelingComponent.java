@@ -20,11 +20,11 @@ import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.action.RemoveItemAction;
-import org.terasology.machines.event.MachineStateChanged;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.was.heat.HeatFuelComponent;
 import org.terasology.was.heat.HeatProducerComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
+import org.terasology.workstation.event.AutomaticProcessingStateChanged;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
@@ -107,6 +107,6 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
-        workstation.send(new MachineStateChanged());
+        workstation.send(new AutomaticProcessingStateChanged());
     }
 }
