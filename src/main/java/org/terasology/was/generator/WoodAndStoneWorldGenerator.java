@@ -202,7 +202,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         @Override
         public Block provide(int x, int y, int z) {
-            float noiseValue = alpha.execute((float) (1 + noise.noise(x * 0.01f, y * 0.01f, z * 0.01f)) / 2f);
+            float noiseValue = alpha.apply((float) (1 + noise.noise(x * 0.01f, y * 0.01f, z * 0.01f)) / 2f);
             return (noiseValue < chance) ? block1 : block2;
         }
     }
