@@ -51,7 +51,8 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint");
                 event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("Core", "Sand"))) {
+            } else if (blockUri.equals(new BlockUri("Core", "Sand"))
+                    || blockUri.equals(new BlockUri("Core", "Ice"))) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 event.addComponent(dropGrammar);
             } else if (blockUri.equals(new BlockUri("Core", "Stone"))) {
