@@ -26,17 +26,10 @@ import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.gui.events.UIItemIconRendered;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
 
 import java.awt.*;
-
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex2f;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -70,27 +63,5 @@ public class DurabilityClientSystem extends BaseComponentSystem {
             int durabilityBarHeight = maxY - minY - 1;
             canvas.drawTexture(Assets.get(barTexture, Texture.class), Rect2i.createFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
         }
-    }
-
-    @ReceiveEvent(components = {DurabilityComponent.class})
-    public void drawDurabilityBar(UIItemIconRendered event, EntityRef entity) {
-        DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
-        int pixels = 36 * durability.durability / durability.maxDurability;
-
-        glColor3f(1, 1, 1);
-        glBegin(GL_QUADS);
-        glVertex2f(3, 34);
-        glVertex2f(41, 34);
-        glVertex2f(41, 39);
-        glVertex2f(3, 39);
-        glEnd();
-
-        glColor3f(0, 1, 0);
-        glBegin(GL_QUADS);
-        glVertex2f(4, 35);
-        glVertex2f(4 + pixels, 35);
-        glVertex2f(4 + pixels, 38);
-        glVertex2f(4, 38);
-        glEnd();
     }
 }
