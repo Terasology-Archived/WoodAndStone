@@ -1,0 +1,77 @@
+{
+    "type": "CookingStationWindow",
+    "skin": "WoodAndStone:CraftingStation",
+    "contents": {
+        "type": "relativeLayout",
+        "contents": [
+            {
+                "type": "relativeLayout",
+                "contents": [
+                    {
+                        "type": "InventoryGrid",
+                        "id": "fluidContainerInput",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 5
+                            },
+                            "position-top": {
+                                "offset": 5
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "fluidContainerOutput",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 5
+                            },
+                            "position-top": {
+                                "offset": 70
+                            }
+                        }
+                    },
+                    {
+                        "type": "FluidContainerWidget",
+                        "id": "fluidContainer",
+                        "image": "WoodAndStone:FluidContainer",
+                        "layoutInfo": {
+                            "width": 50,
+                            "height": 150,
+                            "position-left": {
+                                "offset": 70
+                            },
+                            "position-top": {
+                                "offset": 5
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "playerInventory",
+                        "layoutInfo": {
+                            "width": 560,
+                            "height": 168,
+                            "position-left": {
+                                "offset": 5
+                            },
+                            "position-top": {
+                                "offset": 377
+                            }
+                        }
+                    }
+                ],
+                "layoutInfo": {
+                    "width": 570,
+                    "height": 550,
+                    "position-horizontal-center": {},
+                    "position-vertical-center": {}
+                }
+            }
+        ]
+    }
+}

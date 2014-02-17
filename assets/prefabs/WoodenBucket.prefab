@@ -12,7 +12,7 @@
         "volume": 10,
         "fluidRenderRect": {
             "min": [7, 6, 0],
-            "size": [16, 10, 1]
+            "size": [17, 10, 1]
         }
     }
 }
