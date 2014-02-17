@@ -104,8 +104,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 CraftingStationRecipe craftingStationRecipe = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe();
                 String recipeId = workstationProcess.getId();
-                List<CraftingStationRecipe.CraftingStationResult> results = craftingStationRecipe.getMatchingRecipeResults(station,
-                        componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+                List<CraftingStationRecipe.CraftingStationResult> results = craftingStationRecipe.getMatchingRecipeResults(station);
                 if (results != null) {
                     for (CraftingStationRecipe.CraftingStationResult result : results) {
                         String resultId = result.getResultId();
@@ -157,8 +156,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes)) {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 String recipeId = workstationProcess.getId();
-                List<CraftingStationRecipe.CraftingStationResult> results = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe().getMatchingRecipeResults(station,
-                        componentFromSlot, componentSlotCount, toolFromSlot, toolSlotCount);
+                List<CraftingStationRecipe.CraftingStationResult> results = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe().getMatchingRecipeResults(station);
                 if (results != null) {
                     for (CraftingStationRecipe.CraftingStationResult result : results) {
                         availableRecipes.put(recipeId, result.getResultId());

@@ -23,7 +23,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 public interface UpgradeRecipe {
     boolean isUpgradeComponent(EntityRef item);
 
-    UpgradeResult getMatchingUpgradeResult(EntityRef station, int upgradeSlotFrom, int upgradeSlotCount);
+    UpgradeResult getMatchingUpgradeResult(EntityRef station);
 
     public interface UpgradeResult {
         String getResultStationType();

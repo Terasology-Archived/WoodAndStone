@@ -61,7 +61,7 @@ public class ValidateUpgradeProcessPart implements ProcessPart, ValidateInventor
             throw new InvalidProcessException();
         }
 
-        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(workstation, 0, craftingStation.upgradeSlots);
+        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(workstation);
         return null;
     }
 

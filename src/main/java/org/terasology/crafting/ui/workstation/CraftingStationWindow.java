@@ -29,6 +29,7 @@ import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UIImage;
+import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
@@ -51,7 +52,6 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
 
     private EntityRef station;
     private String stationType;
-    private int upgradeSlots;
 
     private String upgradeRecipeDisplayed;
     private String matchingUpgradeRecipe;
@@ -76,33 +76,35 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
 
         this.station = station;
         this.stationType = craftingStation.type;
-        this.upgradeSlots = craftingStation.upgradeSlots;
 
-        int toolSlots = craftingStation.toolSlots;
-        int componentSlots = craftingStation.ingredientSlots;
+        WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
+        WorkstationInventoryComponent.SlotAssignment upgradeAssignments = workstationInventory.slotAssignments.get("UPGRADE");
+        WorkstationInventoryComponent.SlotAssignment inputAssignments = workstationInventory.slotAssignments.get("INPUT");
+        WorkstationInventoryComponent.SlotAssignment toolAssignments = workstationInventory.slotAssignments.get("TOOL");
+        WorkstationInventoryComponent.SlotAssignment resultAssignments = workstationInventory.slotAssignments.get("RESULT");
 
         ingredients.setTargetEntity(station);
-        ingredients.setCellOffset(upgradeSlots + toolSlots);
-        ingredients.setMaxCellCount(componentSlots);
+        ingredients.setCellOffset(inputAssignments.slotStart);
+        ingredients.setMaxCellCount(inputAssignments.slotCount);
 
         upgrades.setTargetEntity(station);
-        upgrades.setCellOffset(0);
-        upgrades.setMaxCellCount(upgradeSlots);
+        upgrades.setCellOffset(upgradeAssignments.slotStart);
+        upgrades.setMaxCellCount(upgradeAssignments.slotCount);
 
         tools.setTargetEntity(station);
-        tools.setCellOffset(upgradeSlots);
-        tools.setMaxCellCount(toolSlots);
+        tools.setCellOffset(toolAssignments.slotStart);
+        tools.setMaxCellCount(toolAssignments.slotCount);
 
         stationRecipes.setStation(station);
         stationRecipes.setStationType(stationType);
-        stationRecipes.setComponentFromSlot(upgradeSlots + toolSlots);
-        stationRecipes.setComponentSlotCount(componentSlots);
-        stationRecipes.setToolFromSlot(upgradeSlots);
-        stationRecipes.setToolSlotCount(toolSlots);
+        stationRecipes.setComponentFromSlot(inputAssignments.slotStart);
+        stationRecipes.setComponentSlotCount(inputAssignments.slotCount);
+        stationRecipes.setToolFromSlot(toolAssignments.slotStart);
+        stationRecipes.setToolSlotCount(toolAssignments.slotCount);
 
         result.setTargetEntity(station);
-        result.setCellOffset(upgradeSlots + toolSlots + componentSlots);
-        result.setMaxCellCount(1);
+        result.setCellOffset(resultAssignments.slotStart);
+        result.setMaxCellCount(resultAssignments.slotCount);
 
         player.setTargetEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity());
         player.setCellOffset(10);
@@ -158,7 +160,7 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
         for (WorkstationProcess workstationProcess : craftingRegistry.getWorkstationProcesses(Collections.singleton(CraftingStationUpgradeRecipeComponent.PROCESS_TYPE))) {
             if (workstationProcess instanceof CraftingWorkstationUpgradeProcess) {
                 UpgradeRecipe upgradeRecipe = ((CraftingWorkstationUpgradeProcess) workstationProcess).getUpgradeRecipe();
-                final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station, 0, upgradeSlots);
+                final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station);
                 if (result != null) {
                     return workstationProcess.getId();
                 }

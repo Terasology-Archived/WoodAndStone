@@ -8,18 +8,15 @@
     },
     "WorkstationInventory": {
         "slotAssignments": {
-            "INPUT": [2, 3, 4, 5, 6, 7],
-            "TOOL": [1],
-            "UPGRADE": [0],
-            "OUTPUT": [8]
+            "INPUT": { "slotStart": 2, "slotCount": 6 },
+            "TOOL": { "slotStart": 1, "slotCount": 1 },
+            "UPGRADE": { "slotStart": 0, "slotCount": 1 },
+            "OUTPUT": { "slotStart": 8, "slotCount": 1 }
         }
     },
     "CraftingStation": {
         "type": "WoodAndStone:BasicStonecrafting",
-        "workstationUITexture": "WoodAndStone:BasicStoneworking",
-        "upgradeSlots": 1,
-        "toolSlots": 1,
-        "ingredientSlots": 6
+        "workstationUITexture": "WoodAndStone:BasicStoneworking"
     },
     "Inventory": {
         "privateToOwner": false,

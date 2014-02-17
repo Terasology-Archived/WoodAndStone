@@ -45,15 +45,9 @@ public interface CraftingStationRecipe {
      * from the components and tools available in the station entity's inventory.
      *
      * @param station
-     * @param componentFromSlot
-     * @param componentSlotCount
-     * @param toolFromSlot
-     * @param toolSlotCount
      * @return
      */
-    List<CraftingStationResult> getMatchingRecipeResults(EntityRef station,
-                                                         int componentFromSlot, int componentSlotCount,
-                                                         int toolFromSlot, int toolSlotCount);
+    List<CraftingStationResult> getMatchingRecipeResults(EntityRef station);
 
     CraftingStationResult getResultById(String resultId);
 
@@ -64,28 +58,17 @@ public interface CraftingStationRecipe {
          * Processes the crafting of the recipe once. Returns the entity that should be put (or added to) the result slot.
          *
          * @param station
-         * @param componentFromSlot
-         * @param componentSlotCount
-         * @param toolFromSlot
-         * @param toolSlotCount
          * @return
          */
-        EntityRef craftOne(EntityRef station, int componentFromSlot, int componentSlotCount,
-                           int toolFromSlot, int toolSlotCount, int resultSlot);
+        EntityRef craftOne(EntityRef station);
 
         /**
          * Processes the crafting of the recipe maximum possible times. Returns the entity that should be put (or added to)
          * the result slot.
          *
          * @param station
-         * @param componentFromSlot
-         * @param componentSlotCount
-         * @param toolFromSlot
-         * @param toolSlotCount
-         * @param resultSlot
          * @return
          */
-        EntityRef craftMax(EntityRef station, int componentFromSlot, int componentSlotCount,
-                           int toolFromSlot, int toolSlotCount, int resultSlot);
+        EntityRef craftMax(EntityRef station);
     }
 }

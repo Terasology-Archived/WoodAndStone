@@ -51,7 +51,7 @@ public class ProcessUpgradeProcessPart implements ProcessPart {
             return;
         }
 
-        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(workstation, 0, craftingStation.upgradeSlots);
+        final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(workstation);
         if (result != null) {
             EntityRef newStation = result.processUpgrade(workstation);
             instigator.send(new CraftingStationUpgraded(newStation));

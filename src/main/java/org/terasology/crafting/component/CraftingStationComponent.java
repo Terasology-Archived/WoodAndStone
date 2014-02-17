@@ -24,7 +24,4 @@ import org.terasology.rendering.assets.texture.Texture;
 public class CraftingStationComponent implements Component {
     public String type;
     public Texture workstationUITexture;
-    public int upgradeSlots;
-    public int toolSlots;
-    public int ingredientSlots;
 }

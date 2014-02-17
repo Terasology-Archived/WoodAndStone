@@ -42,13 +42,8 @@ public class ProcessRecipeProcessPart implements ProcessPart {
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
-        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
         CraftingStationRecipe.CraftingStationResult craftingStationResult = craftingStationRecipe.getResultById(resultId);
-        int resultSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
-        EntityRef resultItem = craftingStationResult.craftOne(workstation,
-                craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
-                craftingStation.upgradeSlots, craftingStation.toolSlots,
-                resultSlot);
+        EntityRef resultItem = craftingStationResult.craftOne(workstation);
 
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
             GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, slot);

@@ -6,12 +6,14 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -50,10 +52,10 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
     }
 
     @Override
-    public UpgradeResult getMatchingUpgradeResult(EntityRef station, int upgradeSlotFrom, int upgradeSlotCount) {
+    public UpgradeResult getMatchingUpgradeResult(EntityRef station) {
         List<Integer> resultSlots = new LinkedList<>();
         for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-            int slotNo = hasItem(station, ingredientCount.getKey(), ingredientCount.getValue(), upgradeSlotFrom, upgradeSlotFrom + upgradeSlotCount);
+            int slotNo = hasItem(station, ingredientCount.getKey(), ingredientCount.getValue());
             if (slotNo != -1) {
                 resultSlots.add(slotNo);
             } else {
@@ -64,10 +66,10 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
         return new Result(resultSlots);
     }
 
-    private int hasItem(EntityRef station, String itemType, int count, int fromSlot, int toSlot) {
-        for (int i = fromSlot; i < toSlot; i++) {
-            if (hasItemInSlot(station, itemType, i, count)) {
-                return i;
+    private int hasItem(EntityRef station, String itemType, int count) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "UPGRADE")) {
+            if (hasItemInSlot(station, itemType, slot, count)) {
+                return slot;
             }
         }
 
@@ -126,29 +128,16 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             InventoryComponent oldStationInventory = station.getComponent(InventoryComponent.class);
             InventoryComponent newStationInventory = newStation.getComponent(InventoryComponent.class);
 
-            // Moving upgrades
-            for (int i = 0; i < oldStationSettings.upgradeSlots; i++) {
-                newStationInventory.itemSlots.set(i, oldStationInventory.itemSlots.get(i));
-            }
-            // Moving tools
-            for (int i = 0; i < oldStationSettings.toolSlots; i++) {
-                newStationInventory.itemSlots.set(newStationSettings.upgradeSlots + i,
-                        oldStationInventory.itemSlots.get(oldStationSettings.upgradeSlots + i));
-            }
-            // Moving ingredients
-            for (int i = 0; i < oldStationSettings.ingredientSlots; i++) {
-                newStationInventory.itemSlots.set(newStationSettings.upgradeSlots + newStationSettings.toolSlots + i,
-                        oldStationInventory.itemSlots.get(oldStationSettings.upgradeSlots + oldStationSettings.toolSlots + i));
-            }
-            // Moving output
-            newStationInventory.itemSlots.set(newStationSettings.upgradeSlots + newStationSettings.toolSlots + newStationSettings.ingredientSlots,
-                    oldStationInventory.itemSlots.get(oldStationSettings.upgradeSlots + oldStationSettings.toolSlots + oldStationSettings.ingredientSlots));
-
-            newStation.saveComponent(newStationInventory);
+            moveItems(station, newStation, oldStationInventory, newStationInventory, "UPGRADE");
+            moveItems(station, newStation, oldStationInventory, newStationInventory, "TOOL");
+            moveItems(station, newStation, oldStationInventory, newStationInventory, "INPUT");
+            moveItems(station, newStation, oldStationInventory, newStationInventory, "OUTPUT");
 
             for (int i = 0; i < oldStationInventory.itemSlots.size(); i++) {
                 oldStationInventory.itemSlots.set(i, EntityRef.NULL);
             }
+
+            newStation.saveComponent(newStationInventory);
 
             station.destroy();
 
@@ -156,6 +145,16 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             newStation.addComponent(new LocationComponent(region.center()));
 
             return newStation;
+        }
+
+        private void moveItems(EntityRef oldStation, EntityRef newStation, InventoryComponent oldStationInventory, InventoryComponent newStationInventory, String slotType) {
+            List<Integer> inSlots = WorkstationInventoryUtils.getAssignedSlots(oldStation, slotType);
+            List<Integer> outSlots = WorkstationInventoryUtils.getAssignedSlots(newStation, slotType);
+            for (int i=0; i<inSlots.size(); i++) {
+                int slotFrom = inSlots.get(i);
+                int slotTo = outSlots.get(i);
+                newStationInventory.itemSlots.set(slotTo, oldStationInventory.itemSlots.get(slotFrom));
+            }
         }
 
         private boolean validateCreation(EntityRef station) {

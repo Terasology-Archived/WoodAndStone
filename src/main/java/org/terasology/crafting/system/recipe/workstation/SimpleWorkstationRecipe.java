@@ -27,6 +27,7 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
@@ -80,12 +81,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
-    public List<CraftingStationResult> getMatchingRecipeResults(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount) {
+    public List<CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
         // TODO: Improve the search to find fragmented ingredients in multiple stacks, and also to find different kinds
         // of items, not just first matching
         List<Integer> resultSlots = new LinkedList<>();
         for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-            int slotNo = hasItem(station, ingredientCount.getKey(), ingredientCount.getValue(), componentFromSlot, componentFromSlot + componentSlotCount);
+            int slotNo = hasItem(station, ingredientCount.getKey(), ingredientCount.getValue());
             if (slotNo != -1) {
                 resultSlots.add(slotNo);
             } else {
@@ -94,7 +95,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
-            int slotNo = hasTool(station, toolDurability.getKey(), toolDurability.getValue(), toolFromSlot, toolFromSlot + toolSlotCount);
+            int slotNo = hasTool(station, toolDurability.getKey(), toolDurability.getValue());
             if (slotNo != -1) {
                 resultSlots.add(slotNo);
             } else {
@@ -105,20 +106,20 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return Collections.<CraftingStationResult>singletonList(new Result(resultSlots));
     }
 
-    private int hasTool(EntityRef station, String toolType, int durability, int fromSlot, int toSlot) {
-        for (int i = fromSlot; i < toSlot; i++) {
-            if (hasToolInSlot(station, toolType, i, durability)) {
-                return i;
+    private int hasTool(EntityRef station, String toolType, int durability) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "TOOL")) {
+            if (hasToolInSlot(station, toolType, slot, durability)) {
+                return slot;
             }
         }
 
         return -1;
     }
 
-    private int hasItem(EntityRef station, String itemType, int count, int fromSlot, int toSlot) {
-        for (int i = fromSlot; i < toSlot; i++) {
-            if (hasItemInSlot(station, itemType, i, count)) {
-                return i;
+    private int hasItem(EntityRef station, String itemType, int count) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "INPUT")) {
+            if (hasItemInSlot(station, itemType, slot, count)) {
+                return slot;
             }
         }
 
@@ -176,8 +177,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craftOne(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount, int resultSlot) {
-            if (!validateCreation(station, resultSlot)) {
+        public EntityRef craftOne(EntityRef station) {
+            if (!validateCreation(station)) {
                 return EntityRef.NULL;
             }
 
@@ -197,7 +198,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             return createResult();
         }
 
-        private boolean validateCreation(EntityRef station, int resultSlot) {
+        private boolean validateCreation(EntityRef station) {
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
                 if (!hasItemInSlot(station, ingredientCount.getKey(), items.get(index), ingredientCount.getValue())) {
@@ -215,19 +216,20 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
             EntityRef resultItem = createResult();
             try {
-                EntityRef itemInResultSlot = InventoryUtils.getItemAt(station, resultSlot);
-                if (!itemInResultSlot.exists()) {
-                    return true;
+                for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "OUTPUT")) {
+                    EntityRef itemInResultSlot = InventoryUtils.getItemAt(station, slot);
+                    if (InventoryUtils.canStackInto(resultItem, itemInResultSlot)) {
+                        return true;
+                    }
                 }
-                return InventoryUtils.canStackInto(resultItem, itemInResultSlot)
-                        && (resultItem.getComponent(ItemComponent.class).stackCount + itemInResultSlot.getComponent(ItemComponent.class).stackCount <= 99);
+                return false;
             } finally {
                 resultItem.destroy();
             }
         }
 
         @Override
-        public EntityRef craftMax(EntityRef station, int componentFromSlot, int componentSlotCount, int toolFromSlot, int toolSlotCount, int resultSlot) {
+        public EntityRef craftMax(EntityRef station) {
             return null;
         }
 
