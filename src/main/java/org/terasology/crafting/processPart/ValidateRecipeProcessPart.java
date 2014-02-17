@@ -20,16 +20,57 @@ import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ValidateRecipeProcessPart implements ProcessPart {
+public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventoryItem {
     private CraftingStationRecipe craftingStationRecipe;
 
     public ValidateRecipeProcessPart(CraftingStationRecipe craftingStationRecipe) {
         this.craftingStationRecipe = craftingStationRecipe;
+    }
+
+    @Override
+    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
+        int ingredientSlotsStart = craftingStation.upgradeSlots + craftingStation.toolSlots;
+        if (ingredientSlotsStart <= slotNo && slotNo < ingredientSlotsStart + craftingStation.ingredientSlots) {
+            return true;
+        }
+        int toolSlotStart = craftingStation.upgradeSlots;
+        if (toolSlotStart <= slotNo && slotNo < toolSlotStart + craftingStation.toolSlots) {
+            return true;
+        }
+
+        int outputSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
+        if (slotNo == outputSlot) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
+        int ingredientSlotsStart = craftingStation.upgradeSlots + craftingStation.toolSlots;
+        if (ingredientSlotsStart <= slotNo && slotNo < ingredientSlotsStart + craftingStation.ingredientSlots) {
+            return craftingStationRecipe.hasAsComponent(item);
+        }
+        int toolSlotStart = craftingStation.upgradeSlots;
+        if (toolSlotStart <= slotNo && slotNo < toolSlotStart + craftingStation.toolSlots) {
+            return craftingStationRecipe.hasAsTool(item);
+        }
+
+        int outputSlot = craftingStation.upgradeSlots + craftingStation.toolSlots + craftingStation.ingredientSlots;
+        if (slotNo == outputSlot) {
+            return instigator == workstation;
+        }
+
+        return false;
     }
 
     @Override

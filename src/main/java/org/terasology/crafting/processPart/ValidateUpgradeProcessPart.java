@@ -20,14 +20,36 @@ import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 
 import java.util.Set;
 
-public class ValidateUpgradeProcessPart implements ProcessPart {
+public class ValidateUpgradeProcessPart implements ProcessPart, ValidateInventoryItem {
     private UpgradeRecipe upgradeRecipe;
 
     public ValidateUpgradeProcessPart(UpgradeRecipe upgradeRecipe) {
         this.upgradeRecipe = upgradeRecipe;
+    }
+
+
+    @Override
+    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
+        if (0 <= slotNo && slotNo < craftingStation.upgradeSlots) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
+        if (0 <= slotNo && slotNo < craftingStation.upgradeSlots) {
+            return upgradeRecipe.isUpgradeComponent(item);
+        }
+
+        return false;
     }
 
     @Override
