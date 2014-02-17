@@ -2,15 +2,15 @@ package org.terasology.was.ui;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.heat.HeatProcessedComponent;
+import org.terasology.heat.HeatProducerComponent;
+import org.terasology.heat.HeatUtils;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
-import org.terasology.was.heat.HeatProcessedComponent;
-import org.terasology.was.heat.HeatProducerComponent;
-import org.terasology.was.heat.HeatUtils;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 import org.terasology.workstation.ui.WorkstationUI;

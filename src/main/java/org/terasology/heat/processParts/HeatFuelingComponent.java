@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.heat.processParts;
+package org.terasology.heat.processParts;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.heat.HeatFuelComponent;
+import org.terasology.heat.HeatProducerComponent;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.was.heat.HeatFuelComponent;
-import org.terasology.was.heat.HeatProducerComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.event.AutomaticProcessingStateChanged;
 import org.terasology.workstation.process.InvalidProcessException;
