@@ -28,21 +28,15 @@ import org.terasology.workstation.event.AutomaticProcessingStateChanged;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
+import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class HeatFuelingComponent implements Component, ProcessPart, ValidateInventoryItem {
-    private Collection<Integer> getFuelSlots(EntityRef workstation) {
-        WorkstationInventoryComponent inventory = workstation.getComponent(WorkstationInventoryComponent.class);
-        return Collections.unmodifiableCollection(inventory.slotAssignments.get("FUEL"));
-    }
-
     @Override
     public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
-        for (int slot : getFuelSlots(workstation)) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "FUEL")) {
             if (slot == slotNo) {
                 return true;
             }
@@ -62,7 +56,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
         }
 
         Set<String> result = new LinkedHashSet<>();
-        for (int slot : getFuelSlots(workstation)) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "FUEL")) {
             HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatFuelComponent.class);
             if (fuel != null) {
                 result.add(String.valueOf(slot));

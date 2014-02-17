@@ -31,33 +31,22 @@ import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
+import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class HeatProcessingComponent implements Component, ProcessPart, ValidateInventoryItem {
-    private Collection<Integer> getInputSlots(EntityRef workstation) {
-        WorkstationInventoryComponent inventory = workstation.getComponent(WorkstationInventoryComponent.class);
-        return Collections.unmodifiableCollection(inventory.slotAssignments.get("INPUT"));
-    }
-
-    private Collection<Integer> getOutputSlots(EntityRef workstation) {
-        WorkstationInventoryComponent inventory = workstation.getComponent(WorkstationInventoryComponent.class);
-        return Collections.unmodifiableCollection(inventory.slotAssignments.get("OUTPUT"));
-    }
-
     @Override
     public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
         if (isInputSlot(workstation, slotNo)) {
             return true;
         }
-        for (int slot : getOutputSlots(workstation)) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
             if (slot == slotNo) {
                 return true;
             }
@@ -74,7 +63,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     }
 
     private boolean isInputSlot(EntityRef workstation, int slotNo) {
-        for (int slot : getInputSlots(workstation)) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
             if (slot == slotNo) {
                 return true;
             }
@@ -92,7 +81,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
         Float heat = null;
 
         Set<String> result = new LinkedHashSet<>();
-        for (int slot : getInputSlots(workstation)) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
             HeatProcessedComponent processed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
             if (processed != null) {
                 float heatRequired = processed.heatRequired;
@@ -115,7 +104,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     private void appendResultIfCanStore(EntityRef workstation, Set<String> result, int slot, String resultObject) {
         EntityRef resultItem = createResultItem(resultObject);
         try {
-            for (int outputSlot : getOutputSlots(workstation)) {
+            for (int outputSlot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
                 if (InventoryUtils.canStackInto(resultItem, InventoryUtils.getItemAt(workstation, outputSlot))) {
                     result.add(slot + "|" + resultObject);
                     return;
@@ -146,7 +135,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
         String[] split = result.split("\\|");
         EntityRef toGive = createResultItem(split[1]);
 
-        for (int slot : getOutputSlots(workstation)) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
             GiveItemAction action = new GiveItemAction(instigator, toGive, slot);
             workstation.send(action);
             if (action.isConsumed()) {

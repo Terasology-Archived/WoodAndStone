@@ -20,6 +20,7 @@ import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 
 import java.util.Set;
 
@@ -48,13 +49,16 @@ public class ProcessRecipeProcessPart implements ProcessPart {
                 craftingStation.upgradeSlots + craftingStation.toolSlots, craftingStation.ingredientSlots,
                 craftingStation.upgradeSlots, craftingStation.toolSlots,
                 resultSlot);
-        if (resultItem != null) {
-            GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, resultSlot);
+
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
+            GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, slot);
             workstation.send(giveItem);
-            if (!giveItem.isConsumed()) {
-                resultItem.destroy();
+            if (giveItem.isConsumed()) {
+                return;
             }
         }
+
+        resultItem.destroy();
     }
 
     @Override

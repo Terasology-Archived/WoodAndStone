@@ -12,6 +12,7 @@ import org.terasology.was.heat.HeatProcessedComponent;
 import org.terasology.was.heat.HeatProducerComponent;
 import org.terasology.was.heat.HeatUtils;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
+import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 import org.terasology.workstation.ui.WorkstationUI;
 import org.terasology.world.BlockEntityRegistry;
 
@@ -78,13 +79,10 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                     public Float get() {
                         WorkstationInventoryComponent workstationInventory = workstation.getComponent(WorkstationInventoryComponent.class);
                         if (workstationInventory != null) {
-                            List<Integer> inputSlots = workstationInventory.slotAssignments.get("INPUT");
-                            if (inputSlots != null) {
-                                for (int slot : inputSlots) {
-                                    HeatProcessedComponent heatProcessed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
-                                    if (heatProcessed != null) {
-                                        return heatProcessed.heatRequired / 1000f;
-                                    }
+                            for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
+                                HeatProcessedComponent heatProcessed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
+                                if (heatProcessed != null) {
+                                    return heatProcessed.heatRequired / 1000f;
                                 }
                             }
                         }
