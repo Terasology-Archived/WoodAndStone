@@ -23,6 +23,9 @@ import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.fluid.component.FluidComponent;
+import org.terasology.fluid.component.FluidInventoryComponent;
+import org.terasology.fluid.system.FluidManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
@@ -45,6 +48,7 @@ import java.util.Map;
 public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     private Map<String, Integer> ingredientsMap = new LinkedHashMap<>();
     private Map<String, Integer> toolsMap = new LinkedHashMap<>();
+    private Map<String, Float> fluidMap = new LinkedHashMap<>();
 
     private String blockResult;
     private String itemResult;
@@ -56,6 +60,10 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     public void addRequiredTool(String toolType, int durability) {
         toolsMap.put(toolType, durability);
+    }
+
+    public void addFluid(String fluidType, float volume) {
+        fluidMap.put(fluidType, volume);
     }
 
     public void setBlockResult(String block, byte count) {
@@ -81,10 +89,16 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
+    public boolean hasFluidAsComponent(String fluidType) {
+        return fluidMap.containsKey(fluidType);
+    }
+
+    @Override
     public List<CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
         // TODO: Improve the search to find fragmented ingredients in multiple stacks, and also to find different kinds
         // of items, not just first matching
         List<Integer> resultSlots = new LinkedList<>();
+
         for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
             int slotNo = hasItem(station, ingredientCount.getKey(), ingredientCount.getValue());
             if (slotNo != -1) {
@@ -103,7 +117,26 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             }
         }
 
+        for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
+            int fluidSlotNo = hasFluid(station, fluidVolume.getKey(), fluidVolume.getValue());
+            if (fluidSlotNo != -1) {
+                resultSlots.add(fluidSlotNo);
+            } else {
+                return null;
+            }
+        }
+
         return Collections.<CraftingStationResult>singletonList(new Result(resultSlots));
+    }
+
+    private int hasFluid(EntityRef station, String fluidType, Float volume) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "FLUID_INPUT")) {
+            if (hasFluidInSlot(station, fluidType, slot, volume)) {
+                return slot;
+            }
+        }
+
+        return -1;
     }
 
     private int hasTool(EntityRef station, String toolType, int durability) {
@@ -124,6 +157,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         return -1;
+    }
+
+    private boolean hasFluidInSlot(EntityRef station, String fluidType, int slot, float volume) {
+        FluidInventoryComponent fluidInventory = station.getComponent(FluidInventoryComponent.class);
+        FluidComponent fluid = fluidInventory.fluidSlots.get(slot).getComponent(FluidComponent.class);
+        return fluid != null && fluid.fluidType.equals(fluidType) && fluid.volume >= volume;
     }
 
     private boolean hasItemInSlot(EntityRef station, String itemType, int slot, int count) {
@@ -157,10 +196,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     private class Result implements CraftingStationResult {
         private List<Integer> items;
         private List<Integer> tools;
+        private List<Integer> fluids;
 
         public Result(List<Integer> slots) {
             items = slots.subList(0, ingredientsMap.size());
             tools = slots.subList(ingredientsMap.size(), ingredientsMap.size() + toolsMap.size());
+            fluids = slots.subList(ingredientsMap.size() + toolsMap.size(), ingredientsMap.size() + toolsMap.size() + fluidMap.size());
         }
 
         @Override
@@ -172,6 +213,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             for (Integer tool : tools) {
                 sb.append(tool).append("|");
             }
+            for (Integer fluid : fluids) {
+                sb.append(fluid).append("|");
+            }
 
             return sb.replace(sb.length() - 1, sb.length() + 1, "").toString();
         }
@@ -181,6 +225,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (!validateCreation(station)) {
                 return EntityRef.NULL;
             }
+
+            FluidManager fluidManager = CoreRegistry.get(FluidManager.class);
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
@@ -192,6 +238,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
                 final EntityRef tool = InventoryUtils.getItemAt(station, tools.get(index));
                 tool.send(new ReduceDurabilityEvent(toolDurability.getValue()));
+                index++;
+            }
+            index = 0;
+            for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
+                fluidManager.removeFluid(station, station, fluids.get(index), fluidVolume.getKey(), fluidVolume.getValue());
                 index++;
             }
 
@@ -209,6 +260,13 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             index = 0;
             for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
                 if (!hasToolInSlot(station, toolDurability.getKey(), tools.get(index), toolDurability.getValue())) {
+                    return false;
+                }
+                index++;
+            }
+            index = 0;
+            for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
+                if (!hasFluidInSlot(station, fluidVolume.getKey(), fluids.get(index), fluidVolume.getValue())) {
                     return false;
                 }
                 index++;

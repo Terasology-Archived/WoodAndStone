@@ -45,6 +45,12 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
             String type = split[1];
             workstationRecipe.addRequiredTool(type, count);
         }
+        for (String recipeFluid : recipe.recipeFluids) {
+            String[] split = recipeFluid.split("\\*", 2);
+            float volume = Float.parseFloat(split[0]);
+            String type = split[1];
+            workstationRecipe.addFluid(type, volume);
+        }
 
         if (recipe.blockResult != null) {
             String[] split = recipe.blockResult.split("\\*", 2);

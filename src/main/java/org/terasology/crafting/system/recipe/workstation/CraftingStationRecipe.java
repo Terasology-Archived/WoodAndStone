@@ -41,6 +41,14 @@ public interface CraftingStationRecipe {
     boolean hasAsTool(EntityRef item);
 
     /**
+     * Inquires if the specified fluid is a component in that recipe.
+     *
+     * @param fluidType
+     * @return
+     */
+    boolean hasFluidAsComponent(String fluidType);
+
+    /**
      * Returns all possible recipes (components->result) that can be done processed using this recipe
      * from the components and tools available in the station entity's inventory.
      *

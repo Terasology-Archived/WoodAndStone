@@ -23,6 +23,7 @@ public class CraftingStationRecipeComponent implements Component {
     public String recipeId;
     public List<String> recipeComponents;
     public List<String> recipeTools;
+    public List<String> recipeFluids;
 
     public String itemResult;
     public String blockResult;

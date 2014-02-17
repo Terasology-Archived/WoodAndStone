@@ -20,6 +20,7 @@ import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.inventory.ValidateFluidInventoryItem;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 
@@ -27,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventoryItem {
+public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventoryItem, ValidateFluidInventoryItem {
     private CraftingStationRecipe craftingStationRecipe;
 
     public ValidateRecipeProcessPart(CraftingStationRecipe craftingStationRecipe) {
@@ -58,6 +59,17 @@ public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventory
     }
 
     @Override
+    public boolean isResponsibleForFluidSlot(EntityRef workstation, int slotNo) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "FLUID_INPUT")) {
+            if (slot == slotNo) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
             if (slot == slotNo) {
@@ -81,6 +93,17 @@ public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventory
     }
 
     @Override
+    public boolean isValidFluid(EntityRef workstation, int slotNo, EntityRef instigator, String fluidType) {
+        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "FLUID_INPUT")) {
+            if (slot == slotNo) {
+                return craftingStationRecipe.hasFluidAsComponent(fluidType);
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
         CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
         if (craftingStation == null) {
@@ -91,6 +114,10 @@ public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventory
         Set<String> resultIds = new HashSet<>();
         for (CraftingStationRecipe.CraftingStationResult craftingStationResult : result) {
             resultIds.add(craftingStationResult.getResultId());
+        }
+
+        if (resultIds.size() == 0) {
+            throw new InvalidProcessException();
         }
 
         return resultIds;
