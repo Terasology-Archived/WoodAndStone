@@ -20,9 +20,9 @@ import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
-import org.terasology.workstation.process.inventory.ValidateFluidInventoryItem;
+import org.terasology.workstation.process.WorkstationInventoryUtils;
+import org.terasology.workstation.process.fluid.ValidateFluidInventoryItem;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
-import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 
 import java.util.HashSet;
 import java.util.List;

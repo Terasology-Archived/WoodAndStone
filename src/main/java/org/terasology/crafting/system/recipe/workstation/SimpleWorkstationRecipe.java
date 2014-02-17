@@ -30,7 +30,7 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
+import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;

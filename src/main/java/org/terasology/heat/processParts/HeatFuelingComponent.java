@@ -27,8 +27,8 @@ import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.event.AutomaticProcessingStateChanged;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
+import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
-import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

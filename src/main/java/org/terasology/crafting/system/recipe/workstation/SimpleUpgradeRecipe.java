@@ -6,14 +6,13 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.workstation.process.inventory.WorkstationInventoryUtils;
+import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -150,7 +149,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
         private void moveItems(EntityRef oldStation, EntityRef newStation, InventoryComponent oldStationInventory, InventoryComponent newStationInventory, String slotType) {
             List<Integer> inSlots = WorkstationInventoryUtils.getAssignedSlots(oldStation, slotType);
             List<Integer> outSlots = WorkstationInventoryUtils.getAssignedSlots(newStation, slotType);
-            for (int i=0; i<inSlots.size(); i++) {
+            for (int i = 0; i < inSlots.size(); i++) {
                 int slotFrom = inSlots.get(i);
                 int slotTo = outSlots.get(i);
                 newStationInventory.itemSlots.set(slotTo, oldStationInventory.itemSlots.get(slotFrom));

@@ -54,6 +54,11 @@ public class CraftingWorkstationProcess implements WorkstationProcess {
         return processParts;
     }
 
+    @Override
+    public boolean isAutomatable() {
+        return false;
+    }
+
     public CraftingStationRecipe getCraftingWorkstationRecipe() {
         return recipe;
     }
