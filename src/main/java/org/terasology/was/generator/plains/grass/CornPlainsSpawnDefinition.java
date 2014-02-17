@@ -1,4 +1,4 @@
-package org.terasology.was.generator.plains.crop;
+package org.terasology.was.generator.plains.grass;
 
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;

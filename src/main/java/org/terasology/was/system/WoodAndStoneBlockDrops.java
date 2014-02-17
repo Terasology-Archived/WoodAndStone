@@ -73,6 +73,11 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
                 dropGrammar.blockDrops = Arrays.asList("0.05|PlantPack:" + treeType + "Sapling");
                 dropGrammar.itemDrops = Arrays.asList("0.2|WoodAndStone:twig");
                 event.addComponent(dropGrammar);
+            } else if (blockUri.equals(new BlockUri("Core", "TallGrass1"))
+                    || blockUri.equals(new BlockUri("Core", "TallGrass2"))
+                    || blockUri.equals(new BlockUri("Core", "TallGrass3"))) {
+                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
+                event.addComponent(dropGrammar);
             }
         }
 
