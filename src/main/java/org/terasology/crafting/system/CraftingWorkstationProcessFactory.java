@@ -33,23 +33,29 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
         CraftingStationRecipeComponent recipe = prefab.getComponent(CraftingStationRecipeComponent.class);
 
         SimpleWorkstationRecipe workstationRecipe = new SimpleWorkstationRecipe();
-        for (String recipeComponent : recipe.recipeComponents) {
-            String[] split = recipeComponent.split("\\*", 2);
-            int count = Integer.parseInt(split[0]);
-            String type = split[1];
-            workstationRecipe.addIngredient(type, count);
+        if (recipe.recipeComponents != null) {
+            for (String recipeComponent : recipe.recipeComponents) {
+                String[] split = recipeComponent.split("\\*", 2);
+                int count = Integer.parseInt(split[0]);
+                String type = split[1];
+                workstationRecipe.addIngredient(type, count);
+            }
         }
-        for (String recipeTool : recipe.recipeTools) {
-            String[] split = recipeTool.split("\\*", 2);
-            int count = Integer.parseInt(split[0]);
-            String type = split[1];
-            workstationRecipe.addRequiredTool(type, count);
+        if (recipe.recipeTools != null) {
+            for (String recipeTool : recipe.recipeTools) {
+                String[] split = recipeTool.split("\\*", 2);
+                int count = Integer.parseInt(split[0]);
+                String type = split[1];
+                workstationRecipe.addRequiredTool(type, count);
+            }
         }
-        for (String recipeFluid : recipe.recipeFluids) {
-            String[] split = recipeFluid.split("\\*", 2);
-            float volume = Float.parseFloat(split[0]);
-            String type = split[1];
-            workstationRecipe.addFluid(type, volume);
+        if (recipe.recipeFluids != null) {
+            for (String recipeFluid : recipe.recipeFluids) {
+                String[] split = recipeFluid.split("\\*", 2);
+                float volume = Float.parseFloat(split[0]);
+                String type = split[1];
+                workstationRecipe.addFluid(type, volume);
+            }
         }
 
         if (recipe.blockResult != null) {

@@ -8,10 +8,22 @@
     },
     "WorkstationInventory": {
         "slotAssignments": {
-            "INPUT": { "slotStart": 3, "slotCount": 6 },
-            "TOOL": { "slotStart": 1, "slotCount": 2 },
-            "UPGRADE": { "slotStart": 0, "slotCount": 1 },
-            "OUTPUT": { "slotStart": 10, "slotCount": 1 }
+            "INPUT": {
+                "slotStart": 3,
+                "slotCount": 6
+            },
+            "TOOL": {
+                "slotStart": 1,
+                "slotCount": 2
+            },
+            "UPGRADE": {
+                "slotStart": 0,
+                "slotCount": 1
+            },
+            "OUTPUT": {
+                "slotStart": 9,
+                "slotCount": 1
+            }
         }
     },
     "CraftingStation": {

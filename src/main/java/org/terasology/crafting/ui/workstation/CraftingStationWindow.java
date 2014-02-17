@@ -79,7 +79,7 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
         WorkstationInventoryComponent.SlotAssignment upgradeAssignments = workstationInventory.slotAssignments.get("UPGRADE");
         WorkstationInventoryComponent.SlotAssignment inputAssignments = workstationInventory.slotAssignments.get("INPUT");
         WorkstationInventoryComponent.SlotAssignment toolAssignments = workstationInventory.slotAssignments.get("TOOL");
-        WorkstationInventoryComponent.SlotAssignment resultAssignments = workstationInventory.slotAssignments.get("RESULT");
+        WorkstationInventoryComponent.SlotAssignment resultAssignments = workstationInventory.slotAssignments.get("OUTPUT");
 
         ingredients.setTargetEntity(station);
         ingredients.setCellOffset(inputAssignments.slotStart);
