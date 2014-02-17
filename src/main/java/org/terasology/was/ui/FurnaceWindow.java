@@ -109,7 +109,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                         if (gameTime > lastConsumed.startTime + lastConsumed.burnLength) {
                             return 0f;
                         }
-                        return 1f * (gameTime - lastConsumed.startTime) / lastConsumed.burnLength;
+                        return 1f - (1f * (gameTime - lastConsumed.startTime) / lastConsumed.burnLength);
                     }
 
                     @Override
