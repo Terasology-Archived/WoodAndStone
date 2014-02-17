@@ -51,7 +51,6 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
     private UIImage stationBackground;
 
     private EntityRef station;
-    private String stationType;
 
     private String upgradeRecipeDisplayed;
     private String matchingUpgradeRecipe;
@@ -75,7 +74,6 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
         CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
 
         this.station = station;
-        this.stationType = craftingStation.type;
 
         WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
         WorkstationInventoryComponent.SlotAssignment upgradeAssignments = workstationInventory.slotAssignments.get("UPGRADE");
@@ -96,11 +94,6 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
         tools.setMaxCellCount(toolAssignments.slotCount);
 
         stationRecipes.setStation(station);
-        stationRecipes.setStationType(stationType);
-        stationRecipes.setComponentFromSlot(inputAssignments.slotStart);
-        stationRecipes.setComponentSlotCount(inputAssignments.slotCount);
-        stationRecipes.setToolFromSlot(toolAssignments.slotStart);
-        stationRecipes.setToolSlotCount(toolAssignments.slotCount);
 
         result.setTargetEntity(station);
         result.setCellOffset(resultAssignments.slotStart);

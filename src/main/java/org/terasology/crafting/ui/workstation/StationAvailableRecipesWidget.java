@@ -54,13 +54,8 @@ public class StationAvailableRecipesWidget extends CoreWidget {
     private Set<String> displayedOpenCategories = new HashSet<>();
     private Multimap<String, String> availableRecipes = HashMultimap.create();
     private WorkstationRegistry registry;
-    private String stationType;
 
     private EntityRef station;
-    private int componentFromSlot;
-    private int componentSlotCount;
-    private int toolFromSlot;
-    private int toolSlotCount;
 
     private ColumnLayout layout;
 
@@ -73,26 +68,6 @@ public class StationAvailableRecipesWidget extends CoreWidget {
 
     public void setStation(EntityRef station) {
         this.station = station;
-    }
-
-    public void setStationType(String stationType) {
-        this.stationType = stationType;
-    }
-
-    public void setComponentFromSlot(int componentFromSlot) {
-        this.componentFromSlot = componentFromSlot;
-    }
-
-    public void setComponentSlotCount(int componentSlotCount) {
-        this.componentSlotCount = componentSlotCount;
-    }
-
-    public void setToolFromSlot(int toolFromSlot) {
-        this.toolFromSlot = toolFromSlot;
-    }
-
-    public void setToolSlotCount(int toolSlotCount) {
-        this.toolSlotCount = toolSlotCount;
     }
 
     @Override
