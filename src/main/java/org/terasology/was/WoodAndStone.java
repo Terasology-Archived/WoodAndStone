@@ -25,8 +25,6 @@ public final class WoodAndStone {
     public static final String BASIC_STONECRAFTING_PROCESS_TYPE = "WoodAndStone:BasicStonecrafting";
     public static final String ADVANCED_STONECRAFTING_PROCESS_TYPE = "WoodAndStone:StandardStonecrafting";
 
-    public static final String HEARTH_PROCESS_TYPE = "WoodAndStone:Hearth";
-
     private WoodAndStone() {
     }
 }
