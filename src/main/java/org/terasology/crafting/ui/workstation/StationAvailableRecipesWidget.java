@@ -75,7 +75,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         // TODO: Naive approach by comparing all the possible recipes to those currently displayed
         WorkstationComponent workstation = station.getComponent(WorkstationComponent.class);
         Multimap<String, String> recipes = HashMultimap.create();
-        for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes)) {
+        for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes.keySet())) {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 CraftingStationRecipe craftingStationRecipe = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe();
                 String recipeId = workstationProcess.getId();
@@ -128,7 +128,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
                 Maps.newHashMap();
 
         WorkstationComponent workstation = station.getComponent(WorkstationComponent.class);
-        for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes)) {
+        for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes.keySet())) {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 String recipeId = workstationProcess.getId();
                 List<CraftingStationRecipe.CraftingStationResult> results = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe().getMatchingRecipeResults(station);

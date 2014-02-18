@@ -1,16 +1,27 @@
 {
     "Workstation": {
         "uiPrefab": "WoodAndStone:Furnace",
-        "supportedProcessTypes": ["Machines:Heater", "Machines:Furnace"]
+        "supportedProcessTypes": {
+            "Machines:Heater": true,
+            "Machines:Furnace": true
+        }
     },
     "WorkstationInventory": {
         "slotAssignments": {
-            "INPUT": { "slotStart": 0, "slotCount": 1 },
-            "FUEL": { "slotStart": 1, "slotCount": 1 },
-            "OUTPUT": { "slotStart": 2, "slotCount": 1 }
+            "INPUT": {
+                "slotStart": 0,
+                "slotCount": 1
+            },
+            "FUEL": {
+                "slotStart": 1,
+                "slotCount": 1
+            },
+            "OUTPUT": {
+                "slotStart": 2,
+                "slotCount": 1
+            }
         }
     },
-    "AutomaticProcessing": { },
     "HeatProducer": {
         "heatTransferEfficiency": 1,
         "heatDirections": ["TOP"]

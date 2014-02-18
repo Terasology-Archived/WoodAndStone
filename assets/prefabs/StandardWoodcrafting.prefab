@@ -4,7 +4,11 @@
     },
     "Workstation": {
         "uiPrefab": "WoodAndStone:CraftInStation",
-        "supportedProcessTypes": ["WoodAndStone:BasicWoodcrafting", "WoodAndStone:StandardWoodcrafting", "Crafting:UpgradeCraftingWorkstation"]
+        "supportedProcessTypes": {
+            "WoodAndStone:BasicWoodcrafting": false,
+            "WoodAndStone:StandardWoodcrafting": false,
+            "Crafting:UpgradeCraftingWorkstation": false
+        }
     },
     "WorkstationInventory": {
         "slotAssignments": {

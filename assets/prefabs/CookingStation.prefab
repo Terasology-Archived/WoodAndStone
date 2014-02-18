@@ -4,9 +4,11 @@
     },
     "Workstation": {
         "uiPrefab": "WoodAndStone:CookingStation",
-        "supportedProcessTypes": ["WoodAndStone:Cooking", "Workstation:FillFluid"]
+        "supportedProcessTypes": {
+            "WoodAndStone:Cooking": false,
+            "Workstation:FillFluid": true
+        }
     },
-    "AutomaticProcessing": { },
     "WorkstationInventory": {
         "slotAssignments": {
             "FLUID_CONTAINER_INPUT": {

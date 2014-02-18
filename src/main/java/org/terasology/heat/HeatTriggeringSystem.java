@@ -27,7 +27,7 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.workstation.event.AutomaticProcessingStateChanged;
+import org.terasology.workstation.event.WotkstationStateChanged;
 import org.terasology.world.BlockEntityRegistry;
 
 import java.util.Iterator;
@@ -70,7 +70,7 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                     entity.saveComponent(heatConsumer);
                 }
 
-                entity.send(new AutomaticProcessingStateChanged());
+                entity.send(new WotkstationStateChanged());
             }
 
             for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class)) {
@@ -94,7 +94,7 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                     entity.saveComponent(producer);
                 }
 
-                entity.send(new AutomaticProcessingStateChanged());
+                entity.send(new WotkstationStateChanged());
             }
         }
     }

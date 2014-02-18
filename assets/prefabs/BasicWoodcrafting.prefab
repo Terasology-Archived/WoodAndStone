@@ -4,14 +4,29 @@
     },
     "Workstation": {
         "uiPrefab": "WoodAndStone:CraftInStation",
-        "supportedProcessTypes": ["WoodAndStone:BasicWoodcrafting", "Crafting:UpgradeCraftingWorkstation"]
+        "supportedProcessTypes": {
+            "WoodAndStone:BasicWoodcrafting": false,
+            "Crafting:UpgradeCraftingWorkstation": false
+        }
     },
     "WorkstationInventory": {
         "slotAssignments": {
-            "INPUT": { "slotStart": 2, "slotCount": 3 },
-            "TOOL": { "slotStart": 1, "slotCount": 1 },
-            "UPGRADE": { "slotStart": 0, "slotCount": 1 },
-            "OUTPUT": { "slotStart": 5, "slotCount": 1 }
+            "INPUT": {
+                "slotStart": 2,
+                "slotCount": 3
+            },
+            "TOOL": {
+                "slotStart": 1,
+                "slotCount": 1
+            },
+            "UPGRADE": {
+                "slotStart": 0,
+                "slotCount": 1
+            },
+            "OUTPUT": {
+                "slotStart": 5,
+                "slotCount": 1
+            }
         }
     },
     "CraftingStation": {

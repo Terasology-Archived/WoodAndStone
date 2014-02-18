@@ -61,9 +61,4 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess {
     public List<ProcessPart> getProcessParts() {
         return processParts;
     }
-
-    @Override
-    public boolean isAutomatable() {
-        return false;
-    }
 }
