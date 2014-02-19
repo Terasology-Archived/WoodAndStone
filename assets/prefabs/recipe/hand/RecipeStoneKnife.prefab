@@ -1,7 +1,7 @@
 {
     "CraftInHandRecipe": {
-        "recipeId": "WoodAndStone:crudeAxeHammer",
-        "itemResult": "WoodAndStone:crudeAxeHammer",
+        "recipeId": "WoodAndStone:StoneKnife",
+        "itemResult": "WoodAndStone:StoneKnife",
         "recipeComponents": ["1*WoodAndStone:stoneKnifeBlade", "1*WoodAndStone:twig", "1*WoodAndStone:stick"]
     }
 }

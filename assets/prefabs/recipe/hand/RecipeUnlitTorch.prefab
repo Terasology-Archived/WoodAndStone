@@ -1,7 +1,7 @@
 {
     "CraftInHandRecipe": {
-        "recipeId": "WoodAndStone:unlitTorch",
-        "itemResult": "WoodAndStone:unlitTorch",
+        "recipeId": "WoodAndStone:UnlitTorch",
+        "itemResult": "WoodAndStone:UnlitTorch",
         "recipeComponents": ["1*WoodAndStone:stick"],
         "recipeTools": ["1*WoodAndStone:resin"]
     }
