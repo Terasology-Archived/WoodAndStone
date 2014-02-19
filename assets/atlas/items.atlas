@@ -7,8 +7,8 @@
         "gridDimensions": [8, 8],
         "tileNames": [
             "Branch", "Fiber", "Twig", "Stone", "Flint", "SharpStone", "ToolStone", "Resin",
-            "StoneKnifeBlade", "StoneAxeHammerHead", "StoneArrowHead", "StoneHammerHead", "", "", "", "",
-            "StoneKnife", "CrudeAxe", "StoneAxe", "StoneHammer", "", "", "", "",
+            "StoneKnifeBlade", "AxeHammerHead", "StoneArrowHead", "StoneHammerHead", "", "", "", "",
+            "StoneKnife", "CrudeAxeHammer", "StoneAxe", "StoneHammer", "", "", "", "",
             "", "", "", "", "", "", "", "",
             "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick", "",
             "", "", "", "", "", "", "", "",

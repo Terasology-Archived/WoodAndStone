@@ -1,16 +1,19 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.CrudeAxe",
+        "icon": "WoodAndStone:items.crudeAxeHammer",
         "renderWithIcon": true,
         "damageType": "axeDamage"
     },
     "DisplayName": {
-        "name": "Crude Axe"
+        "name": "Crude Axe-Hammer"
     },
     "Durability": {
         "durability": 20,
         "maxDurability": 20
+    },
+    "CraftInHandRecipe": {
+        "componentType": "WoodAndStone:crudeAxeHammer"
     },
     "CraftingStationTool": {
         "type": "axe"
