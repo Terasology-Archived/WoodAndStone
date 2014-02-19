@@ -10,9 +10,8 @@
     },
     "FluidContainerItem": {
         "volume": 10,
-        "fluidRenderRect": {
-            "min": [16, 16, 0],
-            "size": [18, 32, 1]
-        }
+        "fluidMinPerc": [0.1875, 0.15625],
+        "fluidSizePerc": [0.625, 0.4375],
+        "emptyTexture": "WoodAndStone:items.WoodenBucketEmpty"
     }
 }
