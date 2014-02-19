@@ -12,7 +12,7 @@
         "maxDurability": 100
     },
     "CraftingStationTool": {
-        "type": "axe"
+        "type": ["knife"]
     },
     "CraftInHandRecipe": {
         "componentType": "WoodAndStone:stoneKnife"

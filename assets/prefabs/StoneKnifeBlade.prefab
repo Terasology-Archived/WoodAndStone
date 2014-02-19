@@ -5,14 +5,7 @@
         "renderWithIcon": true
     },
     "DisplayName": {
-        "name": "Stone Knife"
-    },
-    "Durability": {
-        "durability": 50,
-        "maxDurability": 50
-    },
-    "CraftingStationTool": {
-        "type": "axe"
+        "name": "Stone Knife Blade"
     },
     "CraftInHandRecipe": {
         "componentType": "WoodAndStone:stoneKnifeBlade"

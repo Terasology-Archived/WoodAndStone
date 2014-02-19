@@ -13,6 +13,6 @@
         "maxDurability": 100
     },
     "CraftingStationTool": {
-        "type": "axe"
+        "type": ["axe"]
     }
 }

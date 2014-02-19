@@ -2,7 +2,8 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items.StoneHammer",
-        "renderWithIcon": true
+        "renderWithIcon": true,
+        "damageType": "WoodAndStone:hammerDamage"
     },
     "DisplayName": {
         "name": "Stone Hammer"
@@ -15,6 +16,6 @@
         "componentType": "WoodAndStone:hammer"
     },
     "CraftingStationTool": {
-        "type": "hammer"
+        "type": ["hammer"]
     }
 }

@@ -85,7 +85,15 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     @Override
     public boolean hasAsTool(EntityRef item) {
         CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
-        return tool != null && toolsMap.keySet().contains(tool.type);
+        if (tool == null) {
+            return false;
+        }
+        for (String toolType : toolsMap.keySet()) {
+            if (tool.type.contains(toolType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -178,7 +186,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         EntityRef item = InventoryUtils.getItemAt(station, slot);
 
         CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
-        return tool != null && tool.type.equals(toolType)
+        return tool != null && tool.type.contains(toolType)
                 && item.hasComponent(DurabilityComponent.class) && item.getComponent(DurabilityComponent.class).durability >= durability;
     }
 

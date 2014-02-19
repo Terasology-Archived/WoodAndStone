@@ -13,8 +13,5 @@
     },
     "CraftInHandRecipe": {
         "componentType": "WoodAndStone:toolStone"
-    },
-    "CraftingStationTool": {
-        "type": "hammer"
     }
 }

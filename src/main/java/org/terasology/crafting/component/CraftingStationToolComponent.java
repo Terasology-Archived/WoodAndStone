@@ -17,6 +17,8 @@ package org.terasology.crafting.component;
 
 import org.terasology.entitySystem.Component;
 
+import java.util.List;
+
 public class CraftingStationToolComponent implements Component {
-    public String type;
+    public List<String> type;
 }

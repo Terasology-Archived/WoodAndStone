@@ -32,6 +32,6 @@ public class ToolTypeEntityFilter implements Predicate<EntityRef> {
     @Override
     public boolean apply(EntityRef item) {
         CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
-        return tool != null && tool.type.equals(toolType);
+        return tool != null && tool.type.contains(toolType);
     }
 }

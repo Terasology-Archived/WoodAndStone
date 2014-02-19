@@ -3,7 +3,7 @@
     "Item": {
         "icon": "WoodAndStone:items.crudeAxeHammer",
         "renderWithIcon": true,
-        "damageType": "axeDamage"
+        "damageType": "axeHammerDamage"
     },
     "DisplayName": {
         "name": "Crude Axe-Hammer"
@@ -16,6 +16,6 @@
         "componentType": "WoodAndStone:crudeAxeHammer"
     },
     "CraftingStationTool": {
-        "type": "axe"
+        "type": ["axe", "hammer"]
     }
 }
