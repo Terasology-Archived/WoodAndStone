@@ -145,15 +145,15 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
         addCraftInHandRecipe("WoodAndStone:toolStone",
             new CompositeTypeBasedCraftInHandRecipe(
-                "WoodAndStone:stone", new ConsumeItemCraftBehaviour("WoodAndStone:stone"),
-                "WoodAndStone:stone", new ConsumeItemCraftBehaviour("WoodAndStone:stone"),
+                "WoodAndStone:stone", new ConsumeItemCraftBehaviour("WoodAndStone:stone", 2),
+                null, new DoNothingCraftBehaviour(),
                 null, new DoNothingCraftBehaviour(),
                 "WoodAndStone:toolStone"));
 
         addCraftInHandRecipe("WoodAndStone:axeHammerHead",
             new CompositeTypeBasedCraftInHandRecipe(
                 "WoodAndStone:stone", new ConsumeItemCraftBehaviour("WoodAndStone:stone"),
-                "WoodAndStone:toolStone", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone",1),
+                "WoodAndStone:toolStone", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1),
                 null, new DoNothingCraftBehaviour(),
                 "WoodAndStone:axeHammerHead"));
 
