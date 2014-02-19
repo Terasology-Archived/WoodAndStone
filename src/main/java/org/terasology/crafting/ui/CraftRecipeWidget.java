@@ -82,6 +82,7 @@ public class CraftRecipeWidget extends CoreWidget {
         if (resultBlock != null) {
             result.setMesh(resultBlock.getMesh());
             result.setMeshTexture(Assets.getTexture("engine:terrain"));
+            result.setTooltip(resultBlock.getDisplayName());
         } else if (resultItem != null) {
             result.setIcon(resultItem.getComponent(ItemComponent.class).icon);
             DisplayNameComponent displayName = resultItem.getComponent(DisplayNameComponent.class);
