@@ -29,6 +29,7 @@ import org.terasology.math.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.workstation.event.WotkstationStateChanged;
 import org.terasology.world.BlockEntityRegistry;
+import org.terasology.world.block.BlockComponent;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
         if (currentTime > lastChecked + TRIGGER_INTERVAL) {
             lastChecked = currentTime;
 
-            for (EntityRef entity : entityManager.getEntitiesWith(HeatConsumerComponent.class)) {
+            for (EntityRef entity : entityManager.getEntitiesWith(HeatConsumerComponent.class, BlockComponent.class)) {
                 HeatConsumerComponent heatConsumer = entity.getComponent(HeatConsumerComponent.class);
                 Iterator<HeatConsumerComponent.ResidualHeat> residualHeatIterator = heatConsumer.residualHeat.iterator();
                 boolean changed = false;
@@ -73,7 +74,7 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                 entity.send(new WotkstationStateChanged());
             }
 
-            for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class)) {
+            for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class, BlockComponent.class)) {
                 HeatProducerComponent producer = entity.getComponent(HeatProducerComponent.class);
 
                 boolean changed = false;
