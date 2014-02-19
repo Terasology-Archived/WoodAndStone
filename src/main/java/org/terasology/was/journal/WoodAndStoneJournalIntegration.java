@@ -79,7 +79,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         chapterHandler.registerJournalEntry("1", firstEntry);
 
         chapterHandler.registerJournalEntry("2", true, "Excellent! I got the Axe-Hammer, I should be able to cut some of the trees with it. " +
-                "I can also use it to dig stone with to get some more stones. It's not perfect but will have to do until I get my hands on a " +
+                "I can also use it to dig stone to get some more Stones for my crafting. It's not perfect but will have to do until I get my hands on a " +
                 "better hammer or a pick.");
 
         chapterHandler.registerJournalEntry("3", true, "These are big, there is no way I could handle them in my hands. " +

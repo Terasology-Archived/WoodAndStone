@@ -25,11 +25,11 @@ import org.terasology.rendering.nui.HorizontalAlign;
 public class RecipeJournalPart implements JournalManager.JournalEntryPart {
     private int indentAbove = 5;
     private int indentBelow = 5;
-    private int ingredientSpacing = 5;
-    private int resultSpacing = 15;
+    private int ingredientSpacing = 3;
+    private int resultSpacing = 30;
     private TextureRegion[] ingredients;
     private TextureRegion result;
-    private int iconSize = 32;
+    private int iconSize = 64;
     private HorizontalAlign horizontalAlign = HorizontalAlign.CENTER;
 
     public RecipeJournalPart(TextureRegion[] ingredients, TextureRegion result) {
@@ -56,8 +56,8 @@ public class RecipeJournalPart implements JournalManager.JournalEntryPart {
     public void render(Canvas canvas, Rect2i region, long date) {
         int ingredientsCount = ingredients.length;
         int drawingWidth = ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing + resultSpacing + iconSize;
-        int x = horizontalAlign.getOffset(drawingWidth, region.width());
-        int y = indentAbove;
+        int x = region.minX() + horizontalAlign.getOffset(drawingWidth, region.width());
+        int y = region.minY() + indentAbove;
         for (int i = 0; i < ingredients.length; i++) {
             canvas.drawTexture(ingredients[i], Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
             x += iconSize + ingredientSpacing;
