@@ -11,7 +11,7 @@
         "durability": 20,
         "maxDurability": 20
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:toolStone"
     }
 }

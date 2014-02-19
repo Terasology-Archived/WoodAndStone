@@ -16,17 +16,20 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
+import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.component.CraftingStationMaterialComponent;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.CraftingWorkstationProcess;
 import org.terasology.crafting.system.CraftingWorkstationProcessFactory;
 import org.terasology.crafting.system.recipe.hand.CompositeTypeBasedCraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-import org.terasology.crafting.system.recipe.hand.SimpleConsumingCraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.hand.behaviour.PresenceItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.multiBlock.BasicHorizontalSizeFilter;
@@ -51,6 +54,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     private MultiBlockFormRecipeRegistry multiBlockFormRecipeRegistry;
     @In
     private BlockManager blockManager;
+    @In
+    private PrefabManager prefabManager;
 
     @Override
     public void initialise() {
@@ -64,9 +69,9 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
         addCraftInHandRecipes();
 
-        addStandardWoodWorkstationRecipes();
+        addStandardWoodWorkstationBlockShapeRecipes();
 
-        addBasicStoneWorkstationRecipes();
+        addBasicStoneWorkstationBlockShapeRecipes();
     }
 
     private void addWorkstationFormingRecipes() {
@@ -80,6 +85,39 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                         new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicStonecrafting",
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicStoneStation"))));
+    }
+
+    private void addBasicStoneWorkstationBlockShapeRecipes() {
+        addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "Building|Cobble Stone|WoodAndStone:CobbleBlock",
+                "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
+                "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
+    }
+
+    private void addStandardWoodWorkstationBlockShapeRecipes() {
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
+                "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
+                "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
+    }
+
+    private void addCraftInHandRecipes() {
+        addCraftInHandRecipe("WoodAndStone:Seeding", new SeedingFruitsRecipe());
+
+        for (Prefab prefab : prefabManager.listPrefabs(CraftInHandRecipeComponent.class)) {
+            parseCraftInHandRecipe(prefab.getComponent(CraftInHandRecipeComponent.class));
+        }
+    }
+
+    private void addShapeRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
+                                String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
+                                String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
+        SimpleWorkstationRecipe shapeRecipe = new SimpleWorkstationRecipe();
+        shapeRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
+        shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
+        shapeRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
+
+        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix + shape, shapeRecipe));
     }
 
     private void addWorkstationBlockShapesRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
@@ -121,71 +159,38 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 "PillarBase", 1, 1, 2);
     }
 
-    private void addShapeRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
-                                String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
-                                String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
-        SimpleWorkstationRecipe shapeRecipe = new SimpleWorkstationRecipe();
-        shapeRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
-        shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
-        shapeRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
+    private void parseCraftInHandRecipe(CraftInHandRecipeComponent recipeComponent) {
+        String recipeId = recipeComponent.recipeId;
+        String prefab = (recipeComponent.blockResult != null) ? recipeComponent.blockResult : recipeComponent.itemResult;
+        boolean block = (recipeComponent.blockResult != null);
 
-        workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix + shape, shapeRecipe));
-    }
+        CompositeTypeBasedCraftInHandRecipe recipe = new CompositeTypeBasedCraftInHandRecipe(prefab, block);
 
-    private void addBasicStoneWorkstationRecipes() {
-        addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "Building|Cobble Stone|WoodAndStone:CobbleBlock",
-                "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
-                "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
-    }
-
-    private void addCraftInHandRecipes() {
-        addCraftInHandRecipe("WoodAndStone:Seeding", new SeedingFruitsRecipe());
-
-        addCraftInHandRecipe("WoodAndStone:toolStone",
-                new CompositeTypeBasedCraftInHandRecipe(
-                        "WoodAndStone:toolStone", false,
-                        new ConsumeItemCraftBehaviour("WoodAndStone:stone", 2)));
-
-        addCraftInHandRecipe("WoodAndStone:axeHammerHead",
-                new CompositeTypeBasedCraftInHandRecipe(
-                        "WoodAndStone:axeHammerHead", false, new ConsumeItemCraftBehaviour("WoodAndStone:stone"),
-                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1)));
-
-        addCraftInHandRecipe("WoodAndStone:CrudeAxeHammer",
-                new SimpleConsumingCraftInHandRecipe("WoodAndStone:axeHammerHead", "WoodAndStone:stick",
-                        "WoodAndStone:twig", "WoodAndStone:crudeAxeHammer", false));
-
-        addCraftInHandRecipe("WoodAndStone:StoneKnifeBlade",
-                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:StoneKnifeBlade", false, new ConsumeItemCraftBehaviour("WoodAndStone:flint"),
-                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1)));
-
-        addCraftInHandRecipe("WoodAndStone:StoneKnife",
-                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:StoneKnife", false,
-                        new ConsumeItemCraftBehaviour("WoodAndStone:stick"),
-                        new ConsumeItemCraftBehaviour("WoodAndStone:StoneKnifeBlade"),
-                        new ConsumeItemCraftBehaviour("WoodAndStone:twig")));
-
-        addCraftInHandRecipe("WoodAndStone:unlitTorch",
-                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:UnlitTorch", false,
-                        new ConsumeItemCraftBehaviour("WoodAndStone:stick"),
-                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:resin", 1)));
-
-        addCraftInHandRecipe("WoodAndStone:litTorch",
-                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:LitTorch", true,
-                        new ConsumeItemCraftBehaviour("WoodAndStone:unlitTorch"),
-                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:flint", 1)));
-
-        addCraftInHandRecipe("WoodAndStone:clayHearth",
-                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:ClayHearth", true,
-                        new ConsumeItemCraftBehaviour("WoodAndStone:clay", 9)));
-    }
-
-    private void addStandardWoodWorkstationRecipes() {
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
-                "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
-                "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
+        if (recipeComponent.recipeComponents != null) {
+            for (String component : recipeComponent.recipeComponents) {
+                String[] split = component.split("\\*");
+                int count = Integer.parseInt(split[0]);
+                String type = split[1];
+                recipe.addItemCraftBehaviour(new ConsumeItemCraftBehaviour(type, count));
+            }
+        }
+        if (recipeComponent.recipeTools != null) {
+            for (String tool : recipeComponent.recipeTools) {
+                String[] split = tool.split("\\*");
+                int durability = Integer.parseInt(split[0]);
+                String type = split[1];
+                recipe.addItemCraftBehaviour(new ReduceItemDurabilityCraftBehaviour(type, durability));
+            }
+        }
+        if (recipeComponent.recipeActivators != null) {
+            for (String activator : recipeComponent.recipeActivators) {
+                String[] split = activator.split("\\*");
+                int count = Integer.parseInt(split[0]);
+                String type = split[1];
+                recipe.addItemCraftBehaviour(new PresenceItemCraftBehaviour(type, count));
+            }
+        }
+        addCraftInHandRecipe(recipeId, recipe);
     }
 
     private void addCraftInHandRecipe(String recipeId, CraftInHandRecipe craftInHandRecipe) {

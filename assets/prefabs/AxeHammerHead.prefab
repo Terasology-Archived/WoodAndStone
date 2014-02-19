@@ -8,7 +8,7 @@
     "DisplayName": {
         "name": "Axe-Hammer Head"
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:axeHammerHead"
     },
     "CraftingStationIngredient": {

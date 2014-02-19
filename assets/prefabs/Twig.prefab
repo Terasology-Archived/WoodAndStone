@@ -8,7 +8,7 @@
     "DisplayName": {
         "name": "Twig"
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:twig"
     },
     "CraftingStationIngredient": {

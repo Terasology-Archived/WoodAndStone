@@ -2,6 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items.Flint",
+        "stackId": "WoodAndStone:flint",
         "renderWithIcon": true
     },
     "DisplayName": {
@@ -11,7 +12,7 @@
         "durability": 20,
         "maxDurability": 20
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:flint"
     }
 }

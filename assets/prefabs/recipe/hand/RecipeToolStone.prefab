@@ -1,0 +1,7 @@
+{
+    "CraftInHandRecipe": {
+        "recipeId": "WoodAndStone:toolStone",
+        "itemResult": "WoodAndStone:toolStone",
+        "recipeComponents": ["2*WoodAndStone:stone"]
+    }
+}

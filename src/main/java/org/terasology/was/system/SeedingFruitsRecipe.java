@@ -15,7 +15,7 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.crafting.component.CraftInHandRecipeComponent;
+import org.terasology.crafting.component.CraftInHandIngredientComponent;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -68,7 +68,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
     private int getKnifeSlot(EntityRef character, int slotCount) {
         for (int i = 0; i < slotCount; i++) {
-            CraftInHandRecipeComponent recipeComponent = InventoryUtils.getItemAt(character, i).getComponent(CraftInHandRecipeComponent.class);
+            CraftInHandIngredientComponent recipeComponent = InventoryUtils.getItemAt(character, i).getComponent(CraftInHandIngredientComponent.class);
             if (recipeComponent != null && recipeComponent.componentType.equals("WoodAndStone:knife")) {
                 return i;
             }

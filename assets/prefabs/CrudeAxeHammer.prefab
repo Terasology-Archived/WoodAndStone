@@ -12,9 +12,6 @@
         "durability": 20,
         "maxDurability": 20
     },
-    "CraftInHandRecipe": {
-        "componentType": "WoodAndStone:crudeAxeHammer"
-    },
     "CraftingStationTool": {
         "type": ["axe", "hammer"]
     }

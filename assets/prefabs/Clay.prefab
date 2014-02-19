@@ -11,7 +11,7 @@
     "CraftingStationIngredient": {
         "type": "WoodAndStone:clay"
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:clay"
     },
     "HeatProcessed": {

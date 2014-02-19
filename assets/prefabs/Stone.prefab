@@ -8,7 +8,7 @@
     "DisplayName": {
         "name": "Stone"
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:stone"
     },
     "CraftingStationIngredient": {

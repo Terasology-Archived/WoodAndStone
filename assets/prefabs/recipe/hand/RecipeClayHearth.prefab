@@ -1,0 +1,7 @@
+{
+    "CraftInHandRecipe": {
+        "recipeId": "WoodAndStone:ClayHearth",
+        "blockResult": "WoodAndStone:ClayHearth",
+        "recipeComponents": ["9*WoodAndStone:clay"]
+    }
+}

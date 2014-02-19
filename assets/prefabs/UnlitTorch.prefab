@@ -8,7 +8,7 @@
     "DisplayName": {
         "name": "Unlit Torch"
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:unlitTorch"
     }
 }

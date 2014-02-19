@@ -14,7 +14,7 @@
     "CraftingStationTool": {
         "type": ["knife"]
     },
-    "CraftInHandRecipe": {
-        "componentType": "WoodAndStone:stoneKnife"
+    "CraftInHandIngredient": {
+        "componentType": "WoodAndStone:knife"
     }
 }

@@ -27,6 +27,7 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,22 +37,25 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
-    private ItemCraftBehaviour[] itemCraftBehaviours;
+    private List<ItemCraftBehaviour> itemCraftBehaviours = new ArrayList<>();
     private String prefabName;
     private boolean block;
 
-    public CompositeTypeBasedCraftInHandRecipe(String resultPrefab, boolean block, ItemCraftBehaviour... itemCraftBehaviours) {
+    public CompositeTypeBasedCraftInHandRecipe(String resultPrefab, boolean block) {
         this.prefabName = resultPrefab;
         this.block = block;
-        this.itemCraftBehaviours = itemCraftBehaviours;
+    }
+
+    public void addItemCraftBehaviour(ItemCraftBehaviour itemCraftBehaviour) {
+        itemCraftBehaviours.add(itemCraftBehaviour);
     }
 
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
         // TODO: Improve searching for different kinds of items of the same type in whole inventory, not just first matching
-        int[] slots = new int[itemCraftBehaviours.length];
-        for (int i = 0; i < itemCraftBehaviours.length; i++) {
-            int matchingSlot = findMatchingSlot(character, itemCraftBehaviours[i]);
+        int[] slots = new int[itemCraftBehaviours.size()];
+        for (int i = 0; i < itemCraftBehaviours.size(); i++) {
+            int matchingSlot = findMatchingSlot(character, itemCraftBehaviours.get(i));
             if (matchingSlot == -1) {
                 return null;
             }
@@ -103,7 +107,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         public Map<Integer, Integer> getComponentSlotAndCount() {
             Map<Integer, Integer> result = new LinkedHashMap<>();
             for (int i = 0; i < slots.length; i++) {
-                result.put(slots[i], itemCraftBehaviours[i].getCountToDisplay());
+                result.put(slots[i], itemCraftBehaviours.get(i).getCountToDisplay());
             }
             return result;
         }
@@ -143,14 +147,14 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
             InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
             for (int i = 0; i < slots.length; i++) {
                 EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                if (!itemCraftBehaviours[i].isValid(character, itemInSlot)) {
+                if (!itemCraftBehaviours.get(i).isValid(character, itemInSlot)) {
                     return EntityRef.NULL;
                 }
             }
 
             for (int i = 0; i < slots.length; i++) {
                 EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                itemCraftBehaviours[i].processForItem(character, itemInSlot);
+                itemCraftBehaviours.get(i).processForItem(character, itemInSlot);
             }
 
             return createResult();

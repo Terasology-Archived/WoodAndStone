@@ -7,7 +7,7 @@
     "DisplayName": {
         "name": "Stone Knife Blade"
     },
-    "CraftInHandRecipe": {
+    "CraftInHandIngredient": {
         "componentType": "WoodAndStone:stoneKnifeBlade"
     }
 }

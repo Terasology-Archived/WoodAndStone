@@ -1,0 +1,8 @@
+{
+    "CraftInHandRecipe": {
+        "recipeId": "WoodAndStone:LitTorch",
+        "blockResult": "WoodAndStone:LitTorch",
+        "recipeComponents": ["1*WoodAndStone:unlitTorch"],
+        "recipeActivators": ["1*WoodAndStone:flint"]
+    }
+}

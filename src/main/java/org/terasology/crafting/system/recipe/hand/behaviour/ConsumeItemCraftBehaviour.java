@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.system.recipe.hand.behaviour;
 
-import org.terasology.crafting.component.CraftInHandRecipeComponent;
+import org.terasology.crafting.component.CraftInHandIngredientComponent;
 import org.terasology.crafting.system.recipe.hand.ItemCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
@@ -40,7 +40,7 @@ public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
     @Override
     public boolean isValid(EntityRef character, EntityRef item) {
         ItemComponent itemComponent = item.getComponent(ItemComponent.class);
-        CraftInHandRecipeComponent craftComponent = item.getComponent(CraftInHandRecipeComponent.class);
+        CraftInHandIngredientComponent craftComponent = item.getComponent(CraftInHandIngredientComponent.class);
         return craftComponent != null && craftComponent.componentType.equals(itemType)
                 && itemComponent != null && itemComponent.stackCount >= count;
     }
