@@ -1,0 +1,8 @@
+{
+    "basedOn": "core:plant",
+    "colorSource": "foliage_lut",
+    "waving": true,
+    "entity": {
+        "prefab": "WoodAndStone:TallGrass"
+    }
+}

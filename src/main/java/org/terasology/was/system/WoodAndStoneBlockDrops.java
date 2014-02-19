@@ -50,21 +50,7 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
         }
 
         if (blockUri != null) {
-            if (blockUri.equals(new BlockUri("Core", "Grass"))
-                    || blockUri.equals(new BlockUri("Core", "Snow"))
-                    || blockUri.equals(new BlockUri("Core", "Dirt"))) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint");
-                event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("Core", "Sand"))
-                    || blockUri.equals(new BlockUri("Core", "Ice"))) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("Core", "Stone"))) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.itemDrops = Arrays.asList("3*WoodAndStone:stone");
-                event.addComponent(dropGrammar);
-            } else if (blockUri.getNormalisedModuleName().equalsIgnoreCase("plantpack")
+            if (blockUri.getNormalisedModuleName().equalsIgnoreCase("plantpack")
                     && blockUri.getNormalisedFamilyName().endsWith("leaf")) {
                 // A bit of hacking, assuming they follow naming pattern
                 String familyName = blockUri.getNormalisedFamilyName();
@@ -72,11 +58,6 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.blockDrops = Arrays.asList("0.05|PlantPack:" + treeType + "Sapling");
                 dropGrammar.itemDrops = Arrays.asList("0.2|WoodAndStone:twig");
-                event.addComponent(dropGrammar);
-            } else if (blockUri.equals(new BlockUri("Core", "TallGrass1"))
-                    || blockUri.equals(new BlockUri("Core", "TallGrass2"))
-                    || blockUri.equals(new BlockUri("Core", "TallGrass3"))) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 event.addComponent(dropGrammar);
             }
         }

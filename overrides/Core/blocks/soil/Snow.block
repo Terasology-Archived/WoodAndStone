@@ -1,0 +1,10 @@
+{
+    "basedOn": "core:soil",
+    "tiles": {
+        "sides": "SnowSide",
+        "bottom": "dirt"
+    },
+    "entity": {
+        "prefab": "WoodAndStone:Snow"
+    }
+}

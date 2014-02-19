@@ -1,0 +1,5 @@
+{
+    "BlockDropGrammar": {
+        "itemDrops": ["3*WoodAndStone:stone"]
+    }
+}
