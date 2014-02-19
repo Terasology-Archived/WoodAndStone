@@ -23,5 +23,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 public interface ItemCraftBehaviour {
     boolean isValid(EntityRef character, EntityRef item);
 
+    int getCountToDisplay();
+
     void processForItem(EntityRef character, EntityRef item);
 }

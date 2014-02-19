@@ -24,7 +24,6 @@ import org.terasology.crafting.system.recipe.hand.CompositeTypeBasedCraftInHandR
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.SimpleConsumingCraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.crafting.system.recipe.hand.behaviour.DoNothingCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -144,57 +143,42 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         addCraftInHandRecipe("WoodAndStone:Seeding", new SeedingFruitsRecipe());
 
         addCraftInHandRecipe("WoodAndStone:toolStone",
-            new CompositeTypeBasedCraftInHandRecipe(
-                "WoodAndStone:stone", new ConsumeItemCraftBehaviour("WoodAndStone:stone", 2),
-                null, new DoNothingCraftBehaviour(),
-                null, new DoNothingCraftBehaviour(),
-                "WoodAndStone:toolStone"));
+                new CompositeTypeBasedCraftInHandRecipe(
+                        "WoodAndStone:toolStone", false,
+                        new ConsumeItemCraftBehaviour("WoodAndStone:stone", 2)));
 
         addCraftInHandRecipe("WoodAndStone:axeHammerHead",
-            new CompositeTypeBasedCraftInHandRecipe(
-                "WoodAndStone:stone", new ConsumeItemCraftBehaviour("WoodAndStone:stone"),
-                "WoodAndStone:toolStone", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1),
-                null, new DoNothingCraftBehaviour(),
-                "WoodAndStone:axeHammerHead"));
+                new CompositeTypeBasedCraftInHandRecipe(
+                        "WoodAndStone:axeHammerHead", false, new ConsumeItemCraftBehaviour("WoodAndStone:stone"),
+                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1)));
 
         addCraftInHandRecipe("WoodAndStone:CrudeAxeHammer",
-            new SimpleConsumingCraftInHandRecipe("WoodAndStone:axeHammerHead", "WoodAndStone:stick",
-                "WoodAndStone:twig", "WoodAndStone:crudeAxeHammer"));
+                new SimpleConsumingCraftInHandRecipe("WoodAndStone:axeHammerHead", "WoodAndStone:stick",
+                        "WoodAndStone:twig", "WoodAndStone:crudeAxeHammer", false));
 
         addCraftInHandRecipe("WoodAndStone:StoneKnifeBlade",
-            new CompositeTypeBasedCraftInHandRecipe(
-                "WoodAndStone:flint", new ConsumeItemCraftBehaviour("WoodAndStone:flint"),
-                "WoodAndStone:toolStone", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1),
-                null, new DoNothingCraftBehaviour(),
-                "WoodAndStone:StoneKnifeBlade"));
+                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:StoneKnifeBlade", false, new ConsumeItemCraftBehaviour("WoodAndStone:flint"),
+                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:toolStone", 1)));
 
         addCraftInHandRecipe("WoodAndStone:StoneKnife",
-                new CompositeTypeBasedCraftInHandRecipe(
-                        "WoodAndStone:stick", new ConsumeItemCraftBehaviour("WoodAndStone:stick"),
-                        "WoodAndStone:stoneKnifeBlade", new ConsumeItemCraftBehaviour("WoodAndStone:StoneKnifeBlade"),
-                        "WoodAndStone:twig", new ConsumeItemCraftBehaviour("WoodAndStone:twig"),
-                        "WoodAndStone:StoneKnife"));
+                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:StoneKnife", false,
+                        new ConsumeItemCraftBehaviour("WoodAndStone:stick"),
+                        new ConsumeItemCraftBehaviour("WoodAndStone:StoneKnifeBlade"),
+                        new ConsumeItemCraftBehaviour("WoodAndStone:twig")));
 
         addCraftInHandRecipe("WoodAndStone:unlitTorch",
-                new CompositeTypeBasedCraftInHandRecipe(
-                        "WoodAndStone:stick", new ConsumeItemCraftBehaviour("WoodAndStone:stick"),
-                        "WoodAndStone:resin", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:resin", 1),
-                        null, new DoNothingCraftBehaviour(),
-                        "WoodAndStone:UnlitTorch"));
+                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:UnlitTorch", false,
+                        new ConsumeItemCraftBehaviour("WoodAndStone:stick"),
+                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:resin", 1)));
 
         addCraftInHandRecipe("WoodAndStone:litTorch",
-                new CompositeTypeBasedCraftInHandRecipe(
-                        "WoodAndStone:unlitTorch", new ConsumeItemCraftBehaviour("WoodAndStone:unlitTorch"),
-                        "WoodAndStone:flint", new ReduceItemDurabilityCraftBehaviour("WoodAndStone:flint", 1),
-                        null, new DoNothingCraftBehaviour(),
-                        "WoodAndStone:LitTorch", true));
+                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:LitTorch", true,
+                        new ConsumeItemCraftBehaviour("WoodAndStone:unlitTorch"),
+                        new ReduceItemDurabilityCraftBehaviour("WoodAndStone:flint", 1)));
 
         addCraftInHandRecipe("WoodAndStone:clayHearth",
-                new CompositeTypeBasedCraftInHandRecipe(
-                        "WoodAndStone:clay", new ConsumeItemCraftBehaviour("WoodAndStone:clay", 9),
-                        null, new DoNothingCraftBehaviour(),
-                        null, new DoNothingCraftBehaviour(),
-                        "WoodAndStone:ClayHearth", true));
+                new CompositeTypeBasedCraftInHandRecipe("WoodAndStone:ClayHearth", true,
+                        new ConsumeItemCraftBehaviour("WoodAndStone:clay", 9)));
     }
 
     private void addStandardWoodWorkstationRecipes() {

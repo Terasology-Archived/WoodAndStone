@@ -49,6 +49,11 @@ public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
+    public int getCountToDisplay() {
+        return 1;
+    }
+
+    @Override
     public void processForItem(EntityRef character, EntityRef item) {
         item.send(new ReduceDurabilityEvent(1));
     }

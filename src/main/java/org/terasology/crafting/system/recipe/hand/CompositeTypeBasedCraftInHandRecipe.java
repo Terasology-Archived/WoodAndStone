@@ -16,11 +16,11 @@
 package org.terasology.crafting.system.recipe.hand;
 
 import org.terasology.asset.Assets;
-import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -36,101 +36,74 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
-    private String item1Type;
-    private ItemCraftBehaviour itemCraftBehaviour1;
-    private String item2Type;
-    private ItemCraftBehaviour itemCraftBehaviour2;
-    private String item3Type;
-    private ItemCraftBehaviour itemCraftBehaviour3;
+    private ItemCraftBehaviour[] itemCraftBehaviours;
     private String prefabName;
     private boolean block;
 
-    public CompositeTypeBasedCraftInHandRecipe(String item1Type, ItemCraftBehaviour itemCraftBehaviour1,
-                                               String item2Type, ItemCraftBehaviour itemCraftBehaviour2,
-                                               String item3Type, ItemCraftBehaviour itemCraftBehaviour3,
-                                               String resultPrefab) {
-        this(item1Type, itemCraftBehaviour1, item2Type, itemCraftBehaviour2, item3Type, itemCraftBehaviour3, resultPrefab, false);
-    }
-
-    public CompositeTypeBasedCraftInHandRecipe(String item1Type, ItemCraftBehaviour itemCraftBehaviour1,
-                                               String item2Type, ItemCraftBehaviour itemCraftBehaviour2,
-                                               String item3Type, ItemCraftBehaviour itemCraftBehaviour3,
-                                               String resultPrefab, boolean block) {
-        this.item1Type = item1Type;
-        this.itemCraftBehaviour1 = itemCraftBehaviour1;
-        this.item2Type = item2Type;
-        this.itemCraftBehaviour2 = itemCraftBehaviour2;
-        this.item3Type = item3Type;
-        this.itemCraftBehaviour3 = itemCraftBehaviour3;
+    public CompositeTypeBasedCraftInHandRecipe(String resultPrefab, boolean block, ItemCraftBehaviour... itemCraftBehaviours) {
         this.prefabName = resultPrefab;
         this.block = block;
+        this.itemCraftBehaviours = itemCraftBehaviours;
     }
 
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
         // TODO: Improve searching for different kinds of items of the same type in whole inventory, not just first matching
-        int slot1 = item1Type != null ? hasItem(character, item1Type) : -1;
-        int slot2 = item2Type != null ? hasItem(character, item2Type) : -1;
-        int slot3 = item3Type != null ? hasItem(character, item3Type) : -1;
-        if ((slot1 != -1 || item1Type == null) && (slot2 != -1 || item2Type == null) && (slot3 != -1 || item3Type == null)) {
-            return Collections.<CraftInHandResult>singletonList(new CraftResult(slot1, slot2, slot3));
+        int[] slots = new int[itemCraftBehaviours.length];
+        for (int i = 0; i < itemCraftBehaviours.length; i++) {
+            int matchingSlot = findMatchingSlot(character, itemCraftBehaviours[i]);
+            if (matchingSlot == -1) {
+                return null;
+            }
+            slots[i] = matchingSlot;
         }
-        return null;
+
+        return Collections.<CraftInHandResult>singletonList(new CraftResult(slots));
+    }
+
+    private int findMatchingSlot(EntityRef character, ItemCraftBehaviour itemCraftBehaviour) {
+        int slotCount = InventoryUtils.getSlotCount(character);
+        for (int i = 0; i < slotCount; i++) {
+            EntityRef item = InventoryUtils.getItemAt(character, i);
+            if (itemCraftBehaviour.isValid(character, item)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public CraftInHandResult getResultById(EntityRef character, String resultId) {
         String[] slots = resultId.split("\\|");
-        return new CraftResult(Integer.parseInt(slots[0]), Integer.parseInt(slots[1]), Integer.parseInt(slots[2]));
-    }
-
-    private int hasItem(EntityRef character, String itemType) {
-        InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
-        int numSlots = inventoryManager.getNumSlots(character);
-        for (int i = 0; i < numSlots; i++) {
-            if (hasItemInSlot(character, itemType, inventoryManager, i)) {
-                return i;
-            }
+        int[] slotsNo = new int[slots.length];
+        for (int i = 0; i < slots.length; i++) {
+            slotsNo[i] = Integer.parseInt(slots[i]);
         }
-
-        return -1;
-    }
-
-    private boolean hasItemInSlot(EntityRef character, String itemType, InventoryManager inventoryManager, int slot) {
-        CraftInHandRecipeComponent component = inventoryManager.getItemInSlot(character, slot).getComponent(CraftInHandRecipeComponent.class);
-        if (component != null && component.componentType.equals(itemType)) {
-            return true;
-        }
-        return false;
+        return new CraftResult(slotsNo);
     }
 
     public class CraftResult implements CraftInHandResult {
-        private int slot1;
-        private int slot2;
-        private int slot3;
+        private int[] slots;
 
-        public CraftResult(int slot1, int slot2, int slot3) {
-            this.slot1 = slot1;
-            this.slot2 = slot2;
-            this.slot3 = slot3;
+        public CraftResult(int[] slots) {
+            this.slots = slots;
         }
 
         @Override
         public String getResultId() {
-            return slot1 + "|" + slot2 + "|" + slot3;
+            StringBuilder sb = new StringBuilder();
+            for (int slot : slots) {
+                sb.append(slot).append("|");
+            }
+
+            return sb.replace(sb.length() - 1, sb.length() + 1, "").toString();
         }
 
         @Override
         public Map<Integer, Integer> getComponentSlotAndCount() {
             Map<Integer, Integer> result = new LinkedHashMap<>();
-            if (slot1 != -1) {
-                result.put(slot1, 1);
-            }
-            if (slot2 != -1) {
-                result.put(slot2, 1);
-            }
-            if (slot3 != -1) {
-                result.put(slot3, 1);
+            for (int i = 0; i < slots.length; i++) {
+                result.put(slots[i], itemCraftBehaviours[i].getCountToDisplay());
             }
             return result;
         }
@@ -168,20 +141,19 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         @Override
         public EntityRef craftOne(EntityRef character) {
             InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
-            EntityRef item1 = inventoryManager.getItemInSlot(character, slot1);
-            EntityRef item2 = inventoryManager.getItemInSlot(character, slot2);
-            EntityRef item3 = inventoryManager.getItemInSlot(character, slot3);
-            if (itemCraftBehaviour1.isValid(character, item1)
-                    && itemCraftBehaviour2.isValid(character, item2)
-                    && itemCraftBehaviour3.isValid(character, item3)) {
-                itemCraftBehaviour1.processForItem(character, item1);
-                itemCraftBehaviour2.processForItem(character, item2);
-                itemCraftBehaviour3.processForItem(character, item3);
-
-                return createResult();
+            for (int i = 0; i < slots.length; i++) {
+                EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
+                if (!itemCraftBehaviours[i].isValid(character, itemInSlot)) {
+                    return EntityRef.NULL;
+                }
             }
 
-            return EntityRef.NULL;
+            for (int i = 0; i < slots.length; i++) {
+                EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
+                itemCraftBehaviours[i].processForItem(character, itemInSlot);
+            }
+
+            return createResult();
         }
     }
 }
