@@ -1,20 +1,20 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.StoneKnife",
+        "icon": "WoodAndStone:items.StoneKnifeBlade",
         "renderWithIcon": true
     },
     "DisplayName": {
         "name": "Stone Knife"
     },
     "Durability": {
-        "durability": 100,
-        "maxDurability": 100
+        "durability": 50,
+        "maxDurability": 50
     },
     "CraftingStationTool": {
         "type": "axe"
     },
     "CraftInHandRecipe": {
-        "componentType": "WoodAndStone:stoneKnife"
+        "componentType": "WoodAndStone:stoneKnifeBlade"
     }
 }

@@ -1,0 +1,17 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.AxeHammerHead",
+        "stackId": "WoodAndStone:items.AxeHammerHead",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Axe-Hammer Head"
+    },
+    "CraftInHandRecipe": {
+        "componentType": "WoodAndStone:axeHammerHead"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:axeHammerHead"
+    }
+}

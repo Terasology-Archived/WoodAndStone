@@ -1,0 +1,13 @@
+{
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:BasicWoodcrafting"
+    },
+    "CraftingStationRecipe": {
+        "recipeId": "Storage|WoodAndStone:FruitBasket",
+
+        "recipeComponents": ["7*WoodAndStone:twig", "2*WoodAndStone:stick"],
+        "recipeTools": ["1*axe"],
+
+        "itemResult": "1*WoodAndStone:FruitBasket"
+    }
+}

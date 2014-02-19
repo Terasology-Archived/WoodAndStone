@@ -11,8 +11,8 @@
     "FluidContainerItem": {
         "volume": 10,
         "fluidRenderRect": {
-            "min": [7, 6, 0],
-            "size": [17, 10, 1]
+            "min": [16, 16, 0],
+            "size": [18, 32, 1]
         }
     }
 }

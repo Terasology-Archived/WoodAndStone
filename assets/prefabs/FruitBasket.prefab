@@ -1,0 +1,25 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.Basket",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Simple Basket"
+    },
+    "Inventory": {
+        "privateToOwner": false,
+        "itemSlots": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    "AccessInventoryAction": {},
+    "DropBlockInventory": {}
+}
