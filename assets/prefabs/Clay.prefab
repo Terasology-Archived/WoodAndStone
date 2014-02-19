@@ -6,7 +6,7 @@
         "renderWithIcon": true
     },
     "DisplayName": {
-        "name": "Ball of Clay"
+        "name": "Clay"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:clay"
