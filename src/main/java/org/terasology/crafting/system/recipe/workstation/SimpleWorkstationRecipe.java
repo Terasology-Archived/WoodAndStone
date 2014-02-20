@@ -25,7 +25,6 @@ import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.fluid.system.FluidManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.TeraMath;
@@ -237,8 +236,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (!validateCreation(station, count)) {
                 return EntityRef.NULL;
             }
-
-            FluidManager fluidManager = CoreRegistry.get(FluidManager.class);
 
             int index = 0;
             for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
