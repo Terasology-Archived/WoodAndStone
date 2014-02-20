@@ -117,7 +117,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (slotNo != -1) {
                 maxMultiplier = Math.min(maxMultiplier, ingredientBehaviour.getMaxMultiplier(station, slotNo));
                 resultSlots.add(slotNo);
-                break;
             } else {
                 return null;
             }
@@ -128,7 +127,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (slotNo != -1) {
                 maxMultiplier = Math.min(maxMultiplier, toolBehaviour.getMaxMultiplier(station, slotNo));
                 resultSlots.add(slotNo);
-                break;
             } else {
                 return null;
             }
@@ -139,7 +137,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (slotNo != -1) {
                 maxMultiplier = Math.min(maxMultiplier, fluidBehaviour.getMaxMultiplier(station, slotNo));
                 resultSlots.add(slotNo);
-                break;
             } else {
                 return null;
             }
@@ -204,6 +201,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
         public Result(int maxMultiplier, List<Integer> slots) {
             this.maxMultiplier = maxMultiplier;
+            if (slots.size() != ingredientBehaviours.size() + toolBehaviours.size() + fluidBehaviours.size()) {
+                int dfsadf = 0;
+            }
             items = slots.subList(0, ingredientBehaviours.size());
             tools = slots.subList(ingredientBehaviours.size(), ingredientBehaviours.size() + toolBehaviours.size());
             fluids = slots.subList(ingredientBehaviours.size() + toolBehaviours.size(), ingredientBehaviours.size() + toolBehaviours.size() + fluidBehaviours.size());
@@ -306,7 +306,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (renderers == null) {
                 renderers = new LinkedList<>();
                 int index = 0;
-                for (final IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
+                for (IngredientCraftBehaviour<EntityRef, Integer> toolBehaviour : toolBehaviours) {
+                    renderers.add(toolBehaviour.getRenderer(entity, tools.get(index)));
+                    index++;
+                }
+                index = 0;
+                for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
                     renderers.add(ingredientBehaviour.getRenderer(entity, items.get(index)));
                     index++;
                 }

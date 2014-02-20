@@ -121,8 +121,8 @@ public class CraftRecipeWidget extends CoreWidget {
         Vector2i resultSize = canvas.calculatePreferredSize(result);
         Vector2i buttonSize = canvas.calculatePreferredSize(button);
 
-        canvas.drawWidget(result, Rect2i.createFromMinAndSize(size.x - resultSize.x - buttonSize.x - 5, 0, resultSize.x, resultSize.y));
-        canvas.drawWidget(button, Rect2i.createFromMinAndSize(size.x - buttonSize.x, (size.y - buttonSize.y) / 2, buttonSize.x, buttonSize.y));
+        canvas.drawWidget(button, Rect2i.createFromMinAndSize(size.x - resultSize.x - buttonSize.x - 5, (size.y - buttonSize.y) / 2, buttonSize.x, buttonSize.y));
+        canvas.drawWidget(result, Rect2i.createFromMinAndSize(size.x - resultSize.x, 0, resultSize.x, resultSize.y));
     }
 
     @Override
