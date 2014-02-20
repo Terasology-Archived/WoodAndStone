@@ -15,12 +15,13 @@
  */
 package org.terasology.was.system;
 
-import com.google.common.base.Function;
 import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.FixedFunction;
+import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -36,10 +37,8 @@ import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -101,6 +100,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         private int fruitSlot;
         private int knifeSlot;
         private int maxMultiplier;
+        private List<CraftIngredientRenderer> renderers;
 
         private Result(EntityRef character, int fruitSlot, int knifeSlot, int maxMultiplier) {
             this.character = character;
@@ -136,11 +136,13 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount() {
-            Map<Integer, Function<Integer, Integer>> result = new LinkedHashMap<>();
-            result.put(fruitSlot, new MultiplyFunction(1));
-            result.put(knifeSlot, new FixedFunction(1));
-            return result;
+        public List<CraftIngredientRenderer> getIngredients(EntityRef entity) {
+            if (renderers == null) {
+                renderers = new LinkedList<>();
+                renderers.add(new ItemSlotIngredientRenderer(entity, fruitSlot, new MultiplyFunction(1)));
+                renderers.add(new ItemSlotIngredientRenderer(entity, knifeSlot, new FixedFunction(1)));
+            }
+            return renderers;
         }
 
         @Override

@@ -15,14 +15,13 @@
  */
 package org.terasology.crafting.ui;
 
-import com.google.common.base.Function;
 import org.terasology.asset.Assets;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.input.Keyboard;
 import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
@@ -34,19 +33,16 @@ import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.world.block.Block;
-import org.terasology.world.block.items.BlockItemComponent;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CraftRecipeWidget extends CoreWidget {
+    private EntityRef entity;
+    private CraftProcessDisplay processDisplay;
     private final CreationCallback callback;
 
-    private List<ItemIcon> ingredientsIcons = new LinkedList<>();
+//    private List<ItemIcon> ingredientsIcons = new LinkedList<>();
 
     private ItemIcon result;
 
@@ -58,50 +54,18 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int maxMultiplier;
 
-    public CraftRecipeWidget(int leftIndent, EntityRef character,
-                             final CraftProcessDisplay craftingRecipe, CreationCallback callback) {
+    public CraftRecipeWidget(int leftIndent, EntityRef entity,
+                             final CraftProcessDisplay processDisplay, CreationCallback callback) {
         this.leftIndent = leftIndent;
+        this.entity = entity;
+        this.processDisplay = processDisplay;
         this.callback = callback;
 
-        maxMultiplier = craftingRecipe.getMaxMultiplier();
-
-        Map<Integer, Function<Integer, Integer>> componentSlotAndCount = craftingRecipe.getComponentSlotAndCount();
-
-        for (Map.Entry<Integer, Function<Integer, Integer>> craftingComponents : componentSlotAndCount.entrySet()) {
-            ItemIcon itemIcon = new ItemIcon();
-            EntityRef item = InventoryUtils.getItemAt(character, craftingComponents.getKey());
-            ItemComponent itemComp = item.getComponent(ItemComponent.class);
-            BlockItemComponent blockItemComp = item.getComponent(BlockItemComponent.class);
-            if (itemComp != null && itemComp.renderWithIcon) {
-                itemIcon.setIcon(itemComp.icon);
-            } else if (blockItemComp != null) {
-                itemIcon.setMesh(blockItemComp.blockFamily.getArchetypeBlock().getMesh());
-                itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
-            }
-            DisplayNameComponent displayName = item.getComponent(DisplayNameComponent.class);
-            if (displayName != null) {
-                itemIcon.setTooltip(displayName.name);
-            }
-            final Function<Integer, Integer> count = craftingComponents.getValue();
-            itemIcon.bindQuantity(
-                    new Binding<Integer>() {
-                        @Override
-                        public Integer get() {
-                            return count.apply(multiplier);
-                        }
-
-                        @Override
-                        public void set(Integer value) {
-                        }
-                    }
-            );
-
-            ingredientsIcons.add(itemIcon);
-        }
+        maxMultiplier = processDisplay.getMaxMultiplier();
 
         result = new ItemIcon();
-        Block resultBlock = craftingRecipe.getResultBlock();
-        Prefab resultItem = craftingRecipe.getResultItem();
+        Block resultBlock = processDisplay.getResultBlock();
+        Prefab resultItem = processDisplay.getResultItem();
         if (resultBlock != null) {
             result.setMesh(resultBlock.getMesh());
             result.setMeshTexture(Assets.getTexture("engine:terrain"));
@@ -117,7 +81,7 @@ public class CraftRecipeWidget extends CoreWidget {
                 new Binding<Integer>() {
                     @Override
                     public Integer get() {
-                        return craftingRecipe.getResultQuantity() * multiplier;
+                        return processDisplay.getResultQuantity() * multiplier;
                     }
 
                     @Override
@@ -147,12 +111,12 @@ public class CraftRecipeWidget extends CoreWidget {
     public void onDraw(Canvas canvas) {
         int x = leftIndent;
         Vector2i size = canvas.size();
-        for (ItemIcon ingredientsIcon : ingredientsIcons) {
-            Vector2i iconSize = canvas.calculatePreferredSize(ingredientsIcon);
-            canvas.drawWidget(ingredientsIcon, Rect2i.createFromMinAndSize(x, 0, iconSize.x, iconSize.y));
-            x += iconSize.x;
-        }
 
+        for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredients(entity)) {
+            Vector2i preferredSize = craftIngredientRenderer.getPreferredSize(multiplier);
+            craftIngredientRenderer.render(canvas, Rect2i.createFromMinAndSize(x, 0, preferredSize.x, preferredSize.y), multiplier);
+            x += preferredSize.x;
+        }
 
         Vector2i resultSize = canvas.calculatePreferredSize(result);
         Vector2i buttonSize = canvas.calculatePreferredSize(button);
@@ -171,10 +135,6 @@ public class CraftRecipeWidget extends CoreWidget {
             multiplier = 1;
         }
 
-        for (ItemIcon ingredientsIcon : ingredientsIcons) {
-            ingredientsIcon.update(delta);
-        }
-
         result.update(delta);
         button.update(delta);
     }
@@ -183,9 +143,11 @@ public class CraftRecipeWidget extends CoreWidget {
     public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
         int maxX = canvas.size().x;
         int maxY = 0;
-        for (ItemIcon ingredientsIcon : ingredientsIcons) {
-            maxY = Math.max(maxY, canvas.calculatePreferredSize(ingredientsIcon).y);
+
+        for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredients(entity)) {
+            maxY = Math.max(maxY, craftIngredientRenderer.getPreferredSize(multiplier).y);
         }
+
         maxY = Math.max(maxY, canvas.calculatePreferredSize(result).y);
         maxY = Math.max(maxY, canvas.calculatePreferredSize(button).y);
 

@@ -15,11 +15,12 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
-import com.google.common.base.Function;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
+import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -233,6 +234,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         private List<Integer> items;
         private List<Integer> tools;
         private List<Integer> fluids;
+        private List<CraftIngredientRenderer> renderers;
 
         public Result(int maxMultiplier, List<Integer> slots) {
             this.maxMultiplier = maxMultiplier;
@@ -338,15 +340,16 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount() {
-            Map<Integer, Function<Integer, Integer>> result = new LinkedHashMap<>();
-            int index = 0;
-            for (final ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
-                result.put(items.get(index), ingredientBehaviour.getCountBasedOnMultiplier());
-                index++;
+        public List<CraftIngredientRenderer> getIngredients(EntityRef entity) {
+            if (renderers == null) {
+                renderers = new LinkedList<>();
+                int index = 0;
+                for (final ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+                    renderers.add(new ItemSlotIngredientRenderer(entity, items.get(index), ingredientBehaviour.getCountBasedOnMultiplier()));
+                    index++;
+                }
             }
-
-            return result;
+            return renderers;
         }
 
         @Override

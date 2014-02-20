@@ -15,24 +15,17 @@
  */
 package org.terasology.crafting.system.recipe.render;
 
-import com.google.common.base.Function;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.world.block.Block;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface CraftProcessDisplay {
-    /**
-     * Returns components and their count that will be used in crafting this recipe.
-     *
-     * @return
-     */
-    Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount();
-
-    //List<CraftIngredientRenderer> getIngredients();
+    List<CraftIngredientRenderer> getIngredients(EntityRef entity);
 
     int getMaxMultiplier();
 

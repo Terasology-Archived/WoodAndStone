@@ -15,9 +15,10 @@
  */
 package org.terasology.crafting.system.recipe.hand;
 
-import com.google.common.base.Function;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
+import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -32,9 +33,8 @@ import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -96,6 +96,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     public class CraftResult implements CraftInHandResult {
         private int[] slots;
         private int maxMultiplier;
+        private List<CraftIngredientRenderer> renderers;
 
         public CraftResult(int[] slots, int maxMultiplier) {
             this.slots = slots;
@@ -113,12 +114,14 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount() {
-            Map<Integer, Function<Integer, Integer>> result = new LinkedHashMap<>();
-            for (int i = 0; i < slots.length; i++) {
-                result.put(slots[i], itemCraftBehaviours.get(i).getCountBasedOnMultiplier());
+        public List<CraftIngredientRenderer> getIngredients(EntityRef entity) {
+            if (renderers == null) {
+                renderers = new LinkedList<>();
+                for (int i = 0; i < slots.length; i++) {
+                    renderers.add(new ItemSlotIngredientRenderer(entity, slots[i], itemCraftBehaviours.get(i).getCountBasedOnMultiplier()));
+                }
             }
-            return result;
+            return renderers;
         }
 
         @Override
