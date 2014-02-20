@@ -61,5 +61,6 @@ public class ItemSlotIngredientRenderer implements CraftIngredientRenderer {
     @Override
     public void render(Canvas canvas, Rect2i region, int multiplier) {
         itemIcon.setQuantity(multiplierFunction.apply(multiplier));
+        canvas.drawWidget(itemIcon, region);
     }
 }

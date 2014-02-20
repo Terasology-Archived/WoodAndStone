@@ -8,10 +8,6 @@
     "DisplayName": {
         "name": "Flint"
     },
-    "Durability": {
-        "durability": 20,
-        "maxDurability": 20
-    },
     "CraftInHandIngredient": {
         "componentType": "WoodAndStone:flint"
     }
