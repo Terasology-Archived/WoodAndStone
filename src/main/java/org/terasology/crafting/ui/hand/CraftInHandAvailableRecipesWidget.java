@@ -105,8 +105,8 @@ public class CraftInHandAvailableRecipesWidget extends CoreWidget {
                     CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(0, character, result,
                             new CreationCallback() {
                                 @Override
-                                public void createOne() {
-                                    character.send(new UserCraftInHandRequest(recipeId, resultId));
+                                public void create(int count) {
+                                    character.send(new UserCraftInHandRequest(recipeId, resultId, count));
                                 }
                             });
                     layout.addWidget(recipeDisplay);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.hand;
+package org.terasology.crafting.system.recipe.behaviour;
 
 import org.terasology.entitySystem.entity.EntityRef;
 
@@ -21,9 +21,13 @@ import org.terasology.entitySystem.entity.EntityRef;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface ItemCraftBehaviour {
-    boolean isValid(EntityRef character, EntityRef item);
+    boolean isValidAnyNumber(EntityRef item);
 
-    int getCountToDisplay();
+    boolean isValid(EntityRef item, int multiplier);
 
-    void processForItem(EntityRef character, EntityRef item);
+    int getMaxMultiplier(EntityRef item);
+
+    int getCountToDisplay(int multiplier);
+
+    void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier);
 }

@@ -16,11 +16,13 @@
 package org.terasology.crafting.system.recipe.hand;
 
 import org.terasology.asset.Assets;
+import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.InventoryUtils;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -54,22 +56,25 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
         // TODO: Improve searching for different kinds of items of the same type in whole inventory, not just first matching
         int[] slots = new int[itemCraftBehaviours.size()];
+        int maxMultiplier = Integer.MAX_VALUE;
         for (int i = 0; i < itemCraftBehaviours.size(); i++) {
             int matchingSlot = findMatchingSlot(character, itemCraftBehaviours.get(i));
             if (matchingSlot == -1) {
                 return null;
             }
+            EntityRef item = InventoryUtils.getItemAt(character, matchingSlot);
+            maxMultiplier = Math.min(maxMultiplier, itemCraftBehaviours.get(i).getMaxMultiplier(item));
             slots[i] = matchingSlot;
         }
 
-        return Collections.<CraftInHandResult>singletonList(new CraftResult(slots));
+        return Collections.<CraftInHandResult>singletonList(new CraftResult(slots, maxMultiplier));
     }
 
     private int findMatchingSlot(EntityRef character, ItemCraftBehaviour itemCraftBehaviour) {
         int slotCount = InventoryUtils.getSlotCount(character);
         for (int i = 0; i < slotCount; i++) {
             EntityRef item = InventoryUtils.getItemAt(character, i);
-            if (itemCraftBehaviour.isValid(character, item)) {
+            if (itemCraftBehaviour.isValid(item, 1)) {
                 return i;
             }
         }
@@ -79,18 +84,21 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     @Override
     public CraftInHandResult getResultById(EntityRef character, String resultId) {
         String[] slots = resultId.split("\\|");
-        int[] slotsNo = new int[slots.length];
-        for (int i = 0; i < slots.length; i++) {
+        int[] slotsNo = new int[slots.length - 1];
+        int maxMultiplier = Integer.parseInt(slots[slots.length - 1]);
+        for (int i = 0; i < slots.length - 1; i++) {
             slotsNo[i] = Integer.parseInt(slots[i]);
         }
-        return new CraftResult(slotsNo);
+        return new CraftResult(slotsNo, maxMultiplier);
     }
 
     public class CraftResult implements CraftInHandResult {
         private int[] slots;
+        private int maxMultiplier;
 
-        public CraftResult(int[] slots) {
+        public CraftResult(int[] slots, int maxMultiplier) {
             this.slots = slots;
+            this.maxMultiplier = maxMultiplier;
         }
 
         @Override
@@ -100,14 +108,25 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
                 sb.append(slot).append("|");
             }
 
-            return sb.replace(sb.length() - 1, sb.length() + 1, "").toString();
+            return sb.append(maxMultiplier).toString();
         }
 
         @Override
-        public Map<Integer, Integer> getComponentSlotAndCount() {
-            Map<Integer, Integer> result = new LinkedHashMap<>();
+        public Map<Integer, ItemCountDefinition> getComponentSlotAndCount() {
+            Map<Integer, ItemCountDefinition> result = new LinkedHashMap<>();
             for (int i = 0; i < slots.length; i++) {
-                result.put(slots[i], itemCraftBehaviours.get(i).getCountToDisplay());
+                final int finalI = i;
+                result.put(slots[i], new ItemCountDefinition() {
+                    @Override
+                    public int getMaximumMultiplier() {
+                        return maxMultiplier;
+                    }
+
+                    @Override
+                    public int getCountDisplayForMultiplier(int multiplier) {
+                        return itemCraftBehaviours.get(finalI).getCountToDisplay(multiplier);
+                    }
+                });
             }
             return result;
         }
@@ -133,31 +152,35 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
             return null;
         }
 
-        private EntityRef createResult() {
+        private EntityRef createResult(int multiplier) {
             if (block) {
                 BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName);
-                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, 1);
+                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, multiplier);
             } else {
-                return CoreRegistry.get(EntityManager.class).create(prefabName);
+                EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(prefabName);
+                ItemComponent item = entityRef.getComponent(ItemComponent.class);
+                item.stackCount = (byte) multiplier;
+                entityRef.saveComponent(item);
+                return entityRef;
             }
         }
 
         @Override
-        public EntityRef craftOne(EntityRef character) {
+        public EntityRef craft(EntityRef character, int count) {
             InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
             for (int i = 0; i < slots.length; i++) {
                 EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                if (!itemCraftBehaviours.get(i).isValid(character, itemInSlot)) {
+                if (!itemCraftBehaviours.get(i).isValid(itemInSlot, count)) {
                     return EntityRef.NULL;
                 }
             }
 
             for (int i = 0; i < slots.length; i++) {
                 EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                itemCraftBehaviours.get(i).processForItem(character, itemInSlot);
+                itemCraftBehaviours.get(i).processForItem(character, character, itemInSlot, count);
             }
 
-            return createResult();
+            return createResult(count);
         }
     }
 }

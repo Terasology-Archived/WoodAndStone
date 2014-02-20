@@ -19,5 +19,5 @@ package org.terasology.crafting.ui;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface CreationCallback {
-    void createOne();
+    void create(int count);
 }

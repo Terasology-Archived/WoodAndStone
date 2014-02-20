@@ -15,13 +15,17 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.crafting.component.CraftInHandIngredientComponent;
+import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
+import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.FixedItemCountDefinition;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.inventory.InventoryUtils;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
@@ -40,6 +44,9 @@ import java.util.Set;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SeedingFruitsRecipe implements CraftInHandRecipe {
+    private static final ItemCraftBehaviour KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
+            new CraftInHandIngredientPredicate("WoodAndStone:knife"), 1);
+
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
         int slotCount = InventoryUtils.getSlotCount(character);
@@ -48,18 +55,22 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             return null;
         }
 
+        int maxKnifeMultiplier = KNIFE_BEHAVIOUR.getMaxMultiplier(InventoryUtils.getItemAt(character, knifeSlot));
+
         List<CraftInHandResult> results = new LinkedList<>();
         Set<String> usedFruits = new HashSet<>();
 
         for (int i = 0; i < slotCount; i++) {
-            Prefab prefab = InventoryUtils.getItemAt(character, i).getParentPrefab();
+            EntityRef fruitItem = InventoryUtils.getItemAt(character, i);
+            Prefab prefab = fruitItem.getParentPrefab();
             if (prefab != null && prefab.getURI().getNormalisedModuleName().equals("plantpack")
                     && prefab.getURI().getNormalisedAssetName().endsWith("fruit")
                     && !usedFruits.contains(prefab.getURI().getNormalisedAssetName())) {
                 String assetName = prefab.getURI().getNormalisedAssetName();
                 String fruitName = assetName.substring(0, assetName.length() - 5);
                 usedFruits.add(fruitName);
-                results.add(new Result(character, i, knifeSlot));
+                ItemComponent item = fruitItem.getComponent(ItemComponent.class);
+                results.add(new Result(character, i, knifeSlot, Math.min(maxKnifeMultiplier, item.stackCount)));
             }
         }
 
@@ -68,8 +79,8 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
     private int getKnifeSlot(EntityRef character, int slotCount) {
         for (int i = 0; i < slotCount; i++) {
-            CraftInHandIngredientComponent recipeComponent = InventoryUtils.getItemAt(character, i).getComponent(CraftInHandIngredientComponent.class);
-            if (recipeComponent != null && recipeComponent.componentType.equals("WoodAndStone:knife")) {
+            EntityRef item = InventoryUtils.getItemAt(character, i);
+            if (KNIFE_BEHAVIOUR.isValid(item, 1)) {
                 return i;
             }
         }
@@ -80,46 +91,59 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
     public CraftInHandResult getResultById(EntityRef character, String resultId) {
         String[] split = resultId.split("\\|");
 
-        return new Result(character, Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+        return new Result(character, Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
     }
 
     public static final class Result implements CraftInHandResult {
         private EntityRef character;
         private int fruitSlot;
         private int knifeSlot;
+        private int maxMultiplier;
 
-        private Result(EntityRef character, int fruitSlot, int knifeSlot) {
+        private Result(EntityRef character, int fruitSlot, int knifeSlot, int maxMultiplier) {
             this.character = character;
             this.fruitSlot = fruitSlot;
             this.knifeSlot = knifeSlot;
+            this.maxMultiplier = maxMultiplier;
         }
 
         @Override
         public String getResultId() {
-            return fruitSlot + "|" + knifeSlot;
+            return fruitSlot + "|" + knifeSlot + "|" + maxMultiplier;
         }
 
         @Override
-        public EntityRef craftOne(EntityRef character) {
+        public EntityRef craft(EntityRef character, int count) {
             EntityRef fruit = InventoryUtils.getItemAt(character, fruitSlot);
 
             String assetName = fruit.getParentPrefab().getURI().getNormalisedAssetName();
             String fruitName = assetName.substring(0, assetName.length() - 5);
 
-            character.send(new RemoveItemAction(character, fruit, true, 1));
+            character.send(new RemoveItemAction(character, fruit, true, count));
 
             EntityRef knife = InventoryUtils.getItemAt(character, knifeSlot);
-            knife.send(new ReduceDurabilityEvent(1));
+            knife.send(new ReduceDurabilityEvent(count));
 
             BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("PlantPack:" + fruitName + "1");
             return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, 1);
         }
 
         @Override
-        public Map<Integer, Integer> getComponentSlotAndCount() {
-            Map<Integer, Integer> result = new LinkedHashMap<>();
-            result.put(fruitSlot, 1);
-            result.put(knifeSlot, 1);
+        public Map<Integer, ItemCountDefinition> getComponentSlotAndCount() {
+            Map<Integer, ItemCountDefinition> result = new LinkedHashMap<>();
+            result.put(fruitSlot,
+                    new ItemCountDefinition() {
+                        @Override
+                        public int getMaximumMultiplier() {
+                            return maxMultiplier;
+                        }
+
+                        @Override
+                        public int getCountDisplayForMultiplier(int multiplier) {
+                            return multiplier;
+                        }
+                    });
+            result.put(knifeSlot, new FixedItemCountDefinition(1, maxMultiplier));
             return result;
         }
 

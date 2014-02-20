@@ -53,7 +53,7 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
             if (craftInHandRecipe != null) {
                 CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(character, resultId);
                 if (result != null) {
-                    EntityRef resultEntity = result.craftOne(character);
+                    EntityRef resultEntity = result.craft(character, event.getCount());
                     if (resultEntity.exists()) {
                         pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200, true);
                     }

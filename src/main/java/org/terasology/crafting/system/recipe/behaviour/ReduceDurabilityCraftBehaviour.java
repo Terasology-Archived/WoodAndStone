@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.hand.behaviour;
+package org.terasology.crafting.system.recipe.behaviour;
 
-import org.terasology.crafting.component.CraftInHandIngredientComponent;
-import org.terasology.crafting.system.recipe.hand.ItemCraftBehaviour;
+import com.google.common.base.Predicate;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -24,19 +23,23 @@ import org.terasology.entitySystem.entity.EntityRef;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
-    private String itemType;
+public class ReduceDurabilityCraftBehaviour implements ItemCraftBehaviour {
+    private Predicate<EntityRef> matcher;
     private int durabilityUsed;
 
-    public ReduceItemDurabilityCraftBehaviour(String itemType, int durabilityUsed) {
-        this.itemType = itemType;
+    public ReduceDurabilityCraftBehaviour(Predicate<EntityRef> matcher, int durabilityUsed) {
+        this.matcher = matcher;
         this.durabilityUsed = durabilityUsed;
     }
 
     @Override
-    public boolean isValid(EntityRef character, EntityRef item) {
-        CraftInHandIngredientComponent craftComponent = item.getComponent(CraftInHandIngredientComponent.class);
-        if (craftComponent == null || !craftComponent.componentType.equals(itemType)) {
+    public boolean isValidAnyNumber(EntityRef item) {
+        return matcher.apply(item);
+    }
+
+    @Override
+    public boolean isValid(EntityRef item, int multiplier) {
+        if (!matcher.apply(item)) {
             return false;
         }
 
@@ -45,16 +48,23 @@ public class ReduceItemDurabilityCraftBehaviour implements ItemCraftBehaviour {
             return false;
         }
 
-        return durability.durability >= durabilityUsed;
+        return durability.durability >= durabilityUsed * multiplier;
     }
 
     @Override
-    public int getCountToDisplay() {
+    public int getMaxMultiplier(EntityRef item) {
+        DurabilityComponent durability = item.getComponent(DurabilityComponent.class);
+
+        return durability.durability / durabilityUsed;
+    }
+
+    @Override
+    public int getCountToDisplay(int multiplier) {
         return 1;
     }
 
     @Override
-    public void processForItem(EntityRef character, EntityRef item) {
-        item.send(new ReduceDurabilityEvent(1));
+    public void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier) {
+        item.send(new ReduceDurabilityEvent(multiplier));
     }
 }

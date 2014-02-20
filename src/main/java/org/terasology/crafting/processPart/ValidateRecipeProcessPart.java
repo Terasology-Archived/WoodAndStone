@@ -104,7 +104,7 @@ public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventory
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) throws InvalidProcessException {
         CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
         if (craftingStation == null) {
             throw new InvalidProcessException();
@@ -124,15 +124,15 @@ public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventory
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
         return 0;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
     }
 }

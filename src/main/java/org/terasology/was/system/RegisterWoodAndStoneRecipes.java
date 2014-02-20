@@ -21,11 +21,12 @@ import org.terasology.crafting.component.CraftingStationMaterialComponent;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.CraftingWorkstationProcess;
 import org.terasology.crafting.system.CraftingWorkstationProcessFactory;
+import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.PresenceItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.CompositeTypeBasedCraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-import org.terasology.crafting.system.recipe.hand.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.crafting.system.recipe.hand.behaviour.PresenceItemCraftBehaviour;
-import org.terasology.crafting.system.recipe.hand.behaviour.ReduceItemDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -171,7 +172,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = component.split("\\*");
                 int count = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new ConsumeItemCraftBehaviour(type, count));
+                recipe.addItemCraftBehaviour(new ConsumeItemCraftBehaviour(new CraftInHandIngredientPredicate(type), count));
             }
         }
         if (recipeComponent.recipeTools != null) {
@@ -179,7 +180,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = tool.split("\\*");
                 int durability = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new ReduceItemDurabilityCraftBehaviour(type, durability));
+                recipe.addItemCraftBehaviour(new ReduceDurabilityCraftBehaviour(new CraftInHandIngredientPredicate(type), durability));
             }
         }
         if (recipeComponent.recipeActivators != null) {
@@ -187,7 +188,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = activator.split("\\*");
                 int count = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new PresenceItemCraftBehaviour(type, count));
+                recipe.addItemCraftBehaviour(new PresenceItemCraftBehaviour(new CraftInHandIngredientPredicate(type), count));
             }
         }
         addCraftInHandRecipe(recipeId, recipe);

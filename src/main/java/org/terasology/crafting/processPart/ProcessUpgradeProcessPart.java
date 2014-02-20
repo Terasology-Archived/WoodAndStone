@@ -31,21 +31,21 @@ public class ProcessUpgradeProcessPart implements ProcessPart {
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) {
         return null;
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
         return 0;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
         final CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
         if (craftingStation == null) {
             return;

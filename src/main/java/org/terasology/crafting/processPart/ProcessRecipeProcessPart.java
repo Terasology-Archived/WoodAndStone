@@ -31,18 +31,18 @@ public class ProcessRecipeProcessPart implements ProcessPart {
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) {
         return null;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
         CraftingStationRecipe.CraftingStationResult craftingStationResult = craftingStationRecipe.getResultById(resultId);
-        EntityRef resultItem = craftingStationResult.craftOne(workstation);
+        EntityRef resultItem = craftingStationResult.craft(workstation, Integer.parseInt(parameter));
 
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
             GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, slot);
@@ -56,7 +56,7 @@ public class ProcessRecipeProcessPart implements ProcessPart {
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
         return 0;
     }
 }

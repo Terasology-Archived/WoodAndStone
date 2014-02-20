@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.hand.behaviour;
+package org.terasology.crafting.system.recipe.behaviour;
 
-import org.terasology.crafting.component.CraftInHandIngredientComponent;
-import org.terasology.crafting.system.recipe.hand.ItemCraftBehaviour;
+import com.google.common.base.Predicate;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
 
@@ -24,32 +23,39 @@ import org.terasology.logic.inventory.ItemComponent;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class PresenceItemCraftBehaviour implements ItemCraftBehaviour {
-    private String itemType;
+    private Predicate<EntityRef> matcher;
     private int count;
 
-    public PresenceItemCraftBehaviour(String itemType) {
-        this(itemType, 1);
-    }
-
-    public PresenceItemCraftBehaviour(String itemType, int count) {
-        this.itemType = itemType;
+    public PresenceItemCraftBehaviour(Predicate<EntityRef> matcher, int count) {
+        this.matcher = matcher;
         this.count = count;
     }
 
     @Override
-    public boolean isValid(EntityRef character, EntityRef item) {
-        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
-        CraftInHandIngredientComponent craftComponent = item.getComponent(CraftInHandIngredientComponent.class);
-        return craftComponent != null && craftComponent.componentType.equals(itemType)
-                && itemComponent != null && itemComponent.stackCount >= count;
+    public boolean isValidAnyNumber(EntityRef item) {
+        return matcher.apply(item);
     }
 
     @Override
-    public int getCountToDisplay() {
+    public boolean isValid(EntityRef item, int multiplier) {
+        if (!matcher.apply(item)) {
+            return false;
+        }
+        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
+        return itemComponent != null && itemComponent.stackCount >= count;
+    }
+
+    @Override
+    public int getMaxMultiplier(EntityRef item) {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public int getCountToDisplay(int multiplier) {
         return count;
     }
 
     @Override
-    public void processForItem(EntityRef character, EntityRef item) {
+    public void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier) {
     }
 }

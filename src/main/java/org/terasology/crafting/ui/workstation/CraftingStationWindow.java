@@ -108,7 +108,7 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
                     @Override
                     public void onActivated(UIWidget widget) {
                         EntityRef character = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                        station.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe, null));
+                        station.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe, null, null));
                     }
                 });
         upgradeButton.setVisible(false);

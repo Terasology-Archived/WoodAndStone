@@ -68,15 +68,6 @@ public interface CraftingStationRecipe {
          * @param station
          * @return
          */
-        EntityRef craftOne(EntityRef station);
-
-        /**
-         * Processes the crafting of the recipe maximum possible times. Returns the entity that should be put (or added to)
-         * the result slot.
-         *
-         * @param station
-         * @return
-         */
-        EntityRef craftMax(EntityRef station);
+        EntityRef craft(EntityRef station, int count);
     }
 }

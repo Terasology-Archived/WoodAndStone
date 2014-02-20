@@ -19,6 +19,7 @@ import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.hand.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.input.Keyboard;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
@@ -27,6 +28,7 @@ import org.terasology.math.Vector2i;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.CoreWidget;
 import org.terasology.rendering.nui.UIWidget;
+import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
@@ -51,12 +53,21 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int leftIndent;
 
+    private int multiplier = 1;
+
+    private int maxMultiplier = Integer.MAX_VALUE;
+
     public CraftRecipeWidget(int leftIndent, EntityRef character,
-                             CraftProcessDisplay craftingRecipe, CreationCallback callback) {
+                             final CraftProcessDisplay craftingRecipe, CreationCallback callback) {
         this.leftIndent = leftIndent;
         this.callback = callback;
 
-        for (Map.Entry<Integer, Integer> craftingComponents : craftingRecipe.getComponentSlotAndCount().entrySet()) {
+        Map<Integer, CraftProcessDisplay.ItemCountDefinition> componentSlotAndCount = craftingRecipe.getComponentSlotAndCount();
+        for (CraftProcessDisplay.ItemCountDefinition itemCountDefinition : componentSlotAndCount.values()) {
+            maxMultiplier = Math.min(maxMultiplier, itemCountDefinition.getMaximumMultiplier());
+        }
+
+        for (Map.Entry<Integer, CraftProcessDisplay.ItemCountDefinition> craftingComponents : componentSlotAndCount.entrySet()) {
             ItemIcon itemIcon = new ItemIcon();
             EntityRef item = InventoryUtils.getItemAt(character, craftingComponents.getKey());
             ItemComponent itemComp = item.getComponent(ItemComponent.class);
@@ -71,7 +82,19 @@ public class CraftRecipeWidget extends CoreWidget {
             if (displayName != null) {
                 itemIcon.setTooltip(displayName.name);
             }
-            itemIcon.setQuantity(craftingComponents.getValue());
+            final CraftProcessDisplay.ItemCountDefinition count = craftingComponents.getValue();
+            itemIcon.bindQuantity(
+                    new Binding<Integer>() {
+                        @Override
+                        public Integer get() {
+                            return count.getCountDisplayForMultiplier(multiplier);
+                        }
+
+                        @Override
+                        public void set(Integer value) {
+                        }
+                    }
+            );
 
             ingredientsIcons.add(itemIcon);
         }
@@ -90,23 +113,34 @@ public class CraftRecipeWidget extends CoreWidget {
                 result.setTooltip(displayName.name);
             }
         }
-        result.setQuantity(craftingRecipe.getResultQuantity());
+        result.bindQuantity(
+                new Binding<Integer>() {
+                    @Override
+                    public Integer get() {
+                        return craftingRecipe.getResultQuantity() * multiplier;
+                    }
+
+                    @Override
+                    public void set(Integer value) {
+                    }
+                }
+        );
 
 
         button = new UIButton();
-        button.setText("Craft 1");
+        button.setText("Craft");
         button.subscribe(
                 new ActivateEventListener() {
                     @Override
                     public void onActivated(UIWidget widget) {
-                        produceOne();
+                        produce();
                     }
                 }
         );
     }
 
-    private void produceOne() {
-        callback.createOne();
+    private void produce() {
+        callback.create(multiplier);
     }
 
     @Override
@@ -125,6 +159,24 @@ public class CraftRecipeWidget extends CoreWidget {
 
         canvas.drawWidget(result, Rect2i.createFromMinAndSize(size.x - resultSize.x - buttonSize.x - 5, 0, resultSize.x, resultSize.y));
         canvas.drawWidget(button, Rect2i.createFromMinAndSize(size.x - buttonSize.x, (size.y - buttonSize.y) / 2, buttonSize.x, buttonSize.y));
+    }
+
+    @Override
+    public void update(float delta) {
+        if (Keyboard.isKeyDown(Keyboard.KeyId.LEFT_SHIFT)) {
+            multiplier = Math.min(maxMultiplier, 5);
+        } else if (Keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL)) {
+            multiplier = maxMultiplier;
+        } else {
+            multiplier = 1;
+        }
+
+        for (ItemIcon ingredientsIcon : ingredientsIcons) {
+            ingredientsIcon.update(delta);
+        }
+
+        result.update(delta);
+        button.update(delta);
     }
 
     @Override

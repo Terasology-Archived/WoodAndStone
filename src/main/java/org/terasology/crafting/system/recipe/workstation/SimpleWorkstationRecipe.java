@@ -16,10 +16,9 @@
 package org.terasology.crafting.system.recipe.workstation;
 
 import org.terasology.asset.Assets;
-import org.terasology.crafting.component.CraftingStationIngredientComponent;
-import org.terasology.crafting.component.CraftingStationToolComponent;
-import org.terasology.durability.DurabilityComponent;
-import org.terasology.durability.ReduceDurabilityEvent;
+import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -28,7 +27,7 @@ import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.action.RemoveItemAction;
+import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.block.Block;
@@ -36,6 +35,7 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -46,8 +46,8 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SimpleWorkstationRecipe implements CraftingStationRecipe {
-    private Map<String, Integer> ingredientsMap = new LinkedHashMap<>();
-    private Map<String, Integer> toolsMap = new LinkedHashMap<>();
+    private List<ItemCraftBehaviour> ingredientBehaviours = new ArrayList<>();
+    private List<ItemCraftBehaviour> toolBehaviours = new ArrayList<>();
     private Map<String, Float> fluidMap = new LinkedHashMap<>();
 
     private String blockResult;
@@ -55,11 +55,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     private byte resultCount;
 
     public void addIngredient(String type, int count) {
-        ingredientsMap.put(type, count);
+        ingredientBehaviours.add(new ConsumeItemCraftBehaviour(new CraftingStationIngredientPredicate(type), count));
     }
 
     public void addRequiredTool(String toolType, int durability) {
-        toolsMap.put(toolType, durability);
+        toolBehaviours.add(new ReduceDurabilityCraftBehaviour(new CraftingStationToolPredicate(toolType), durability));
     }
 
     public void addFluid(String fluidType, float volume) {
@@ -78,18 +78,18 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public boolean hasAsComponent(EntityRef item) {
-        CraftingStationIngredientComponent ingredient = item.getComponent(CraftingStationIngredientComponent.class);
-        return ingredient != null && ingredientsMap.containsKey(ingredient.type);
+        for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+            if (ingredientBehaviour.isValidAnyNumber(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean hasAsTool(EntityRef item) {
-        CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
-        if (tool == null) {
-            return false;
-        }
-        for (String toolType : toolsMap.keySet()) {
-            if (tool.type.contains(toolType)) {
+        for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+            if (toolBehaviour.isValidAnyNumber(item)) {
                 return true;
             }
         }
@@ -106,20 +106,27 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         // TODO: Improve the search to find fragmented ingredients in multiple stacks, and also to find different kinds
         // of items, not just first matching
         List<Integer> resultSlots = new LinkedList<>();
+        int maxMultiplier = Integer.MAX_VALUE;
 
-        for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-            int slotNo = hasItem(station, ingredientCount.getKey(), ingredientCount.getValue());
+        for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+            int slotNo = hasItem(station, ingredientBehaviour);
             if (slotNo != -1) {
+                EntityRef item = InventoryUtils.getItemAt(station, slotNo);
+                maxMultiplier = Math.min(maxMultiplier, ingredientBehaviour.getMaxMultiplier(item));
                 resultSlots.add(slotNo);
+                break;
             } else {
                 return null;
             }
         }
 
-        for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
-            int slotNo = hasTool(station, toolDurability.getKey(), toolDurability.getValue());
+        for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+            int slotNo = hasTool(station, toolBehaviour);
             if (slotNo != -1) {
+                EntityRef item = InventoryUtils.getItemAt(station, slotNo);
+                maxMultiplier = Math.min(maxMultiplier, toolBehaviour.getMaxMultiplier(item));
                 resultSlots.add(slotNo);
+                break;
             } else {
                 return null;
             }
@@ -128,13 +135,26 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
             int fluidSlotNo = hasFluid(station, fluidVolume.getKey(), fluidVolume.getValue());
             if (fluidSlotNo != -1) {
+                FluidInventoryComponent fluidInventory = station.getComponent(FluidInventoryComponent.class);
+                FluidComponent fluid = fluidInventory.fluidSlots.get(fluidSlotNo).getComponent(FluidComponent.class);
+                maxMultiplier = Math.min(maxMultiplier, TeraMath.floorToInt(fluid.volume / fluidVolume.getValue()));
                 resultSlots.add(fluidSlotNo);
             } else {
                 return null;
             }
         }
 
-        return Collections.<CraftingStationResult>singletonList(new Result(resultSlots));
+        EntityRef result = null;
+        try {
+            result = createResult(1);
+            ItemComponent resultItem = result.getComponent(ItemComponent.class);
+            int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
+            maxMultiplier = Math.min(maxMultiplier, maxOutput);
+        } finally {
+            result.destroy();
+        }
+
+        return Collections.<CraftingStationResult>singletonList(new Result(maxMultiplier, resultSlots));
     }
 
     private int hasFluid(EntityRef station, String fluidType, Float volume) {
@@ -147,9 +167,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return -1;
     }
 
-    private int hasTool(EntityRef station, String toolType, int durability) {
+    private int hasTool(EntityRef station, ItemCraftBehaviour behaviour) {
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "TOOL")) {
-            if (hasToolInSlot(station, toolType, slot, durability)) {
+            if (hasItemInSlot(station, slot, behaviour)) {
                 return slot;
             }
         }
@@ -157,9 +177,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return -1;
     }
 
-    private int hasItem(EntityRef station, String itemType, int count) {
+    private int hasItem(EntityRef station, ItemCraftBehaviour behaviour) {
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "INPUT")) {
-            if (hasItemInSlot(station, itemType, slot, count)) {
+            if (hasItemInSlot(station, slot, behaviour)) {
                 return slot;
             }
         }
@@ -173,48 +193,57 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return fluid != null && fluid.fluidType.equals(fluidType) && fluid.volume >= volume;
     }
 
-    private boolean hasItemInSlot(EntityRef station, String itemType, int slot, int count) {
+    private boolean hasItemInSlot(EntityRef station, int slot, ItemCraftBehaviour behaviour) {
         EntityRef item = InventoryUtils.getItemAt(station, slot);
-        CraftingStationIngredientComponent component = item.getComponent(CraftingStationIngredientComponent.class);
-        if (component != null && component.type.equals(itemType) && item.getComponent(ItemComponent.class).stackCount >= count) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean hasToolInSlot(EntityRef station, String toolType, int slot, int durability) {
-        EntityRef item = InventoryUtils.getItemAt(station, slot);
-
-        CraftingStationToolComponent tool = item.getComponent(CraftingStationToolComponent.class);
-        return tool != null && tool.type.contains(toolType)
-                && item.hasComponent(DurabilityComponent.class) && item.getComponent(DurabilityComponent.class).durability >= durability;
+        return behaviour.isValid(item, 1);
     }
 
     @Override
     public CraftingStationResult getResultById(String resultId) {
         String[] split = resultId.split("\\|");
         List<Integer> result = new LinkedList<>();
-        for (String s : split) {
-            result.add(Integer.parseInt(s));
+        int maxMultiplier = 0;
+        for (int i = 0; i < split.length; i++) {
+            if (i == 0) {
+                maxMultiplier = Integer.parseInt(split[i]);
+            } else {
+                result.add(Integer.parseInt(split[i]));
+            }
         }
 
-        return new Result(result);
+        return new Result(maxMultiplier, result);
+    }
+
+    private EntityRef createResult(int count) {
+        if (itemResult != null) {
+            final EntityRef entity = CoreRegistry.get(EntityManager.class).create(itemResult);
+            final ItemComponent item = entity.getComponent(ItemComponent.class);
+            item.stackCount = (byte) (resultCount * count);
+            entity.saveComponent(item);
+            return entity;
+        } else {
+            BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult);
+            return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, resultCount * count);
+        }
     }
 
     private class Result implements CraftingStationResult {
+        private int maxMultiplier;
         private List<Integer> items;
         private List<Integer> tools;
         private List<Integer> fluids;
 
-        public Result(List<Integer> slots) {
-            items = slots.subList(0, ingredientsMap.size());
-            tools = slots.subList(ingredientsMap.size(), ingredientsMap.size() + toolsMap.size());
-            fluids = slots.subList(ingredientsMap.size() + toolsMap.size(), ingredientsMap.size() + toolsMap.size() + fluidMap.size());
+        public Result(int maxMultiplier, List<Integer> slots) {
+            this.maxMultiplier = maxMultiplier;
+            items = slots.subList(0, ingredientBehaviours.size());
+            tools = slots.subList(ingredientBehaviours.size(), ingredientBehaviours.size() + toolBehaviours.size());
+            fluids = slots.subList(ingredientBehaviours.size() + toolBehaviours.size(), ingredientBehaviours.size() + toolBehaviours.size() + fluidMap.size());
         }
 
         @Override
         public String getResultId() {
             StringBuilder sb = new StringBuilder();
+            sb.append(maxMultiplier).append("|");
             for (Integer item : items) {
                 sb.append(item).append("|");
             }
@@ -229,59 +258,67 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craftOne(EntityRef station) {
-            if (!validateCreation(station)) {
+        public EntityRef craft(EntityRef station, int count) {
+            if (!validateCreation(station, count)) {
                 return EntityRef.NULL;
             }
 
             FluidManager fluidManager = CoreRegistry.get(FluidManager.class);
 
             int index = 0;
-            for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                RemoveItemAction removeAction = new RemoveItemAction(station, InventoryUtils.getItemAt(station, items.get(index)), true, ingredientCount.getValue());
-                station.send(removeAction);
-                index++;
-            }
-            index = 0;
-            for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
-                final EntityRef tool = InventoryUtils.getItemAt(station, tools.get(index));
-                tool.send(new ReduceDurabilityEvent(toolDurability.getValue()));
-                index++;
-            }
-            index = 0;
-            for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
-                fluidManager.removeFluid(station, station, fluids.get(index), fluidVolume.getKey(), fluidVolume.getValue());
+            for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+                EntityRef item = InventoryUtils.getItemAt(station, items.get(index));
+                ingredientBehaviour.processForItem(station, station, item, count);
                 index++;
             }
 
-            return createResult();
+            index = 0;
+            for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+                final EntityRef tool = InventoryUtils.getItemAt(station, tools.get(index));
+                toolBehaviour.processForItem(station, station, tool, count);
+                index++;
+            }
+
+            index = 0;
+            for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
+                fluidManager.removeFluid(station, station, fluids.get(index), fluidVolume.getKey(), fluidVolume.getValue() * count);
+                index++;
+            }
+
+            return createResult(count);
         }
 
-        private boolean validateCreation(EntityRef station) {
+        private boolean validateCreation(EntityRef station, int count) {
             int index = 0;
-            for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                if (!hasItemInSlot(station, ingredientCount.getKey(), items.get(index), ingredientCount.getValue())) {
-                    return false;
-                }
-                index++;
-            }
-            index = 0;
-            for (Map.Entry<String, Integer> toolDurability : toolsMap.entrySet()) {
-                if (!hasToolInSlot(station, toolDurability.getKey(), tools.get(index), toolDurability.getValue())) {
-                    return false;
-                }
-                index++;
-            }
-            index = 0;
-            for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
-                if (!hasFluidInSlot(station, fluidVolume.getKey(), fluids.get(index), fluidVolume.getValue())) {
+            for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+                if (!ingredientBehaviour.isValid(InventoryUtils.getItemAt(station, items.get(index)), count)) {
                     return false;
                 }
                 index++;
             }
 
-            EntityRef resultItem = createResult();
+            index = 0;
+            for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+                if (!toolBehaviour.isValid(InventoryUtils.getItemAt(station, tools.get(index)), count)) {
+                    return false;
+                }
+                index++;
+            }
+
+            index = 0;
+            for (Map.Entry<String, Float> fluidVolume : fluidMap.entrySet()) {
+                if (!hasFluidInSlot(station, fluidVolume.getKey(), fluids.get(index), fluidVolume.getValue() * count)) {
+                    return false;
+                }
+                index++;
+            }
+
+            EntityRef resultItem = createResult(count);
             try {
+                ItemComponent item = resultItem.getComponent(ItemComponent.class);
+                if (item.stackCount > item.maxStackSize) {
+                    return false;
+                }
                 for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "OUTPUT")) {
                     EntityRef itemInResultSlot = InventoryUtils.getItemAt(station, slot);
                     if (InventoryUtils.canStackInto(resultItem, itemInResultSlot)) {
@@ -295,16 +332,21 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craftMax(EntityRef station) {
-            return null;
-        }
-
-        @Override
-        public Map<Integer, Integer> getComponentSlotAndCount() {
-            Map<Integer, Integer> result = new LinkedHashMap<>();
+        public Map<Integer, ItemCountDefinition> getComponentSlotAndCount() {
+            Map<Integer, ItemCountDefinition> result = new LinkedHashMap<>();
             int index = 0;
-            for (Integer count : ingredientsMap.values()) {
-                result.put(items.get(index), count);
+            for (final ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+                result.put(items.get(index), new ItemCountDefinition() {
+                    @Override
+                    public int getMaximumMultiplier() {
+                        return maxMultiplier;
+                    }
+
+                    @Override
+                    public int getCountDisplayForMultiplier(int multiplier) {
+                        return ingredientBehaviour.getCountToDisplay(multiplier);
+                    }
+                });
                 index++;
             }
 
@@ -330,19 +372,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 return Assets.getPrefab(itemResult);
             }
             return null;
-        }
-
-        private EntityRef createResult() {
-            if (itemResult != null) {
-                final EntityRef entity = CoreRegistry.get(EntityManager.class).create(itemResult);
-                final ItemComponent item = entity.getComponent(ItemComponent.class);
-                item.stackCount = resultCount;
-                entity.saveComponent(item);
-                return entity;
-            } else {
-                BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult);
-                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, resultCount);
-            }
         }
     }
 }

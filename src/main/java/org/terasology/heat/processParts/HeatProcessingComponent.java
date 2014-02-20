@@ -72,7 +72,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) throws InvalidProcessException {
         if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
             throw new InvalidProcessException();
         }
@@ -116,7 +116,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String result) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String result, String parameter) {
         String[] split = result.split("\\|");
         HeatProcessedComponent component = InventoryUtils.getItemAt(workstation, Integer.parseInt(split[0])).getComponent(HeatProcessedComponent.class);
 
@@ -124,14 +124,14 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String result) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String result, String parameter) {
         String[] split = result.split("\\|");
         EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(split[0]));
         workstation.send(new RemoveItemAction(instigator, item, true, 1));
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String result, String parameter) {
         String[] split = result.split("\\|");
         EntityRef toGive = createResultItem(split[1]);
 

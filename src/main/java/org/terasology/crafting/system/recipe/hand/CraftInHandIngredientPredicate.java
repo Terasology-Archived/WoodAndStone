@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,21 +15,23 @@
  */
 package org.terasology.crafting.system.recipe.hand;
 
+import com.google.common.base.Predicate;
+import org.terasology.crafting.component.CraftInHandIngredientComponent;
 import org.terasology.entitySystem.entity.EntityRef;
-
-import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface CraftInHandRecipe {
-    List<CraftInHandResult> getMatchingRecipeResults(EntityRef character);
+public class CraftInHandIngredientPredicate implements Predicate<EntityRef> {
+    private String itemType;
 
-    CraftInHandResult getResultById(EntityRef character, String resultId);
+    public CraftInHandIngredientPredicate(String itemType) {
+        this.itemType = itemType;
+    }
 
-    public interface CraftInHandResult extends CraftProcessDisplay {
-        String getResultId();
-
-        EntityRef craft(EntityRef character, int count);
+    @Override
+    public boolean apply(EntityRef input) {
+        CraftInHandIngredientComponent craftComponent = input.getComponent(CraftInHandIngredientComponent.class);
+        return craftComponent != null && craftComponent.componentType.equals(itemType);
     }
 }

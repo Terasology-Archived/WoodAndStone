@@ -29,11 +29,17 @@ public interface CraftProcessDisplay {
      *
      * @return
      */
-    Map<Integer, Integer> getComponentSlotAndCount();
+    Map<Integer, ItemCountDefinition> getComponentSlotAndCount();
 
     int getResultQuantity();
 
     Block getResultBlock();
 
     Prefab getResultItem();
+
+    public interface ItemCountDefinition {
+        int getMaximumMultiplier();
+
+        int getCountDisplayForMultiplier(int multiplier);
+    }
 }

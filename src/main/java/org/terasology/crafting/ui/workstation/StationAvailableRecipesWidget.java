@@ -92,6 +92,8 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         if (!openCategories.equals(displayedOpenCategories) || !recipes.equals(availableRecipes)) {
             reloadRecipes();
         }
+
+        layout.update(delta);
     }
 
     private void reloadRecipes() {
@@ -200,9 +202,9 @@ public class StationAvailableRecipesWidget extends CoreWidget {
             CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(30 * level, station, result,
                     new CreationCallback() {
                         @Override
-                        public void createOne() {
+                        public void create(int count) {
                             EntityRef player = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                            station.send(new WorkstationProcessRequest(player, recipeId, resultId));
+                            station.send(new WorkstationProcessRequest(player, recipeId, resultId, String.valueOf(count)));
                         }
                     });
             layout.addWidget(recipeDisplay);
