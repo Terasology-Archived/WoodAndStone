@@ -24,17 +24,22 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
+public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef, Integer> {
     private Predicate<EntityRef> matcher;
     private int count;
+    private InventorySlotResolver resolver;
     private ItemSlotIngredientRenderer renderer;
 
-    public ConsumeItemCraftBehaviour(Predicate<EntityRef> matcher, int count) {
+    public ConsumeItemCraftBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
         this.matcher = matcher;
         this.count = count;
+        this.resolver = resolver;
     }
 
     @Override
@@ -43,25 +48,38 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
     }
 
     @Override
-    public boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
-        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
-        if (!matcher.apply(ingredient)) {
-            return false;
+    public List<Integer> getValidToCraft(EntityRef entity, int multiplier) {
+        List<Integer> result = new LinkedList<>();
+        for (int slot : resolver.getSlots(entity)) {
+            if (isValidToCraft(entity, slot, multiplier)) {
+                result.add(slot);
+            }
         }
 
-        ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
-        return itemComponent != null && itemComponent.stackCount >= count * multiplier;
+        return result;
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, int slot) {
+    public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
+        if (matcher.apply(ingredient)) {
+            ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
+            if (itemComponent != null && itemComponent.stackCount >= count * multiplier) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getMaxMultiplier(EntityRef entity, Integer slot) {
         EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
         return itemComponent.stackCount / count;
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, int slot) {
+    public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
         if (renderer == null) {
             renderer = new ItemSlotIngredientRenderer();
         }
@@ -70,7 +88,7 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier) {
+    public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
         RemoveItemAction removeAction = new RemoveItemAction(instigator, InventoryUtils.getItemAt(entity, slot), true, count * multiplier);
         entity.send(removeAction);
     }

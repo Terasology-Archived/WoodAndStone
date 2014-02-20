@@ -112,7 +112,7 @@ public class CraftRecipeWidget extends CoreWidget {
         int x = leftIndent;
         Vector2i size = canvas.size();
 
-        for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredients(entity)) {
+        for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredientRenderers(entity)) {
             Vector2i preferredSize = craftIngredientRenderer.getPreferredSize(multiplier);
             craftIngredientRenderer.render(canvas, Rect2i.createFromMinAndSize(x, 0, preferredSize.x, preferredSize.y), multiplier);
             x += preferredSize.x;
@@ -144,7 +144,7 @@ public class CraftRecipeWidget extends CoreWidget {
         int maxX = canvas.size().x;
         int maxY = 0;
 
-        for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredients(entity)) {
+        for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredientRenderers(entity)) {
             maxY = Math.max(maxY, craftIngredientRenderer.getPreferredSize(multiplier).y);
         }
 

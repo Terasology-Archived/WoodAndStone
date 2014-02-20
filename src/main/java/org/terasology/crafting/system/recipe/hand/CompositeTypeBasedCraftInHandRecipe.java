@@ -38,7 +38,7 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
-    private List<IngredientCraftBehaviour<EntityRef>> itemCraftBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour<EntityRef, Integer>> itemCraftBehaviours = new ArrayList<>();
     private String prefabName;
     private boolean block;
 
@@ -47,7 +47,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         this.block = block;
     }
 
-    public void addItemCraftBehaviour(IngredientCraftBehaviour<EntityRef> itemCraftBehaviour) {
+    public void addItemCraftBehaviour(IngredientCraftBehaviour<EntityRef, Integer> itemCraftBehaviour) {
         itemCraftBehaviours.add(itemCraftBehaviour);
     }
 
@@ -110,7 +110,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public List<CraftIngredientRenderer> getIngredients(EntityRef entity) {
+        public List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity) {
             if (renderers == null) {
                 renderers = new LinkedList<>();
                 for (int i = 0; i < slots.length; i++) {

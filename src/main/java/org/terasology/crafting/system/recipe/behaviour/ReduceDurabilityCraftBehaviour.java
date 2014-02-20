@@ -24,17 +24,22 @@ import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryUtils;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
+public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<EntityRef, Integer> {
     private Predicate<EntityRef> matcher;
     private int durabilityUsed;
+    private InventorySlotResolver resolver;
     private ItemSlotIngredientRenderer renderer;
 
-    public ReduceDurabilityCraftBehaviour(Predicate<EntityRef> matcher, int durabilityUsed) {
+    public ReduceDurabilityCraftBehaviour(Predicate<EntityRef> matcher, int durabilityUsed, InventorySlotResolver resolver) {
         this.matcher = matcher;
         this.durabilityUsed = durabilityUsed;
+        this.resolver = resolver;
     }
 
     @Override
@@ -43,22 +48,31 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
     }
 
     @Override
-    public boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
-        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
-        if (!matcher.apply(ingredient)) {
-            return false;
+    public List<Integer> getValidToCraft(EntityRef entity, int multiplier) {
+        List<Integer> result = new LinkedList<>();
+        for (int slot : resolver.getSlots(entity)) {
+            if (isValidToCraft(entity, slot, multiplier)) {
+                result.add(slot);
+            }
         }
 
-        DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
-        if (durability == null) {
-            return false;
-        }
-
-        return durability.durability >= durabilityUsed * multiplier;
+        return result;
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, int slot) {
+    public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
+        if (matcher.apply(ingredient)) {
+            DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
+            if (durability != null && durability.durability >= durabilityUsed * multiplier) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getMaxMultiplier(EntityRef entity, Integer slot) {
         EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
 
@@ -66,7 +80,7 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, int slot) {
+    public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
         if (renderer == null) {
             renderer = new ItemSlotIngredientRenderer();
         }
@@ -75,7 +89,7 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier) {
+    public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
         InventoryUtils.getItemAt(entity, slot).send(new ReduceDurabilityEvent(multiplier));
     }
 }

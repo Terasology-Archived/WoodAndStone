@@ -15,35 +15,38 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
-import com.google.common.base.Predicate;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.crafting.system.recipe.render.FixedFunction;
-import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.inventory.ItemComponent;
+import org.terasology.fluid.component.FluidComponent;
+import org.terasology.fluid.component.FluidInventoryComponent;
+import org.terasology.fluid.system.FluidManager;
+import org.terasology.math.TeraMath;
+import org.terasology.registry.CoreRegistry;
 
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef, Integer> {
-    private Predicate<EntityRef> matcher;
-    private int count;
+public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String, Integer> {
+    private String fluidType;
+    private float volume;
     private InventorySlotResolver resolver;
-    private ItemSlotIngredientRenderer renderer;
 
-    public PresenceItemCraftBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
-        this.matcher = matcher;
-        this.count = count;
+    public ConsumeFluidBehaviour(String fluidType, float volume, InventorySlotResolver resolver) {
+        this.fluidType = fluidType;
+        this.volume = volume;
         this.resolver = resolver;
     }
 
     @Override
-    public boolean isValidAnyAmount(EntityRef ingredient) {
-        return matcher.apply(ingredient);
+    public int getMaxMultiplier(EntityRef entity, Integer slot) {
+        FluidInventoryComponent fluidInventory = entity.getComponent(FluidInventoryComponent.class);
+        FluidComponent fluid = fluidInventory.fluidSlots.get(slot).getComponent(FluidComponent.class);
+        return TeraMath.floorToInt(fluid.volume / volume);
+    }
+
+    @Override
+    public boolean isValidAnyAmount(String ingredient) {
+        return fluidType.equals(ingredient);
     }
 
     @Override
@@ -60,31 +63,22 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<Enti
 
     @Override
     public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
-        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
-        if (matcher.apply(ingredient)) {
-            ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
-            if (itemComponent != null && itemComponent.stackCount >= count * multiplier) {
-                return true;
-            }
+        FluidInventoryComponent fluidInventory = entity.getComponent(FluidInventoryComponent.class);
+        FluidComponent fluid = fluidInventory.fluidSlots.get(slot).getComponent(FluidComponent.class);
+        if (fluid != null && fluid.fluidType.equals(fluidType) && fluid.volume >= volume * multiplier) {
+            return true;
         }
         return false;
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, Integer slot) {
-        return Integer.MAX_VALUE;
-    }
-
-    @Override
     public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
-        if (renderer == null) {
-            renderer = new ItemSlotIngredientRenderer();
-        }
-        renderer.update(entity, slot, new FixedFunction(count));
-        return renderer;
+        return null;
     }
 
     @Override
     public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
+        FluidManager fluidManager = CoreRegistry.get(FluidManager.class);
+        fluidManager.removeFluid(instigator, entity, slot, fluidType, volume * multiplier);
     }
 }

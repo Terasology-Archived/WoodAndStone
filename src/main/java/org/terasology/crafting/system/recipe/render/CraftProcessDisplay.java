@@ -25,7 +25,7 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface CraftProcessDisplay {
-    List<CraftIngredientRenderer> getIngredients(EntityRef entity);
+    List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity);
 
     int getMaxMultiplier();
 

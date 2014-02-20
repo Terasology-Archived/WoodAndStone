@@ -27,6 +27,7 @@ import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBeha
 import org.terasology.crafting.system.recipe.hand.CompositeTypeBasedCraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -172,7 +173,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = component.split("\\*");
                 int count = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new ConsumeItemCraftBehaviour(new CraftInHandIngredientPredicate(type), count));
+                recipe.addItemCraftBehaviour(new ConsumeItemCraftBehaviour(new CraftInHandIngredientPredicate(type), count, PlayerInventorySlotResolver.singleton()));
             }
         }
         if (recipeComponent.recipeTools != null) {
@@ -180,7 +181,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = tool.split("\\*");
                 int durability = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new ReduceDurabilityCraftBehaviour(new CraftInHandIngredientPredicate(type), durability));
+                recipe.addItemCraftBehaviour(new ReduceDurabilityCraftBehaviour(new CraftInHandIngredientPredicate(type), durability, PlayerInventorySlotResolver.singleton()));
             }
         }
         if (recipeComponent.recipeActivators != null) {
@@ -188,7 +189,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = activator.split("\\*");
                 int count = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new PresenceItemCraftBehaviour(new CraftInHandIngredientPredicate(type), count));
+                recipe.addItemCraftBehaviour(new PresenceItemCraftBehaviour(new CraftInHandIngredientPredicate(type), count, PlayerInventorySlotResolver.singleton()));
             }
         }
         addCraftInHandRecipe(recipeId, recipe);

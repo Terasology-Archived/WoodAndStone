@@ -21,6 +21,7 @@ import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
+import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -44,9 +45,9 @@ import java.util.Set;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SeedingFruitsRecipe implements CraftInHandRecipe {
-    private static final IngredientCraftBehaviour<EntityRef> KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
-            new CraftInHandIngredientPredicate("WoodAndStone:knife"), 1);
-    private static final IngredientCraftBehaviour<EntityRef> FRUIT_BEHAVIOUR = new ConsumeItemCraftBehaviour(
+    private static final IngredientCraftBehaviour<EntityRef, Integer> KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
+            new CraftInHandIngredientPredicate("WoodAndStone:knife"), 1, PlayerInventorySlotResolver.singleton());
+    private static final IngredientCraftBehaviour<EntityRef, Integer> FRUIT_BEHAVIOUR = new ConsumeItemCraftBehaviour(
             new Predicate<EntityRef>() {
                 @Override
                 public boolean apply(EntityRef input) {
@@ -54,12 +55,11 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
                     return prefab != null && prefab.getURI().getNormalisedModuleName().equals("plantpack")
                             && prefab.getURI().getNormalisedAssetName().endsWith("fruit");
                 }
-            }, 1);
+            }, 1, PlayerInventorySlotResolver.singleton());
 
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
-        int slotCount = InventoryUtils.getSlotCount(character);
-        int knifeSlot = getKnifeSlot(character, slotCount);
+        int knifeSlot = getKnifeSlot(character);
         if (knifeSlot == -1) {
             return null;
         }
@@ -69,28 +69,25 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         List<CraftInHandResult> results = new LinkedList<>();
         Set<String> usedFruits = new HashSet<>();
 
-        for (int i = 0; i < slotCount; i++) {
-            EntityRef fruitItem = InventoryUtils.getItemAt(character, i);
-            if (FRUIT_BEHAVIOUR.isValidToCraft(character, i, 1)) {
-                Prefab prefab = fruitItem.getParentPrefab();
-                if (!usedFruits.contains(prefab.getURI().getNormalisedAssetName())) {
-                    String assetName = prefab.getURI().getNormalisedAssetName();
-                    String fruitName = assetName.substring(0, assetName.length() - 5);
-                    usedFruits.add(fruitName);
-                    ItemComponent item = fruitItem.getComponent(ItemComponent.class);
-                    results.add(new Result(character, i, knifeSlot, Math.min(maxKnifeMultiplier, item.stackCount)));
-                }
+        for (int slot : FRUIT_BEHAVIOUR.getValidToCraft(character, 1)) {
+            EntityRef fruitItem = InventoryUtils.getItemAt(character, slot);
+            Prefab prefab = fruitItem.getParentPrefab();
+            if (!usedFruits.contains(prefab.getURI().getNormalisedAssetName())) {
+                String assetName = prefab.getURI().getNormalisedAssetName();
+                String fruitName = assetName.substring(0, assetName.length() - 5);
+                usedFruits.add(fruitName);
+                ItemComponent item = fruitItem.getComponent(ItemComponent.class);
+                results.add(new Result(character, slot, knifeSlot, Math.min(maxKnifeMultiplier, item.stackCount)));
             }
         }
 
         return results;
     }
 
-    private int getKnifeSlot(EntityRef character, int slotCount) {
-        for (int i = 0; i < slotCount; i++) {
-            if (KNIFE_BEHAVIOUR.isValidToCraft(character, i, 1)) {
-                return i;
-            }
+    private int getKnifeSlot(EntityRef character) {
+        List<Integer> slots = KNIFE_BEHAVIOUR.getValidToCraft(character, 1);
+        if (slots.size() > 0) {
+            return slots.get(0);
         }
         return -1;
     }
@@ -143,7 +140,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public List<CraftIngredientRenderer> getIngredients(EntityRef entity) {
+        public List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity) {
             if (renderers == null) {
                 renderers = new LinkedList<>();
                 renderers.add(FRUIT_BEHAVIOUR.getRenderer(entity, fruitSlot));
