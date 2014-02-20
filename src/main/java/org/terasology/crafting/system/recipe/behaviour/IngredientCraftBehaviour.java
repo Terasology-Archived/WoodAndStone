@@ -21,14 +21,14 @@ import org.terasology.entitySystem.entity.EntityRef;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface ItemCraftBehaviour {
-    boolean isValidAnyNumber(EntityRef item);
+public interface IngredientCraftBehaviour {
+    boolean isValidAnyAmount(EntityRef item);
 
-    boolean isValid(EntityRef item, int multiplier);
+    boolean isValid(EntityRef ingredient, int multiplier);
 
-    int getMaxMultiplier(EntityRef item);
+    int getMaxMultiplier(EntityRef ingredient);
 
     Function<Integer, Integer> getCountBasedOnMultiplier();
 
-    void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier);
+    void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier);
 }

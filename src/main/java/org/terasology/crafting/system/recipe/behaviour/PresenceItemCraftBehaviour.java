@@ -24,7 +24,7 @@ import org.terasology.logic.inventory.ItemComponent;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class PresenceItemCraftBehaviour implements ItemCraftBehaviour {
+public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
     private Predicate<EntityRef> matcher;
     private int count;
 
@@ -34,21 +34,21 @@ public class PresenceItemCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public boolean isValidAnyNumber(EntityRef item) {
+    public boolean isValidAnyAmount(EntityRef item) {
         return matcher.apply(item);
     }
 
     @Override
-    public boolean isValid(EntityRef item, int multiplier) {
-        if (!matcher.apply(item)) {
+    public boolean isValid(EntityRef ingredient, int multiplier) {
+        if (!matcher.apply(ingredient)) {
             return false;
         }
-        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
+        ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
         return itemComponent != null && itemComponent.stackCount >= count;
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef item) {
+    public int getMaxMultiplier(EntityRef ingredient) {
         return Integer.MAX_VALUE;
     }
 
@@ -58,6 +58,6 @@ public class PresenceItemCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier) {
+    public void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier) {
     }
 }

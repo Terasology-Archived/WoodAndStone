@@ -25,7 +25,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ReduceDurabilityCraftBehaviour implements ItemCraftBehaviour {
+public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour {
     private Predicate<EntityRef> matcher;
     private int durabilityUsed;
 
@@ -35,17 +35,17 @@ public class ReduceDurabilityCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public boolean isValidAnyNumber(EntityRef item) {
+    public boolean isValidAnyAmount(EntityRef item) {
         return matcher.apply(item);
     }
 
     @Override
-    public boolean isValid(EntityRef item, int multiplier) {
-        if (!matcher.apply(item)) {
+    public boolean isValid(EntityRef ingredient, int multiplier) {
+        if (!matcher.apply(ingredient)) {
             return false;
         }
 
-        DurabilityComponent durability = item.getComponent(DurabilityComponent.class);
+        DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
         if (durability == null) {
             return false;
         }
@@ -54,8 +54,8 @@ public class ReduceDurabilityCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef item) {
-        DurabilityComponent durability = item.getComponent(DurabilityComponent.class);
+    public int getMaxMultiplier(EntityRef ingredient) {
+        DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
 
         return durability.durability / durabilityUsed;
     }
@@ -66,7 +66,7 @@ public class ReduceDurabilityCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier) {
-        item.send(new ReduceDurabilityEvent(multiplier));
+    public void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier) {
+        ingredient.send(new ReduceDurabilityEvent(multiplier));
     }
 }

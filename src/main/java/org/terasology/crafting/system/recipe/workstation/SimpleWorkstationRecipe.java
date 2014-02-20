@@ -17,7 +17,7 @@ package org.terasology.crafting.system.recipe.workstation;
 
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
@@ -48,8 +48,8 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SimpleWorkstationRecipe implements CraftingStationRecipe {
-    private List<ItemCraftBehaviour> ingredientBehaviours = new ArrayList<>();
-    private List<ItemCraftBehaviour> toolBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour> ingredientBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour> toolBehaviours = new ArrayList<>();
     private Map<String, Float> fluidMap = new LinkedHashMap<>();
 
     private String blockResult;
@@ -80,8 +80,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public boolean hasAsComponent(EntityRef item) {
-        for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
-            if (ingredientBehaviour.isValidAnyNumber(item)) {
+        for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+            if (ingredientBehaviour.isValidAnyAmount(item)) {
                 return true;
             }
         }
@@ -90,8 +90,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public boolean hasAsTool(EntityRef item) {
-        for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
-            if (toolBehaviour.isValidAnyNumber(item)) {
+        for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
+            if (toolBehaviour.isValidAnyAmount(item)) {
                 return true;
             }
         }
@@ -110,7 +110,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         List<Integer> resultSlots = new LinkedList<>();
         int maxMultiplier = Integer.MAX_VALUE;
 
-        for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+        for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
             int slotNo = hasItem(station, ingredientBehaviour);
             if (slotNo != -1) {
                 EntityRef item = InventoryUtils.getItemAt(station, slotNo);
@@ -122,7 +122,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             }
         }
 
-        for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+        for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
             int slotNo = hasTool(station, toolBehaviour);
             if (slotNo != -1) {
                 EntityRef item = InventoryUtils.getItemAt(station, slotNo);
@@ -146,9 +146,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             }
         }
 
-        EntityRef result = null;
+        EntityRef result = createResult(1);
         try {
-            result = createResult(1);
             ItemComponent resultItem = result.getComponent(ItemComponent.class);
             int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
             maxMultiplier = Math.min(maxMultiplier, maxOutput);
@@ -169,7 +168,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return -1;
     }
 
-    private int hasTool(EntityRef station, ItemCraftBehaviour behaviour) {
+    private int hasTool(EntityRef station, IngredientCraftBehaviour behaviour) {
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "TOOL")) {
             if (hasItemInSlot(station, slot, behaviour)) {
                 return slot;
@@ -179,7 +178,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return -1;
     }
 
-    private int hasItem(EntityRef station, ItemCraftBehaviour behaviour) {
+    private int hasItem(EntityRef station, IngredientCraftBehaviour behaviour) {
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(station, "INPUT")) {
             if (hasItemInSlot(station, slot, behaviour)) {
                 return slot;
@@ -195,7 +194,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return fluid != null && fluid.fluidType.equals(fluidType) && fluid.volume >= volume;
     }
 
-    private boolean hasItemInSlot(EntityRef station, int slot, ItemCraftBehaviour behaviour) {
+    private boolean hasItemInSlot(EntityRef station, int slot, IngredientCraftBehaviour behaviour) {
         EntityRef item = InventoryUtils.getItemAt(station, slot);
         return behaviour.isValid(item, 1);
     }
@@ -274,16 +273,16 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             FluidManager fluidManager = CoreRegistry.get(FluidManager.class);
 
             int index = 0;
-            for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+            for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
                 EntityRef item = InventoryUtils.getItemAt(station, items.get(index));
-                ingredientBehaviour.processForItem(station, station, item, count);
+                ingredientBehaviour.processIngredient(station, station, item, count);
                 index++;
             }
 
             index = 0;
-            for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+            for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
                 final EntityRef tool = InventoryUtils.getItemAt(station, tools.get(index));
-                toolBehaviour.processForItem(station, station, tool, count);
+                toolBehaviour.processIngredient(station, station, tool, count);
                 index++;
             }
 
@@ -298,7 +297,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
         private boolean validateCreation(EntityRef station, int count) {
             int index = 0;
-            for (ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+            for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
                 if (!ingredientBehaviour.isValid(InventoryUtils.getItemAt(station, items.get(index)), count)) {
                     return false;
                 }
@@ -306,7 +305,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             }
 
             index = 0;
-            for (ItemCraftBehaviour toolBehaviour : toolBehaviours) {
+            for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
                 if (!toolBehaviour.isValid(InventoryUtils.getItemAt(station, tools.get(index)), count)) {
                     return false;
                 }
@@ -344,7 +343,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             if (renderers == null) {
                 renderers = new LinkedList<>();
                 int index = 0;
-                for (final ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+                for (final IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
                     renderers.add(new ItemSlotIngredientRenderer(entity, items.get(index), ingredientBehaviour.getCountBasedOnMultiplier()));
                     index++;
                 }

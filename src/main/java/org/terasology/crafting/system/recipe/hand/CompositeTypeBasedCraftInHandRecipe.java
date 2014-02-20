@@ -16,7 +16,7 @@
 package org.terasology.crafting.system.recipe.hand;
 
 import org.terasology.asset.Assets;
-import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -40,7 +40,7 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
-    private List<ItemCraftBehaviour> itemCraftBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour> itemCraftBehaviours = new ArrayList<>();
     private String prefabName;
     private boolean block;
 
@@ -49,7 +49,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         this.block = block;
     }
 
-    public void addItemCraftBehaviour(ItemCraftBehaviour itemCraftBehaviour) {
+    public void addItemCraftBehaviour(IngredientCraftBehaviour itemCraftBehaviour) {
         itemCraftBehaviours.add(itemCraftBehaviour);
     }
 
@@ -71,7 +71,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         return Collections.<CraftInHandResult>singletonList(new CraftResult(slots, maxMultiplier));
     }
 
-    private int findMatchingSlot(EntityRef character, ItemCraftBehaviour itemCraftBehaviour) {
+    private int findMatchingSlot(EntityRef character, IngredientCraftBehaviour itemCraftBehaviour) {
         int slotCount = InventoryUtils.getSlotCount(character);
         for (int i = 0; i < slotCount; i++) {
             EntityRef item = InventoryUtils.getItemAt(character, i);
@@ -175,7 +175,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
             for (int i = 0; i < slots.length; i++) {
                 EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                itemCraftBehaviours.get(i).processForItem(character, character, itemInSlot, count);
+                itemCraftBehaviours.get(i).processIngredient(character, character, itemInSlot, count);
             }
 
             return createResult(count);

@@ -25,7 +25,7 @@ import org.terasology.logic.inventory.action.RemoveItemAction;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
+public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour {
     private Predicate<EntityRef> matcher;
     private int count;
 
@@ -35,23 +35,23 @@ public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public boolean isValidAnyNumber(EntityRef item) {
+    public boolean isValidAnyAmount(EntityRef item) {
         return matcher.apply(item);
     }
 
     @Override
-    public boolean isValid(EntityRef item, int multiplier) {
-        if (!matcher.apply(item)) {
+    public boolean isValid(EntityRef ingredient, int multiplier) {
+        if (!matcher.apply(ingredient)) {
             return false;
         }
 
-        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
+        ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
         return itemComponent != null && itemComponent.stackCount >= count * multiplier;
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef item) {
-        ItemComponent itemComponent = item.getComponent(ItemComponent.class);
+    public int getMaxMultiplier(EntityRef ingredient) {
+        ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
         return itemComponent.stackCount / count;
     }
 
@@ -61,8 +61,8 @@ public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public void processForItem(EntityRef instigator, EntityRef inventory, EntityRef item, int multiplier) {
-        RemoveItemAction removeAction = new RemoveItemAction(instigator, item, true, count * multiplier);
-        inventory.send(removeAction);
+    public void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier) {
+        RemoveItemAction removeAction = new RemoveItemAction(instigator, ingredient, true, count * multiplier);
+        entity.send(removeAction);
     }
 }

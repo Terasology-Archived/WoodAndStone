@@ -15,7 +15,7 @@
  */
 package org.terasology.was.system;
 
-import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
+import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
@@ -45,7 +45,7 @@ import java.util.Set;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SeedingFruitsRecipe implements CraftInHandRecipe {
-    private static final ItemCraftBehaviour KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
+    private static final IngredientCraftBehaviour KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
             new CraftInHandIngredientPredicate("WoodAndStone:knife"), 1);
 
     @Override
