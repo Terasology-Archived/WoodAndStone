@@ -15,6 +15,7 @@
  */
 package org.terasology.crafting.system.recipe.hand;
 
+import com.google.common.base.Function;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -112,23 +113,17 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public Map<Integer, ItemCountDefinition> getComponentSlotAndCount() {
-            Map<Integer, ItemCountDefinition> result = new LinkedHashMap<>();
+        public Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount() {
+            Map<Integer, Function<Integer, Integer>> result = new LinkedHashMap<>();
             for (int i = 0; i < slots.length; i++) {
-                final int finalI = i;
-                result.put(slots[i], new ItemCountDefinition() {
-                    @Override
-                    public int getMaximumMultiplier() {
-                        return maxMultiplier;
-                    }
-
-                    @Override
-                    public int getCountDisplayForMultiplier(int multiplier) {
-                        return itemCraftBehaviours.get(finalI).getCountToDisplay(multiplier);
-                    }
-                });
+                result.put(slots[i], itemCraftBehaviours.get(i).getCountBasedOnMultiplier());
             }
             return result;
+        }
+
+        @Override
+        public int getMaxMultiplier() {
+            return maxMultiplier;
         }
 
         @Override

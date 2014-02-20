@@ -15,8 +15,9 @@
  */
 package org.terasology.crafting.ui;
 
+import com.google.common.base.Function;
 import org.terasology.asset.Assets;
-import org.terasology.crafting.system.recipe.hand.CraftProcessDisplay;
+import org.terasology.crafting.system.recipe.render.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.input.Keyboard;
@@ -55,19 +56,18 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int multiplier = 1;
 
-    private int maxMultiplier = Integer.MAX_VALUE;
+    private int maxMultiplier;
 
     public CraftRecipeWidget(int leftIndent, EntityRef character,
                              final CraftProcessDisplay craftingRecipe, CreationCallback callback) {
         this.leftIndent = leftIndent;
         this.callback = callback;
 
-        Map<Integer, CraftProcessDisplay.ItemCountDefinition> componentSlotAndCount = craftingRecipe.getComponentSlotAndCount();
-        for (CraftProcessDisplay.ItemCountDefinition itemCountDefinition : componentSlotAndCount.values()) {
-            maxMultiplier = Math.min(maxMultiplier, itemCountDefinition.getMaximumMultiplier());
-        }
+        maxMultiplier = craftingRecipe.getMaxMultiplier();
 
-        for (Map.Entry<Integer, CraftProcessDisplay.ItemCountDefinition> craftingComponents : componentSlotAndCount.entrySet()) {
+        Map<Integer, Function<Integer, Integer>> componentSlotAndCount = craftingRecipe.getComponentSlotAndCount();
+
+        for (Map.Entry<Integer, Function<Integer, Integer>> craftingComponents : componentSlotAndCount.entrySet()) {
             ItemIcon itemIcon = new ItemIcon();
             EntityRef item = InventoryUtils.getItemAt(character, craftingComponents.getKey());
             ItemComponent itemComp = item.getComponent(ItemComponent.class);
@@ -82,12 +82,12 @@ public class CraftRecipeWidget extends CoreWidget {
             if (displayName != null) {
                 itemIcon.setTooltip(displayName.name);
             }
-            final CraftProcessDisplay.ItemCountDefinition count = craftingComponents.getValue();
+            final Function<Integer, Integer> count = craftingComponents.getValue();
             itemIcon.bindQuantity(
                     new Binding<Integer>() {
                         @Override
                         public Integer get() {
-                            return count.getCountDisplayForMultiplier(multiplier);
+                            return count.apply(multiplier);
                         }
 
                         @Override

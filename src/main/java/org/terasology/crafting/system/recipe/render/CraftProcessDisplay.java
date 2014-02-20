@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.hand;
+package org.terasology.crafting.system.recipe.render;
 
+import com.google.common.base.Function;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.world.block.Block;
 
@@ -29,17 +30,15 @@ public interface CraftProcessDisplay {
      *
      * @return
      */
-    Map<Integer, ItemCountDefinition> getComponentSlotAndCount();
+    Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount();
+
+    //List<CraftIngredientRenderer> getIngredients();
+
+    int getMaxMultiplier();
 
     int getResultQuantity();
 
     Block getResultBlock();
 
     Prefab getResultItem();
-
-    public interface ItemCountDefinition {
-        int getMaximumMultiplier();
-
-        int getCountDisplayForMultiplier(int multiplier);
-    }
 }

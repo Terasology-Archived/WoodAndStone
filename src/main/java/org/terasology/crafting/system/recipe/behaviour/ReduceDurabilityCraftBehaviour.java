@@ -15,7 +15,9 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.terasology.crafting.system.recipe.render.FixedFunction;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -59,8 +61,8 @@ public class ReduceDurabilityCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public int getCountToDisplay(int multiplier) {
-        return 1;
+    public Function<Integer, Integer> getCountBasedOnMultiplier() {
+        return new FixedFunction(1);
     }
 
     @Override

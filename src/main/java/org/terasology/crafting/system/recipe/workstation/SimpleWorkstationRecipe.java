@@ -15,6 +15,7 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
+import com.google.common.base.Function;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
@@ -258,6 +259,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
+        public int getMaxMultiplier() {
+            return maxMultiplier;
+        }
+
+        @Override
         public EntityRef craft(EntityRef station, int count) {
             if (!validateCreation(station, count)) {
                 return EntityRef.NULL;
@@ -332,21 +338,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public Map<Integer, ItemCountDefinition> getComponentSlotAndCount() {
-            Map<Integer, ItemCountDefinition> result = new LinkedHashMap<>();
+        public Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount() {
+            Map<Integer, Function<Integer, Integer>> result = new LinkedHashMap<>();
             int index = 0;
             for (final ItemCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
-                result.put(items.get(index), new ItemCountDefinition() {
-                    @Override
-                    public int getMaximumMultiplier() {
-                        return maxMultiplier;
-                    }
-
-                    @Override
-                    public int getCountDisplayForMultiplier(int multiplier) {
-                        return ingredientBehaviour.getCountToDisplay(multiplier);
-                    }
-                });
+                result.put(items.get(index), ingredientBehaviour.getCountBasedOnMultiplier());
                 index++;
             }
 

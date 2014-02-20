@@ -13,27 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.hand;
+package org.terasology.crafting.system.recipe.render;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public class FixedItemCountDefinition implements CraftProcessDisplay.ItemCountDefinition {
-    private int count;
-    private int maxMultiplier;
+import org.terasology.math.Rect2i;
+import org.terasology.math.Vector2i;
+import org.terasology.rendering.nui.Canvas;
 
-    public FixedItemCountDefinition(int count, int maxMultiplier) {
-        this.count = count;
-        this.maxMultiplier = maxMultiplier;
-    }
+public interface CraftIngredientRenderer {
+    Vector2i getPreferredSize(int multiplier);
 
-    @Override
-    public int getMaximumMultiplier() {
-        return maxMultiplier;
-    }
-
-    @Override
-    public int getCountDisplayForMultiplier(int multiplier) {
-        return count;
-    }
+    void render(Canvas canvas, Rect2i region);
 }

@@ -15,7 +15,9 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.terasology.crafting.system.recipe.render.FixedFunction;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
 
@@ -51,8 +53,8 @@ public class PresenceItemCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public int getCountToDisplay(int multiplier) {
-        return count;
+    public Function<Integer, Integer> getCountBasedOnMultiplier() {
+        return new FixedFunction(count);
     }
 
     @Override

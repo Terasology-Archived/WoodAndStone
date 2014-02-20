@@ -15,7 +15,9 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
@@ -54,8 +56,8 @@ public class ConsumeItemCraftBehaviour implements ItemCraftBehaviour {
     }
 
     @Override
-    public int getCountToDisplay(int multiplier) {
-        return count * multiplier;
+    public Function<Integer, Integer> getCountBasedOnMultiplier() {
+        return new MultiplyFunction(count);
     }
 
     @Override

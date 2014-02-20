@@ -15,11 +15,13 @@
  */
 package org.terasology.was.system;
 
+import com.google.common.base.Function;
 import org.terasology.crafting.system.recipe.behaviour.ItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
-import org.terasology.crafting.system.recipe.hand.FixedItemCountDefinition;
+import org.terasology.crafting.system.recipe.render.FixedFunction;
+import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -113,6 +115,11 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
+        public int getMaxMultiplier() {
+            return maxMultiplier;
+        }
+
+        @Override
         public EntityRef craft(EntityRef character, int count) {
             EntityRef fruit = InventoryUtils.getItemAt(character, fruitSlot);
 
@@ -129,21 +136,10 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public Map<Integer, ItemCountDefinition> getComponentSlotAndCount() {
-            Map<Integer, ItemCountDefinition> result = new LinkedHashMap<>();
-            result.put(fruitSlot,
-                    new ItemCountDefinition() {
-                        @Override
-                        public int getMaximumMultiplier() {
-                            return maxMultiplier;
-                        }
-
-                        @Override
-                        public int getCountDisplayForMultiplier(int multiplier) {
-                            return multiplier;
-                        }
-                    });
-            result.put(knifeSlot, new FixedItemCountDefinition(1, maxMultiplier));
+        public Map<Integer, Function<Integer, Integer>> getComponentSlotAndCount() {
+            Map<Integer, Function<Integer, Integer>> result = new LinkedHashMap<>();
+            result.put(fruitSlot, new MultiplyFunction(1));
+            result.put(knifeSlot, new FixedFunction(1));
             return result;
         }
 
