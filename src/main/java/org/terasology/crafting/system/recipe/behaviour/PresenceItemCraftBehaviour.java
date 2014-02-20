@@ -34,8 +34,8 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public boolean isValidAnyAmount(EntityRef item) {
-        return matcher.apply(item);
+    public boolean isValidAnyAmount(EntityRef ingredient) {
+        return matcher.apply(ingredient);
     }
 
     @Override
@@ -58,6 +58,6 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier) {
+    public void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier) {
     }
 }

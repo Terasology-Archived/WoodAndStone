@@ -21,6 +21,7 @@ import org.terasology.crafting.system.recipe.render.FixedFunction;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryUtils;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -35,8 +36,8 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour 
     }
 
     @Override
-    public boolean isValidAnyAmount(EntityRef item) {
-        return matcher.apply(item);
+    public boolean isValidAnyAmount(EntityRef ingredient) {
+        return matcher.apply(ingredient);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour 
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier) {
-        ingredient.send(new ReduceDurabilityEvent(multiplier));
+    public void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier) {
+        InventoryUtils.getItemAt(entity, slot).send(new ReduceDurabilityEvent(multiplier));
     }
 }

@@ -274,15 +274,13 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
             int index = 0;
             for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
-                EntityRef item = InventoryUtils.getItemAt(station, items.get(index));
-                ingredientBehaviour.processIngredient(station, station, item, count);
+                ingredientBehaviour.processIngredient(station, station, items.get(index), count);
                 index++;
             }
 
             index = 0;
             for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
-                final EntityRef tool = InventoryUtils.getItemAt(station, tools.get(index));
-                toolBehaviour.processIngredient(station, station, tool, count);
+                toolBehaviour.processIngredient(station, station, tools.get(index), count);
                 index++;
             }
 

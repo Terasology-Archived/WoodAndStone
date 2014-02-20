@@ -174,8 +174,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
             }
 
             for (int i = 0; i < slots.length; i++) {
-                EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                itemCraftBehaviours.get(i).processIngredient(character, character, itemInSlot, count);
+                itemCraftBehaviours.get(i).processIngredient(character, character, slots[i], count);
             }
 
             return createResult(count);

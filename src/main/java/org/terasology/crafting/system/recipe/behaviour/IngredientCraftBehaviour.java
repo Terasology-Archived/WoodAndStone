@@ -22,7 +22,7 @@ import org.terasology.entitySystem.entity.EntityRef;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public interface IngredientCraftBehaviour {
-    boolean isValidAnyAmount(EntityRef item);
+    boolean isValidAnyAmount(EntityRef ingredient);
 
     boolean isValid(EntityRef ingredient, int multiplier);
 
@@ -30,5 +30,5 @@ public interface IngredientCraftBehaviour {
 
     Function<Integer, Integer> getCountBasedOnMultiplier();
 
-    void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier);
+    void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier);
 }

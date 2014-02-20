@@ -19,6 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 
@@ -35,8 +36,8 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public boolean isValidAnyAmount(EntityRef item) {
-        return matcher.apply(item);
+    public boolean isValidAnyAmount(EntityRef ingredient) {
+        return matcher.apply(ingredient);
     }
 
     @Override
@@ -61,8 +62,8 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, EntityRef ingredient, int multiplier) {
-        RemoveItemAction removeAction = new RemoveItemAction(instigator, ingredient, true, count * multiplier);
+    public void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier) {
+        RemoveItemAction removeAction = new RemoveItemAction(instigator, InventoryUtils.getItemAt(entity, slot), true, count * multiplier);
         entity.send(removeAction);
     }
 }
