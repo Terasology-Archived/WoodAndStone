@@ -15,8 +15,9 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
+import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryUtils;
@@ -26,9 +27,10 @@ import org.terasology.logic.inventory.action.RemoveItemAction;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour {
+public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
     private Predicate<EntityRef> matcher;
     private int count;
+    private ItemSlotIngredientRenderer renderer;
 
     public ConsumeItemCraftBehaviour(Predicate<EntityRef> matcher, int count) {
         this.matcher = matcher;
@@ -59,8 +61,12 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public Function<Integer, Integer> getCountBasedOnMultiplier() {
-        return new MultiplyFunction(count);
+    public CraftIngredientRenderer getRenderer(EntityRef entity, int slot) {
+        if (renderer == null) {
+            renderer = new ItemSlotIngredientRenderer();
+        }
+        renderer.update(entity, slot, new MultiplyFunction(count));
+        return renderer;
     }
 
     @Override

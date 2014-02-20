@@ -18,11 +18,9 @@ package org.terasology.crafting.system.recipe.hand;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
@@ -40,7 +38,7 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
-    private List<IngredientCraftBehaviour> itemCraftBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour<EntityRef>> itemCraftBehaviours = new ArrayList<>();
     private String prefabName;
     private boolean block;
 
@@ -49,7 +47,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         this.block = block;
     }
 
-    public void addItemCraftBehaviour(IngredientCraftBehaviour itemCraftBehaviour) {
+    public void addItemCraftBehaviour(IngredientCraftBehaviour<EntityRef> itemCraftBehaviour) {
         itemCraftBehaviours.add(itemCraftBehaviour);
     }
 
@@ -116,7 +114,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
             if (renderers == null) {
                 renderers = new LinkedList<>();
                 for (int i = 0; i < slots.length; i++) {
-                    renderers.add(new ItemSlotIngredientRenderer(entity, slots[i], itemCraftBehaviours.get(i).getCountBasedOnMultiplier()));
+                    renderers.add(itemCraftBehaviours.get(i).getRenderer(entity, slots[i]));
                 }
             }
             return renderers;
@@ -163,7 +161,6 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
         @Override
         public EntityRef craft(EntityRef character, int count) {
-            InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
             for (int i = 0; i < slots.length; i++) {
                 if (!itemCraftBehaviours.get(i).isValidToCraft(character, slots[i], count)) {
                     return EntityRef.NULL;

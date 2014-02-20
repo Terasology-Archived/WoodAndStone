@@ -15,9 +15,10 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.FixedFunction;
+import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -26,9 +27,10 @@ import org.terasology.logic.inventory.InventoryUtils;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour {
+public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
     private Predicate<EntityRef> matcher;
     private int durabilityUsed;
+    private ItemSlotIngredientRenderer renderer;
 
     public ReduceDurabilityCraftBehaviour(Predicate<EntityRef> matcher, int durabilityUsed) {
         this.matcher = matcher;
@@ -64,8 +66,12 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour 
     }
 
     @Override
-    public Function<Integer, Integer> getCountBasedOnMultiplier() {
-        return new FixedFunction(1);
+    public CraftIngredientRenderer getRenderer(EntityRef entity, int slot) {
+        if (renderer == null) {
+            renderer = new ItemSlotIngredientRenderer();
+        }
+        renderer.update(entity, slot, new FixedFunction(1));
+        return renderer;
     }
 
     @Override

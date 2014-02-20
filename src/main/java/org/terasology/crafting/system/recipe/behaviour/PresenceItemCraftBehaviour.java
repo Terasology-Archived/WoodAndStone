@@ -15,9 +15,10 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.FixedFunction;
+import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
@@ -25,9 +26,10 @@ import org.terasology.logic.inventory.ItemComponent;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
+public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
     private Predicate<EntityRef> matcher;
     private int count;
+    private ItemSlotIngredientRenderer renderer;
 
     public PresenceItemCraftBehaviour(Predicate<EntityRef> matcher, int count) {
         this.matcher = matcher;
@@ -55,8 +57,12 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public Function<Integer, Integer> getCountBasedOnMultiplier() {
-        return new FixedFunction(count);
+    public CraftIngredientRenderer getRenderer(EntityRef entity, int slot) {
+        if (renderer == null) {
+            renderer = new ItemSlotIngredientRenderer();
+        }
+        renderer.update(entity, slot, new FixedFunction(count));
+        return renderer;
     }
 
     @Override

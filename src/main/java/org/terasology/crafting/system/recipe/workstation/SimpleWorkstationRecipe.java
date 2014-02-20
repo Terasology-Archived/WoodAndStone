@@ -20,7 +20,6 @@ import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -48,8 +47,8 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class SimpleWorkstationRecipe implements CraftingStationRecipe {
-    private List<IngredientCraftBehaviour> ingredientBehaviours = new ArrayList<>();
-    private List<IngredientCraftBehaviour> toolBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour<EntityRef>> ingredientBehaviours = new ArrayList<>();
+    private List<IngredientCraftBehaviour<EntityRef>> toolBehaviours = new ArrayList<>();
     private Map<String, Float> fluidMap = new LinkedHashMap<>();
 
     private String blockResult;
@@ -80,7 +79,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public boolean hasAsComponent(EntityRef item) {
-        for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
+        for (IngredientCraftBehaviour<EntityRef> ingredientBehaviour : ingredientBehaviours) {
             if (ingredientBehaviour.isValidAnyAmount(item)) {
                 return true;
             }
@@ -90,7 +89,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public boolean hasAsTool(EntityRef item) {
-        for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
+        for (IngredientCraftBehaviour<EntityRef> toolBehaviour : toolBehaviours) {
             if (toolBehaviour.isValidAnyAmount(item)) {
                 return true;
             }
@@ -339,7 +338,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 renderers = new LinkedList<>();
                 int index = 0;
                 for (final IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
-                    renderers.add(new ItemSlotIngredientRenderer(entity, items.get(index), ingredientBehaviour.getCountBasedOnMultiplier()));
+                    renderers.add(ingredientBehaviour.getRenderer(entity, items.get(index)));
                     index++;
                 }
             }

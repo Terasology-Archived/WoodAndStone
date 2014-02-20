@@ -15,20 +15,20 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
-import com.google.common.base.Function;
+import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface IngredientCraftBehaviour {
-    boolean isValidAnyAmount(EntityRef ingredient);
+public interface IngredientCraftBehaviour<T> {
+    boolean isValidAnyAmount(T ingredient);
 
     boolean isValidToCraft(EntityRef entity, int slot, int multiplier);
 
     int getMaxMultiplier(EntityRef entity, int slot);
 
-    Function<Integer, Integer> getCountBasedOnMultiplier();
+    CraftIngredientRenderer getRenderer(EntityRef entity, int slot);
 
     void processIngredient(EntityRef instigator, EntityRef entity, int slot, int multiplier);
 }
