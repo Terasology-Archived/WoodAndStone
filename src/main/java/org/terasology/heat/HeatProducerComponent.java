@@ -29,7 +29,9 @@ import java.util.Set;
 @Replicate
 public class HeatProducerComponent implements Component {
     public List<FuelSourceConsume> fuelConsumed = Lists.newArrayList();
-    public float heatTransferEfficiency;
+    public float temperatureAbsorptionRate;
+    public float temperatureLossRate;
+    public float maximumTemperature;
     public Set<Side> heatDirections;
 
     @MappedContainer

@@ -66,7 +66,8 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                 new Binding<Float>() {
                     @Override
                     public Float get() {
-                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class)) / 1000f;
+                        HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
+                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class)) / producer.maximumTemperature;
                     }
 
                     @Override
@@ -78,11 +79,12 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                     @Override
                     public Float get() {
                         WorkstationInventoryComponent workstationInventory = workstation.getComponent(WorkstationInventoryComponent.class);
+                        HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
                         if (workstationInventory != null) {
                             for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
                                 HeatProcessedComponent heatProcessed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
                                 if (heatProcessed != null) {
-                                    return heatProcessed.heatRequired / 1000f;
+                                    return heatProcessed.heatRequired / producer.maximumTemperature;
                                 }
                             }
                         }
@@ -93,6 +95,18 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                     public void set(Float value) {
                     }
                 });
+        heat.bindTooltip(
+                new Binding<String>() {
+                    @Override
+                    public String get() {
+                        return Math.round(HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class))) + "C";
+                    }
+
+                    @Override
+                    public void set(String value) {
+                    }
+                }
+        );
 
         burn.bindValue(
                 new Binding<Float>() {

@@ -23,7 +23,9 @@
         }
     },
     "HeatProducer": {
-        "heatTransferEfficiency": 1,
+        "temperatureAbsorptionRate": 1,
+        "temperatureLossRate": 0.8,
+        "maximumTemperature": 1000,
         "heatDirections": ["TOP"]
     },
     "Inventory": {

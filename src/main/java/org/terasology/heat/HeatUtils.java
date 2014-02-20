@@ -42,7 +42,7 @@ public final class HeatUtils {
     public static float calculateHeatForProducer(HeatProducerComponent producer) {
         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
-        return calculateHeatForProducerAtTime(producer, gameTime);
+        return Math.min(producer.maximumTemperature, calculateHeatForProducerAtTime(producer, gameTime));
     }
 
     public static float solveHeatEquation(float startingHeat, float appliedHeat, float heatTransferEfficiency, long duration) {
@@ -50,16 +50,16 @@ public final class HeatUtils {
     }
 
     private static float calculateHeatForProducerAtTime(HeatProducerComponent producer, long time) {
-        float heat = 0;
+        float heat = 20;
         long lastCalculated = 0;
         for (HeatProducerComponent.FuelSourceConsume fuelSourceConsume : producer.fuelConsumed) {
             if (fuelSourceConsume.startTime < time) {
                 if (lastCalculated < fuelSourceConsume.startTime) {
-                    heat = solveHeatEquation(heat, 0, producer.heatTransferEfficiency, fuelSourceConsume.startTime - lastCalculated);
+                    heat = solveHeatEquation(heat, 20, producer.temperatureLossRate, fuelSourceConsume.startTime - lastCalculated);
                     lastCalculated = fuelSourceConsume.startTime;
                 }
                 long heatEndTime = Math.min(fuelSourceConsume.startTime + fuelSourceConsume.burnLength, time);
-                heat = solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.heatTransferEfficiency, heatEndTime - lastCalculated);
+                heat = solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate, heatEndTime - lastCalculated);
                 lastCalculated = heatEndTime;
             } else {
                 break;
@@ -67,7 +67,7 @@ public final class HeatUtils {
         }
 
         if (lastCalculated < time) {
-            heat = solveHeatEquation(heat, 0, producer.heatTransferEfficiency, time - lastCalculated);
+            heat = solveHeatEquation(heat, 20, producer.temperatureLossRate, time - lastCalculated);
         }
 
         return heat;
@@ -81,12 +81,12 @@ public final class HeatUtils {
         } else if (consumer != null) {
             return calculateHeatForConsumer(entity, blockEntityRegistry, consumer);
         } else {
-            return 0;
+            return 20;
         }
     }
 
     private static float calculateHeatForConsumer(EntityRef entity, BlockEntityRegistry blockEntityRegistry, HeatConsumerComponent heatConsumer) {
-        float result = 0;
+        float result = 20;
 
         for (Map.Entry<Vector3i, Side> heaterBlock : getPotentialHeatSourceBlocksForConsumer(entity).entrySet()) {
             EntityRef potentialHeatProducer = blockEntityRegistry.getEntityAt(heaterBlock.getKey());
@@ -166,15 +166,5 @@ public final class HeatUtils {
         }
 
         return result;
-    }
-
-    public static float heatToCelsius(float heat) {
-        return 20 + (heat * 0.8f);
-    }
-
-    public static void main(String[] args) {
-        for (int time = 0; time < 20000; time += 100) {
-            System.out.println("After: " + time + ", heat: " + HeatUtils.solveHeatEquation(0, 600f, 1f, time));
-        }
     }
 }
