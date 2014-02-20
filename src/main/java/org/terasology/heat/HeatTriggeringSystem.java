@@ -43,8 +43,8 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
     @In
     private Time time;
 
-    private static final float REMOVE_FUEL_THRESHOLD = 1f;
-    private static final float REMOVE_RESIDUAL_HEAT_THRESHOLD = 1f;
+    private static final float REMOVE_FUEL_THRESHOLD = 21f;
+    private static final float REMOVE_RESIDUAL_HEAT_THRESHOLD = 21f;
     private static final long TRIGGER_INTERVAL = 100;
     private long lastChecked;
 
@@ -83,7 +83,7 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
                     HeatProducerComponent.FuelSourceConsume fuelSourceConsume = fuelConsumedIterator.next();
                     // If the fuel no longer has any meaningful impact on the producer - remove it
                     if (fuelSourceConsume.startTime + fuelSourceConsume.burnLength < currentTime
-                            && HeatUtils.solveHeatEquation(fuelSourceConsume.heatProvided, 0, producer.temperatureLossRate,
+                            && HeatUtils.solveHeatEquation(fuelSourceConsume.heatProvided, 20, producer.temperatureLossRate,
                             currentTime - (fuelSourceConsume.startTime + fuelSourceConsume.burnLength)) < REMOVE_FUEL_THRESHOLD) {
                         fuelConsumedIterator.remove();
                         changed = true;
