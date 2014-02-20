@@ -113,8 +113,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
             int slotNo = hasItem(station, ingredientBehaviour);
             if (slotNo != -1) {
-                EntityRef item = InventoryUtils.getItemAt(station, slotNo);
-                maxMultiplier = Math.min(maxMultiplier, ingredientBehaviour.getMaxMultiplier(item));
+                maxMultiplier = Math.min(maxMultiplier, ingredientBehaviour.getMaxMultiplier(station, slotNo));
                 resultSlots.add(slotNo);
                 break;
             } else {
@@ -125,8 +124,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
             int slotNo = hasTool(station, toolBehaviour);
             if (slotNo != -1) {
-                EntityRef item = InventoryUtils.getItemAt(station, slotNo);
-                maxMultiplier = Math.min(maxMultiplier, toolBehaviour.getMaxMultiplier(item));
+                maxMultiplier = Math.min(maxMultiplier, toolBehaviour.getMaxMultiplier(station, slotNo));
                 resultSlots.add(slotNo);
                 break;
             } else {
@@ -195,8 +193,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     private boolean hasItemInSlot(EntityRef station, int slot, IngredientCraftBehaviour behaviour) {
-        EntityRef item = InventoryUtils.getItemAt(station, slot);
-        return behaviour.isValid(item, 1);
+        return behaviour.isValidToCraft(station, slot, 1);
     }
 
     @Override
@@ -296,7 +293,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         private boolean validateCreation(EntityRef station, int count) {
             int index = 0;
             for (IngredientCraftBehaviour ingredientBehaviour : ingredientBehaviours) {
-                if (!ingredientBehaviour.isValid(InventoryUtils.getItemAt(station, items.get(index)), count)) {
+                if (!ingredientBehaviour.isValidToCraft(station, items.get(index), count)) {
                     return false;
                 }
                 index++;
@@ -304,7 +301,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
             index = 0;
             for (IngredientCraftBehaviour toolBehaviour : toolBehaviours) {
-                if (!toolBehaviour.isValid(InventoryUtils.getItemAt(station, tools.get(index)), count)) {
+                if (!toolBehaviour.isValidToCraft(station, tools.get(index), count)) {
                     return false;
                 }
                 index++;

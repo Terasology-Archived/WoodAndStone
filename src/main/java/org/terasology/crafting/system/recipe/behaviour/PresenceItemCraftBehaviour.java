@@ -19,6 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.terasology.crafting.system.recipe.render.FixedFunction;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 
 /**
@@ -39,7 +40,8 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public boolean isValid(EntityRef ingredient, int multiplier) {
+    public boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         if (!matcher.apply(ingredient)) {
             return false;
         }
@@ -48,7 +50,7 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour {
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef ingredient) {
+    public int getMaxMultiplier(EntityRef entity, int slot) {
         return Integer.MAX_VALUE;
     }
 

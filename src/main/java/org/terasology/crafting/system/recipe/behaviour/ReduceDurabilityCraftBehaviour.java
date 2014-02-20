@@ -41,7 +41,8 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour 
     }
 
     @Override
-    public boolean isValid(EntityRef ingredient, int multiplier) {
+    public boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         if (!matcher.apply(ingredient)) {
             return false;
         }
@@ -55,7 +56,8 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour 
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef ingredient) {
+    public int getMaxMultiplier(EntityRef entity, int slot) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
 
         return durability.durability / durabilityUsed;

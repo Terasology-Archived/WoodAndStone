@@ -63,8 +63,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
             if (matchingSlot == -1) {
                 return null;
             }
-            EntityRef item = InventoryUtils.getItemAt(character, matchingSlot);
-            maxMultiplier = Math.min(maxMultiplier, itemCraftBehaviours.get(i).getMaxMultiplier(item));
+            maxMultiplier = Math.min(maxMultiplier, itemCraftBehaviours.get(i).getMaxMultiplier(character, matchingSlot));
             slots[i] = matchingSlot;
         }
 
@@ -74,8 +73,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     private int findMatchingSlot(EntityRef character, IngredientCraftBehaviour itemCraftBehaviour) {
         int slotCount = InventoryUtils.getSlotCount(character);
         for (int i = 0; i < slotCount; i++) {
-            EntityRef item = InventoryUtils.getItemAt(character, i);
-            if (itemCraftBehaviour.isValid(item, 1)) {
+            if (itemCraftBehaviour.isValidToCraft(character, i, 1)) {
                 return i;
             }
         }
@@ -167,8 +165,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         public EntityRef craft(EntityRef character, int count) {
             InventoryManager inventoryManager = CoreRegistry.get(InventoryManager.class);
             for (int i = 0; i < slots.length; i++) {
-                EntityRef itemInSlot = inventoryManager.getItemInSlot(character, slots[i]);
-                if (!itemCraftBehaviours.get(i).isValid(itemInSlot, count)) {
+                if (!itemCraftBehaviours.get(i).isValidToCraft(character, slots[i], count)) {
                     return EntityRef.NULL;
                 }
             }

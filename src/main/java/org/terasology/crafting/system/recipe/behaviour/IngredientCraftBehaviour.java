@@ -24,9 +24,9 @@ import org.terasology.entitySystem.entity.EntityRef;
 public interface IngredientCraftBehaviour {
     boolean isValidAnyAmount(EntityRef ingredient);
 
-    boolean isValid(EntityRef ingredient, int multiplier);
+    boolean isValidToCraft(EntityRef entity, int slot, int multiplier);
 
-    int getMaxMultiplier(EntityRef ingredient);
+    int getMaxMultiplier(EntityRef entity, int slot);
 
     Function<Integer, Integer> getCountBasedOnMultiplier();
 

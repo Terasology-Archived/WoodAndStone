@@ -56,7 +56,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             return null;
         }
 
-        int maxKnifeMultiplier = KNIFE_BEHAVIOUR.getMaxMultiplier(InventoryUtils.getItemAt(character, knifeSlot));
+        int maxKnifeMultiplier = KNIFE_BEHAVIOUR.getMaxMultiplier(character, knifeSlot);
 
         List<CraftInHandResult> results = new LinkedList<>();
         Set<String> usedFruits = new HashSet<>();
@@ -80,8 +80,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
     private int getKnifeSlot(EntityRef character, int slotCount) {
         for (int i = 0; i < slotCount; i++) {
-            EntityRef item = InventoryUtils.getItemAt(character, i);
-            if (KNIFE_BEHAVIOUR.isValid(item, 1)) {
+            if (KNIFE_BEHAVIOUR.isValidToCraft(character, i, 1)) {
                 return i;
             }
         }
