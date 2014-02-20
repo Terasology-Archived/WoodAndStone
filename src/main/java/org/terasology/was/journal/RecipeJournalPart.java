@@ -15,26 +15,65 @@
  */
 package org.terasology.was.journal;
 
+import org.terasology.asset.Assets;
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.journal.JournalManager;
+import org.terasology.logic.common.DisplayNameComponent;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
-import org.terasology.rendering.assets.texture.TextureRegion;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.HorizontalAlign;
+import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.world.block.Block;
 
 public class RecipeJournalPart implements JournalManager.JournalEntryPart {
     private int indentAbove = 5;
     private int indentBelow = 5;
     private int ingredientSpacing = 3;
     private int resultSpacing = 30;
-    private TextureRegion[] ingredients;
-    private TextureRegion result;
+
     private int iconSize = 64;
     private HorizontalAlign horizontalAlign = HorizontalAlign.CENTER;
+    private ItemIcon[] ingredientIcons;
+    private ItemIcon resultIcon;
 
-    public RecipeJournalPart(TextureRegion[] ingredients, TextureRegion result) {
-        this.ingredients = ingredients;
-        this.result = result;
+    public RecipeJournalPart(Block[] blockIngredients, Prefab[] itemIngredients, Block blockResult, Prefab itemResult, int resultCount) {
+        if (blockIngredients.length != itemIngredients.length) {
+            throw new IllegalArgumentException("Arrays have to be of the same length");
+        }
+        ingredientIcons = new ItemIcon[blockIngredients.length];
+        for (int i = 0; i < ingredientIcons.length; i++) {
+            ItemIcon itemIcon = new ItemIcon();
+            if (blockIngredients[i] != null) {
+                initializeForBlock(itemIcon, blockIngredients[i]);
+            } else {
+                initializeForItem(itemIcon, itemIngredients[i]);
+            }
+            ingredientIcons[i] = itemIcon;
+        }
+        resultIcon = new ItemIcon();
+        if (blockResult != null) {
+            initializeForBlock(resultIcon, blockResult);
+        } else {
+            initializeForItem(resultIcon, itemResult);
+        }
+        resultIcon.setQuantity(resultCount);
+    }
+
+    private void initializeForItem(ItemIcon itemIcon, Prefab itemIngredient) {
+        ItemComponent item = itemIngredient.getComponent(ItemComponent.class);
+        DisplayNameComponent displayName = itemIngredient.getComponent(DisplayNameComponent.class);
+        itemIcon.setIcon(item.icon);
+        if (displayName != null) {
+            itemIcon.setTooltip(displayName.name);
+        }
+    }
+
+    private void initializeForBlock(ItemIcon itemIcon, Block blockIngredient) {
+        itemIcon.setMesh(blockIngredient.getMesh());
+        itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
+        itemIcon.setTooltip(blockIngredient.getDisplayName());
     }
 
     @Override
@@ -42,7 +81,7 @@ public class RecipeJournalPart implements JournalManager.JournalEntryPart {
         int x = 0;
         int y = 0;
 
-        int ingredientsCount = ingredients.length;
+        int ingredientsCount = ingredientIcons.length;
         x += ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing;
         x += resultSpacing + iconSize;
 
@@ -54,16 +93,16 @@ public class RecipeJournalPart implements JournalManager.JournalEntryPart {
 
     @Override
     public void render(Canvas canvas, Rect2i region, long date) {
-        int ingredientsCount = ingredients.length;
+        int ingredientsCount = ingredientIcons.length;
         int drawingWidth = ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing + resultSpacing + iconSize;
         int x = region.minX() + horizontalAlign.getOffset(drawingWidth, region.width());
         int y = region.minY() + indentAbove;
-        for (int i = 0; i < ingredients.length; i++) {
-            canvas.drawTexture(ingredients[i], Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
+        for (int i = 0; i < ingredientIcons.length; i++) {
+            canvas.drawWidget(ingredientIcons[i], Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
             x += iconSize + ingredientSpacing;
         }
         x -= ingredientSpacing;
         x += resultSpacing;
-        canvas.drawTexture(result, Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
+        canvas.drawWidget(resultIcon, Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
     }
 }

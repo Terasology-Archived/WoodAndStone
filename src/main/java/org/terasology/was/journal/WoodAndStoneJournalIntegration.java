@@ -22,6 +22,7 @@ import org.terasology.crafting.component.CraftingStationToolComponent;
 import org.terasology.crafting.event.CraftingStationUpgraded;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -30,12 +31,11 @@ import org.terasology.journal.JournalManager;
 import org.terasology.journal.StaticJournalChapterHandler;
 import org.terasology.journal.part.TextJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
-import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
-import org.terasology.rendering.assets.texture.TextureRegion;
+import org.terasology.world.block.Block;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,12 +56,12 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
     public void initialise() {
         StaticJournalChapterHandler chapterHandler = new StaticJournalChapterHandler();
 
-        ItemComponent stoneItem = prefabManager.getPrefab("WoodAndStone:Stone").getComponent(ItemComponent.class);
-        ItemComponent toolStoneItem = prefabManager.getPrefab("WoodAndStone:ToolStone").getComponent(ItemComponent.class);
-        ItemComponent axeHammerHeadItem = prefabManager.getPrefab("WoodAndStone:AxeHammerHead").getComponent(ItemComponent.class);
-        ItemComponent stickItem = prefabManager.getPrefab("WoodAndStone:Stick").getComponent(ItemComponent.class);
-        ItemComponent twigItem = prefabManager.getPrefab("WoodAndStone:Twig").getComponent(ItemComponent.class);
-        ItemComponent crudeAxeHammerItem = prefabManager.getPrefab("WoodAndStone:CrudeAxeHammer").getComponent(ItemComponent.class);
+        Prefab stoneItem = prefabManager.getPrefab("WoodAndStone:Stone");
+        Prefab toolStoneItem = prefabManager.getPrefab("WoodAndStone:ToolStone");
+        Prefab axeHammerHeadItem = prefabManager.getPrefab("WoodAndStone:AxeHammerHead");
+        Prefab stickItem = prefabManager.getPrefab("WoodAndStone:Stick");
+        Prefab twigItem = prefabManager.getPrefab("WoodAndStone:Twig");
+        Prefab crudeAxeHammerItem = prefabManager.getPrefab("WoodAndStone:CrudeAxeHammer");
 
         List<JournalManager.JournalEntryPart> firstEntry = Arrays.asList(
                 new TextJournalPart("Where am I? How did I get here? ...\nWhat am I going to do now? ...\n" +
@@ -69,12 +69,12 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                         "I need some tools for that.\n\nI should get some sticks from the nearby tree branches and dig in the ground for some " +
                         "stones I might have a use for.\n\nWhile I'm at it, I will probably need something to bind the stick and stone together - " +
                         "twigs, should be good for that.\n\nOnce I get two stones, I should be able to make a Tool Stone (press G to open crafting window)."),
-                new RecipeJournalPart(new TextureRegion[]{stoneItem.icon, stoneItem.icon}, toolStoneItem.icon),
-                new TextJournalPart("Once I get the Tool Stone, by using the Tool Stone on another stone I shold be able " +
+                new RecipeJournalPart(new Block[2], new Prefab[]{stoneItem, stoneItem}, null, toolStoneItem, 1),
+                new TextJournalPart("Once I get the Tool Stone, by using the Tool Stone on another stone I should be able " +
                         "to make an Axe-Hammer Head."),
-                new RecipeJournalPart(new TextureRegion[]{toolStoneItem.icon, stoneItem.icon}, axeHammerHeadItem.icon),
+                new RecipeJournalPart(new Block[2], new Prefab[]{toolStoneItem, stoneItem}, null, axeHammerHeadItem, 1),
                 new TextJournalPart("Then I can combine the Axe-Hammer Head with a Stick and a Twig to create a Crude Axe-Hammer."),
-                new RecipeJournalPart(new TextureRegion[]{axeHammerHeadItem.icon, stickItem.icon, twigItem.icon}, crudeAxeHammerItem.icon));
+                new RecipeJournalPart(new Block[3], new Prefab[]{axeHammerHeadItem, stickItem, twigItem}, null, crudeAxeHammerItem, 1));
 
         chapterHandler.registerJournalEntry("1", firstEntry);
 
