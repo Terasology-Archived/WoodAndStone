@@ -25,11 +25,13 @@ import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.heat.HeatUtils;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
+import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
@@ -47,6 +49,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     private List<IngredientCraftBehaviour<EntityRef, Integer>> ingredientBehaviours = new ArrayList<>();
     private List<IngredientCraftBehaviour<EntityRef, Integer>> toolBehaviours = new ArrayList<>();
     private List<IngredientCraftBehaviour<String, Integer>> fluidBehaviours = new ArrayList<>();
+
+    private float requiredHeat;
+    private long processingDuration;
 
     private String blockResult;
     private String itemResult;
@@ -72,6 +77,14 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     public void setItemResult(String item, byte count) {
         itemResult = item;
         resultCount = count;
+    }
+
+    public void setRequiredHeat(float requiredHeat) {
+        this.requiredHeat = requiredHeat;
+    }
+
+    public void setProcessingDuration(long processingDuration) {
+        this.processingDuration = processingDuration;
     }
 
     @Override
@@ -107,6 +120,13 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
     @Override
     public List<CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
+        if (requiredHeat > 0) {
+            float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
+            if (requiredHeat < heat) {
+                return null;
+            }
+        }
+
         // TODO: Improve the search to find fragmented ingredients in multiple stacks, and also to find different kinds
         // of items, not just first matching
         List<Integer> resultSlots = new LinkedList<>();
@@ -201,9 +221,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
         public Result(int maxMultiplier, List<Integer> slots) {
             this.maxMultiplier = maxMultiplier;
-            if (slots.size() != ingredientBehaviours.size() + toolBehaviours.size() + fluidBehaviours.size()) {
-                int dfsadf = 0;
-            }
             items = slots.subList(0, ingredientBehaviours.size());
             tools = slots.subList(ingredientBehaviours.size(), ingredientBehaviours.size() + toolBehaviours.size());
             fluids = slots.subList(ingredientBehaviours.size() + toolBehaviours.size(), ingredientBehaviours.size() + toolBehaviours.size() + fluidBehaviours.size());
@@ -259,6 +276,13 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         private boolean validateCreation(EntityRef station, int count) {
+            if (requiredHeat > 0) {
+                float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
+                if (requiredHeat < heat) {
+                    return false;
+                }
+            }
+
             int index = 0;
             for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
                 if (!ingredientBehaviour.isValidToCraft(station, items.get(index), count)) {
@@ -317,6 +341,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 }
             }
             return renderers;
+        }
+
+        @Override
+        public long getProcessDuration() {
+            return processingDuration;
         }
 
         @Override

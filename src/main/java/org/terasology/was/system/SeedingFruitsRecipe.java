@@ -150,6 +150,11 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
+        public long getProcessDuration() {
+            return 0;
+        }
+
+        @Override
         public int getResultQuantity() {
             return 1;
         }

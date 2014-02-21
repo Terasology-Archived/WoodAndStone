@@ -25,6 +25,9 @@ public class CraftingStationRecipeComponent implements Component {
     public List<String> recipeTools;
     public List<String> recipeFluids;
 
+    public float requiredTemperature;
+    public long processingDuration;
+
     public String itemResult;
     public String blockResult;
 }

@@ -70,6 +70,14 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
             String item = split[1];
             workstationRecipe.setItemResult(item, (byte) count);
         }
+
+        if (recipe.processingDuration != 0) {
+            workstationRecipe.setProcessingDuration(recipe.processingDuration);
+        }
+        if (recipe.requiredTemperature > 0) {
+            workstationRecipe.setRequiredHeat(recipe.requiredTemperature);
+        }
+
         return new CraftingWorkstationProcess(process.processType, recipe.recipeId, workstationRecipe);
     }
 }

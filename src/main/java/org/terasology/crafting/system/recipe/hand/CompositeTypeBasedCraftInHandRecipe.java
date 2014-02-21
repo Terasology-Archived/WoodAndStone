@@ -131,6 +131,11 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
+        public long getProcessDuration() {
+            return 0;
+        }
+
+        @Override
         public Block getResultBlock() {
             if (block) {
                 return CoreRegistry.get(BlockManager.class).getBlock(prefabName);

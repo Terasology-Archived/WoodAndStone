@@ -15,6 +15,7 @@
  */
 package org.terasology.crafting.system;
 
+import org.terasology.crafting.processPart.DurationRecipeProcessPart;
 import org.terasology.crafting.processPart.ProcessRecipeProcessPart;
 import org.terasology.crafting.processPart.ValidateRecipeProcessPart;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
@@ -36,6 +37,7 @@ public class CraftingWorkstationProcess implements WorkstationProcess {
         this.recipe = recipe;
 
         processParts.add(new ValidateRecipeProcessPart(recipe));
+        processParts.add(new DurationRecipeProcessPart(recipe));
         processParts.add(new ProcessRecipeProcessPart(recipe));
     }
 

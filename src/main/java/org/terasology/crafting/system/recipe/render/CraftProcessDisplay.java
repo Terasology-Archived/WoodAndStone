@@ -34,4 +34,6 @@ public interface CraftProcessDisplay {
     Block getResultBlock();
 
     Prefab getResultItem();
+
+    long getProcessDuration();
 }
