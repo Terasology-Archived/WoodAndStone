@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.journal;
+package org.terasology.was.integration.journal;
 
 import org.terasology.asset.Assets;
 import org.terasology.entitySystem.prefab.Prefab;

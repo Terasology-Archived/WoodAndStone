@@ -26,8 +26,6 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.gf.tree.PartOfTreeComponent;
 import org.terasology.registry.In;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockUri;
 
 import java.util.Arrays;
 
@@ -41,37 +39,11 @@ public class WoodAndStoneBlockDrops extends BaseComponentSystem {
 
     @ReceiveEvent
     public void overrideDropsForCoreBlocks(BeforeEntityCreated event, EntityRef entity) {
-        BlockUri blockUri = null;
-        for (Component component : event.getResultComponents()) {
-            if (component instanceof BlockComponent) {
-                BlockComponent comp = (BlockComponent) component;
-                blockUri = comp.getBlock().getBlockFamily().getURI();
-            }
-        }
-
-        if (blockUri != null) {
-            if (blockUri.getNormalisedModuleName().equalsIgnoreCase("plantpack")
-                    && blockUri.getNormalisedFamilyName().endsWith("leaf")) {
-                // A bit of hacking, assuming they follow naming pattern
-                String familyName = blockUri.getNormalisedFamilyName();
-                String treeType = familyName.substring(0, familyName.length() - 4);
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("0.05|PlantPack:" + treeType + "Sapling");
-                dropGrammar.itemDrops = Arrays.asList("0.2|WoodAndStone:twig");
-                event.addComponent(dropGrammar);
-            }
-        }
-
         PartOfTreeComponent partOfTree = getPartOfTree(event.getResultComponents());
         if (partOfTree != null) {
             if (partOfTree.part == PartOfTreeComponent.Part.BRANCH) {
                 BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
                 dropGrammar.itemDrops = Arrays.asList("0.5|WoodAndStone:stick");
-                event.addComponent(dropGrammar);
-            } else if (partOfTree.part == PartOfTreeComponent.Part.TRUNK) {
-                BlockDropGrammarComponent dropGrammar = new BlockDropGrammarComponent();
-                dropGrammar.blockDrops = Arrays.asList("1-2*WoodAndStone:TreeLog");
-                dropGrammar.itemDrops = Arrays.asList("0.1|WoodAndStone:Resin");
                 event.addComponent(dropGrammar);
             }
         }
