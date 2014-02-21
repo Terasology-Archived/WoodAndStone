@@ -151,6 +151,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfBlock", 1, 2, 1);
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "EighthBlock", 1, 8, 1);
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfSlope", 1, 4, 2);
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfSlopeCorner", 1, 6, 1);
