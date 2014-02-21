@@ -3,10 +3,14 @@ package org.terasology.was.ui;
 import org.terasology.crafting.ui.workstation.StationAvailableRecipesWidget;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.fluid.component.FluidComponent;
+import org.terasology.fluid.component.FluidInventoryComponent;
+import org.terasology.fluid.system.FluidRegistry;
 import org.terasology.heat.HeatProducerComponent;
 import org.terasology.heat.HeatUtils;
 import org.terasology.heat.ui.TermometerWidget;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
@@ -71,6 +75,8 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
         WorkstationInventoryComponent.SlotAssignment fluidContainerOutputAssignments = workstationInventory.slotAssignments.get("FLUID_CONTAINER_OUTPUT");
         WorkstationInventoryComponent.SlotAssignment fuelAssignments = workstationInventory.slotAssignments.get("FUEL");
 
+        WorkstationInventoryComponent.SlotAssignment fluidInputAssignments = workstationInventory.slotAssignments.get("FLUID_INPUT");
+
         ingredientsInventory.setTargetEntity(station);
         ingredientsInventory.setCellOffset(inputAssignments.slotStart);
         ingredientsInventory.setMaxCellCount(inputAssignments.slotCount);
@@ -90,7 +96,28 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
         fluidContainer.setMaxY(4);
 
         fluidContainer.setEntity(station);
-        fluidContainer.setSlotNo(0);
+
+        final int waterSlot = fluidInputAssignments.slotStart;
+        fluidContainer.setSlotNo(waterSlot);
+
+        fluidContainer.bindTooltip(
+                new Binding<String>() {
+                    @Override
+                    public String get() {
+                        FluidInventoryComponent fluidInventory = station.getComponent(FluidInventoryComponent.class);
+                        final FluidComponent fluid = fluidInventory.fluidSlots.get(waterSlot).getComponent(FluidComponent.class);
+                        if (fluid == null) {
+                            return "0ml";
+                        } else {
+                            FluidRegistry fluidRegistry = CoreRegistry.get(FluidRegistry.class);
+                            return TeraMath.floorToInt(fluid.volume * 1000) + "ml of " + fluidRegistry.getFluidRenderer(fluid.fluidType).getFluidName();
+                        }
+                    }
+
+                    @Override
+                    public void set(String value) {
+                    }
+                });
 
         fluidContainerOutput.setTargetEntity(station);
         fluidContainerOutput.setCellOffset(fluidContainerOutputAssignments.slotStart);
@@ -163,7 +190,7 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
                 new Binding<String>() {
                     @Override
                     public String get() {
-                        return Math.round(HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class))) + "C";
+                        return Math.round(HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class))) + " C";
                     }
 
                     @Override
