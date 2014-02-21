@@ -67,6 +67,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         workstationRegistry.registerProcessFactory(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, new CraftingWorkstationProcessFactory());
         workstationRegistry.registerProcessFactory(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, new CraftingWorkstationProcessFactory());
 
+        workstationRegistry.registerProcessFactory(WoodAndStone.COOKING_PROCESS_TYPE, new CraftingWorkstationProcessFactory());
+
         addWorkstationFormingRecipes();
 
         addCraftInHandRecipes();
