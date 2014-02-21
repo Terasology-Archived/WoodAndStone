@@ -127,6 +127,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             }
         }
 
+        return getMatchingRecipeResultsForDisplay(station);
+    }
+
+    @Override
+    public List<CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station) {
         // TODO: Improve the search to find fragmented ingredients in multiple stacks, and also to find different kinds
         // of items, not just first matching
         List<Integer> resultSlots = new LinkedList<>();

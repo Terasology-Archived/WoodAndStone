@@ -57,6 +57,8 @@ public interface CraftingStationRecipe {
      */
     List<CraftingStationResult> getMatchingRecipeResults(EntityRef station);
 
+    List<CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station);
+
     CraftingStationResult getResultById(String resultId);
 
     public interface CraftingStationResult extends CraftProcessDisplay {
