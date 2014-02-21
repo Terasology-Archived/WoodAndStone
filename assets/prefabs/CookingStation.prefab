@@ -71,7 +71,7 @@
     },
     "FluidInventory": {
         "fluidSlots": [ 0 ],
-        "maximumVolumes": [ 50 ]
+        "maximumVolumes": [ 20 ]
     },
     "Health": {
         "currentHealth": 5,

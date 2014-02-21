@@ -7,6 +7,7 @@
 
         "recipeComponents": ["1*PlantPack:corn"],
         "recipeTools": ["1*knife"],
+        "recipeFluids": ["0.1*Fluid:Water"],
         "requiredTemperature": 90,
         "processingDuration": 5000,
 

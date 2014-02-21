@@ -122,7 +122,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     public List<CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
         if (requiredHeat > 0) {
             float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
-            if (requiredHeat < heat) {
+            if (requiredHeat > heat) {
                 return null;
             }
         }
@@ -283,7 +283,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         private boolean validateCreation(EntityRef station, int count) {
             if (requiredHeat > 0) {
                 float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
-                if (requiredHeat < heat) {
+                if (requiredHeat > heat) {
                     return false;
                 }
             }

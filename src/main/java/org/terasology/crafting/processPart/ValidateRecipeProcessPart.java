@@ -110,6 +110,9 @@ public class ValidateRecipeProcessPart implements ProcessPart, ValidateInventory
             throw new InvalidProcessException();
         }
         List<CraftingStationRecipe.CraftingStationResult> result = craftingStationRecipe.getMatchingRecipeResults(workstation);
+        if (result == null) {
+            throw new InvalidProcessException();
+        }
 
         Set<String> resultIds = new HashSet<>();
         for (CraftingStationRecipe.CraftingStationResult craftingStationResult : result) {
