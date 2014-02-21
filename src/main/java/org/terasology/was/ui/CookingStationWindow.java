@@ -15,7 +15,10 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
+import org.terasology.rendering.nui.widgets.UILoadBar;
+import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
+import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.ui.WorkstationUI;
 import org.terasology.world.BlockEntityRegistry;
 
@@ -36,6 +39,7 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
     private InventoryGrid fuelInput;
     private StationAvailableRecipesWidget availableRecipes;
     private InventoryGrid resultInventory;
+    private UILoadBar craftingProgress;
 
     @Override
     public void initialise() {
@@ -55,6 +59,8 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
         fuelInput = find("fuelInput", InventoryGrid.class);
 
         availableRecipes = find("availableRecipes", StationAvailableRecipesWidget.class);
+
+        craftingProgress = find("craftingProgress", UILoadBar.class);
 
         resultInventory = find("resultInventory", InventoryGrid.class);
 
@@ -153,6 +159,47 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
         fuelInput.setMaxCellCount(fuelAssignments.slotCount);
 
         availableRecipes.setStation(station);
+
+        craftingProgress.bindVisible(
+                new Binding<Boolean>() {
+                    @Override
+                    public Boolean get() {
+                        WorkstationProcessingComponent processing = station.getComponent(WorkstationProcessingComponent.class);
+                        if (processing == null) {
+                            return false;
+                        }
+                        WorkstationProcessingComponent.ProcessDef cookingProcess = processing.processes.get(WoodAndStone.COOKING_PROCESS_TYPE);
+                        return cookingProcess != null;
+                    }
+
+                    @Override
+                    public void set(Boolean value) {
+                    }
+                }
+        );
+        craftingProgress.bindValue(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        WorkstationProcessingComponent processing = station.getComponent(WorkstationProcessingComponent.class);
+                        if (processing == null) {
+                            return 1f;
+                        }
+                        WorkstationProcessingComponent.ProcessDef cookingProcess = processing.processes.get(WoodAndStone.COOKING_PROCESS_TYPE);
+                        if (cookingProcess == null) {
+                            return 1f;
+                        }
+
+                        long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
+
+                        return 1f * (gameTime - cookingProcess.processingStartTime) / (cookingProcess.processingFinishTime - cookingProcess.processingStartTime);
+                    }
+
+                    @Override
+                    public void set(Float value) {
+                    }
+                }
+        );
 
         resultInventory.setTargetEntity(station);
         resultInventory.setCellOffset(resultAssignments.slotStart);

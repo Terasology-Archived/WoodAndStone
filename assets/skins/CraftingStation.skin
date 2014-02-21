@@ -16,6 +16,24 @@
                 "right": 0
             }
         },
+        "UILoadBar": {
+            "background": "engine:area",
+            "background-border": {
+                "top": 1,
+                "bottom": 1,
+                "left": 1,
+                "right": 1
+            },
+            "margin": {
+                "top": 0,
+                "bottom": 0,
+                "left": 0,
+                "right": 0
+            },
+            "min-width": 0,
+            "max-width": 10000,
+            "fixed-height": 0
+        },
         "RecipeCategoryWidget": {
             "text-align-horizontal": "left",
             "margin": {
