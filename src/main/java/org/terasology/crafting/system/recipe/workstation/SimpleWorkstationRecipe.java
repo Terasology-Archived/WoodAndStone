@@ -170,8 +170,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         EntityRef result = createResult(1);
         try {
             ItemComponent resultItem = result.getComponent(ItemComponent.class);
-            int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
-            maxMultiplier = Math.min(maxMultiplier, maxOutput);
+            if (resultItem.stackId == null || resultItem.stackId.isEmpty()) {
+                maxMultiplier = 1;
+            } else {
+                int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
+                maxMultiplier = Math.min(maxMultiplier, maxOutput);
+            }
         } finally {
             result.destroy();
         }
