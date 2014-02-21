@@ -11,8 +11,8 @@
                         "type": "UIImage",
                         "id": "stationBackground",
                         "layoutInfo": {
-                            "width": 570,
-                            "height": 550,
+                            "width": 700,
+                            "height": 640,
                             "position-left": {},
                             "position-top": {}
                         }
@@ -27,10 +27,10 @@
                             "width": 184,
                             "height": 250,
                             "position-left": {
-                                "offset": 5
+                                "offset": 70
                             },
                             "position-top": {
-                                "offset": 45
+                                "offset": 90
                             }
                         }
                     },
@@ -41,10 +41,10 @@
                             "width": 112,
                             "height": 56,
                             "position-left": {
-                                "offset": 5
+                                "offset": 70
                             },
                             "position-top": {
-                                "offset": 316
+                                "offset": 361
                             }
                         }
                     },
@@ -58,7 +58,7 @@
                                 "offset": 127
                             },
                             "position-top": {
-                                "offset": 316
+                                "offset": 361
                             }
                         }
                     },
@@ -69,10 +69,10 @@
                             "width": 200,
                             "height": 56,
                             "position-left": {
-                                "offset": 194
+                                "offset": 259
                             },
                             "position-top": {
-                                "offset": 316
+                                "offset": 361
                             }
                         }
                     },
@@ -86,10 +86,10 @@
                             "width": 371,
                             "height": 250,
                             "position-left": {
-                                "offset": 194
+                                "offset": 259
                             },
                             "position-top": {
-                                "offset": 45
+                                "offset": 90
                             }
                         }
                     },
@@ -100,10 +100,10 @@
                             "width": 56,
                             "height": 56,
                             "position-left": {
-                                "offset": 509
+                                "offset": 574
                             },
                             "position-top": {
-                                "offset": 316
+                                "offset": 361
                             }
                         }
                     },
@@ -114,19 +114,21 @@
                             "width": 560,
                             "height": 168,
                             "position-left": {
-                                "offset": 5
+                                "offset": 70
                             },
                             "position-top": {
-                                "offset": 377
+                                "offset": 422
                             }
                         }
                     }
                 ],
                 "layoutInfo": {
-                    "width": 570,
-                    "height": 550,
+                    "width": 700,
+                    "height": 640,
                     "position-horizontal-center": {},
-                    "position-vertical-center": {}
+                    "position-vertical-center": {
+                        "offset": -32
+                    }
                 }
             }
         ]
