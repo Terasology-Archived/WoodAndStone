@@ -54,7 +54,7 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int maxMultiplier;
 
-    public CraftRecipeWidget(int leftIndent, EntityRef entity,
+    public CraftRecipeWidget(int leftIndent, final EntityRef entity,
                              final CraftProcessDisplay processDisplay, CreationCallback callback) {
         this.leftIndent = leftIndent;
         this.entity = entity;
@@ -93,6 +93,18 @@ public class CraftRecipeWidget extends CoreWidget {
 
         button = new UIButton();
         button.setText("Craft");
+        button.bindVisible(
+                new Binding<Boolean>() {
+                    @Override
+                    public Boolean get() {
+                        return processDisplay.isValidForCrafting(entity, multiplier);
+                    }
+
+                    @Override
+                    public void set(Boolean value) {
+                    }
+                }
+        );
         button.subscribe(
                 new ActivateEventListener() {
                     @Override

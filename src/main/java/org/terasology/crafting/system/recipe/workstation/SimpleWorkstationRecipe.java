@@ -255,7 +255,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
         @Override
         public EntityRef craft(EntityRef station, int count) {
-            if (!validateCreation(station, count)) {
+            if (!isValidForCrafting(station, count)) {
                 return EntityRef.NULL;
             }
 
@@ -280,7 +280,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             return createResult(count);
         }
 
-        private boolean validateCreation(EntityRef station, int count) {
+        @Override
+        public boolean isValidForCrafting(EntityRef station, int count) {
             if (requiredHeat > 0) {
                 float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
                 if (requiredHeat > heat) {

@@ -8,6 +8,6 @@
         "recipeComponents": ["2*WoodAndStone:plank", "1*WoodAndStone:twig"],
         "recipeTools": ["1*axe", "1*hammer"],
 
-        "itemResult": "8*WoodAndStone:WoodenBucket"
+        "itemResult": "1*WoodAndStone:WoodenBucket"
     }
 }
