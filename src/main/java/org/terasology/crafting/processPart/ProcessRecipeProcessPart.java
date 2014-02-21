@@ -37,12 +37,14 @@ public class ProcessRecipeProcessPart implements ProcessPart {
 
     @Override
     public void executeStart(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
+        CraftingStationRecipe.CraftingStationResult craftingStationResult = craftingStationRecipe.getResultById(resultId);
+        craftingStationResult.startCrafting(workstation, Integer.parseInt(parameter));
     }
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String resultId, String parameter) {
         CraftingStationRecipe.CraftingStationResult craftingStationResult = craftingStationRecipe.getResultById(resultId);
-        EntityRef resultItem = craftingStationResult.craft(workstation, Integer.parseInt(parameter));
+        EntityRef resultItem = craftingStationResult.finishCrafting(workstation, Integer.parseInt(parameter));
 
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
             GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, slot);

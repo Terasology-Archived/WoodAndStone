@@ -254,9 +254,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craft(EntityRef station, int count) {
+        public boolean startCrafting(EntityRef station, int count) {
             if (!isValidForCrafting(station, count)) {
-                return EntityRef.NULL;
+                return false;
             }
 
             int index = 0;
@@ -277,6 +277,11 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 index++;
             }
 
+            return true;
+        }
+
+        @Override
+        public EntityRef finishCrafting(EntityRef station, int count) {
             return createResult(count);
         }
 

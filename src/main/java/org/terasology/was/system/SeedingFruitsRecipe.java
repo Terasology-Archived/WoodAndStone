@@ -148,7 +148,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             if (!FRUIT_BEHAVIOUR.isValidToCraft(entity, fruitSlot, multiplier)) {
                 return false;
             }
-            if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, fruitSlot, multiplier)) {
+            if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, knifeSlot, multiplier)) {
                 return false;
             }
             return true;

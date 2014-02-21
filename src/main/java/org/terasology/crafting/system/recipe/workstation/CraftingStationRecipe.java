@@ -64,12 +64,8 @@ public interface CraftingStationRecipe {
     public interface CraftingStationResult extends CraftProcessDisplay {
         String getResultId();
 
-        /**
-         * Processes the crafting of the recipe once. Returns the entity that should be put (or added to) the result slot.
-         *
-         * @param station
-         * @return
-         */
-        EntityRef craft(EntityRef station, int count);
+        boolean startCrafting(EntityRef station, int count);
+
+        EntityRef finishCrafting(EntityRef station, int count);
     }
 }

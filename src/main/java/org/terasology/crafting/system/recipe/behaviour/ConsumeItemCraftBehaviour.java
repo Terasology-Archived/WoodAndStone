@@ -34,7 +34,6 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
     private Predicate<EntityRef> matcher;
     private int count;
     private InventorySlotResolver resolver;
-    private ItemSlotIngredientRenderer renderer;
 
     public ConsumeItemCraftBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
         this.matcher = matcher;
@@ -80,9 +79,7 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
 
     @Override
     public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
-        if (renderer == null) {
-            renderer = new ItemSlotIngredientRenderer();
-        }
+        ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
         renderer.update(entity, slot, new MultiplyFunction(count));
         return renderer;
     }
