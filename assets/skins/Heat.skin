@@ -1,0 +1,13 @@
+{
+    "inherit": "default",
+    "elements": {
+        "TermometerWidget": {
+            "background": "WoodAndStone:TermometerBack",
+            "parts": {
+                "front": {
+                    "background": "WoodAndStone:TermometerFront"
+                }
+            }
+        }
+    }
+}

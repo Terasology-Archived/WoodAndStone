@@ -1,6 +1,6 @@
 {
     "type": "FurnaceWindow",
-    "skin": "default",
+    "skin": "WoodAndStone:Heat",
     "contents": {
         "type": "relativeLayout",
         "contents": [
@@ -65,23 +65,8 @@
                         }
                     },
                     {
-                        "type": "UIImage",
-                        "image": "WoodAndStone:TermometerBack",
-                        "layoutInfo": {
-                            "width": 20,
-                            "height": 150,
-                            "position-left": {
-                                "offset": 275
-                            },
-                            "position-top": {
-                                "offset": 31
-                            }
-                        }
-                    },
-                    {
-                        "type": "VerticalTextureProgressWidget",
+                        "type": "TermometerWidget",
                         "id": "heat",
-                        "image": "WoodAndStone:TermometerFront",
                         "layoutInfo": {
                             "width": 20,
                             "height": 150,

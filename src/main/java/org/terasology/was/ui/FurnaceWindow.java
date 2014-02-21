@@ -5,6 +5,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.HeatProcessedComponent;
 import org.terasology.heat.HeatProducerComponent;
 import org.terasology.heat.HeatUtils;
+import org.terasology.heat.ui.TermometerWidget;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
@@ -25,7 +26,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
     private InventoryGrid input;
     private InventoryGrid fuel;
     private InventoryGrid output;
-    private VerticalTextureProgressWidget heat;
+    private TermometerWidget heat;
     private VerticalTextureProgressWidget burn;
 
     @Override
@@ -39,9 +40,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
         player.setCellOffset(10);
         player.setMaxCellCount(30);
 
-        heat = find("heat", VerticalTextureProgressWidget.class);
-        heat.setMinY(130);
-        heat.setMaxY(10);
+        heat = find("heat", TermometerWidget.class);
 
         burn = find("burn", VerticalTextureProgressWidget.class);
         burn.setMinY(76);
@@ -62,29 +61,42 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
         output.setCellOffset(2);
         output.setMaxCellCount(1);
 
-        heat.bindValue(
+        heat.bindMaxTemperature(
                 new Binding<Float>() {
                     @Override
                     public Float get() {
                         HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
-                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class)) / producer.maximumTemperature;
+                        return producer.maximumTemperature;
+                    }
+
+                    @Override
+                    public void set(Float value) {
+                    }
+                }
+        );
+        heat.setMinTemperature(20f);
+
+        heat.bindTemperature(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
                     }
 
                     @Override
                     public void set(Float value) {
                     }
                 });
-        heat.bindMark(
+        heat.bindMarkedTemperature(
                 new Binding<Float>() {
                     @Override
                     public Float get() {
                         WorkstationInventoryComponent workstationInventory = workstation.getComponent(WorkstationInventoryComponent.class);
-                        HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
                         if (workstationInventory != null) {
                             for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
                                 HeatProcessedComponent heatProcessed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
                                 if (heatProcessed != null) {
-                                    return heatProcessed.heatRequired / producer.maximumTemperature;
+                                    return heatProcessed.heatRequired;
                                 }
                             }
                         }
