@@ -1,0 +1,11 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "PlantPack:items.Corn",
+        "stackId": "WoodAndStone:items.CookedCorn",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Cooked Corn"
+    }
+}
