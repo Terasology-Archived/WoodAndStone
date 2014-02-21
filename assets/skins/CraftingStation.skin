@@ -24,6 +24,14 @@
                 "left": 5,
                 "right": 5
             }
+        },
+        "TermometerWidget": {
+            "background": "WoodAndStone:TermometerBack",
+            "parts": {
+                "front": {
+                    "background": "WoodAndStone:TermometerFront"
+                }
+            }
         }
     }
 }

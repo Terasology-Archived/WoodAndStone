@@ -5,8 +5,9 @@
     "Workstation": {
         "uiPrefab": "WoodAndStone:CookingStation",
         "supportedProcessTypes": {
-            "WoodAndStone:Cooking": false,
-            "Workstation:FillFluid": true
+            "Machines:Furnace": true,
+            "Workstation:FillFluid": true,
+            "WoodAndStone:Cooking": false
         }
     },
     "WorkstationInventory": {
@@ -17,6 +18,22 @@
             },
             "FLUID_CONTAINER_OUTPUT": {
                 "slotStart": 1,
+                "slotCount": 1
+            },
+            "INPUT": {
+                "slotStart": 2,
+                "slotCount": 6
+            },
+            "TOOL": {
+                "slotStart": 8,
+                "slotCount": 1
+            },
+            "FUEL": {
+                "slotStart": 9,
+                "slotCount": 1
+            },
+            "OUTPUT": {
+                "slotStart": 10,
                 "slotCount": 1
             },
 
@@ -34,12 +51,27 @@
         "privateToOwner": false,
         "itemSlots": [
             0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             0
         ]
     },
+    "HeatProducer": {
+        "temperatureAbsorptionRate": 1,
+        "temperatureLossRate": 0.8,
+        "maximumTemperature": 300,
+        "heatDirections": []
+    },
     "FluidInventory": {
         "fluidSlots": [ 0 ],
-        "maximumVolumes": [ 100 ]
+        "maximumVolumes": [ 50 ]
     },
     "Health": {
         "currentHealth": 5,

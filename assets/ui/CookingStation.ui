@@ -8,30 +8,47 @@
                 "type": "relativeLayout",
                 "contents": [
                     {
+                        "type": "ScrollableArea",
+                        "content": {
+                            "type": "InventoryGrid",
+                            "id": "ingredientsInventory"
+                        },
+                        "layoutInfo": {
+                            "width": 128,
+                            "height": 250,
+                            "position-left": {
+                                "offset": 5
+                            },
+                            "position-top": {
+                                "offset": 45
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "toolsInventory",
+                        "layoutInfo": {
+                            "width": 128,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 5
+                            },
+                            "position-top": {
+                                "offset": 316
+                            }
+                        }
+                    },
+                    {
                         "type": "InventoryGrid",
                         "id": "fluidContainerInput",
                         "layoutInfo": {
                             "width": 56,
                             "height": 56,
                             "position-left": {
-                                "offset": 5
+                                "offset": 138
                             },
                             "position-top": {
-                                "offset": 5
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "fluidContainerOutput",
-                        "layoutInfo": {
-                            "width": 56,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 5
-                            },
-                            "position-top": {
-                                "offset": 70
+                                "offset": 45
                             }
                         }
                     },
@@ -43,10 +60,98 @@
                             "width": 50,
                             "height": 150,
                             "position-left": {
-                                "offset": 70
+                                "offset": 141
                             },
                             "position-top": {
-                                "offset": 5
+                                "offset": 131
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "fluidContainerOutput",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 138
+                            },
+                            "position-top": {
+                                "offset": 316
+                            }
+                        }
+                    },
+                    {
+                        "type": "TermometerWidget",
+                        "id": "temperature",
+                        "layoutInfo": {
+                            "width": 20,
+                            "height": 150,
+                            "position-left": {
+                                "offset": 217
+                            },
+                            "position-top": {
+                                "offset": 45
+                            }
+                        }
+                    },
+                    {
+                        "type": "VerticalTextureProgressWidget",
+                        "id": "burn",
+                        "image": "WoodAndStone:Fire",
+                        "layoutInfo": {
+                            "width": 50,
+                            "height": 50,
+                            "position-left": {
+                                "offset": 202
+                            },
+                            "position-top": {
+                                "offset": 200
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "fuelInput",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 199
+                            },
+                            "position-top": {
+                                "offset": 255
+                            }
+                        }
+                    },
+                    {
+                        "type": "ScrollableArea",
+                        "content": {
+                            "type": "StationAvailableRecipesWidget",
+                            "id": "availableRecipes"
+                        },
+                        "layoutInfo": {
+                            "width": 200,
+                            "height": 250,
+                            "position-left": {
+                                "offset": 250
+                            },
+                            "position-top": {
+                                "offset": 45
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "resultInventory",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 509
+                            },
+                            "position-top": {
+                                "offset": 316
                             }
                         }
                     },

@@ -37,6 +37,9 @@ public class TermometerWidget extends CoreWidget {
     private Binding<Float> minTemperature = new DefaultBinding<>();
     private InteractionListener listener = new BaseInteractionListener();
 
+    private float minHeightPerc = 0.87f;
+    private float maxHeightPerc = 0.03f;
+
     @Override
     public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
         return sizeHint;
@@ -46,14 +49,14 @@ public class TermometerWidget extends CoreWidget {
     public void onDraw(Canvas canvas) {
         canvas.setPart("front");
         TextureRegion foreground = canvas.getCurrentStyle().getBackground();
-        float min = getMinTemperature(); // 0.87f of whole height
-        float max = getMaxTemperature(); // 0.07f of whole height
+        float min = getMinTemperature();
+        float max = getMaxTemperature();
 
         float current = getTemperature();
 
         Vector2i size = canvas.size();
 
-        float temperaturePerc = 0.87f - (current - min) / (max - min) * 0.8f;
+        float temperaturePerc = minHeightPerc - (current - min) / (max - min) * (minHeightPerc - maxHeightPerc);
 
         canvas.drawTextureRaw(foreground,
                 Rect2i.createFromMinAndSize(0, Math.round(temperaturePerc * size.y), size.x,
@@ -62,7 +65,7 @@ public class TermometerWidget extends CoreWidget {
 
         Float markValue = getMarkedTemperature();
         if (markValue != null) {
-            float markPerc = 0.87f - (markValue - min) / (max - min) * 0.8f;
+            float markPerc = minHeightPerc - (markValue - min) / (max - min) * (minHeightPerc - maxHeightPerc);
             int y = Math.round(markPerc * size.y);
             canvas.drawLine(0, y, size.x, y, Color.BLACK);
         }

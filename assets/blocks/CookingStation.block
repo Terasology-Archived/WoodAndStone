@@ -1,0 +1,21 @@
+{
+    // This is a temporary block, until multi-block structure is introduced
+    "shape": "WoodAndStone:Table",
+
+    "hardness": 16,
+
+    "displayName": "Cooking Station",
+
+    "categories": ["stone"],
+
+    "entity": {
+        "prefab": "WoodAndStone:CookingStation"
+    },
+
+    "tiles": {
+        "top": "WoodAndStone:WoodenTableTopWithHammer",
+        "bottom": "WoodAndStone:WoodenTableBottom",
+        "sides": "WoodAndStone:WoodenTableSides",
+        "center": "WoodAndStone:WoodenTableSides"
+    }
+}
