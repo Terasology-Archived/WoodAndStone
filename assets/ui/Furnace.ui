@@ -51,6 +51,21 @@
                         }
                     },
                     {
+                        "type": "UILoadBar",
+                        "fillTexture": "engine:statusBar",
+                        "id": "craftingProgress",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 10,
+                            "position-left": {
+                                "offset": 364
+                            },
+                            "position-top": {
+                                "offset": 68
+                            }
+                        }
+                    },
+                    {
                         "type": "InventoryGrid",
                         "id": "output",
                         "layoutInfo": {
