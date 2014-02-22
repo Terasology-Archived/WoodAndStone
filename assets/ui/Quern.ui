@@ -1,6 +1,6 @@
 {
-    "type": "FurnaceWindow",
-    "skin": "WoodAndStone:CraftingStation",
+    "type": "QuernWindow",
+    "skin": "WoodAndStone:Craft",
     "contents": {
         "type": "relativeLayout",
         "contents": [
@@ -22,31 +22,32 @@
                         }
                     },
                     {
-                        "type": "VerticalTextureProgressWidget",
-                        "id": "burn",
-                        "image": "WoodAndStone:Fire",
+                        "type": "UIButton",
+                        "text": "Mill",
+                        "id": "millButton",
                         "layoutInfo": {
-                            "width": 80,
-                            "height": 80,
+                            "width": 200,
+                            "height": 20,
                             "position-left": {
-                                "offset": 138
+                                "offset": 220
                             },
                             "position-top": {
-                                "offset": 66
+                                "offset": 20
                             }
                         }
                     },
                     {
-                        "type": "InventoryGrid",
-                        "id": "fuel",
+                        "type": "UILoadBar",
+                        "fillTexture": "engine:statusBar",
+                        "id": "millingProgress",
                         "layoutInfo": {
-                            "width": 56,
-                            "height": 56,
+                            "width": 200,
+                            "height": 10,
                             "position-left": {
-                                "offset": 150
+                                "offset": 220
                             },
                             "position-top": {
-                                "offset": 151
+                                "offset": 5
                             }
                         }
                     },
@@ -57,24 +58,10 @@
                             "width": 56,
                             "height": 56,
                             "position-left": {
-                                "offset": 364
+                                "offset": 430
                             },
                             "position-top": {
-                                "offset": 78
-                            }
-                        }
-                    },
-                    {
-                        "type": "TermometerWidget",
-                        "id": "heat",
-                        "layoutInfo": {
-                            "width": 20,
-                            "height": 150,
-                            "position-left": {
-                                "offset": 275
-                            },
-                            "position-top": {
-                                "offset": 31
+                                "offset": 5
                             }
                         }
                     },

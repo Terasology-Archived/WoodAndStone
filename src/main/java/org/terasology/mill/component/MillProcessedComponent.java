@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat;
+package org.terasology.mill.component;
 
 import org.terasology.entitySystem.Component;
 
-
-public class HeatProcessedComponent implements Component {
-    public float heatRequired;
-    public long processingTime;
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public class MillProcessedComponent implements Component {
+    public long millLength;
     public String blockResult;
     public String itemResult;
 }

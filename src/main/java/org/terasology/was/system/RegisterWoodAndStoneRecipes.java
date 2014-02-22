@@ -100,6 +100,13 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
         cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(cookingStationRecipe);
+
+        LayeredMultiBlockFormItemRecipe quernRecipe = new LayeredMultiBlockFormItemRecipe(
+                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(1, 1), new UseOnTopFilter(),
+                "WoodAndStone:Quern", null);
+        quernRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")));
+        quernRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
+        multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(quernRecipe);
     }
 
     private void addBasicStoneWorkstationBlockShapeRecipes() {
@@ -111,7 +118,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
     private void addStandardWoodWorkstationBlockShapeRecipes() {
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
-                "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
+                "WoodAndStone:plank", 2, "hammer", 1, "Core:Plank", 4);
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
                 "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
     }

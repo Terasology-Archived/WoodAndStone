@@ -2,9 +2,9 @@ package org.terasology.was.ui;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.heat.HeatProcessedComponent;
-import org.terasology.heat.HeatProducerComponent;
 import org.terasology.heat.HeatUtils;
+import org.terasology.heat.component.HeatProcessedComponent;
+import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.TermometerWidget;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;

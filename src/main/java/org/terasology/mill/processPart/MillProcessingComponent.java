@@ -13,34 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat.processParts;
+package org.terasology.mill.processPart;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.heat.HeatProcessedComponent;
-import org.terasology.heat.HeatUtils;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.logic.inventory.action.RemoveItemAction;
+import org.terasology.mill.component.MillProcessedComponent;
+import org.terasology.mill.component.MillProgressComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
-import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class HeatProcessingComponent implements Component, ProcessPart, ValidateInventoryItem {
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+public class MillProcessingComponent implements Component, ProcessPart, ValidateInventoryItem {
+    private static final int MILL_STEP_COUNT = 4;
+
     @Override
     public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
         if (isInputSlot(workstation, slotNo)) {
@@ -57,7 +62,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     @Override
     public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
         if (isInputSlot(workstation, slotNo)) {
-            return item.hasComponent(HeatProcessedComponent.class);
+            return item.hasComponent(MillProcessedComponent.class);
         }
         return workstation == instigator;
     }
@@ -77,20 +82,15 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
             throw new InvalidProcessException();
         }
 
-        // Defer the heat calculation until it is actually needed
-        Float heat = null;
+        if (workstation.hasComponent(MillProgressComponent.class)) {
+            return Collections.singleton("progress");
+        }
 
         Set<String> result = new LinkedHashSet<>();
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
-            HeatProcessedComponent processed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
+            MillProcessedComponent processed = InventoryUtils.getItemAt(workstation, slot).getComponent(MillProcessedComponent.class);
             if (processed != null) {
-                float heatRequired = processed.heatRequired;
-                if (heat == null) {
-                    heat = HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
-                }
-                if (heatRequired <= heat) {
-                    appendResultIfCanStore(workstation, result, slot, processed.blockResult != null ? processed.blockResult : processed.itemResult);
-                }
+                appendResultIfCanStore(workstation, result, slot, getResult(processed));
             }
         }
 
@@ -101,12 +101,16 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
         }
     }
 
+    private String getResult(MillProcessedComponent processed) {
+        return processed.blockResult != null ? processed.blockResult : processed.itemResult;
+    }
+
     private void appendResultIfCanStore(EntityRef workstation, Set<String> result, int slot, String resultObject) {
         EntityRef resultItem = createResultItem(resultObject);
         try {
             for (int outputSlot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
                 if (InventoryUtils.canStackInto(resultItem, InventoryUtils.getItemAt(workstation, outputSlot))) {
-                    result.add(slot + "|" + resultObject);
+                    result.add(String.valueOf(slot));
                     return;
                 }
             }
@@ -117,30 +121,51 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
 
     @Override
     public long getDuration(EntityRef instigator, EntityRef workstation, String result, String parameter) {
-        String[] split = result.split("\\|");
-        HeatProcessedComponent component = InventoryUtils.getItemAt(workstation, Integer.parseInt(split[0])).getComponent(HeatProcessedComponent.class);
+        MillProcessedComponent processed;
+        MillProgressComponent progress = workstation.getComponent(MillProgressComponent.class);
+        if (progress != null) {
+            processed = progress.processedItem.getComponent(MillProcessedComponent.class);
+        } else {
+            processed = InventoryUtils.getItemAt(workstation, Integer.parseInt(result)).getComponent(MillProcessedComponent.class);
+        }
 
-        return component.processingTime;
+        return processed.millLength / MILL_STEP_COUNT;
     }
 
     @Override
     public void executeStart(EntityRef instigator, EntityRef workstation, String result, String parameter) {
-        String[] split = result.split("\\|");
-        EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(split[0]));
-        workstation.send(new RemoveItemAction(instigator, item, true, 1));
+        if (!result.equals("progress")) {
+            EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(result));
+            RemoveItemAction removeItem = new RemoveItemAction(instigator, item, false, 1);
+            workstation.send(removeItem);
+            EntityRef removedItem = removeItem.getRemovedItem();
+            MillProgressComponent millProgress = new MillProgressComponent();
+            millProgress.processedItem = removedItem;
+            workstation.addComponent(millProgress);
+        }
     }
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String result, String parameter) {
-        String[] split = result.split("\\|");
-        EntityRef toGive = createResultItem(split[1]);
+        MillProgressComponent millProgress = workstation.getComponent(MillProgressComponent.class);
+        millProgress.processedStep++;
+        if (millProgress.processedStep < MILL_STEP_COUNT) {
+            workstation.saveComponent(millProgress);
+        } else {
+            workstation.removeComponent(MillProgressComponent.class);
 
-        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
-            GiveItemAction action = new GiveItemAction(instigator, toGive, slot);
-            workstation.send(action);
-            if (action.isConsumed()) {
-                return;
+            MillProcessedComponent processed = millProgress.processedItem.getComponent(MillProcessedComponent.class);
+            EntityRef resultItem = createResultItem(getResult(processed));
+            millProgress.processedItem.destroy();
+
+            for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
+                GiveItemAction action = new GiveItemAction(instigator, resultItem, slot);
+                workstation.send(action);
+                if (action.isConsumed()) {
+                    return;
+                }
             }
+            resultItem.destroy();
         }
     }
 

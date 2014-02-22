@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat.processParts;
+package org.terasology.heat.processPart;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.heat.HeatFuelComponent;
-import org.terasology.heat.HeatProducerComponent;
+import org.terasology.heat.component.HeatFuelComponent;
+import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;

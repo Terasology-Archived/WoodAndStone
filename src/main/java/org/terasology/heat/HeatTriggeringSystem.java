@@ -24,6 +24,8 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.heat.component.HeatConsumerComponent;
+import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.In;

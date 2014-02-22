@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat;
+package org.terasology.mill.component;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.world.block.items.AddToBlockBasedItem;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.network.Replicate;
 
-@AddToBlockBasedItem
-public class HeatFuelComponent implements Component {
-    public float heatProvided;
-    public long consumeTime;
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
+@Replicate
+public class MillProgressComponent implements Component {
+    public EntityRef processedItem;
+    public int processedStep;
 }

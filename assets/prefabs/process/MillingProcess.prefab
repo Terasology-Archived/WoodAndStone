@@ -1,0 +1,6 @@
+{
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:Milling"
+    },
+    "MillProcessing": { }
+}
