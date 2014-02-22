@@ -1,0 +1,11 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "PlantPack:items.Rice",
+        "stackId": "PlantPack:items.CookedRice",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Cooked Rice"
+    }
+}
