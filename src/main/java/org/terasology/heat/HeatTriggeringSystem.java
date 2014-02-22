@@ -28,8 +28,9 @@ import org.terasology.heat.component.HeatConsumerComponent;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.math.Side;
 import org.terasology.math.Vector3i;
+import org.terasology.monitoring.PerformanceMonitor;
 import org.terasology.registry.In;
-import org.terasology.workstation.event.WotkstationStateChanged;
+import org.terasology.workstation.event.WorkstationStateChanged;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
 
@@ -54,50 +55,55 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
     public void update(float delta) {
         long currentTime = time.getGameTimeInMs();
         if (currentTime > lastChecked + TRIGGER_INTERVAL) {
-            lastChecked = currentTime;
+            PerformanceMonitor.startActivity("Heat - heat update");
+            try {
+                lastChecked = currentTime;
 
-            for (EntityRef entity : entityManager.getEntitiesWith(HeatConsumerComponent.class, BlockComponent.class)) {
-                HeatConsumerComponent heatConsumer = entity.getComponent(HeatConsumerComponent.class);
-                Iterator<HeatConsumerComponent.ResidualHeat> residualHeatIterator = heatConsumer.residualHeat.iterator();
-                boolean changed = false;
-                while (residualHeatIterator.hasNext()) {
-                    HeatConsumerComponent.ResidualHeat residualHeat = residualHeatIterator.next();
-                    if (HeatUtils.calculateResidualHeatValue(currentTime, residualHeat) < REMOVE_RESIDUAL_HEAT_THRESHOLD) {
-                        residualHeatIterator.remove();
-                        changed = true;
-                    } else {
-                        break;
+                for (EntityRef entity : entityManager.getEntitiesWith(HeatConsumerComponent.class, BlockComponent.class)) {
+                    HeatConsumerComponent heatConsumer = entity.getComponent(HeatConsumerComponent.class);
+                    Iterator<HeatConsumerComponent.ResidualHeat> residualHeatIterator = heatConsumer.residualHeat.iterator();
+                    boolean changed = false;
+                    while (residualHeatIterator.hasNext()) {
+                        HeatConsumerComponent.ResidualHeat residualHeat = residualHeatIterator.next();
+                        if (HeatUtils.calculateResidualHeatValue(currentTime, residualHeat) < REMOVE_RESIDUAL_HEAT_THRESHOLD) {
+                            residualHeatIterator.remove();
+                            changed = true;
+                        } else {
+                            break;
+                        }
                     }
-                }
-                if (changed) {
-                    entity.saveComponent(heatConsumer);
-                }
-
-                entity.send(new WotkstationStateChanged());
-            }
-
-            for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class, BlockComponent.class)) {
-                HeatProducerComponent producer = entity.getComponent(HeatProducerComponent.class);
-
-                boolean changed = false;
-                Iterator<HeatProducerComponent.FuelSourceConsume> fuelConsumedIterator = producer.fuelConsumed.iterator();
-                while (fuelConsumedIterator.hasNext()) {
-                    HeatProducerComponent.FuelSourceConsume fuelSourceConsume = fuelConsumedIterator.next();
-                    // If the fuel no longer has any meaningful impact on the producer - remove it
-                    if (fuelSourceConsume.startTime + fuelSourceConsume.burnLength < currentTime
-                            && HeatUtils.solveHeatEquation(fuelSourceConsume.heatProvided, 20, producer.temperatureLossRate,
-                            currentTime - (fuelSourceConsume.startTime + fuelSourceConsume.burnLength)) < REMOVE_FUEL_THRESHOLD) {
-                        fuelConsumedIterator.remove();
-                        changed = true;
-                    } else {
-                        break;
+                    if (changed) {
+                        entity.saveComponent(heatConsumer);
                     }
-                }
-                if (changed) {
-                    entity.saveComponent(producer);
+
+                    entity.send(new WorkstationStateChanged());
                 }
 
-                entity.send(new WotkstationStateChanged());
+                for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class, BlockComponent.class)) {
+                    HeatProducerComponent producer = entity.getComponent(HeatProducerComponent.class);
+
+                    boolean changed = false;
+                    Iterator<HeatProducerComponent.FuelSourceConsume> fuelConsumedIterator = producer.fuelConsumed.iterator();
+                    while (fuelConsumedIterator.hasNext()) {
+                        HeatProducerComponent.FuelSourceConsume fuelSourceConsume = fuelConsumedIterator.next();
+                        // If the fuel no longer has any meaningful impact on the producer - remove it
+                        if (fuelSourceConsume.startTime + fuelSourceConsume.burnLength < currentTime
+                                && HeatUtils.solveHeatEquation(fuelSourceConsume.heatProvided, 20, producer.temperatureLossRate,
+                                currentTime - (fuelSourceConsume.startTime + fuelSourceConsume.burnLength)) < REMOVE_FUEL_THRESHOLD) {
+                            fuelConsumedIterator.remove();
+                            changed = true;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (changed) {
+                        entity.saveComponent(producer);
+                    }
+
+                    entity.send(new WorkstationStateChanged());
+                }
+            } finally {
+                PerformanceMonitor.endActivity();
             }
         }
     }
