@@ -3,9 +3,13 @@
     "Item": {
         "icon": "PlantPack:items.Rice",
         "stackId": "PlantPack:items.CookedRice",
-        "renderWithIcon": true
+        "renderWithIcon": true,
+        "consumedOnUse": true
     },
     "DisplayName": {
         "name": "Cooked Rice"
+    },
+    "Food": {
+        "filling": 2
     }
 }

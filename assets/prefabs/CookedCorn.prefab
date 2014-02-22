@@ -3,9 +3,13 @@
     "Item": {
         "icon": "PlantPack:items.Corn",
         "stackId": "WoodAndStone:items.CookedCorn",
-        "renderWithIcon": true
+        "renderWithIcon": true,
+        "consumedOnUse": true
     },
     "DisplayName": {
         "name": "Cooked Corn"
+    },
+    "Food": {
+        "filling": 1
     }
 }

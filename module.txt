@@ -40,6 +40,10 @@
             {
                 "id" : "Fluid",
                 "minVersion" : "0.1.0"
+            },
+            {
+                "id" : "Hunger",
+                "minVersion" : "0.1.0"
             }],
     "isServerSideOnly" : false
 }
