@@ -78,8 +78,8 @@ public class QuernWindow extends CoreScreenLayer implements WorkstationUI {
                 new Binding<Boolean>() {
                     @Override
                     public Boolean get() {
-                        WorkstationProcessingComponent processing = workstation.getComponent(WorkstationProcessingComponent.class);
-                        return (processing == null && InventoryUtils.getItemAt(workstation, 0).exists());
+                        return (!workstation.hasComponent(WorkstationProcessingComponent.class) &&
+                                (workstation.hasComponent(MillProgressComponent.class) || InventoryUtils.getItemAt(workstation, 0).exists()));
                     }
 
                     @Override
@@ -139,5 +139,10 @@ public class QuernWindow extends CoreScreenLayer implements WorkstationUI {
                     public void set(Float value) {
                     }
                 });
+    }
+
+    @Override
+    public boolean isModal() {
+        return false;
     }
 }

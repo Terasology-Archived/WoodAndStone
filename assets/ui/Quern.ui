@@ -1,6 +1,6 @@
 {
     "type": "QuernWindow",
-    "skin": "WoodAndStone:Craft",
+    "skin": "WoodAndStone:CraftingStation",
     "contents": {
         "type": "relativeLayout",
         "contents": [
