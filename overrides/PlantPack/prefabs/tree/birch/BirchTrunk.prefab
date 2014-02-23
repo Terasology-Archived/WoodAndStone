@@ -3,7 +3,7 @@
         "part": "TRUNK"
     },
     "BlockDropGrammar": {
-        "blockDrops": "1-2*WoodAndStone:TreeLog",
+        "blockDrops": "1-2*WoodAndStone:BirchLog",
         "itemDrops": "0.1|WoodAndStone:Resin"
     }
 }

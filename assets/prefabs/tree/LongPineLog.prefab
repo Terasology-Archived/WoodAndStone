@@ -1,0 +1,12 @@
+{
+    "CraftingStationMaterial": {
+        "stationType": "WoodAndStone:BasicWoodcrafting"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:wood"
+    },
+    "HeatFuel": {
+        "heatProvided": 600,
+        "consumeTime": 20000
+    }
+}
