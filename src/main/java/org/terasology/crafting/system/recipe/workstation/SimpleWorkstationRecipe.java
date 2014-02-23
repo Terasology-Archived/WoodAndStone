@@ -137,48 +137,21 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         List<Map<Integer, Integer>> listOfResults = new ArrayList<>();
 
         for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
-            List<Integer> validToCraft = ingredientBehaviour.getValidToCraft(station, 1);
-            if (validToCraft.size() == 0) {
+            if (!appendBehaviourMatches(station, listOfResults, ingredientBehaviour)) {
                 return null;
             }
-
-            Map<Integer, Integer> slotToMaxMultiplier = new LinkedHashMap<>();
-            for (int slot : validToCraft) {
-                int maxMultiplier = ingredientBehaviour.getMaxMultiplier(station, slot);
-                slotToMaxMultiplier.put(slot, maxMultiplier);
-            }
-
-            listOfResults.add(slotToMaxMultiplier);
         }
 
         for (IngredientCraftBehaviour<?, Integer> toolBehaviour : toolBehaviours) {
-            List<Integer> validToCraft = toolBehaviour.getValidToCraft(station, 1);
-            if (validToCraft.size() == 0) {
+            if (!appendBehaviourMatches(station, listOfResults, toolBehaviour)) {
                 return null;
             }
-
-            Map<Integer, Integer> slotToMaxMultiplier = new LinkedHashMap<>();
-            for (int slot : validToCraft) {
-                int maxMultiplier = toolBehaviour.getMaxMultiplier(station, slot);
-                slotToMaxMultiplier.put(slot, maxMultiplier);
-            }
-
-            listOfResults.add(slotToMaxMultiplier);
         }
 
-        for (IngredientCraftBehaviour<String, Integer> fluidBehaviour : fluidBehaviours) {
-            List<Integer> validToCraft = fluidBehaviour.getValidToCraft(station, 1);
-            if (validToCraft.size() == 0) {
+        for (IngredientCraftBehaviour<?, Integer> fluidBehaviour : fluidBehaviours) {
+            if (!appendBehaviourMatches(station, listOfResults, fluidBehaviour)) {
                 return null;
             }
-
-            Map<Integer, Integer> slotToMaxMultiplier = new LinkedHashMap<>();
-            for (int slot : validToCraft) {
-                int maxMultiplier = fluidBehaviour.getMaxMultiplier(station, slot);
-                slotToMaxMultiplier.put(slot, maxMultiplier);
-            }
-
-            listOfResults.add(slotToMaxMultiplier);
         }
 
         int maxResultMultiplier;
@@ -204,6 +177,22 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         return resultList;
+    }
+
+    private boolean appendBehaviourMatches(EntityRef station, List<Map<Integer, Integer>> listOfResults, IngredientCraftBehaviour<?, Integer> ingredientBehaviour) {
+        List<Integer> validToCraft = ingredientBehaviour.getValidToCraft(station, 1);
+        if (validToCraft.size() == 0) {
+            return false;
+        }
+
+        Map<Integer, Integer> slotToMaxMultiplier = new LinkedHashMap<>();
+        for (int slot : validToCraft) {
+            int maxMultiplier = ingredientBehaviour.getMaxMultiplier(station, slot);
+            slotToMaxMultiplier.put(slot, maxMultiplier);
+        }
+
+        listOfResults.add(slotToMaxMultiplier);
+        return true;
     }
 
     private Map<List<Integer>, Integer> createGrouping(List<Map<Integer, Integer>> listOfResults, int index) {
