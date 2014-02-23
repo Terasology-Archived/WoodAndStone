@@ -138,7 +138,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         @Override
         public Block getResultBlock() {
             if (block) {
-                return CoreRegistry.get(BlockManager.class).getBlock(prefabName);
+                return CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName).getArchetypeBlock();
             }
             return null;
         }
