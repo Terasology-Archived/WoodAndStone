@@ -32,7 +32,7 @@ import java.util.Arrays;
 public class FlowerPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public FlowerPlainsSpawnDefinition() {
         super(PlantType.GRASS, PlainsBiome.ID, 0.5f, 1f, "Core:Flower",
-                Arrays.asList(new BlockUri("Core:Dandelion"), new BlockUri("Core:GlowbellBloom"), new BlockUri("Core:Iris"),
+                Arrays.asList(new BlockUri("Core:Dandelion"), new BlockUri("Core:Iris"),
                         new BlockUri("Core:Lavender"), new BlockUri("Core:RedClover"), new BlockUri("Core:RedFlower"),
                         new BlockUri("Core:Tulip"), new BlockUri("Core:YellowFlower")),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Grass")), null);
