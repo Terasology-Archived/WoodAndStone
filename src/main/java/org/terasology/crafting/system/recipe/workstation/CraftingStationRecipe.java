@@ -55,9 +55,9 @@ public interface CraftingStationRecipe {
      * @param station
      * @return
      */
-    List<CraftingStationResult> getMatchingRecipeResults(EntityRef station);
+    List<? extends CraftingStationResult> getMatchingRecipeResults(EntityRef station);
 
-    List<CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station);
+    List<? extends CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station);
 
     CraftingStationResult getResultById(String resultId);
 

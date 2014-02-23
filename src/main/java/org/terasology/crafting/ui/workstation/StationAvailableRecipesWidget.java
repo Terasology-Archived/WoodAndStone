@@ -79,7 +79,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 CraftingStationRecipe craftingStationRecipe = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe();
                 String recipeId = workstationProcess.getId();
-                List<CraftingStationRecipe.CraftingStationResult> results = craftingStationRecipe.getMatchingRecipeResultsForDisplay(station);
+                List<? extends CraftingStationRecipe.CraftingStationResult> results = craftingStationRecipe.getMatchingRecipeResultsForDisplay(station);
                 if (results != null) {
                     for (CraftingStationRecipe.CraftingStationResult result : results) {
                         String resultId = result.getResultId();
@@ -133,7 +133,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes.keySet())) {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 String recipeId = workstationProcess.getId();
-                List<CraftingStationRecipe.CraftingStationResult> results = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe().getMatchingRecipeResultsForDisplay(station);
+                List<? extends CraftingStationRecipe.CraftingStationResult> results = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe().getMatchingRecipeResultsForDisplay(station);
                 if (results != null) {
                     for (CraftingStationRecipe.CraftingStationResult result : results) {
                         availableRecipes.put(recipeId, result.getResultId());
