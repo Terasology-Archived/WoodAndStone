@@ -13,5 +13,9 @@
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:stick"
+    },
+    "HeatFuel": {
+        "heatProvided": 300,
+        "consumeTime": 8000
     }
 }

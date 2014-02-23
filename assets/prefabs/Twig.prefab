@@ -13,5 +13,9 @@
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:twig"
+    },
+    "HeatFuel": {
+        "heatProvided": 200,
+        "consumeTime": 5000
     }
 }
