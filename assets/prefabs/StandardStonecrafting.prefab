@@ -1,6 +1,6 @@
 {
     "BlockDropGrammar": {
-        "itemDrops": "10*WoodAndStone:Brick"
+        "itemDrops": ["10*WoodAndStone:Brick"]
     },
     "Workstation": {
         "uiPrefab": "WoodAndStone:CraftInStation",

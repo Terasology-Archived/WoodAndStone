@@ -1,6 +1,6 @@
 {
     "BlockDropGrammar": {
-        "blockDrops": "1*Core:CobbleStone"
+        "blockDrops": ["1*Core:CobbleStone"]
     },
     "Workstation": {
         "uiPrefab": "WoodAndStone:Quern",
