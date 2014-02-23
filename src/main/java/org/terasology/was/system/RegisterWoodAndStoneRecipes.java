@@ -95,14 +95,14 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicStoneStation"))));
 
         LayeredMultiBlockFormItemRecipe cookingStationRecipe = new LayeredMultiBlockFormItemRecipe(
-                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(2, 1), new UseOnTopFilter(),
+                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(2, 1), new AnyActivityFilter(),
                 "WoodAndStone:CookingStation", null);
         cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
         cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(cookingStationRecipe);
 
         LayeredMultiBlockFormItemRecipe quernRecipe = new LayeredMultiBlockFormItemRecipe(
-                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(1, 1), new UseOnTopFilter(),
+                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(1, 1), new AnyActivityFilter(),
                 "WoodAndStone:Quern", null);
         quernRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")));
         quernRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
