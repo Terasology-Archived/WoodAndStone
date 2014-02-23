@@ -221,15 +221,6 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         return result;
     }
 
-    private int hasIngredient(EntityRef station, IngredientCraftBehaviour<?, Integer> behaviour) {
-        List<Integer> slots = behaviour.getValidToCraft(station, 1);
-        if (slots.size() > 0) {
-            return slots.get(0);
-        }
-
-        return -1;
-    }
-
     @Override
     public CraftingStationResult getResultById(String resultId) {
         String[] split = resultId.split("\\|");
@@ -391,6 +382,10 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
                     renderers.add(ingredientBehaviour.getRenderer(entity, items.get(index)));
                     index++;
+                }
+
+                if (requiredHeat > 0) {
+                    renderers.add(new HeatIngredientRenderer(TeraMath.floorToInt(requiredHeat)));
                 }
             }
             return renderers;

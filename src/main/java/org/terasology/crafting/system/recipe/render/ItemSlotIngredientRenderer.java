@@ -54,7 +54,7 @@ public class ItemSlotIngredientRenderer implements CraftIngredientRenderer {
     }
 
     @Override
-    public Vector2i getPreferredSize(int multiplier) {
+    public Vector2i getPreferredSize(Canvas canvas, int multiplier) {
         return new Vector2i(56, 56);
     }
 
