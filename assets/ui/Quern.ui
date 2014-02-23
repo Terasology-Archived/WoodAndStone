@@ -40,6 +40,7 @@
                         "type": "UILoadBar",
                         "fillTexture": "engine:statusBar",
                         "id": "millingProgress",
+                        "animate": false,
                         "layoutInfo": {
                             "width": 200,
                             "height": 10,

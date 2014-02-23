@@ -54,6 +54,7 @@
                         "type": "UILoadBar",
                         "fillTexture": "engine:statusBar",
                         "id": "craftingProgress",
+                        "animate": false,
                         "layoutInfo": {
                             "width": 56,
                             "height": 10,
