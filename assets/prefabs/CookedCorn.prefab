@@ -11,5 +11,8 @@
     },
     "Food": {
         "filling": 1
+    },
+    "Drink": {
+        "filling": 1
     }
 }
