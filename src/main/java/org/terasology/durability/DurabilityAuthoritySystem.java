@@ -56,7 +56,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
         }
     }
 
-    @ReceiveEvent(components = {BlockComponent.class})
+    @ReceiveEvent(components = {BlockComponent.class}, priority = EventPriority.PRIORITY_CRITICAL)
     public void reduceItemDurability(DestroyEvent event, EntityRef entity) {
         EntityRef tool = event.getDirectCause();
         DurabilityComponent durabilityComponent = tool.getComponent(DurabilityComponent.class);

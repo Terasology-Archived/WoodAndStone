@@ -30,6 +30,7 @@ import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
 import org.terasology.journal.StaticJournalChapterHandler;
 import org.terasology.journal.part.TextJournalPart;
+import org.terasology.journal.part.TimestampJournalPart;
 import org.terasology.journal.part.TitleJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
@@ -37,6 +38,7 @@ import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
 import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +52,8 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
     private JournalManager journalManager;
     @In
     private PrefabManager prefabManager;
+    @In
+    private BlockManager blockManager;
 
     private String chapterId = "WoodAndStone";
 
@@ -62,7 +66,14 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         Prefab axeHammerHeadItem = prefabManager.getPrefab("WoodAndStone:AxeHammerHead");
         Prefab stickItem = prefabManager.getPrefab("WoodAndStone:Stick");
         Prefab twigItem = prefabManager.getPrefab("WoodAndStone:Twig");
+        Prefab resinItem = prefabManager.getPrefab("WoodAndStone:Resin");
+        Prefab unlitTorchItem = prefabManager.getPrefab("WoodAndStone:UnlitTorch");
+        Prefab flintItem = prefabManager.getPrefab("WoodAndStone:Flint");
+
         Prefab crudeAxeHammerItem = prefabManager.getPrefab("WoodAndStone:CrudeAxeHammer");
+        Prefab stoneHammerItem = prefabManager.getPrefab("WoodAndStone:StoneHammer");
+
+        Block litTorchBlock = blockManager.getBlockFamily("WoodAndStone:LitTorch").getArchetypeBlock();
 
         List<JournalManager.JournalEntryPart> firstEntry = Arrays.asList(
                 new TitleJournalPart("Wood and Stone"),
@@ -99,9 +110,19 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 "to work on stone materials. I should make two tables using planks and sticks.\n\nOnce I get the tables I should place them " +
                 "on the ground next to each other and put my Axe-Hammer on top of one of them (same as before).");
 
-        chapterHandler.registerJournalEntry("6", true, "Now! I should be able to sharpen a stone and use it to attach another " +
-                "stone directly to a stick to make a hammer without binding it with twigs to strengthen the connection. " +
-                "I can use the same technique to create other tools. These stones are much more sturdy than the ones I've been using so far.");
+        List<JournalManager.JournalEntryPart> stoneHammer = Arrays.asList(
+                new TimestampJournalPart(),
+                new TextJournalPart("Now! On this workstation I should be able to create more durable tools. " +
+                        "I should get myself a couple of hammers and finally go mining!"),
+                new RecipeJournalPart(new Block[3], new Prefab[]{stoneItem, twigItem, stickItem}, null, stoneHammerItem, 1),
+                new TextJournalPart("It is going to be dark out there in the mines, I should prepare some torches in advance. " +
+                        "I can use some of the Resin found while cutting trees with stick in a crafting window (press G) to " +
+                        "create Unlit Torches."),
+                new RecipeJournalPart(new Block[2], new Prefab[]{resinItem, stickItem}, null, unlitTorchItem, 1),
+                new TextJournalPart("Once I get them I should be able to light them up using flint in a crafting window. " +
+                        "Just need to make sure not to light too many of them, as the torches last only for a bit of time."),
+                new RecipeJournalPart(new Block[2], new Prefab[]{unlitTorchItem, flintItem}, litTorchBlock, null, 1));
+        chapterHandler.registerJournalEntry("6", stoneHammer);
 
         journalManager.registerJournalChapter(chapterId, Assets.getTexture("WoodAndStone:WoodAndStoneJournal"), "Wood and Stone",
                 chapterHandler);
