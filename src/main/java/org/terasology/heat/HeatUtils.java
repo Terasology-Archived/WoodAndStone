@@ -61,7 +61,7 @@ public final class HeatUtils {
                     lastCalculated = fuelSourceConsume.startTime;
                 }
                 long heatEndTime = Math.min(fuelSourceConsume.startTime + fuelSourceConsume.burnLength, time);
-                heat = solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate, heatEndTime - lastCalculated);
+                heat = Math.min(producer.maximumTemperature, solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate, heatEndTime - lastCalculated));
                 lastCalculated = heatEndTime;
             } else {
                 break;
