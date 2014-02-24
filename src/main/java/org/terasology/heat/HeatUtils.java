@@ -48,7 +48,7 @@ public final class HeatUtils {
     }
 
     public static float solveHeatEquation(float startingHeat, float appliedHeat, float heatTransferEfficiency, long duration) {
-        return startingHeat + (appliedHeat - startingHeat) * (1 - (float) Math.pow(1 + heatTransferEfficiency, -duration / HEAT_MAGIC_VALUE));
+        return startingHeat + (appliedHeat - startingHeat) * (1 - (float) Math.pow(Math.E, -duration * heatTransferEfficiency / HEAT_MAGIC_VALUE));
     }
 
     private static float calculateHeatForProducerAtTime(HeatProducerComponent producer, long time) {
