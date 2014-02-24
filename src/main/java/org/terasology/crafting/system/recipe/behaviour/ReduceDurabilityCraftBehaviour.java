@@ -34,7 +34,6 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
     private Predicate<EntityRef> matcher;
     private int durabilityUsed;
     private InventorySlotResolver resolver;
-    private ItemSlotIngredientRenderer renderer;
 
     public ReduceDurabilityCraftBehaviour(Predicate<EntityRef> matcher, int durabilityUsed, InventorySlotResolver resolver) {
         this.matcher = matcher;
@@ -81,9 +80,7 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
 
     @Override
     public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
-        if (renderer == null) {
-            renderer = new ItemSlotIngredientRenderer();
-        }
+        ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
         renderer.update(entity, slot, new FixedFunction(1));
         return renderer;
     }

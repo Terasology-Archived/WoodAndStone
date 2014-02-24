@@ -42,8 +42,6 @@ public class CraftRecipeWidget extends CoreWidget {
     private CraftProcessDisplay processDisplay;
     private final CreationCallback callback;
 
-//    private List<ItemIcon> ingredientsIcons = new LinkedList<>();
-
     private ItemIcon result;
 
     private UIButton button;
@@ -54,7 +52,7 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int maxMultiplier;
 
-    public CraftRecipeWidget(int leftIndent, EntityRef entity,
+    public CraftRecipeWidget(int leftIndent, final EntityRef entity,
                              final CraftProcessDisplay processDisplay, CreationCallback callback) {
         this.leftIndent = leftIndent;
         this.entity = entity;
@@ -93,6 +91,18 @@ public class CraftRecipeWidget extends CoreWidget {
 
         button = new UIButton();
         button.setText("Craft");
+        button.bindVisible(
+                new Binding<Boolean>() {
+                    @Override
+                    public Boolean get() {
+                        return processDisplay.isValidForCrafting(entity, multiplier);
+                    }
+
+                    @Override
+                    public void set(Boolean value) {
+                    }
+                }
+        );
         button.subscribe(
                 new ActivateEventListener() {
                     @Override
@@ -113,8 +123,8 @@ public class CraftRecipeWidget extends CoreWidget {
         Vector2i size = canvas.size();
 
         for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredientRenderers(entity)) {
-            Vector2i preferredSize = craftIngredientRenderer.getPreferredSize(multiplier);
-            craftIngredientRenderer.render(canvas, Rect2i.createFromMinAndSize(x, 0, preferredSize.x, preferredSize.y), multiplier);
+            Vector2i preferredSize = craftIngredientRenderer.getPreferredSize(canvas, multiplier);
+            craftIngredientRenderer.render(canvas, Rect2i.createFromMinAndSize(x, 0, preferredSize.x, size.y), multiplier);
             x += preferredSize.x;
         }
 
@@ -145,7 +155,7 @@ public class CraftRecipeWidget extends CoreWidget {
         int maxY = 0;
 
         for (CraftIngredientRenderer craftIngredientRenderer : processDisplay.getIngredientRenderers(entity)) {
-            maxY = Math.max(maxY, craftIngredientRenderer.getPreferredSize(multiplier).y);
+            maxY = Math.max(maxY, craftIngredientRenderer.getPreferredSize(canvas, multiplier).y);
         }
 
         maxY = Math.max(maxY, canvas.calculatePreferredSize(result).y);

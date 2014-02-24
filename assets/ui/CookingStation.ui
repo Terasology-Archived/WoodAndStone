@@ -131,13 +131,29 @@
                             "id": "availableRecipes"
                         },
                         "layoutInfo": {
-                            "width": 200,
+                            "width": 315,
                             "height": 250,
                             "position-left": {
                                 "offset": 250
                             },
                             "position-top": {
                                 "offset": 45
+                            }
+                        }
+                    },
+                    {
+                        "type": "UILoadBar",
+                        "fillTexture": "engine:statusBar",
+                        "id": "craftingProgress",
+                        "animate": false,
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 10,
+                            "position-left": {
+                                "offset": 509
+                            },
+                            "position-top": {
+                                "offset": 311
                             }
                         }
                     },

@@ -27,6 +27,8 @@ import java.util.List;
 public interface CraftProcessDisplay {
     List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity);
 
+    boolean isValidForCrafting(EntityRef entity, int multiplier);
+
     int getMaxMultiplier();
 
     int getResultQuantity();

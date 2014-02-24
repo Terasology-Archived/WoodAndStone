@@ -1,0 +1,41 @@
+{
+    "BlockDropGrammar": {
+        "blockDrops": ["1*Core:CobbleStone"]
+    },
+    "Workstation": {
+        "uiPrefab": "WoodAndStone:Quern",
+        "supportedProcessTypes": {
+            "WoodAndStone:Milling": false
+        }
+    },
+    "WorkstationInventory": {
+        "slotAssignments": {
+            "INPUT": {
+                "slotStart": 0,
+                "slotCount": 1
+            },
+            "OUTPUT": {
+                "slotStart": 1,
+                "slotCount": 1
+            }
+        }
+    },
+    "Inventory": {
+        "privateToOwner": false,
+        "itemSlots": [
+            0,
+            0
+        ]
+    },
+    "Health": {
+        "currentHealth": 5,
+        "maxHealth": 5,
+        "regenRate": 1,
+        "waitBeforeRegen": 2,
+        "destroyEntityOnNoHealth": true
+    },
+    "ActAsBlock": {
+        "block": "WoodAndStone:StandardWoodStation"
+    },
+    "DropBlockInventory": {}
+}

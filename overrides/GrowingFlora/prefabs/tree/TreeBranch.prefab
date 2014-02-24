@@ -3,6 +3,6 @@
         "part": "BRANCH"
     },
     "BlockDropGrammar": {
-        "itemDrops": "0.5|WoodAndStone:stick"
+        "itemDrops": ["0.5|WoodAndStone:stick"]
     }
 }

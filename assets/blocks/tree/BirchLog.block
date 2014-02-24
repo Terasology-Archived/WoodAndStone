@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2012 Benjamin Glatzel <benjamin.glatzel@me.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat;
+{
+    "hardness": 8,
+    "displayName": "Birch Log",
 
-import org.terasology.entitySystem.Component;
-import org.terasology.world.block.items.AddToBlockBasedItem;
+    "categories": ["wood"],
 
-@AddToBlockBasedItem
-public class HeatFuelComponent implements Component {
-    public float heatProvided;
-    public long consumeTime;
+    "shape": "Engine:pillar",
+
+    "entity": {
+        "prefab": "WoodAndStone:BirchLog"
+    },
+
+    "tile": "PlantPack:BirchBark",
+
+    // Graphics
+    "tiles": {
+        "sides": "PlantPack:BirchBark",
+        "topBottom": "PlantPack:BirchTrunk",
+        "center": "PlantPack:BirchBark"
+    }
 }

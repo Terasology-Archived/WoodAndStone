@@ -1,6 +1,6 @@
 {
     "BlockDropGrammar": {
-        "itemDrops": "10*WoodAndStone:WoodPlank"
+        "itemDrops": ["4*WoodAndStone:Brick"]
     },
     "Workstation": {
         "uiPrefab": "WoodAndStone:CookingStation",
@@ -66,12 +66,11 @@
     "HeatProducer": {
         "temperatureAbsorptionRate": 1,
         "temperatureLossRate": 0.8,
-        "maximumTemperature": 300,
-        "heatDirections": []
+        "maximumTemperature": 300
     },
     "FluidInventory": {
         "fluidSlots": [ 0 ],
-        "maximumVolumes": [ 50 ]
+        "maximumVolumes": [ 10 ]
     },
     "Health": {
         "currentHealth": 5,

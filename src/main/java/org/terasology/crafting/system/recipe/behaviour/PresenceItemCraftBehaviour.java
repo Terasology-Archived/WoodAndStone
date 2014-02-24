@@ -33,7 +33,6 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<Enti
     private Predicate<EntityRef> matcher;
     private int count;
     private InventorySlotResolver resolver;
-    private ItemSlotIngredientRenderer renderer;
 
     public PresenceItemCraftBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
         this.matcher = matcher;
@@ -77,9 +76,7 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<Enti
 
     @Override
     public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
-        if (renderer == null) {
-            renderer = new ItemSlotIngredientRenderer();
-        }
+        ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
         renderer.update(entity, slot, new FixedFunction(count));
         return renderer;
     }

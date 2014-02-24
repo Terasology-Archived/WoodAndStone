@@ -13,28 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat;
+package org.terasology.mill.component;
 
-import com.google.common.collect.Lists;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.Side;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.network.Replicate;
-import org.terasology.reflection.MappedContainer;
-import org.terasology.world.block.ForceBlockActive;
 
-import java.util.List;
-import java.util.Set;
-
-@ForceBlockActive
+/**
+ * @author Marcin Sciesinski <marcins78@gmail.com>
+ */
 @Replicate
-public class HeatConsumerComponent implements Component {
-    public Set<Side> heatDirections;
-    public float heatConsumptionEfficiency;
-    public List<ResidualHeat> residualHeat = Lists.newArrayList();
-
-    @MappedContainer
-    public static class ResidualHeat {
-        public long time;
-        public float baseHeat;
-    }
+public class MillProgressComponent implements Component {
+    public EntityRef processedItem;
+    public int processedStep;
 }

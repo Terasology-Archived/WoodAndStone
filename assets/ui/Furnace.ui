@@ -1,6 +1,6 @@
 {
     "type": "FurnaceWindow",
-    "skin": "WoodAndStone:Heat",
+    "skin": "WoodAndStone:CraftingStation",
     "contents": {
         "type": "relativeLayout",
         "contents": [
@@ -47,6 +47,22 @@
                             },
                             "position-top": {
                                 "offset": 151
+                            }
+                        }
+                    },
+                    {
+                        "type": "UILoadBar",
+                        "fillTexture": "engine:statusBar",
+                        "id": "craftingProgress",
+                        "animate": false,
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 10,
+                            "position-left": {
+                                "offset": 364
+                            },
+                            "position-top": {
+                                "offset": 68
                             }
                         }
                     },

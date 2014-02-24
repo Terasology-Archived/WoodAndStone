@@ -34,14 +34,18 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.multiBlock.BasicHorizontalSizeFilter;
+import org.terasology.multiBlock.Basic2DSizeFilter;
+import org.terasology.multiBlock.Basic3DSizeFilter;
+import org.terasology.multiBlock.BlockUriEntityFilter;
 import org.terasology.multiBlock.MultiBlockFormRecipeRegistry;
 import org.terasology.multiBlock.UniformBlockReplacementCallback;
+import org.terasology.multiBlock.recipe.LayeredMultiBlockFormItemRecipe;
 import org.terasology.multiBlock.recipe.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.In;
 import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.system.WorkstationRegistry;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockUri;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -81,14 +85,28 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     private void addWorkstationFormingRecipes() {
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(
                 new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("axe"), new UseOnTopFilter(),
-                        new StationTypeFilter("WoodAndStone:BasicWoodcrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
+                        new StationTypeFilter("WoodAndStone:BasicWoodcrafting"), new Basic3DSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicWoodcrafting",
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicWoodStation"))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(
                 new UniformMultiBlockFormItemRecipe(new ToolTypeEntityFilter("hammer"), new UseOnTopFilter(),
-                        new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new BasicHorizontalSizeFilter(2, 1, 1, 1),
+                        new StationTypeFilter("WoodAndStone:BasicStonecrafting"), new Basic3DSizeFilter(2, 1, 1, 1),
                         "WoodAndStone:BasicStonecrafting",
                         new UniformBlockReplacementCallback<Void>(blockManager.getBlock("WoodAndStone:BasicStoneStation"))));
+
+        LayeredMultiBlockFormItemRecipe cookingStationRecipe = new LayeredMultiBlockFormItemRecipe(
+                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(2, 1), new AnyActivityFilter(),
+                "WoodAndStone:CookingStation", null);
+        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
+        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
+        multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(cookingStationRecipe);
+
+        LayeredMultiBlockFormItemRecipe quernRecipe = new LayeredMultiBlockFormItemRecipe(
+                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(1, 1), new AnyActivityFilter(),
+                "WoodAndStone:Quern", null);
+        quernRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone")));
+        quernRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
+        multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(quernRecipe);
     }
 
     private void addBasicStoneWorkstationBlockShapeRecipes() {
@@ -100,7 +118,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
     private void addStandardWoodWorkstationBlockShapeRecipes() {
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
-                "WoodAndStone:plank", 2, "axe", 1, "Core:Plank", 4);
+                "WoodAndStone:plank", 2, "hammer", 1, "Core:Plank", 4);
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
                 "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
     }
@@ -150,6 +168,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfBlock", 1, 2, 1);
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
+                "EighthBlock", 1, 8, 1);
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
                 "HalfSlope", 1, 4, 2);
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,

@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat.processParts;
+package org.terasology.heat.processPart;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.heat.HeatFuelComponent;
-import org.terasology.heat.HeatProducerComponent;
+import org.terasology.heat.component.HeatFuelComponent;
+import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
-import org.terasology.workstation.event.WotkstationStateChanged;
+import org.terasology.workstation.event.WorkstationStateChanged;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
@@ -101,6 +101,6 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
 
     @Override
     public void executeEnd(EntityRef instigator, EntityRef workstation, String result, String parameter) {
-        workstation.send(new WotkstationStateChanged());
+        workstation.send(new WorkstationStateChanged());
     }
 }

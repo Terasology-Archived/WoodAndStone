@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.heat;
+package org.terasology.heat.component;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.Side;
 import org.terasology.network.Replicate;
@@ -32,7 +33,7 @@ public class HeatProducerComponent implements Component {
     public float temperatureAbsorptionRate;
     public float temperatureLossRate;
     public float maximumTemperature;
-    public Set<Side> heatDirections;
+    public Set<Side> heatDirections = Sets.newHashSet();
 
     @MappedContainer
     public static class FuelSourceConsume {

@@ -138,7 +138,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         @Override
         public Block getResultBlock() {
             if (block) {
-                return CoreRegistry.get(BlockManager.class).getBlock(prefabName);
+                return CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName).getArchetypeBlock();
             }
             return null;
         }
@@ -165,11 +165,19 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public EntityRef craft(EntityRef character, int count) {
+        public boolean isValidForCrafting(EntityRef entity, int multiplier) {
             for (int i = 0; i < slots.length; i++) {
-                if (!itemCraftBehaviours.get(i).isValidToCraft(character, slots[i], count)) {
-                    return EntityRef.NULL;
+                if (!itemCraftBehaviours.get(i).isValidToCraft(entity, slots[i], multiplier)) {
+                    return false;
                 }
+            }
+            return true;
+        }
+
+        @Override
+        public EntityRef craft(EntityRef character, int count) {
+            if (!isValidForCrafting(character, count)) {
+                return EntityRef.NULL;
             }
 
             for (int i = 0; i < slots.length; i++) {

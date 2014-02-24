@@ -20,7 +20,7 @@ import org.terasology.math.Vector2i;
 import org.terasology.rendering.nui.Canvas;
 
 public interface CraftIngredientRenderer {
-    Vector2i getPreferredSize(int multiplier);
+    Vector2i getPreferredSize(Canvas canvas, int multiplier);
 
     void render(Canvas canvas, Rect2i region, int multiplier);
 }

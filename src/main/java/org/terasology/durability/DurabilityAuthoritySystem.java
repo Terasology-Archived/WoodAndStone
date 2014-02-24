@@ -65,7 +65,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
             if (blockComponent != null) {
                 Block block = blockComponent.getBlock();
                 Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
-                if (canBeDestroyedByBlockDamage(categoriesIterator, event.getDamageType())) {
+                if (isTheRightTool(categoriesIterator, event.getDamageType())) {
                     // It was the right tool for the job, so reduce the durability
                     tool.send(new ReduceDurabilityEvent(1));
                 }
@@ -98,7 +98,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
         entity.destroy();
     }
 
-    private boolean canBeDestroyedByBlockDamage(Iterable<String> categoriesIterator, Prefab damageType) {
+    private boolean isTheRightTool(Iterable<String> categoriesIterator, Prefab damageType) {
         if (categoriesIterator.iterator().hasNext()) {
             BlockDamageModifierComponent blockDamage = damageType.getComponent(BlockDamageModifierComponent.class);
             if (blockDamage == null) {
@@ -111,6 +111,6 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
             }
             return false;
         }
-        return true;
+        return false;
     }
 }

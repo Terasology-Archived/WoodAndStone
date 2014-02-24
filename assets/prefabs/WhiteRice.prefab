@@ -1,0 +1,14 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "PlantPack:items.Rice",
+        "stackId": "PlantPack:items.WhiteRice",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "White Rice"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:whiteRice"
+    }
+}

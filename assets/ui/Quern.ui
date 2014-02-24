@@ -1,0 +1,93 @@
+{
+    "type": "QuernWindow",
+    "skin": "WoodAndStone:CraftingStation",
+    "contents": {
+        "type": "relativeLayout",
+        "contents": [
+            {
+                "type": "relativeLayout",
+                "contents": [
+                    {
+                        "type": "InventoryGrid",
+                        "id": "input",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 150
+                            },
+                            "position-top": {
+                                "offset": 5
+                            }
+                        }
+                    },
+                    {
+                        "type": "UIButton",
+                        "text": "Mill",
+                        "id": "millButton",
+                        "layoutInfo": {
+                            "width": 200,
+                            "height": 20,
+                            "position-left": {
+                                "offset": 220
+                            },
+                            "position-top": {
+                                "offset": 20
+                            }
+                        }
+                    },
+                    {
+                        "type": "UILoadBar",
+                        "fillTexture": "engine:statusBar",
+                        "id": "millingProgress",
+                        "animate": false,
+                        "layoutInfo": {
+                            "width": 200,
+                            "height": 10,
+                            "position-left": {
+                                "offset": 220
+                            },
+                            "position-top": {
+                                "offset": 5
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "output",
+                        "layoutInfo": {
+                            "width": 56,
+                            "height": 56,
+                            "position-left": {
+                                "offset": 430
+                            },
+                            "position-top": {
+                                "offset": 5
+                            }
+                        }
+                    },
+                    {
+                        "type": "InventoryGrid",
+                        "id": "player",
+                        "layoutInfo": {
+                            "width": 560,
+                            "height": 168,
+                            "position-left": {
+                                "offset": 5
+                            },
+                            "position-top": {
+                                "offset": 212
+                            }
+                        }
+                    }
+                ],
+                "layoutInfo": {
+                    "width": 570,
+                    "height": 485,
+                    "position-horizontal-center": {},
+                    "position-vertical-center": {}
+                }
+            }
+        ]
+    }
+}

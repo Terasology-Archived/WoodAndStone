@@ -2,9 +2,9 @@ package org.terasology.was.ui;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.heat.HeatProcessedComponent;
-import org.terasology.heat.HeatProducerComponent;
 import org.terasology.heat.HeatUtils;
+import org.terasology.heat.component.HeatProcessedComponent;
+import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.TermometerWidget;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
@@ -12,7 +12,9 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
+import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
+import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.ui.WorkstationUI;
 import org.terasology.world.BlockEntityRegistry;
@@ -28,12 +30,14 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
     private InventoryGrid output;
     private TermometerWidget heat;
     private VerticalTextureProgressWidget burn;
+    private UILoadBar craftingProgress;
 
     @Override
     public void initialise() {
         input = find("input", InventoryGrid.class);
         fuel = find("fuel", InventoryGrid.class);
         output = find("output", InventoryGrid.class);
+        craftingProgress = find("craftingProgress", UILoadBar.class);
 
         InventoryGrid player = find("player", InventoryGrid.class);
         player.setTargetEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity());
@@ -142,6 +146,47 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                     public void set(Float value) {
                     }
                 });
+
+        craftingProgress.bindVisible(
+                new Binding<Boolean>() {
+                    @Override
+                    public Boolean get() {
+                        WorkstationProcessingComponent processing = workstation.getComponent(WorkstationProcessingComponent.class);
+                        if (processing == null) {
+                            return false;
+                        }
+                        WorkstationProcessingComponent.ProcessDef heatingProcess = processing.processes.get("Machines:Heater");
+                        return heatingProcess != null;
+                    }
+
+                    @Override
+                    public void set(Boolean value) {
+                    }
+                }
+        );
+        craftingProgress.bindValue(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        WorkstationProcessingComponent processing = workstation.getComponent(WorkstationProcessingComponent.class);
+                        if (processing == null) {
+                            return 1f;
+                        }
+                        WorkstationProcessingComponent.ProcessDef heatingProcess = processing.processes.get("Machines:Heater");
+                        if (heatingProcess == null) {
+                            return 1f;
+                        }
+
+                        long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
+
+                        return 1f * (gameTime - heatingProcess.processingStartTime) / (heatingProcess.processingFinishTime - heatingProcess.processingStartTime);
+                    }
+
+                    @Override
+                    public void set(Float value) {
+                    }
+                }
+        );
     }
 
     @Override

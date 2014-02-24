@@ -24,8 +24,10 @@ import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.assets.texture.TextureRegion;
+import org.terasology.rendering.nui.BaseInteractionListener;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.CoreWidget;
+import org.terasology.rendering.nui.InteractionListener;
 import org.terasology.rendering.nui.LayoutConfig;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.databinding.DefaultBinding;
@@ -36,6 +38,7 @@ import org.terasology.rendering.nui.databinding.DefaultBinding;
 public class FluidContainerWidget extends CoreWidget {
     @LayoutConfig
     private Binding<TextureRegion> image = new DefaultBinding<>();
+    private InteractionListener listener = new BaseInteractionListener();
 
     private int minX;
     private int maxX;
@@ -89,6 +92,8 @@ public class FluidContainerWidget extends CoreWidget {
 
             canvas.drawTexture(texture, canvas.getRegion());
         }
+
+        canvas.addInteractionRegion(listener);
     }
 
     public void setEntity(EntityRef entity) {

@@ -125,6 +125,10 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
         @Override
         public EntityRef craft(EntityRef character, int count) {
+            if (!isValidForCrafting(character, count)) {
+                return EntityRef.NULL;
+            }
+
             EntityRef fruit = InventoryUtils.getItemAt(character, fruitSlot);
 
             String assetName = fruit.getParentPrefab().getURI().getNormalisedAssetName();
@@ -137,6 +141,17 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
             BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily("PlantPack:" + fruitName + "1");
             return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, 1);
+        }
+
+        @Override
+        public boolean isValidForCrafting(EntityRef entity, int multiplier) {
+            if (!FRUIT_BEHAVIOUR.isValidToCraft(entity, fruitSlot, multiplier)) {
+                return false;
+            }
+            if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, knifeSlot, multiplier)) {
+                return false;
+            }
+            return true;
         }
 
         @Override

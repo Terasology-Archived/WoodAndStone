@@ -39,8 +39,10 @@ import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -119,10 +121,10 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
-    public List<CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
+    public List<? extends CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
         if (requiredHeat > 0) {
             float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
-            if (requiredHeat < heat) {
+            if (requiredHeat > heat) {
                 return null;
             }
         }
@@ -131,61 +133,92 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
-    public List<CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station) {
-        // TODO: Improve the search to find fragmented ingredients in multiple stacks, and also to find different kinds
-        // of items, not just first matching
-        List<Integer> resultSlots = new LinkedList<>();
-        int maxMultiplier = Integer.MAX_VALUE;
+    public List<? extends CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station) {
+        List<Map<Integer, Integer>> listOfResults = new ArrayList<>();
 
         for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
-            int slotNo = hasIngredient(station, ingredientBehaviour);
-            if (slotNo != -1) {
-                maxMultiplier = Math.min(maxMultiplier, ingredientBehaviour.getMaxMultiplier(station, slotNo));
-                resultSlots.add(slotNo);
-            } else {
+            if (!appendBehaviourMatches(station, listOfResults, ingredientBehaviour)) {
                 return null;
             }
         }
 
         for (IngredientCraftBehaviour<?, Integer> toolBehaviour : toolBehaviours) {
-            int slotNo = hasIngredient(station, toolBehaviour);
-            if (slotNo != -1) {
-                maxMultiplier = Math.min(maxMultiplier, toolBehaviour.getMaxMultiplier(station, slotNo));
-                resultSlots.add(slotNo);
-            } else {
+            if (!appendBehaviourMatches(station, listOfResults, toolBehaviour)) {
                 return null;
             }
         }
 
-        for (IngredientCraftBehaviour<String, Integer> fluidBehaviour : fluidBehaviours) {
-            int slotNo = hasIngredient(station, fluidBehaviour);
-            if (slotNo != -1) {
-                maxMultiplier = Math.min(maxMultiplier, fluidBehaviour.getMaxMultiplier(station, slotNo));
-                resultSlots.add(slotNo);
-            } else {
+        for (IngredientCraftBehaviour<?, Integer> fluidBehaviour : fluidBehaviours) {
+            if (!appendBehaviourMatches(station, listOfResults, fluidBehaviour)) {
                 return null;
             }
         }
 
+        int maxResultMultiplier;
         EntityRef result = createResult(1);
         try {
             ItemComponent resultItem = result.getComponent(ItemComponent.class);
-            int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
-            maxMultiplier = Math.min(maxMultiplier, maxOutput);
+            if (resultItem.stackId == null || resultItem.stackId.isEmpty()) {
+                maxResultMultiplier = 1;
+            } else {
+                int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
+                maxResultMultiplier = maxOutput;
+            }
         } finally {
             result.destroy();
         }
 
-        return Collections.<CraftingStationResult>singletonList(new Result(maxMultiplier, resultSlots));
-    }
+        List<Result> resultList = new LinkedList<>();
 
-    private int hasIngredient(EntityRef station, IngredientCraftBehaviour<?, Integer> behaviour) {
-        List<Integer> slots = behaviour.getValidToCraft(station, 1);
-        if (slots.size() > 0) {
-            return slots.get(0);
+        Map<List<Integer>, Integer> grouping = createGrouping(listOfResults, 0);
+        for (Map.Entry<List<Integer>, Integer> groupingEntry : grouping.entrySet()) {
+            int maxMultiplier = Math.min(maxResultMultiplier, groupingEntry.getValue());
+            resultList.add(new Result(maxMultiplier, groupingEntry.getKey()));
         }
 
-        return -1;
+        return resultList;
+    }
+
+    private boolean appendBehaviourMatches(EntityRef station, List<Map<Integer, Integer>> listOfResults, IngredientCraftBehaviour<?, Integer> ingredientBehaviour) {
+        List<Integer> validToCraft = ingredientBehaviour.getValidToCraft(station, 1);
+        if (validToCraft.size() == 0) {
+            return false;
+        }
+
+        Map<Integer, Integer> slotToMaxMultiplier = new LinkedHashMap<>();
+        for (int slot : validToCraft) {
+            int maxMultiplier = ingredientBehaviour.getMaxMultiplier(station, slot);
+            slotToMaxMultiplier.put(slot, maxMultiplier);
+        }
+
+        listOfResults.add(slotToMaxMultiplier);
+        return true;
+    }
+
+    private Map<List<Integer>, Integer> createGrouping(List<Map<Integer, Integer>> listOfResults, int index) {
+        Map<List<Integer>, Integer> result = new LinkedHashMap<>();
+
+        Map<Integer, Integer> slotToMax = listOfResults.get(index);
+        if (index + 1 < listOfResults.size()) {
+            for (Map.Entry<Integer, Integer> slotToMaxEntry : slotToMax.entrySet()) {
+                if (index + 1 < listOfResults.size()) {
+                    Map<List<Integer>, Integer> nextGrouping = createGrouping(listOfResults, index + 1);
+                    for (Map.Entry<List<Integer>, Integer> nextSlotToMax : nextGrouping.entrySet()) {
+                        List<Integer> slots = new LinkedList<>();
+                        slots.add(slotToMaxEntry.getKey());
+                        slots.addAll(nextSlotToMax.getKey());
+                        int nextMax = Math.min(slotToMaxEntry.getValue(), nextSlotToMax.getValue());
+                        result.put(slots, nextMax);
+                    }
+                }
+            }
+        } else {
+            for (Map.Entry<Integer, Integer> slotToMaxEntry : slotToMax.entrySet()) {
+                result.put(Collections.singletonList(slotToMaxEntry.getKey()), slotToMaxEntry.getValue());
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -254,9 +287,9 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         }
 
         @Override
-        public EntityRef craft(EntityRef station, int count) {
-            if (!validateCreation(station, count)) {
-                return EntityRef.NULL;
+        public boolean startCrafting(EntityRef station, int count) {
+            if (!isValidForCrafting(station, count)) {
+                return false;
             }
 
             int index = 0;
@@ -277,13 +310,19 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 index++;
             }
 
+            return true;
+        }
+
+        @Override
+        public EntityRef finishCrafting(EntityRef station, int count) {
             return createResult(count);
         }
 
-        private boolean validateCreation(EntityRef station, int count) {
+        @Override
+        public boolean isValidForCrafting(EntityRef station, int count) {
             if (requiredHeat > 0) {
                 float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
-                if (requiredHeat < heat) {
+                if (requiredHeat > heat) {
                     return false;
                 }
             }
@@ -343,6 +382,10 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
                 for (IngredientCraftBehaviour<?, Integer> ingredientBehaviour : ingredientBehaviours) {
                     renderers.add(ingredientBehaviour.getRenderer(entity, items.get(index)));
                     index++;
+                }
+
+                if (requiredHeat > 0) {
+                    renderers.add(new HeatIngredientRenderer(TeraMath.floorToInt(requiredHeat)));
                 }
             }
             return renderers;

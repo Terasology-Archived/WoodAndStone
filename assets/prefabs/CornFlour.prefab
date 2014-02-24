@@ -1,0 +1,14 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "PlantPack:items.Corn",
+        "stackId": "WoodAndStone:items.CornFlour",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Corn Flour"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:flour"
+    }
+}

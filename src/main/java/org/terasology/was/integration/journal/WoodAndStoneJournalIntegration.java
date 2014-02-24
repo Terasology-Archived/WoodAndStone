@@ -30,6 +30,7 @@ import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
 import org.terasology.journal.StaticJournalChapterHandler;
 import org.terasology.journal.part.TextJournalPart;
+import org.terasology.journal.part.TitleJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
@@ -53,7 +54,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
     private String chapterId = "WoodAndStone";
 
     @Override
-    public void initialise() {
+    public void preBegin() {
         StaticJournalChapterHandler chapterHandler = new StaticJournalChapterHandler();
 
         Prefab stoneItem = prefabManager.getPrefab("WoodAndStone:Stone");
@@ -64,6 +65,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         Prefab crudeAxeHammerItem = prefabManager.getPrefab("WoodAndStone:CrudeAxeHammer");
 
         List<JournalManager.JournalEntryPart> firstEntry = Arrays.asList(
+                new TitleJournalPart("Wood and Stone"),
                 new TextJournalPart("Where am I? How did I get here? ...\nWhat am I going to do now? ...\n" +
                         "How am I going to survive the night? ...\n\nI should probably start off with building a safe shelter. " +
                         "I need some tools for that.\n\nI should get some sticks from the nearby tree branches and dig in the ground for some " +
