@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,26 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.render;
+package org.terasology.crafting.system.recipe.workstation;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
-import java.util.List;
+public interface RecipeResultFactory {
+    EntityRef createResult(int multiplier);
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public interface CraftProcessDisplay {
-    List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity);
+    int getCount();
 
-    boolean isValidForCrafting(EntityRef entity, int multiplier);
-
-    int getMaxMultiplier();
-
-    int getResultQuantity();
-
-    void setupResultDisplay(ItemIcon itemIcon);
-
-    long getProcessDuration();
+    void setupDisplay(ItemIcon itemIcon);
 }

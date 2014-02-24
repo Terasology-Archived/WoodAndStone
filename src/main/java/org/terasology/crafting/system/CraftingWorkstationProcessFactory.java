@@ -17,10 +17,15 @@ package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingStationRecipeComponent;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
+import org.terasology.crafting.system.recipe.workstation.result.BlockRecipeResultFactory;
+import org.terasology.crafting.system.recipe.workstation.result.ItemRecipeResultFactory;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.ProcessDefinitionComponent;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationProcessFactory;
+import org.terasology.world.block.BlockManager;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -59,16 +64,18 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
         }
 
         if (recipe.blockResult != null) {
+            final BlockManager blockManager = CoreRegistry.get(BlockManager.class);
             String[] split = recipe.blockResult.split("\\*", 2);
             int count = Integer.parseInt(split[0]);
             String block = split[1];
-            workstationRecipe.setBlockResult(block, (byte) count);
+            workstationRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(block).getArchetypeBlock(), count));
         }
         if (recipe.itemResult != null) {
+            final PrefabManager prefabManager = CoreRegistry.get(PrefabManager.class);
             String[] split = recipe.itemResult.split("\\*", 2);
             int count = Integer.parseInt(split[0]);
             String item = split[1];
-            workstationRecipe.setItemResult(item, (byte) count);
+            workstationRecipe.setResultFactory(new ItemRecipeResultFactory(prefabManager.getPrefab(item), count));
         }
 
         if (recipe.processingDuration != 0) {

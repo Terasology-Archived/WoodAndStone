@@ -15,27 +15,21 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
-import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeFluidBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.InventorySlotTypeResolver;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.heat.HeatUtils;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,9 +49,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     private float requiredHeat;
     private long processingDuration;
 
-    private String blockResult;
-    private String itemResult;
-    private byte resultCount;
+    private RecipeResultFactory resultFactory;
 
     public void addIngredient(String type, int count) {
         ingredientBehaviours.add(new ConsumeItemCraftBehaviour(new CraftingStationIngredientPredicate(type), count, new InventorySlotTypeResolver("INPUT")));
@@ -71,14 +63,8 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
         fluidBehaviours.add(new ConsumeFluidBehaviour(fluidType, volume, new InventorySlotTypeResolver("FLUID_INPUT")));
     }
 
-    public void setBlockResult(String block, byte count) {
-        blockResult = block;
-        resultCount = count;
-    }
-
-    public void setItemResult(String item, byte count) {
-        itemResult = item;
-        resultCount = count;
+    public void setResultFactory(RecipeResultFactory resultFactory) {
+        this.resultFactory = resultFactory;
     }
 
     public void setRequiredHeat(float requiredHeat) {
@@ -238,16 +224,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
     }
 
     private EntityRef createResult(int count) {
-        if (itemResult != null) {
-            final EntityRef entity = CoreRegistry.get(EntityManager.class).create(itemResult);
-            final ItemComponent item = entity.getComponent(ItemComponent.class);
-            item.stackCount = (byte) (resultCount * count);
-            entity.saveComponent(item);
-            return entity;
-        } else {
-            BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult);
-            return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, resultCount * count);
-        }
+        return resultFactory.createResult(count);
     }
 
     private class Result implements CraftingStationResult {
@@ -398,23 +375,12 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
 
         @Override
         public int getResultQuantity() {
-            return resultCount;
+            return resultFactory.getCount();
         }
 
         @Override
-        public Block getResultBlock() {
-            if (itemResult == null) {
-                return CoreRegistry.get(BlockManager.class).getBlockFamily(blockResult).getArchetypeBlock();
-            }
-            return null;
-        }
-
-        @Override
-        public Prefab getResultItem() {
-            if (itemResult != null) {
-                return Assets.getPrefab(itemResult);
-            }
-            return null;
+        public void setupResultDisplay(ItemIcon itemIcon) {
+            resultFactory.setupDisplay(itemIcon);
         }
     }
 }

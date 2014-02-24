@@ -29,6 +29,7 @@ import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
+import org.terasology.crafting.system.recipe.workstation.result.BlockRecipeResultFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
@@ -109,18 +110,18 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(quernRecipe);
     }
 
-    private void addBasicStoneWorkstationBlockShapeRecipes() {
-        addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "Building|Cobble Stone|WoodAndStone:CobbleBlock",
-                "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
-                "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
-    }
-
     private void addStandardWoodWorkstationBlockShapeRecipes() {
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
                 "WoodAndStone:plank", 2, "hammer", 1, "Core:Plank", 4);
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
                 "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
+    }
+
+    private void addBasicStoneWorkstationBlockShapeRecipes() {
+        addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "Building|Cobble Stone|WoodAndStone:CobbleBlock",
+                "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
+        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
+                "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
     }
 
     private void addCraftInHandRecipes() {
@@ -137,7 +138,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         SimpleWorkstationRecipe shapeRecipe = new SimpleWorkstationRecipe();
         shapeRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
         shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
-        shapeRecipe.setBlockResult(blockResultPrefix + ":Engine:" + shape, (byte) (blockResultCount * resultMultiplier));
+        shapeRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(blockResultPrefix + ":Engine:" + shape).getArchetypeBlock(), blockResultCount * resultMultiplier));
 
         workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix + shape, shapeRecipe));
     }
@@ -147,7 +148,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         SimpleWorkstationRecipe fullBlockRecipe = new SimpleWorkstationRecipe();
         fullBlockRecipe.addIngredient(ingredient, ingredientBasicCount);
         fullBlockRecipe.addRequiredTool(tool, toolDurability);
-        fullBlockRecipe.setBlockResult(blockResultPrefix, (byte) blockResultCount);
+        fullBlockRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(blockResultPrefix).getArchetypeBlock(), blockResultCount));
 
         workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix, fullBlockRecipe));
 

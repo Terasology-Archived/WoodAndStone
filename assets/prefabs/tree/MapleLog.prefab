@@ -5,6 +5,9 @@
     "CraftingStationIngredient": {
         "type": "WoodAndStone:wood"
     },
+    "TreeType": {
+        "treeType": "Maple"
+    },
     "HeatFuel": {
         "heatProvided": 600,
         "consumeTime": 20000

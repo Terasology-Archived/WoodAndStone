@@ -15,14 +15,10 @@
  */
 package org.terasology.crafting.ui;
 
-import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.CraftProcessDisplay;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.input.Keyboard;
-import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
 import org.terasology.rendering.nui.Canvas;
@@ -32,7 +28,6 @@ import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.world.block.Block;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -62,19 +57,7 @@ public class CraftRecipeWidget extends CoreWidget {
         maxMultiplier = processDisplay.getMaxMultiplier();
 
         result = new ItemIcon();
-        Block resultBlock = processDisplay.getResultBlock();
-        Prefab resultItem = processDisplay.getResultItem();
-        if (resultBlock != null) {
-            result.setMesh(resultBlock.getMesh());
-            result.setMeshTexture(Assets.getTexture("engine:terrain"));
-            result.setTooltip(resultBlock.getDisplayName());
-        } else if (resultItem != null) {
-            result.setIcon(resultItem.getComponent(ItemComponent.class).icon);
-            DisplayNameComponent displayName = resultItem.getComponent(DisplayNameComponent.class);
-            if (displayName != null) {
-                result.setTooltip(displayName.name);
-            }
-        }
+        processDisplay.setupResultDisplay(result);
         result.bindQuantity(
                 new Binding<Integer>() {
                     @Override
