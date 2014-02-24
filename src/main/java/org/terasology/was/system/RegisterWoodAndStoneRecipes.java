@@ -28,8 +28,10 @@ import org.terasology.crafting.system.recipe.hand.CompositeTypeBasedCraftInHandR
 import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
+import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
+import org.terasology.crafting.system.recipe.render.result.BlockRecipeResultFactory;
+import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
-import org.terasology.crafting.system.recipe.workstation.result.BlockRecipeResultFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
@@ -186,10 +188,13 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
     private void parseCraftInHandRecipe(CraftInHandRecipeComponent recipeComponent) {
         String recipeId = recipeComponent.recipeId;
-        String prefab = (recipeComponent.blockResult != null) ? recipeComponent.blockResult : recipeComponent.itemResult;
-        boolean block = (recipeComponent.blockResult != null);
-
-        CompositeTypeBasedCraftInHandRecipe recipe = new CompositeTypeBasedCraftInHandRecipe(prefab, block);
+        RecipeResultFactory resultFactory;
+        if (recipeComponent.blockResult != null) {
+            resultFactory = new BlockRecipeResultFactory(blockManager.getBlockFamily(recipeComponent.blockResult).getArchetypeBlock(), 1);
+        } else {
+            resultFactory = new ItemRecipeResultFactory(prefabManager.getPrefab(recipeComponent.itemResult), 1);
+        }
+        CompositeTypeBasedCraftInHandRecipe recipe = new CompositeTypeBasedCraftInHandRecipe(resultFactory);
 
         if (recipeComponent.recipeComponents != null) {
             for (String component : recipeComponent.recipeComponents) {

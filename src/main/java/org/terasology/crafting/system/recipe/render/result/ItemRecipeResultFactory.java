@@ -13,29 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.workstation.result;
+package org.terasology.crafting.system.recipe.render.result;
 
-import org.terasology.asset.Assets;
-import org.terasology.crafting.system.recipe.workstation.RecipeResultFactory;
+import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.logic.common.DisplayNameComponent;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.items.BlockItemFactory;
 
-public class BlockRecipeResultFactory implements RecipeResultFactory {
-    private Block block;
+public class ItemRecipeResultFactory implements RecipeResultFactory {
+    private Prefab prefab;
     private int count;
 
-    public BlockRecipeResultFactory(Block block, int count) {
-        this.block = block;
+    public ItemRecipeResultFactory(Prefab prefab, int count) {
+        this.prefab = prefab;
         this.count = count;
     }
 
     @Override
     public EntityRef createResult(int multiplier) {
-        return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(block.getBlockFamily(), count * multiplier);
+        final EntityRef entity = CoreRegistry.get(EntityManager.class).create(prefab);
+        final ItemComponent item = entity.getComponent(ItemComponent.class);
+        item.stackCount = (byte) (count * multiplier);
+        entity.saveComponent(item);
+        return entity;
     }
 
     @Override
@@ -45,8 +49,10 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
 
     @Override
     public void setupDisplay(ItemIcon itemIcon) {
-        itemIcon.setMesh(block.getMesh());
-        itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
-        itemIcon.setTooltip(block.getDisplayName());
+        itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
+        DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
+        if (displayName != null) {
+            itemIcon.setTooltip(displayName.name);
+        }
     }
 }

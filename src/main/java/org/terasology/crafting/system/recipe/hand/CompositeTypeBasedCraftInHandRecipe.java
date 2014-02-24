@@ -15,19 +15,12 @@
  */
 package org.terasology.crafting.system.recipe.hand;
 
-import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.entitySystem.entity.EntityManager;
+import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.items.BlockItemFactory;
+import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,12 +32,10 @@ import java.util.List;
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     private List<IngredientCraftBehaviour<EntityRef, Integer>> itemCraftBehaviours = new ArrayList<>();
-    private String prefabName;
-    private boolean block;
+    private RecipeResultFactory resultFactory;
 
-    public CompositeTypeBasedCraftInHandRecipe(String resultPrefab, boolean block) {
-        this.prefabName = resultPrefab;
-        this.block = block;
+    public CompositeTypeBasedCraftInHandRecipe(RecipeResultFactory resultFactory) {
+        this.resultFactory = resultFactory;
     }
 
     public void addItemCraftBehaviour(IngredientCraftBehaviour<EntityRef, Integer> itemCraftBehaviour) {
@@ -136,32 +127,12 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public Block getResultBlock() {
-            if (block) {
-                return CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName).getArchetypeBlock();
-            }
-            return null;
-        }
-
-        @Override
-        public Prefab getResultItem() {
-            if (!block) {
-                return Assets.getPrefab(prefabName);
-            }
-            return null;
+        public void setupResultDisplay(ItemIcon itemIcon) {
+            resultFactory.setupDisplay(itemIcon);
         }
 
         private EntityRef createResult(int multiplier) {
-            if (block) {
-                BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(prefabName);
-                return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, multiplier);
-            } else {
-                EntityRef entityRef = CoreRegistry.get(EntityManager.class).create(prefabName);
-                ItemComponent item = entityRef.getComponent(ItemComponent.class);
-                item.stackCount = (byte) multiplier;
-                entityRef.saveComponent(item);
-                return entityRef;
-            }
+            return resultFactory.createResult(multiplier);
         }
 
         @Override

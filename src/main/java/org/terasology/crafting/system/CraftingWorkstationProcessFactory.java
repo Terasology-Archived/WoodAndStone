@@ -16,9 +16,9 @@
 package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingStationRecipeComponent;
+import org.terasology.crafting.system.recipe.render.result.BlockRecipeResultFactory;
+import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
 import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
-import org.terasology.crafting.system.recipe.workstation.result.BlockRecipeResultFactory;
-import org.terasology.crafting.system.recipe.workstation.result.ItemRecipeResultFactory;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.registry.CoreRegistry;

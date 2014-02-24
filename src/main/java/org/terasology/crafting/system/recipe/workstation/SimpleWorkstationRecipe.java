@@ -21,6 +21,7 @@ import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.InventorySlotTypeResolver;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
+import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.HeatUtils;
 import org.terasology.logic.inventory.InventoryUtils;

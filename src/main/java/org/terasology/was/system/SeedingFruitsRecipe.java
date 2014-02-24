@@ -16,6 +16,7 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
+import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -31,6 +32,7 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
@@ -175,15 +177,14 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        public Block getResultBlock() {
+        public void setupResultDisplay(ItemIcon itemIcon) {
             String assetName = InventoryUtils.getItemAt(character, fruitSlot).getParentPrefab().getURI().getNormalisedAssetName();
             String fruitName = assetName.substring(0, assetName.length() - 5);
-            return CoreRegistry.get(BlockManager.class).getBlockFamily("PlantPack:" + fruitName + "1").getArchetypeBlock();
-        }
+            Block block = CoreRegistry.get(BlockManager.class).getBlockFamily("PlantPack:" + fruitName + "1").getArchetypeBlock();
 
-        @Override
-        public Prefab getResultItem() {
-            return null;
+            itemIcon.setMesh(block.getMesh());
+            itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
+            itemIcon.setTooltip(block.getDisplayName());
         }
     }
 }
