@@ -26,9 +26,11 @@ import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 import java.util.Set;
 
 public class ValidateUpgradeProcessPart implements ProcessPart, ValidateInventoryItem {
+    private String workstationType;
     private UpgradeRecipe upgradeRecipe;
 
-    public ValidateUpgradeProcessPart(UpgradeRecipe upgradeRecipe) {
+    public ValidateUpgradeProcessPart(String workstationType, UpgradeRecipe upgradeRecipe) {
+        this.workstationType = workstationType;
         this.upgradeRecipe = upgradeRecipe;
     }
 
@@ -45,6 +47,11 @@ public class ValidateUpgradeProcessPart implements ProcessPart, ValidateInventor
 
     @Override
     public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
+        if (craftingStation == null || !craftingStation.type.equals(workstationType)) {
+            return false;
+        }
+
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "UPGRADE")) {
             if (slot == slotNo) {
                 return upgradeRecipe.isUpgradeComponent(item);
@@ -56,8 +63,8 @@ public class ValidateUpgradeProcessPart implements ProcessPart, ValidateInventor
 
     @Override
     public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) throws InvalidProcessException {
-        final CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
-        if (craftingStation == null) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
+        if (craftingStation == null || !craftingStation.type.equals(workstationType)) {
             throw new InvalidProcessException();
         }
 
