@@ -1,4 +1,3 @@
-
 {
     "texture": "WoodAndStone:items",
     "textureSize": [512, 512],
@@ -13,7 +12,7 @@
             "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick", "",
             "", "", "", "", "", "", "", "",
             "Clay", "Brick", "SmallPottery", "Pottery1", "Pottery2", "", "", "",
-            "", "", "", "", "", "", "", ""
+            "RockSalt", "GroundSalt", "Bread", "", "", "", "", ""
         ]
     }
 }

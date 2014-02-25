@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.RockSalt",
+        "stackId": "WoodAndStone:rockSalt",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Rock Salt"
+    },
+    "MillProcessed": {
+        "millLength": 6000,
+        "itemResult": "1*WoodAndStone:GroundSalt"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.GroundSalt",
+        "stackId": "WoodAndStone:groundSalt",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Ground Salt"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:salt"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:Cooking"
+    },
+    "CraftingStationRecipe": {
+        "recipeId": "Hot food|WoodAndStone:Bread",
+
+        "recipeComponents": ["1*WoodAndStone:flour","1*WoodAndStone:salt"],
+        "recipeFluids": ["0.5*Fluid:Water"],
+        "requiredTemperature": 200,
+        "processingDuration": 20000,
+
+        "itemResult": "1*WoodAndStone:Bread"
+    }
+}

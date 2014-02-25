@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.Bread",
+        "stackId": "WoodAndStone:bread",
+        "renderWithIcon": true,
+        "consumedOnUse": true
+    },
+    "DisplayName": {
+        "name": "Bread"
+    },
+    "Food": {
+        "filling": 5
+    }
+}
