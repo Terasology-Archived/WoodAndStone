@@ -166,13 +166,8 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
-        protected String getParameter(int slot, EntityRef item) {
-            return super.getParameter(slot, item);
-        }
-
-        @Override
-        protected int getSlot(String parameter) {
-            return Integer.parseInt(parameter.substring(0, parameter.indexOf('|')));
+        protected List<Integer> getSlots(String parameter) {
+            return super.getSlots(parameter.substring(0, parameter.indexOf('|')));
         }
 
         @Override
