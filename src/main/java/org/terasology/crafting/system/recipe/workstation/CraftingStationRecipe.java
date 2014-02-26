@@ -48,15 +48,6 @@ public interface CraftingStationRecipe {
      */
     boolean hasFluidAsComponent(String fluidType);
 
-    /**
-     * Returns all possible recipes (components->result) that can be done processed using this recipe
-     * from the components and tools available in the station entity's inventory.
-     *
-     * @param station
-     * @return
-     */
-    List<? extends CraftingStationResult> getMatchingRecipeResults(EntityRef station);
-
     List<? extends CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station);
 
     CraftingStationResult getValidResultByParameters(EntityRef station, List<String> resultParameters);

@@ -113,18 +113,6 @@ public class DefaultWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
-    public List<? extends CraftingStationResult> getMatchingRecipeResults(EntityRef station) {
-        if (requiredHeat > 0) {
-            float heat = HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
-            if (requiredHeat > heat) {
-                return null;
-            }
-        }
-
-        return getMatchingRecipeResultsForDisplay(station);
-    }
-
-    @Override
     public List<? extends CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station) {
         List<List<String>> listOfResults = new ArrayList<>();
 

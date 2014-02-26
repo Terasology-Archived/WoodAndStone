@@ -16,7 +16,9 @@
 package org.terasology.was.component;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.logic.inventory.ItemDifferentiating;
 
+@ItemDifferentiating
 public class TreeTypeComponent implements Component {
     public String treeType;
 }
