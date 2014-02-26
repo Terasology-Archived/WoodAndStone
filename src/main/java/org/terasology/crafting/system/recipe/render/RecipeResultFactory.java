@@ -19,6 +19,8 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
 public interface RecipeResultFactory {
+    int getMaxMultiplier();
+
     EntityRef createResult(int multiplier);
 
     int getCount();

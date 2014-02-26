@@ -31,7 +31,7 @@ import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.BlockRecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
-import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
+import org.terasology.crafting.system.recipe.workstation.DefaultWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
@@ -137,7 +137,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     private void addShapeRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                 String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
                                 String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
-        SimpleWorkstationRecipe shapeRecipe = new SimpleWorkstationRecipe();
+        DefaultWorkstationRecipe shapeRecipe = new DefaultWorkstationRecipe();
         shapeRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
         shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
         shapeRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(blockResultPrefix + ":Engine:" + shape).getArchetypeBlock(), blockResultCount * resultMultiplier));
@@ -147,7 +147,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
     private void addWorkstationBlockShapesRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                                  String tool, int toolDurability, String blockResultPrefix, int blockResultCount) {
-        SimpleWorkstationRecipe fullBlockRecipe = new SimpleWorkstationRecipe();
+        DefaultWorkstationRecipe fullBlockRecipe = new DefaultWorkstationRecipe();
         fullBlockRecipe.addIngredient(ingredient, ingredientBasicCount);
         fullBlockRecipe.addRequiredTool(tool, toolDurability);
         fullBlockRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(blockResultPrefix).getArchetypeBlock(), blockResultCount));

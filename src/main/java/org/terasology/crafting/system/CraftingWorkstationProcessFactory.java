@@ -18,7 +18,7 @@ package org.terasology.crafting.system;
 import org.terasology.crafting.component.CraftingStationRecipeComponent;
 import org.terasology.crafting.system.recipe.render.result.BlockRecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
-import org.terasology.crafting.system.recipe.workstation.SimpleWorkstationRecipe;
+import org.terasology.crafting.system.recipe.workstation.DefaultWorkstationRecipe;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.registry.CoreRegistry;
@@ -37,7 +37,7 @@ public class CraftingWorkstationProcessFactory implements WorkstationProcessFact
 
         CraftingStationRecipeComponent recipe = prefab.getComponent(CraftingStationRecipeComponent.class);
 
-        SimpleWorkstationRecipe workstationRecipe = new SimpleWorkstationRecipe();
+        DefaultWorkstationRecipe workstationRecipe = new DefaultWorkstationRecipe();
         if (recipe.recipeComponents != null) {
             for (String recipeComponent : recipe.recipeComponents) {
                 String[] split = recipeComponent.split("\\*", 2);

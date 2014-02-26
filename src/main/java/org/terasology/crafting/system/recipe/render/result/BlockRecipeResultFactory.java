@@ -34,6 +34,15 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
+    public int getMaxMultiplier() {
+        if (block.isStackable()) {
+            return 99 / count;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
     public EntityRef createResult(int multiplier) {
         return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(block.getBlockFamily(), count * multiplier);
     }

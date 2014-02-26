@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class SimpleWorkstationRecipe implements CraftingStationRecipe {
+public class DefaultWorkstationRecipe implements CraftingStationRecipe {
     private List<IngredientCraftBehaviour<EntityRef, Integer>> ingredientBehaviours = new ArrayList<>();
     private List<IngredientCraftBehaviour<EntityRef, Integer>> toolBehaviours = new ArrayList<>();
     private List<IngredientCraftBehaviour<String, Integer>> fluidBehaviours = new ArrayList<>();
@@ -141,19 +141,7 @@ public class SimpleWorkstationRecipe implements CraftingStationRecipe {
             }
         }
 
-        int maxResultMultiplier;
-        EntityRef result = createResult(1);
-        try {
-            ItemComponent resultItem = result.getComponent(ItemComponent.class);
-            if (resultItem.stackId == null || resultItem.stackId.isEmpty()) {
-                maxResultMultiplier = 1;
-            } else {
-                int maxOutput = TeraMath.floorToInt(1f * resultItem.maxStackSize / resultItem.stackCount);
-                maxResultMultiplier = maxOutput;
-            }
-        } finally {
-            result.destroy();
-        }
+        int maxResultMultiplier = resultFactory.getMaxMultiplier();
 
         List<Result> resultList = new LinkedList<>();
 

@@ -34,6 +34,16 @@ public class ItemRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
+    public int getMaxMultiplier() {
+        final ItemComponent item = prefab.getComponent(ItemComponent.class);
+        if (item.stackId == null || item.stackId.isEmpty()) {
+            return 1;
+        } else {
+            return item.maxStackSize / count;
+        }
+    }
+
+    @Override
     public EntityRef createResult(int multiplier) {
         final EntityRef entity = CoreRegistry.get(EntityManager.class).create(prefab);
         final ItemComponent item = entity.getComponent(ItemComponent.class);
