@@ -16,6 +16,7 @@
 package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
+import org.terasology.crafting.event.CraftingStationUpgraded;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.workstation.event.WorkstationProcessRequest;
@@ -66,7 +67,6 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess, Va
         if (upgrade == null) {
             throw new InvalidProcessException();
         }
-        upgrade.processUpgrade(workstation);
 
         return 0;
     }
@@ -82,10 +82,11 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess, Va
     }
 
     @Override
-    public void finishProcessing(EntityRef workstation, EntityRef processEntity) {
+    public void finishProcessing(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         final UpgradeRecipe.UpgradeResult upgrade = upgradeRecipe.getMatchingUpgradeResult(workstation);
         if (upgrade != null) {
-            upgrade.processUpgrade(workstation);
+            EntityRef resultStation = upgrade.processUpgrade(workstation);
+            instigator.send(new CraftingStationUpgraded(resultStation));
         }
     }
 }
