@@ -46,12 +46,23 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
         return matcher.apply(ingredient);
     }
 
+    protected String getParameter(int slot, EntityRef item) {
+        return String.valueOf(slot);
+    }
+
+    protected int getSlot(String parameter) {
+        return Integer.parseInt(parameter);
+    }
+
     @Override
     public List<String> getValidToCraft(EntityRef entity, int multiplier) {
         List<String> result = new LinkedList<>();
         for (int slot : resolver.getSlots(entity)) {
             if (isValidToCraft(entity, slot, multiplier)) {
-                result.add(String.valueOf(slot));
+                final String parameter = getParameter(slot, InventoryUtils.getItemAt(entity, slot));
+                if (parameter != null) {
+                    result.add(parameter);
+                }
             }
         }
 
@@ -70,27 +81,27 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
     }
 
     @Override
-    public boolean isValidToCraft(EntityRef entity, String slot, int multiplier) {
-        return isValidToCraft(entity, Integer.parseInt(slot), multiplier);
+    public boolean isValidToCraft(EntityRef entity, String parameter, int multiplier) {
+        return isValidToCraft(entity, getSlot(parameter), multiplier);
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, String slot) {
-        EntityRef ingredient = InventoryUtils.getItemAt(entity, Integer.parseInt(slot));
+    public int getMaxMultiplier(EntityRef entity, String parameter) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, getSlot(parameter));
         ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
         return itemComponent.stackCount / count;
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, String slot) {
+    public CraftIngredientRenderer getRenderer(EntityRef entity, String parameter) {
         ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
-        renderer.update(entity, Integer.parseInt(slot), new MultiplyFunction(count));
+        renderer.update(entity, getSlot(parameter), new MultiplyFunction(count));
         return renderer;
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, String slot, int multiplier) {
-        RemoveItemAction removeAction = new RemoveItemAction(instigator, InventoryUtils.getItemAt(entity, Integer.parseInt(slot)), true, count * multiplier);
+    public void processIngredient(EntityRef instigator, EntityRef entity, String parameter, int multiplier) {
+        RemoveItemAction removeAction = new RemoveItemAction(instigator, InventoryUtils.getItemAt(entity, getSlot(parameter)), true, count * multiplier);
         entity.send(removeAction);
     }
 }

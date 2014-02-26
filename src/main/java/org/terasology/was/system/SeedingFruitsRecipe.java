@@ -166,6 +166,16 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
 
         @Override
+        protected String getParameter(int slot, EntityRef item) {
+            return super.getParameter(slot, item);
+        }
+
+        @Override
+        protected int getSlot(String parameter) {
+            return Integer.parseInt(parameter.substring(0, parameter.indexOf('|')));
+        }
+
+        @Override
         public List<String> getValidToCraft(EntityRef entity, int multiplier) {
             List<String> baseParameters = super.getValidToCraft(entity, multiplier);
             List<String> result = new LinkedList<>();
@@ -185,30 +195,6 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             }
 
             return result;
-        }
-
-        private String getBaseParameter(String parameter) {
-            return parameter.substring(0, parameter.indexOf('|'));
-        }
-
-        @Override
-        public int getMaxMultiplier(EntityRef entity, String parameter) {
-            return super.getMaxMultiplier(entity, getBaseParameter(parameter));
-        }
-
-        @Override
-        public CraftIngredientRenderer getRenderer(EntityRef entity, String parameter) {
-            return super.getRenderer(entity, getBaseParameter(parameter));
-        }
-
-        @Override
-        public boolean isValidToCraft(EntityRef entity, String parameter, int multiplier) {
-            return super.isValidToCraft(entity, getBaseParameter(parameter), multiplier);
-        }
-
-        @Override
-        public void processIngredient(EntityRef instigator, EntityRef entity, String parameter, int multiplier) {
-            super.processIngredient(instigator, entity, getBaseParameter(parameter), multiplier);
         }
 
         public String getSaplingResult(String parameter) {
