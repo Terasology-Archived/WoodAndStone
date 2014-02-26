@@ -114,10 +114,10 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
         @Override
         public boolean isValidForCrafting(EntityRef entity, int multiplier) {
-            if (!FRUIT_BEHAVIOUR.isValidToCraft(entity, parameters.get(0), multiplier)) {
+            if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, parameters.get(0), multiplier)) {
                 return false;
             }
-            if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, parameters.get(1), multiplier)) {
+            if (!FRUIT_BEHAVIOUR.isValidToCraft(entity, parameters.get(1), multiplier)) {
                 return false;
             }
             return true;
@@ -127,8 +127,8 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         public List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity) {
             if (renderers == null) {
                 renderers = new LinkedList<>();
-                renderers.add(FRUIT_BEHAVIOUR.getRenderer(entity, parameters.get(0)));
-                renderers.add(KNIFE_BEHAVIOUR.getRenderer(entity, parameters.get(1)));
+                renderers.add(FRUIT_BEHAVIOUR.getRenderer(entity, parameters.get(1)));
+                renderers.add(KNIFE_BEHAVIOUR.getRenderer(entity, parameters.get(0)));
             }
             return renderers;
         }
@@ -145,7 +145,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
-            Block block = CoreRegistry.get(BlockManager.class).getBlockFamily(FRUIT_BEHAVIOUR.getSaplingResult(parameters.get(0))).getArchetypeBlock();
+            Block block = CoreRegistry.get(BlockManager.class).getBlockFamily(FRUIT_BEHAVIOUR.getSaplingResult(parameters.get(1))).getArchetypeBlock();
 
             itemIcon.setMesh(block.getMesh());
             itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
@@ -188,7 +188,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
                 if (!usedFruits.contains(prefab.getURI().getNormalisedAssetName())) {
                     String assetName = prefab.getURI().getNormalisedAssetName();
                     String fruitName = assetName.substring(0, assetName.length() - 5);
-                    usedFruits.add(fruitName);
+                    usedFruits.add(assetName);
 
                     result.add(slot + "|" + fruitName);
                 }
