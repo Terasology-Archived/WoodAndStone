@@ -23,16 +23,16 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public interface IngredientCraftBehaviour<T, U> {
+public interface IngredientCraftBehaviour<T> {
     boolean isValidAnyAmount(T ingredient);
 
-    List<U> getValidToCraft(EntityRef entity, int multiplier);
+    List<String> getValidToCraft(EntityRef entity, int multiplier);
 
-    boolean isValidToCraft(EntityRef entity, U parameter, int multiplier);
+    boolean isValidToCraft(EntityRef entity, String parameter, int multiplier);
 
-    int getMaxMultiplier(EntityRef entity, U parameter);
+    int getMaxMultiplier(EntityRef entity, String parameter);
 
-    CraftIngredientRenderer getRenderer(EntityRef entity, U parameter);
+    CraftIngredientRenderer getRenderer(EntityRef entity, String parameter);
 
-    void processIngredient(EntityRef instigator, EntityRef entity, U parameter, int multiplier);
+    void processIngredient(EntityRef instigator, EntityRef entity, String parameter, int multiplier);
 }

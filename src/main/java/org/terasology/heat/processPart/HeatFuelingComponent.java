@@ -50,7 +50,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) throws InvalidProcessException {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
         if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
             throw new InvalidProcessException();
         }
@@ -71,7 +71,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String result, String parameter) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String result) {
         HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, Integer.parseInt(result)).getComponent(HeatFuelComponent.class);
         if (fuel != null) {
             return fuel.consumeTime;
@@ -80,7 +80,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String result, String parameter) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String result) {
         EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(result));
         HeatFuelComponent fuel = item.getComponent(HeatFuelComponent.class);
 
@@ -100,7 +100,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String result, String parameter) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
         workstation.send(new WorkstationStateChanged());
     }
 }

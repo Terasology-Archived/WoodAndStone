@@ -24,6 +24,8 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
+import java.util.List;
+
 public class ItemRecipeResultFactory implements RecipeResultFactory {
     private Prefab prefab;
     private int count;
@@ -34,7 +36,7 @@ public class ItemRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
-    public int getMaxMultiplier() {
+    public int getMaxMultiplier(List<String> parameters) {
         final ItemComponent item = prefab.getComponent(ItemComponent.class);
         if (item.stackId == null || item.stackId.isEmpty()) {
             return 1;
@@ -44,7 +46,7 @@ public class ItemRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
-    public EntityRef createResult(int multiplier) {
+    public EntityRef createResult(List<String> parameters, int multiplier) {
         final EntityRef entity = CoreRegistry.get(EntityManager.class).create(prefab);
         final ItemComponent item = entity.getComponent(ItemComponent.class);
         item.stackCount = (byte) (count * multiplier);

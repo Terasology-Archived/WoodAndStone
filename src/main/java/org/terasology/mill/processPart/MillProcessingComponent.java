@@ -77,7 +77,7 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation, String parameter) throws InvalidProcessException {
+    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
         if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
             throw new InvalidProcessException();
         }
@@ -120,7 +120,7 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String result, String parameter) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, String result) {
         MillProcessedComponent processed;
         MillProgressComponent progress = workstation.getComponent(MillProgressComponent.class);
         if (progress != null) {
@@ -133,7 +133,7 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String result, String parameter) {
+    public void executeStart(EntityRef instigator, EntityRef workstation, String result) {
         if (!result.equals("progress")) {
             EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(result));
             RemoveItemAction removeItem = new RemoveItemAction(instigator, item, false, 1);
@@ -146,7 +146,7 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String result, String parameter) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
         MillProgressComponent millProgress = workstation.getComponent(MillProgressComponent.class);
         millProgress.processedStep++;
         if (millProgress.processedStep < MILL_STEP_COUNT) {

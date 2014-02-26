@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef, Integer> {
+public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
     private Predicate<EntityRef> matcher;
     private int count;
     private InventorySlotResolver resolver;
@@ -47,19 +47,18 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
     }
 
     @Override
-    public List<Integer> getValidToCraft(EntityRef entity, int multiplier) {
-        List<Integer> result = new LinkedList<>();
+    public List<String> getValidToCraft(EntityRef entity, int multiplier) {
+        List<String> result = new LinkedList<>();
         for (int slot : resolver.getSlots(entity)) {
             if (isValidToCraft(entity, slot, multiplier)) {
-                result.add(slot);
+                result.add(String.valueOf(slot));
             }
         }
 
         return result;
     }
 
-    @Override
-    public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
+    private boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
         EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         if (matcher.apply(ingredient)) {
             ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
@@ -71,22 +70,27 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, Integer slot) {
-        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
+    public boolean isValidToCraft(EntityRef entity, String slot, int multiplier) {
+        return isValidToCraft(entity, Integer.parseInt(slot), multiplier);
+    }
+
+    @Override
+    public int getMaxMultiplier(EntityRef entity, String slot) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, Integer.parseInt(slot));
         ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
         return itemComponent.stackCount / count;
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
+    public CraftIngredientRenderer getRenderer(EntityRef entity, String slot) {
         ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
-        renderer.update(entity, slot, new MultiplyFunction(count));
+        renderer.update(entity, Integer.parseInt(slot), new MultiplyFunction(count));
         return renderer;
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
-        RemoveItemAction removeAction = new RemoveItemAction(instigator, InventoryUtils.getItemAt(entity, slot), true, count * multiplier);
+    public void processIngredient(EntityRef instigator, EntityRef entity, String slot, int multiplier) {
+        RemoveItemAction removeAction = new RemoveItemAction(instigator, InventoryUtils.getItemAt(entity, Integer.parseInt(slot)), true, count * multiplier);
         entity.send(removeAction);
     }
 }

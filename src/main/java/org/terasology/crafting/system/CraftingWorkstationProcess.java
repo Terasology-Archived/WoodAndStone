@@ -15,30 +15,56 @@
  */
 package org.terasology.crafting.system;
 
-import org.terasology.crafting.processPart.DurationRecipeProcessPart;
-import org.terasology.crafting.processPart.ProcessRecipeProcessPart;
-import org.terasology.crafting.processPart.ValidateRecipeProcessPart;
+import org.terasology.crafting.component.CraftingProcessComponent;
+import org.terasology.crafting.event.CraftingWorkstationProcessRequest;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
-import org.terasology.workstation.process.ProcessPart;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.workstation.event.WorkstationProcessRequest;
+import org.terasology.workstation.process.InvalidProcessException;
+import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.WorkstationProcess;
+import org.terasology.workstation.process.fluid.ValidateFluidInventoryItem;
+import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public class CraftingWorkstationProcess implements WorkstationProcess {
+public class CraftingWorkstationProcess implements WorkstationProcess, ValidateInventoryItem, ValidateFluidInventoryItem {
     private String processType;
     private String craftingRecipeId;
     private CraftingStationRecipe recipe;
-    private List<ProcessPart> processParts = new LinkedList<>();
 
     public CraftingWorkstationProcess(String processType, String craftingRecipeId, CraftingStationRecipe recipe) {
         this.processType = processType;
         this.craftingRecipeId = craftingRecipeId;
         this.recipe = recipe;
+    }
 
-        processParts.add(new ValidateRecipeProcessPart(recipe));
-        processParts.add(new DurationRecipeProcessPart(recipe));
-        processParts.add(new ProcessRecipeProcessPart(recipe));
+    @Override
+    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
+        return WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT").contains(slotNo)
+                || WorkstationInventoryUtils.getAssignedSlots(workstation, "TOOL").contains(slotNo)
+                || WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT").contains(slotNo);
+    }
+
+    @Override
+    public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
+        if (WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT").contains(slotNo)) {
+            return recipe.hasAsComponent(item);
+        }
+        if (WorkstationInventoryUtils.getAssignedSlots(workstation, "TOOL").contains(slotNo)) {
+            return recipe.hasAsTool(item);
+        }
+        return instigator == workstation;
+    }
+
+    @Override
+    public boolean isResponsibleForFluidSlot(EntityRef workstation, int slotNo) {
+        return WorkstationInventoryUtils.getAssignedSlots(workstation, "FLUID_INPUT").contains(slotNo);
+    }
+
+    @Override
+    public boolean isValidFluid(EntityRef workstation, int slotNo, EntityRef instigator, String fluidType) {
+        return recipe.hasFluidAsComponent(fluidType);
     }
 
     @Override
@@ -51,12 +77,47 @@ public class CraftingWorkstationProcess implements WorkstationProcess {
         return craftingRecipeId;
     }
 
-    @Override
-    public List<ProcessPart> getProcessParts() {
-        return processParts;
-    }
-
     public CraftingStationRecipe getCraftingWorkstationRecipe() {
         return recipe;
+    }
+
+    @Override
+    public long startProcessingManual(EntityRef instigator, EntityRef workstation, WorkstationProcessRequest request, EntityRef processEntity) throws InvalidProcessException {
+        if (!(request instanceof CraftingWorkstationProcessRequest)) {
+            throw new InvalidProcessException();
+        }
+
+        final CraftingWorkstationProcessRequest craftingRequest = (CraftingWorkstationProcessRequest) request;
+        final List<String> parameters = craftingRequest.getParameters();
+        final CraftingStationRecipe.CraftingStationResult result = recipe.getValidResultByParameters(workstation, parameters);
+        if (result == null) {
+            throw new InvalidProcessException();
+        }
+
+        final int count = craftingRequest.getCount();
+        final boolean success = result.startCrafting(workstation, count);
+        if (!success) {
+            throw new InvalidProcessException();
+        }
+
+        CraftingProcessComponent craftingProcess = new CraftingProcessComponent();
+        craftingProcess.parameters = parameters;
+        craftingProcess.count = count;
+        processEntity.addComponent(craftingProcess);
+
+        return result.getProcessDuration();
+    }
+
+    @Override
+    public long startProcessingAutomatic(EntityRef workstation, EntityRef processEntity) throws InvalidProcessException {
+        throw new InvalidProcessException();
+    }
+
+    @Override
+    public void finishProcessing(EntityRef workstation, EntityRef processEntity) {
+        CraftingProcessComponent craftingProcess = processEntity.getComponent(CraftingProcessComponent.class);
+
+        final CraftingStationRecipe.CraftingStationResult result = recipe.getValidResultByParameters(workstation, craftingProcess.parameters);
+        result.finishCrafting(workstation, craftingProcess.count);
     }
 }

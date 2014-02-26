@@ -24,6 +24,8 @@ import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.items.BlockItemFactory;
 
+import java.util.List;
+
 public class BlockRecipeResultFactory implements RecipeResultFactory {
     private Block block;
     private int count;
@@ -34,7 +36,7 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
-    public int getMaxMultiplier() {
+    public int getMaxMultiplier(List<String> parameters) {
         if (block.isStackable()) {
             return 99 / count;
         } else {
@@ -43,7 +45,7 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
-    public EntityRef createResult(int multiplier) {
+    public EntityRef createResult(List<String> parameters, int multiplier) {
         return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(block.getBlockFamily(), count * multiplier);
     }
 

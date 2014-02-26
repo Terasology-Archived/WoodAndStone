@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef, Integer> {
+public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
     private Predicate<EntityRef> matcher;
     private int count;
     private InventorySlotResolver resolver;
@@ -46,19 +46,18 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<Enti
     }
 
     @Override
-    public List<Integer> getValidToCraft(EntityRef entity, int multiplier) {
-        List<Integer> result = new LinkedList<>();
+    public List<String> getValidToCraft(EntityRef entity, int multiplier) {
+        List<String> result = new LinkedList<>();
         for (int slot : resolver.getSlots(entity)) {
             if (isValidToCraft(entity, slot, multiplier)) {
-                result.add(slot);
+                result.add(String.valueOf(slot));
             }
         }
 
         return result;
     }
 
-    @Override
-    public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
+    private boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
         EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         if (matcher.apply(ingredient)) {
             ItemComponent itemComponent = ingredient.getComponent(ItemComponent.class);
@@ -70,18 +69,23 @@ public class PresenceItemCraftBehaviour implements IngredientCraftBehaviour<Enti
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, Integer slot) {
+    public boolean isValidToCraft(EntityRef entity, String slot, int multiplier) {
+        return isValidToCraft(entity, Integer.parseInt(slot), multiplier);
+    }
+
+    @Override
+    public int getMaxMultiplier(EntityRef entity, String slot) {
         return Integer.MAX_VALUE;
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
+    public CraftIngredientRenderer getRenderer(EntityRef entity, String slot) {
         ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
-        renderer.update(entity, slot, new FixedFunction(count));
+        renderer.update(entity, Integer.parseInt(slot), new FixedFunction(count));
         return renderer;
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
+    public void processIngredient(EntityRef instigator, EntityRef entity, String slot, int multiplier) {
     }
 }

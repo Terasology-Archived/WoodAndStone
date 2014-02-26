@@ -59,10 +59,10 @@ public interface CraftingStationRecipe {
 
     List<? extends CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station);
 
-    CraftingStationResult getResultById(String resultId);
+    CraftingStationResult getValidResultByParameters(EntityRef station, List<String> resultParameters);
 
     public interface CraftingStationResult extends CraftProcessDisplay {
-        String getResultId();
+        List<String> getResultParameters();
 
         boolean startCrafting(EntityRef station, int count);
 

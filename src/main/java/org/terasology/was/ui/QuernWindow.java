@@ -30,16 +30,7 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.event.WorkstationProcessRequest;
-import org.terasology.workstation.process.InvalidProcessException;
-import org.terasology.workstation.process.ProcessPart;
-import org.terasology.workstation.process.WorkstationProcess;
-import org.terasology.workstation.system.WorkstationRegistry;
 import org.terasology.workstation.ui.WorkstationUI;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -92,27 +83,7 @@ public class QuernWindow extends CoreScreenLayer implements WorkstationUI {
                     public void onActivated(UIWidget widget) {
                         EntityRef instigator = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
 
-                        Collection<WorkstationProcess> workstationProcesses = CoreRegistry.get(WorkstationRegistry.class).getWorkstationProcesses(Collections.singleton("WoodAndStone:Milling"));
-                        for (WorkstationProcess workstationProcess : workstationProcesses) {
-                            try {
-                                Set<String> possibleResultIds = new HashSet<>();
-                                for (ProcessPart processPart : workstationProcess.getProcessParts()) {
-                                    Set<String> resultIds = processPart.validate(instigator, workstation, null);
-                                    if (resultIds != null) {
-                                        possibleResultIds.addAll(resultIds);
-                                    }
-                                }
-
-                                if (possibleResultIds.size() <= 1) {
-                                    String resultId = possibleResultIds.size() == 0 ? null : possibleResultIds.iterator().next();
-                                    workstation.send(new WorkstationProcessRequest(instigator, workstationProcess.getId(), resultId, null));
-                                    return;
-                                }
-                            } catch (InvalidProcessException exp) {
-                                // continue
-                            }
-                        }
-
+                        workstation.send(new WorkstationProcessRequest(instigator, "Prefab:WoodAndStone:MillingProcess"));
                     }
                 });
 

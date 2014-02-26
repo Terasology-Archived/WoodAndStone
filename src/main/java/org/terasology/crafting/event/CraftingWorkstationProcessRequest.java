@@ -13,19 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.render;
+package org.terasology.crafting.event;
 
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.workstation.event.WorkstationProcessRequest;
 
 import java.util.List;
 
-public interface RecipeResultFactory {
-    int getMaxMultiplier(List<String> parameters);
+public class CraftingWorkstationProcessRequest extends WorkstationProcessRequest {
+    private List<String> parameters;
+    private int count;
 
-    EntityRef createResult(List<String> parameters, int multiplier);
+    public CraftingWorkstationProcessRequest() {
+    }
 
-    int getCount();
+    public CraftingWorkstationProcessRequest(EntityRef instigator, String processId, List<String> parameters, int count) {
+        super(instigator, processId);
+        this.parameters = parameters;
+        this.count = count;
+    }
 
-    void setupDisplay(ItemIcon itemIcon);
+    public List<String> getParameters() {
+        return parameters;
+    }
+
+    public int getCount() {
+        return count;
+    }
 }

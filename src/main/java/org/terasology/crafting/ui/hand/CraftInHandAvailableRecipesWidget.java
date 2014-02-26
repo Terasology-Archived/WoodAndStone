@@ -39,7 +39,7 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CraftInHandAvailableRecipesWidget extends CoreWidget {
-    private Multimap<String, String> displayedRecipes = HashMultimap.create();
+    private Multimap<String, List<String>> displayedRecipes = HashMultimap.create();
     private CraftInHandRecipeRegistry registry;
     private EntityRef character;
 
@@ -56,14 +56,14 @@ public class CraftInHandAvailableRecipesWidget extends CoreWidget {
     @Override
     public void update(float delta) {
         // TODO: Naive approach by comparing all the possible recipes to those currently displayed
-        Multimap<String, String> recipes = HashMultimap.create();
+        Multimap<String, List<String>> recipes = HashMultimap.create();
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
             String recipeId = craftInHandRecipe.getKey();
             List<CraftInHandRecipe.CraftInHandResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(character);
             if (results != null) {
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
-                    String resultId = result.getResultId();
-                    recipes.put(recipeId, resultId);
+                    List<String> parameters = result.getParameters();
+                    recipes.put(recipeId, parameters);
                 }
             }
         }
@@ -100,13 +100,13 @@ public class CraftInHandAvailableRecipesWidget extends CoreWidget {
             List<CraftInHandRecipe.CraftInHandResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(character);
             if (results != null) {
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
-                    final String resultId = result.getResultId();
-                    displayedRecipes.put(recipeId, resultId);
+                    final List<String> parameters = result.getParameters();
+                    displayedRecipes.put(recipeId, parameters);
                     CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(0, character, result,
                             new CreationCallback() {
                                 @Override
                                 public void create(int count) {
-                                    character.send(new UserCraftInHandRequest(recipeId, resultId, count));
+                                    character.send(new UserCraftInHandRequest(recipeId, parameters, count));
                                 }
                             });
                     layout.addWidget(recipeDisplay);

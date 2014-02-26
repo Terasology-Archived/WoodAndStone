@@ -26,7 +26,7 @@ import org.terasology.registry.CoreRegistry;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String, Integer> {
+public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String> {
     private String fluidType;
     private float volume;
     private InventorySlotResolver resolver;
@@ -38,9 +38,9 @@ public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String, I
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, Integer slot) {
+    public int getMaxMultiplier(EntityRef entity, String slot) {
         FluidInventoryComponent fluidInventory = entity.getComponent(FluidInventoryComponent.class);
-        FluidComponent fluid = fluidInventory.fluidSlots.get(slot).getComponent(FluidComponent.class);
+        FluidComponent fluid = fluidInventory.fluidSlots.get(Integer.parseInt(slot)).getComponent(FluidComponent.class);
         return TeraMath.floorToInt(fluid.volume / volume);
     }
 
@@ -50,19 +50,18 @@ public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String, I
     }
 
     @Override
-    public List<Integer> getValidToCraft(EntityRef entity, int multiplier) {
-        List<Integer> result = new LinkedList<>();
+    public List<String> getValidToCraft(EntityRef entity, int multiplier) {
+        List<String> result = new LinkedList<>();
         for (int slot : resolver.getSlots(entity)) {
             if (isValidToCraft(entity, slot, multiplier)) {
-                result.add(slot);
+                result.add(String.valueOf(slot));
             }
         }
 
         return result;
     }
 
-    @Override
-    public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
+    private boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
         FluidInventoryComponent fluidInventory = entity.getComponent(FluidInventoryComponent.class);
         FluidComponent fluid = fluidInventory.fluidSlots.get(slot).getComponent(FluidComponent.class);
         if (fluid != null && fluid.fluidType.equals(fluidType) && fluid.volume >= volume * multiplier) {
@@ -72,13 +71,18 @@ public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String, I
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
+    public boolean isValidToCraft(EntityRef entity, String slot, int multiplier) {
+        return isValidToCraft(entity, Integer.parseInt(slot), multiplier);
+    }
+
+    @Override
+    public CraftIngredientRenderer getRenderer(EntityRef entity, String slot) {
         return null;
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
+    public void processIngredient(EntityRef instigator, EntityRef entity, String slot, int multiplier) {
         FluidManager fluidManager = CoreRegistry.get(FluidManager.class);
-        fluidManager.removeFluid(instigator, entity, slot, fluidType, volume * multiplier);
+        fluidManager.removeFluid(instigator, entity, Integer.parseInt(slot), fluidType, volume * multiplier);
     }
 }

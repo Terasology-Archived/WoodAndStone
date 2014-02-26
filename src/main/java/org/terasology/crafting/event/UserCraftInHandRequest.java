@@ -18,21 +18,23 @@ package org.terasology.crafting.event;
 import org.terasology.entitySystem.event.Event;
 import org.terasology.network.ServerEvent;
 
+import java.util.List;
+
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @ServerEvent
 public class UserCraftInHandRequest implements Event {
     private String recipeId;
-    private String resultId;
+    private List<String> parameters;
     private int count;
 
     public UserCraftInHandRequest() {
     }
 
-    public UserCraftInHandRequest(String recipeId, String resultId, int count) {
+    public UserCraftInHandRequest(String recipeId, List<String> parameters, int count) {
         this.recipeId = recipeId;
-        this.resultId = resultId;
+        this.parameters = parameters;
         this.count = count;
     }
 
@@ -40,8 +42,8 @@ public class UserCraftInHandRequest implements Event {
         return recipeId;
     }
 
-    public String getResultId() {
-        return resultId;
+    public List<String> getParameters() {
+        return parameters;
     }
 
     public int getCount() {

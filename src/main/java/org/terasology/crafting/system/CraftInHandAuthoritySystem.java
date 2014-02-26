@@ -27,6 +27,8 @@ import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.registry.In;
 
+import java.util.List;
+
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
@@ -48,10 +50,10 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
     public void craftInHandRequestReceived(UserCraftInHandRequest event, EntityRef character) {
         if (!recipeRegistry.isCraftingInHandDisabled()) {
             String recipeId = event.getRecipeId();
-            String resultId = event.getResultId();
+            final List<String> parameters = event.getParameters();
             CraftInHandRecipe craftInHandRecipe = recipeRegistry.getRecipes().get(recipeId);
             if (craftInHandRecipe != null) {
-                CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultById(character, resultId);
+                CraftInHandRecipe.CraftInHandResult result = craftInHandRecipe.getResultByParameters(parameters);
                 if (result != null) {
                     EntityRef resultEntity = result.craft(character, event.getCount());
                     if (resultEntity.exists()) {

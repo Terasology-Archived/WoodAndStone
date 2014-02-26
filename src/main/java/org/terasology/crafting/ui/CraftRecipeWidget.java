@@ -54,7 +54,7 @@ public class CraftRecipeWidget extends CoreWidget {
         this.processDisplay = processDisplay;
         this.callback = callback;
 
-        maxMultiplier = processDisplay.getMaxMultiplier();
+        maxMultiplier = processDisplay.getMaxMultiplier(entity);
 
         result = new ItemIcon();
         processDisplay.setupResultDisplay(result);

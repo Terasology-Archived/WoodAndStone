@@ -21,6 +21,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultimap;
+import org.terasology.crafting.event.CraftingWorkstationProcessRequest;
 import org.terasology.crafting.system.CraftingWorkstationProcess;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.crafting.ui.CraftRecipeWidget;
@@ -34,7 +35,6 @@ import org.terasology.rendering.nui.CoreWidget;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.layouts.ColumnLayout;
 import org.terasology.workstation.component.WorkstationComponent;
-import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
 
@@ -52,7 +52,7 @@ import java.util.TreeSet;
 public class StationAvailableRecipesWidget extends CoreWidget {
     private Set<String> openCategories = new HashSet<>();
     private Set<String> displayedOpenCategories = new HashSet<>();
-    private Multimap<String, String> availableRecipes = HashMultimap.create();
+    private Multimap<String, List<String>> availableRecipes = HashMultimap.create();
     private WorkstationRegistry registry;
 
     private EntityRef station;
@@ -74,7 +74,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
     public void update(float delta) {
         // TODO: Naive approach by comparing all the possible recipes to those currently displayed
         WorkstationComponent workstation = station.getComponent(WorkstationComponent.class);
-        Multimap<String, String> recipes = HashMultimap.create();
+        Multimap<String, List<String>> recipes = HashMultimap.create();
         for (WorkstationProcess workstationProcess : registry.getWorkstationProcesses(workstation.supportedProcessTypes.keySet())) {
             if (workstationProcess instanceof CraftingWorkstationProcess) {
                 CraftingStationRecipe craftingStationRecipe = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe();
@@ -82,8 +82,8 @@ public class StationAvailableRecipesWidget extends CoreWidget {
                 List<? extends CraftingStationRecipe.CraftingStationResult> results = craftingStationRecipe.getMatchingRecipeResultsForDisplay(station);
                 if (results != null) {
                     for (CraftingStationRecipe.CraftingStationResult result : results) {
-                        String resultId = result.getResultId();
-                        recipes.put(recipeId, resultId);
+                        List<String> parameters = result.getResultParameters();
+                        recipes.put(recipeId, parameters);
                     }
                 }
             }
@@ -136,7 +136,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
                 List<? extends CraftingStationRecipe.CraftingStationResult> results = ((CraftingWorkstationProcess) workstationProcess).getCraftingWorkstationRecipe().getMatchingRecipeResultsForDisplay(station);
                 if (results != null) {
                     for (CraftingStationRecipe.CraftingStationResult result : results) {
-                        availableRecipes.put(recipeId, result.getResultId());
+                        availableRecipes.put(recipeId, result.getResultParameters());
 
                         String category = getCategory(recipeId);
                         if (category == null) {
@@ -198,13 +198,13 @@ public class StationAvailableRecipesWidget extends CoreWidget {
         for (Map.Entry<String, CraftingStationRecipe.CraftingStationResult> recipeResult : recipes) {
             final String recipeId = recipeResult.getKey();
             CraftingStationRecipe.CraftingStationResult result = recipeResult.getValue();
-            final String resultId = result.getResultId();
+            final List<String> parameters = result.getResultParameters();
             CraftRecipeWidget recipeDisplay = new CraftRecipeWidget(25 * level, station, result,
                     new CreationCallback() {
                         @Override
                         public void create(int count) {
                             EntityRef player = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                            station.send(new WorkstationProcessRequest(player, recipeId, resultId, String.valueOf(count)));
+                            station.send(new CraftingWorkstationProcessRequest(player, recipeId, parameters, count));
                         }
                     });
             layout.addWidget(recipeDisplay);

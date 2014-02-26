@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<EntityRef, Integer> {
+public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<EntityRef> {
     private Predicate<EntityRef> matcher;
     private int durabilityUsed;
     private InventorySlotResolver resolver;
@@ -47,19 +47,18 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
     }
 
     @Override
-    public List<Integer> getValidToCraft(EntityRef entity, int multiplier) {
-        List<Integer> result = new LinkedList<>();
+    public List<String> getValidToCraft(EntityRef entity, int multiplier) {
+        List<String> result = new LinkedList<>();
         for (int slot : resolver.getSlots(entity)) {
             if (isValidToCraft(entity, slot, multiplier)) {
-                result.add(slot);
+                result.add(String.valueOf(slot));
             }
         }
 
         return result;
     }
 
-    @Override
-    public boolean isValidToCraft(EntityRef entity, Integer slot, int multiplier) {
+    private boolean isValidToCraft(EntityRef entity, int slot, int multiplier) {
         EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
         if (matcher.apply(ingredient)) {
             DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
@@ -71,22 +70,27 @@ public class ReduceDurabilityCraftBehaviour implements IngredientCraftBehaviour<
     }
 
     @Override
-    public int getMaxMultiplier(EntityRef entity, Integer slot) {
-        EntityRef ingredient = InventoryUtils.getItemAt(entity, slot);
+    public boolean isValidToCraft(EntityRef entity, String slot, int multiplier) {
+        return isValidToCraft(entity, Integer.parseInt(slot), multiplier);
+    }
+
+    @Override
+    public int getMaxMultiplier(EntityRef entity, String slot) {
+        EntityRef ingredient = InventoryUtils.getItemAt(entity, Integer.parseInt(slot));
         DurabilityComponent durability = ingredient.getComponent(DurabilityComponent.class);
 
         return durability.durability / durabilityUsed;
     }
 
     @Override
-    public CraftIngredientRenderer getRenderer(EntityRef entity, Integer slot) {
+    public CraftIngredientRenderer getRenderer(EntityRef entity, String slot) {
         ItemSlotIngredientRenderer renderer = new ItemSlotIngredientRenderer();
-        renderer.update(entity, slot, new FixedFunction(1));
+        renderer.update(entity, Integer.parseInt(slot), new FixedFunction(1));
         return renderer;
     }
 
     @Override
-    public void processIngredient(EntityRef instigator, EntityRef entity, Integer slot, int multiplier) {
-        InventoryUtils.getItemAt(entity, slot).send(new ReduceDurabilityEvent(multiplier));
+    public void processIngredient(EntityRef instigator, EntityRef entity, String slot, int multiplier) {
+        InventoryUtils.getItemAt(entity, Integer.parseInt(slot)).send(new ReduceDurabilityEvent(multiplier));
     }
 }

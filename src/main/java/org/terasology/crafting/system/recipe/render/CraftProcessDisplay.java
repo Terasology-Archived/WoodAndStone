@@ -28,7 +28,7 @@ public interface CraftProcessDisplay {
 
     boolean isValidForCrafting(EntityRef entity, int multiplier);
 
-    int getMaxMultiplier();
+    int getMaxMultiplier(EntityRef entity);
 
     int getResultQuantity();
 
