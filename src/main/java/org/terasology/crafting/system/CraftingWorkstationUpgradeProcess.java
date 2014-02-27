@@ -15,6 +15,7 @@
  */
 package org.terasology.crafting.system;
 
+import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
 import org.terasology.crafting.event.CraftingStationUpgraded;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
@@ -58,7 +59,8 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess, Va
 
     @Override
     public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
-        return upgradeRecipe.isUpgradeComponent(item);
+        CraftingStationComponent station = workstation.getComponent(CraftingStationComponent.class);
+        return station != null && station.type.equals(workstationType) && upgradeRecipe.isUpgradeComponent(item);
     }
 
     @Override
