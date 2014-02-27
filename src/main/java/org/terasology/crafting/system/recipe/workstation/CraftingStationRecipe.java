@@ -50,7 +50,7 @@ public interface CraftingStationRecipe {
 
     List<? extends CraftingStationResult> getMatchingRecipeResultsForDisplay(EntityRef station);
 
-    CraftingStationResult getValidResultByParameters(EntityRef station, List<String> resultParameters);
+    CraftingStationResult getResultByParameters(EntityRef station, List<String> resultParameters);
 
     public interface CraftingStationResult extends CraftProcessDisplay {
         List<String> getResultParameters();

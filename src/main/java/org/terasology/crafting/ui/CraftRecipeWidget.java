@@ -45,16 +45,12 @@ public class CraftRecipeWidget extends CoreWidget {
 
     private int multiplier = 1;
 
-    private int maxMultiplier;
-
     public CraftRecipeWidget(int leftIndent, final EntityRef entity,
                              final CraftProcessDisplay processDisplay, CreationCallback callback) {
         this.leftIndent = leftIndent;
         this.entity = entity;
         this.processDisplay = processDisplay;
         this.callback = callback;
-
-        maxMultiplier = processDisplay.getMaxMultiplier(entity);
 
         result = new ItemIcon();
         processDisplay.setupResultDisplay(result);
@@ -120,6 +116,7 @@ public class CraftRecipeWidget extends CoreWidget {
 
     @Override
     public void update(float delta) {
+        int maxMultiplier = processDisplay.getMaxMultiplier(entity);
         if (Keyboard.isKeyDown(Keyboard.KeyId.LEFT_SHIFT)) {
             multiplier = Math.min(maxMultiplier, 5);
         } else if (Keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL)) {

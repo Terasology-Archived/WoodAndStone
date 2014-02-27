@@ -90,7 +90,7 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
 
         final CraftingWorkstationProcessRequest craftingRequest = (CraftingWorkstationProcessRequest) request;
         final List<String> parameters = craftingRequest.getParameters();
-        final CraftingStationRecipe.CraftingStationResult result = recipe.getValidResultByParameters(workstation, parameters);
+        final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation, parameters);
         if (result == null) {
             throw new InvalidProcessException();
         }
@@ -118,14 +118,12 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
     public void finishProcessing(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         CraftingProcessComponent craftingProcess = processEntity.getComponent(CraftingProcessComponent.class);
 
-        final CraftingStationRecipe.CraftingStationResult result = recipe.getValidResultByParameters(workstation, craftingProcess.parameters);
+        final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation, craftingProcess.parameters);
         EntityRef resultItem = result.finishCrafting(workstation, craftingProcess.count);
-        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
-            GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, slot);
-            workstation.send(giveItem);
-            if (giveItem.isConsumed()) {
-                return;
-            }
+        GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
+        workstation.send(giveItem);
+        if (giveItem.isConsumed()) {
+            return;
         }
         resultItem.destroy();
     }

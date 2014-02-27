@@ -135,12 +135,10 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
         String[] split = result.split("\\|");
         EntityRef toGive = createResultItem(split[1]);
 
-        for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
-            GiveItemAction action = new GiveItemAction(instigator, toGive, slot);
-            workstation.send(action);
-            if (action.isConsumed()) {
-                return;
-            }
+        GiveItemAction action = new GiveItemAction(instigator, toGive, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
+        workstation.send(action);
+        if (action.isConsumed()) {
+            return;
         }
         toGive.destroy();
     }

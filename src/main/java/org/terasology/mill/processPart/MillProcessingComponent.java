@@ -158,12 +158,10 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
             EntityRef resultItem = createResultItem(getResult(processed));
             millProgress.processedItem.destroy();
 
-            for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
-                GiveItemAction action = new GiveItemAction(instigator, resultItem, slot);
-                workstation.send(action);
-                if (action.isConsumed()) {
-                    return;
-                }
+            GiveItemAction action = new GiveItemAction(instigator, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
+            workstation.send(action);
+            if (action.isConsumed()) {
+                return;
             }
             resultItem.destroy();
         }

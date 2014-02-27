@@ -166,15 +166,7 @@ public class DefaultWorkstationRecipe implements CraftingStationRecipe {
     }
 
     @Override
-    public CraftingStationResult getValidResultByParameters(EntityRef station, List<String> resultParameters) {
-        int index = 0;
-        for (IngredientCraftBehaviour<?> behaviour : allBehaviours) {
-            if (!behaviour.isValidToCraft(station, resultParameters.get(index), 1)) {
-                return null;
-            }
-            index++;
-        }
-
+    public CraftingStationResult getResultByParameters(EntityRef station, List<String> resultParameters) {
         return new Result(resultParameters);
     }
 
