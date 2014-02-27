@@ -27,18 +27,14 @@ import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.mill.component.MillProcessedComponent;
 import org.terasology.mill.component.MillProgressComponent;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.workstation.component.SpecificInputSlotComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
-import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
-
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -77,65 +73,65 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
+    public boolean validateBeforeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
-            throw new InvalidProcessException();
+            return false;
         }
 
         if (workstation.hasComponent(MillProgressComponent.class)) {
-            return Collections.singleton("progress");
+            return true;
         }
 
-        Set<String> result = new LinkedHashSet<>();
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
             MillProcessedComponent processed = InventoryUtils.getItemAt(workstation, slot).getComponent(MillProcessedComponent.class);
             if (processed != null) {
-                appendResultIfCanStore(workstation, result, slot, getResult(processed));
+                if (canOutputResult(workstation, getResult(processed))) {
+                    processEntity.addComponent(new SpecificInputSlotComponent(slot));
+                    return true;
+                }
             }
         }
 
-        if (result.size() > 0) {
-            return result;
-        } else {
-            throw new InvalidProcessException();
-        }
+        return false;
     }
 
     private String getResult(MillProcessedComponent processed) {
         return processed.blockResult != null ? processed.blockResult : processed.itemResult;
     }
 
-    private void appendResultIfCanStore(EntityRef workstation, Set<String> result, int slot, String resultObject) {
+    private boolean canOutputResult(EntityRef workstation, String resultObject) {
         EntityRef resultItem = createResultItem(resultObject);
         try {
             for (int outputSlot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
                 if (InventoryUtils.canStackInto(resultItem, InventoryUtils.getItemAt(workstation, outputSlot))) {
-                    result.add(String.valueOf(slot));
-                    return;
+                    return true;
                 }
             }
         } finally {
             resultItem.destroy();
         }
+        return false;
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String result) {
+    public long getDuration(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         MillProcessedComponent processed;
         MillProgressComponent progress = workstation.getComponent(MillProgressComponent.class);
         if (progress != null) {
             processed = progress.processedItem.getComponent(MillProcessedComponent.class);
         } else {
-            processed = InventoryUtils.getItemAt(workstation, Integer.parseInt(result)).getComponent(MillProcessedComponent.class);
+            final SpecificInputSlotComponent component = processEntity.getComponent(SpecificInputSlotComponent.class);
+            processed = InventoryUtils.getItemAt(workstation, component.slot).getComponent(MillProcessedComponent.class);
         }
 
         return processed.millLength / MILL_STEP_COUNT;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String result) {
-        if (!result.equals("progress")) {
-            EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(result));
+    public void executeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
+        if (!workstation.hasComponent(MillProgressComponent.class)) {
+            SpecificInputSlotComponent specificInputSlotComponent = processEntity.getComponent(SpecificInputSlotComponent.class);
+            EntityRef item = InventoryUtils.getItemAt(workstation, specificInputSlotComponent.slot);
             RemoveItemAction removeItem = new RemoveItemAction(instigator, item, false, 1);
             workstation.send(removeItem);
             EntityRef removedItem = removeItem.getRemovedItem();
@@ -146,7 +142,7 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         MillProgressComponent millProgress = workstation.getComponent(MillProgressComponent.class);
         millProgress.processedStep++;
         if (millProgress.processedStep < MILL_STEP_COUNT) {

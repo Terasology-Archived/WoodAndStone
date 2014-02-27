@@ -23,9 +23,9 @@ import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.workstation.component.SpecificInputSlotComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.event.WorkstationStateChanged;
-import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
@@ -50,29 +50,27 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
+    public boolean validateBeforeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
-            throw new InvalidProcessException();
+            return false;
         }
 
         Set<String> result = new LinkedHashSet<>();
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "FUEL")) {
             HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatFuelComponent.class);
             if (fuel != null) {
-                result.add(String.valueOf(slot));
+                processEntity.addComponent(new SpecificInputSlotComponent(slot));
+                return true;
             }
         }
 
-        if (result.size() > 0) {
-            return result;
-        } else {
-            throw new InvalidProcessException();
-        }
+        return false;
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String result) {
-        HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, Integer.parseInt(result)).getComponent(HeatFuelComponent.class);
+    public long getDuration(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
+        SpecificInputSlotComponent input = processEntity.getComponent(SpecificInputSlotComponent.class);
+        HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, input.slot).getComponent(HeatFuelComponent.class);
         if (fuel != null) {
             return fuel.consumeTime;
         }
@@ -80,8 +78,9 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String result) {
-        EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(result));
+    public void executeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
+        SpecificInputSlotComponent input = processEntity.getComponent(SpecificInputSlotComponent.class);
+        EntityRef item = InventoryUtils.getItemAt(workstation, input.slot);
         HeatFuelComponent fuel = item.getComponent(HeatFuelComponent.class);
 
         long time = CoreRegistry.get(Time.class).getGameTimeInMs();
@@ -100,7 +99,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
+    public void executeEnd(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         workstation.send(new WorkstationStateChanged());
     }
 }

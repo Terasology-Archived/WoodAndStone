@@ -27,8 +27,9 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.workstation.component.OutputTypeComponent;
+import org.terasology.workstation.component.SpecificInputSlotComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
-import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
@@ -36,9 +37,6 @@ import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.block.items.BlockItemFactory;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class HeatProcessingComponent implements Component, ProcessPart, ValidateInventoryItem {
     @Override
@@ -72,15 +70,14 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     }
 
     @Override
-    public Set<String> validate(EntityRef instigator, EntityRef workstation) throws InvalidProcessException {
+    public boolean validateBeforeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         if (!workstation.hasComponent(WorkstationInventoryComponent.class)) {
-            throw new InvalidProcessException();
+            return false;
         }
 
         // Defer the heat calculation until it is actually needed
         Float heat = null;
 
-        Set<String> result = new LinkedHashSet<>();
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
             HeatProcessedComponent processed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
             if (processed != null) {
@@ -89,51 +86,52 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
                     heat = HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
                 }
                 if (heatRequired <= heat) {
-                    appendResultIfCanStore(workstation, result, slot, processed.blockResult != null ? processed.blockResult : processed.itemResult);
+                    final String result = processed.blockResult != null ? processed.blockResult : processed.itemResult;
+                    if (canOutputResult(workstation, result)) {
+                        processEntity.addComponent(new SpecificInputSlotComponent(slot));
+                        processEntity.addComponent(new OutputTypeComponent(result));
+                        return true;
+                    }
                 }
             }
         }
 
-        if (result.size() > 0) {
-            return result;
-        } else {
-            throw new InvalidProcessException();
-        }
+        return false;
     }
 
-    private void appendResultIfCanStore(EntityRef workstation, Set<String> result, int slot, String resultObject) {
+    private boolean canOutputResult(EntityRef workstation, String resultObject) {
         EntityRef resultItem = createResultItem(resultObject);
         try {
             for (int outputSlot : WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT")) {
                 if (InventoryUtils.canStackInto(resultItem, InventoryUtils.getItemAt(workstation, outputSlot))) {
-                    result.add(slot + "|" + resultObject);
-                    return;
+                    return true;
                 }
             }
         } finally {
             resultItem.destroy();
         }
+        return false;
     }
 
     @Override
-    public long getDuration(EntityRef instigator, EntityRef workstation, String result) {
-        String[] split = result.split("\\|");
-        HeatProcessedComponent component = InventoryUtils.getItemAt(workstation, Integer.parseInt(split[0])).getComponent(HeatProcessedComponent.class);
+    public long getDuration(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
+        SpecificInputSlotComponent input = processEntity.getComponent(SpecificInputSlotComponent.class);
+        HeatProcessedComponent component = InventoryUtils.getItemAt(workstation, input.slot).getComponent(HeatProcessedComponent.class);
 
         return component.processingTime;
     }
 
     @Override
-    public void executeStart(EntityRef instigator, EntityRef workstation, String result) {
-        String[] split = result.split("\\|");
-        EntityRef item = InventoryUtils.getItemAt(workstation, Integer.parseInt(split[0]));
+    public void executeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
+        SpecificInputSlotComponent input = processEntity.getComponent(SpecificInputSlotComponent.class);
+        EntityRef item = InventoryUtils.getItemAt(workstation, input.slot);
         workstation.send(new RemoveItemAction(instigator, item, true, 1));
     }
 
     @Override
-    public void executeEnd(EntityRef instigator, EntityRef workstation, String result) {
-        String[] split = result.split("\\|");
-        EntityRef toGive = createResultItem(split[1]);
+    public void executeEnd(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
+        OutputTypeComponent output = processEntity.getComponent(OutputTypeComponent.class);
+        EntityRef toGive = createResultItem(output.type);
 
         GiveItemAction action = new GiveItemAction(instigator, toGive, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
         workstation.send(action);
