@@ -6,13 +6,13 @@
         "gridDimensions": [8, 8],
         "tileNames": [
             "Branch", "Fiber", "Twig", "Stone", "Flint", "SharpStone", "ToolStone", "Resin",
-            "StoneKnifeBlade", "AxeHammerHead", "StoneArrowHead", "StoneHammerHead", "", "", "", "",
+            "StoneKnifeBlade", "AxeHammerHead", "StoneArrowHead", "StoneHammerHead", "Mortar", "", "", "",
             "StoneKnife", "CrudeAxeHammer", "StoneAxe", "StoneHammer", "", "", "", "",
             "", "", "", "", "", "", "", "",
             "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick", "",
             "", "", "", "", "", "", "", "",
             "Clay", "Brick", "SmallPottery", "Pottery1", "Pottery2", "", "", "",
-            "RockSalt", "GroundSalt", "Bread", "", "", "", "", ""
+            "RockSalt", "GroundSalt", "Bread", "CornFlour", "CookedCorn", "Rice", "CookedRice", ""
         ]
     }
 }
