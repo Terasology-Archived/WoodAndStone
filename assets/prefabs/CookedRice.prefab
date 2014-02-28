@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items.CookedRice",
-        "stackId": "PlantPack:items.CookedRice",
+        "stackId": "WoodAndStone:cookedRice",
         "renderWithIcon": true,
         "consumedOnUse": true
     },
