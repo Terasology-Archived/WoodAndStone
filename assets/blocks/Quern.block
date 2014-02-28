@@ -1,0 +1,16 @@
+{
+    "shape": "WoodAndStone:Quern",
+    "categories": ["stone"],
+
+    "displayName": "Quern",
+
+    "entity": {
+        "prefab": "WoodAndStone:Quern"
+    },
+
+    "tiles": {
+        "center": "WoodAndStone:Quern"
+    },
+
+    "translucent": true
+}
