@@ -2,7 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items.CookedCorn",
-        "stackId": "WoodAndStone:cookedCorn",
+        "stackId": "WoodAndStone:items.CookedCorn",
         "renderWithIcon": true,
         "consumedOnUse": true
     },
