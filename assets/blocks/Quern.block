@@ -1,5 +1,8 @@
 {
     "shape": "WoodAndStone:Quern",
+
+    "rotation": "horizontal",
+
     "categories": ["stone"],
 
     "displayName": "Quern",

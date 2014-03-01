@@ -1,6 +1,10 @@
 {
     "hardness": 12,
 
+    "shape": "WoodAndStone:ClayHearth",
+
+    "rotation": "horizontal",
+
     "displayName": "Clay Hearth",
 
     "categories": ["stone"],
@@ -10,7 +14,7 @@
     },
 
     "tiles": {
-        "sides": "WoodAndStone:ClayHearthSides",
-        "topBottom": "WoodAndStone:ClayHearthTop"
+        "center": "WoodAndStone:ClayHearth",
+        "bottom": "WoodAndStone:ClayHearth"
     }
 }

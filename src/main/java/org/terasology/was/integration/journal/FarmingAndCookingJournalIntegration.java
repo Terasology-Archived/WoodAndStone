@@ -23,6 +23,7 @@ import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.journal.DiscoveredNewJournalEntry;
@@ -33,6 +34,8 @@ import org.terasology.journal.part.TitleJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.registry.In;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +47,10 @@ import java.util.List;
 public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
     @In
     private JournalManager journalManager;
+    @In
+    private PrefabManager prefabManager;
+    @In
+    private BlockManager blockManager;
 
     private String chapterId = "FarmingAndCooking";
     private Multimap<String, String> dependencyMap = HashMultimap.create();
@@ -51,6 +58,11 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
     @Override
     public void preBegin() {
         StaticJournalChapterHandler chapterHandler = new StaticJournalChapterHandler();
+
+        Prefab stoneItem = prefabManager.getPrefab("WoodAndStone:stone");
+        Prefab stickItem = prefabManager.getPrefab("WoodAndStone:stick");
+
+        Block quernBlock = blockManager.getBlockFamily("WoodAndStone:quern").getArchetypeBlock();
 
         List<JournalManager.JournalEntryPart> introduction = Arrays.asList(
                 new TitleJournalPart("Introduction"),
@@ -61,10 +73,10 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
         List<JournalManager.JournalEntryPart> quern = Arrays.asList(
                 new TitleJournalPart("Quern"),
                 new TextJournalPart("Quern, also known as a hand mill, allows you to grind various substances, including grain. " +
-                        "It is also useful for grinding crystals into dust for easier metal extraction.\n\nTo build a quern " +
-                        "you need to create a Cobble Stone and Cobble Stone Slab on a Stone Station. Then in the world put down " +
-                        "the Cobble Stone and put the Slab on top of it. Once you have this structure built, right-click it while " +
-                        "holding a hammer in hand."));
+                        "It is also useful for grinding crystals into dust for easier metal extraction.\n\nTo craft a" +
+                        " quern you need six Stones and two Sticks."),
+                new RecipeJournalPart(new Block[2], new Prefab[]{stoneItem, stickItem}, quernBlock, null, 1),
+                new TextJournalPart("Using a hammer you can then create a Quern at the stone working station."));
         chapterHandler.registerJournalEntry("quern", quern);
 
         dependencyMap.put("quern", "introduction");
