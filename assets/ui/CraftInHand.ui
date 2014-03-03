@@ -11,8 +11,8 @@
                     "id": "availableRecipes"
                 },
                 "layoutInfo": {
-                    "width": 350,
-                    "height": 300,
+                    "width": 420,
+                    "height": 360,
                     "position-horizontal-center": {},
                     "position-vertical-center": {}
                 }

@@ -5,10 +5,10 @@
             "background": "WoodAndStone:CraftInHandBackground",
             "background-scale-mode": "scale_fill",
             "margin": {
-                "top": 10,
-                "bottom": 10,
-                "left": 10,
-                "right": 10
+                "top": 40,
+                "bottom": 40,
+                "left": 45,
+                "right": 45
             }
         }
     }
