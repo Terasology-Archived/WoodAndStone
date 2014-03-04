@@ -1,0 +1,13 @@
+{
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:BasicStonecrafting"
+    },
+    "CraftingStationRecipe": {
+        "recipeId": "Tools|WoodAndStone:Quern",
+
+        "recipeComponents": ["6*WoodAndStone:stone", "2*WoodAndStone:stick"],
+        "recipeTools": ["1*hammer"],
+
+        "blockResult": "1*WoodAndStone:quern"
+    }
+}
