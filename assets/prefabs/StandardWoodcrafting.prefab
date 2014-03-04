@@ -37,19 +37,15 @@
     "Inventory": {
         "privateToOwner": false,
         "itemSlots": [
-            // Upgrade slot
-            0,
-            // Tool slot
-            0,
-            0,
-            // Component slots
             0,
             0,
             0,
             0,
             0,
             0,
-            // Output slot
+            0,
+            0,
+            0,
             0
         ]
     },

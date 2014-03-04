@@ -1,6 +1,5 @@
 package org.terasology.crafting.system.recipe.workstation;
 
-import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -121,9 +120,6 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             }
 
             final EntityRef newStation = entityManager.create(resultStationPrefab);
-            CraftingStationComponent oldStationSettings = station.getComponent(CraftingStationComponent.class);
-            CraftingStationComponent newStationSettings = newStation.getComponent(CraftingStationComponent.class);
-
             InventoryComponent oldStationInventory = station.getComponent(InventoryComponent.class);
             InventoryComponent newStationInventory = newStation.getComponent(InventoryComponent.class);
 

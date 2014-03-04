@@ -32,19 +32,11 @@
     },
     "CraftingStation": {
         "type": "WoodAndStone:StandardStonecrafting",
-        "workstationUITexture": "WoodAndStone:StandardStoneworking",
-        "upgradeSlots": 1,
-        "toolSlots": 1,
-        "ingredientSlots": 9
+        "workstationUITexture": "WoodAndStone:StandardStoneworking"
     },
     "Inventory": {
         "privateToOwner": false,
         "itemSlots": [
-            // Upgrade slot
-            0,
-            // Tool slot
-            0,
-            // Component slots
             0,
             0,
             0,
@@ -54,7 +46,8 @@
             0,
             0,
             0,
-            // Output slot
+            0,
+            0,
             0
         ]
     },
