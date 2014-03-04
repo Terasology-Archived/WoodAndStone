@@ -1,11 +1,11 @@
 {
     "texture": "WoodAndStone:journalIcons",
-    "textureSize": [64, 256],
+    "textureSize": [256, 64],
     "grid": {
         "tileSize": [64, 64],
-        "gridDimensions": [1, 4],
+        "gridDimensions": [4, 1],
         "tileNames": [
-            "WoodAndStone", "CookingAndFarming", "Mining", ""
+            "WoodAndStone", "FarmingAndCooking", "Mining", ""
         ]
     }
 }
