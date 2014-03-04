@@ -68,6 +68,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
 
     public void setStation(EntityRef station) {
         this.station = station;
+        reloadRecipes();
     }
 
     @Override
