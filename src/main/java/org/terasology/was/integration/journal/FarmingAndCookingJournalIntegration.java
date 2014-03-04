@@ -116,8 +116,9 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
         dependencyMap.put("rice", "quern");
         dependencyMap.put("rice", "cookingStation");
 
-        journalManager.registerJournalChapter(chapterId, Assets.getTexture("WoodAndStone:FarmingAndCookingJournal"), "Farming and Cooking",
-                chapterHandler);
+        journalManager.registerJournalChapter(chapterId,
+            Assets.getTextureRegion("WoodAndStone:journalIcons.FarmingAndCooking"),
+            "Farming and Cooking", chapterHandler);
     }
 
     private void discoveredEntry(EntityRef character, String entryId) {

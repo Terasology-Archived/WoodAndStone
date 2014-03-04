@@ -124,8 +124,9 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 new RecipeJournalPart(new Block[2], new Prefab[]{unlitTorchItem, flintItem}, litTorchBlock, null, 1));
         chapterHandler.registerJournalEntry("6", stoneHammer);
 
-        journalManager.registerJournalChapter(chapterId, Assets.getTexture("WoodAndStone:WoodAndStoneJournal"), "Wood and Stone",
-                chapterHandler);
+        journalManager.registerJournalChapter(chapterId,
+            Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone"),
+            "Wood and Stone", chapterHandler);
     }
 
     @ReceiveEvent
