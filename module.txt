@@ -44,6 +44,14 @@
             {
                 "id" : "Hunger",
                 "minVersion" : "0.1.0"
+            },
+            {
+                "id" : "Genome",
+                "minVersion" : "0.1.0"
+            },
+            {
+                "id" : "NameGenerator",
+                "minVersion" : "0.1.0"
             }],
     "isServerSideOnly" : false
 }
