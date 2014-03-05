@@ -2,7 +2,6 @@ package org.terasology.was.ui;
 
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.heat.HeatUtils;
 import org.terasology.heat.component.HeatProcessedComponent;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.TermometerWidget;
@@ -17,7 +16,6 @@ import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.ui.WorkstationUI;
-import org.terasology.world.BlockEntityRegistry;
 
 import java.util.List;
 
@@ -57,32 +55,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
         WorkstationScreenUtils.setupInventoryGrid(workstation, fuel, "FUEL");
         WorkstationScreenUtils.setupInventoryGrid(workstation, output, "OUTPUT");
 
-        heat.bindMaxTemperature(
-                new Binding<Float>() {
-                    @Override
-                    public Float get() {
-                        HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
-                        return producer.maximumTemperature;
-                    }
-
-                    @Override
-                    public void set(Float value) {
-                    }
-                }
-        );
-        heat.setMinTemperature(20f);
-
-        heat.bindTemperature(
-                new Binding<Float>() {
-                    @Override
-                    public Float get() {
-                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
-                    }
-
-                    @Override
-                    public void set(Float value) {
-                    }
-                });
+        WorkstationScreenUtils.setupTemperatureWidget(workstation, heat, 20f);
         heat.bindMarkedTemperature(
                 new Binding<Float>() {
                     @Override
@@ -103,18 +76,6 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
                     public void set(Float value) {
                     }
                 });
-        heat.bindTooltip(
-                new Binding<String>() {
-                    @Override
-                    public String get() {
-                        return Math.round(HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class))) + "C";
-                    }
-
-                    @Override
-                    public void set(String value) {
-                    }
-                }
-        );
 
         burn.bindValue(
                 new Binding<Float>() {

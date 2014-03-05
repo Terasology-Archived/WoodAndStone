@@ -16,8 +16,14 @@
 package org.terasology.was.ui;
 
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.heat.HeatUtils;
+import org.terasology.heat.component.HeatProducerComponent;
+import org.terasology.heat.ui.TermometerWidget;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
+import org.terasology.world.BlockEntityRegistry;
 
 public final class WorkstationScreenUtils {
     private WorkstationScreenUtils() {
@@ -30,5 +36,45 @@ public final class WorkstationScreenUtils {
         inventoryGrid.setTargetEntity(workstation);
         inventoryGrid.setCellOffset(assignment.slotStart);
         inventoryGrid.setMaxCellCount(assignment.slotCount);
+    }
+
+    public static void setupTemperatureWidget(final EntityRef workstation, TermometerWidget termometerWidget, float minimumTemperature) {
+        termometerWidget.bindMaxTemperature(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
+                        return producer.maximumTemperature;
+                    }
+
+                    @Override
+                    public void set(Float value) {
+                    }
+                }
+        );
+        termometerWidget.setMinTemperature(minimumTemperature);
+
+        termometerWidget.bindTemperature(
+                new Binding<Float>() {
+                    @Override
+                    public Float get() {
+                        return HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class));
+                    }
+
+                    @Override
+                    public void set(Float value) {
+                    }
+                });
+        termometerWidget.bindTooltip(
+                new Binding<String>() {
+                    @Override
+                    public String get() {
+                        return Math.round(HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class))) + "C";
+                    }
+
+                    @Override
+                    public void set(String value) {
+                    }
+                });
     }
 }

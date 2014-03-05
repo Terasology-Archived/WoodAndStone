@@ -6,7 +6,6 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidRegistry;
-import org.terasology.heat.HeatUtils;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.TermometerWidget;
 import org.terasology.logic.players.LocalPlayer;
@@ -20,7 +19,6 @@ import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.ui.WorkstationUI;
-import org.terasology.world.BlockEntityRegistry;
 
 import java.util.List;
 
@@ -114,7 +112,7 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
                     }
                 });
 
-        setupTemperatureWidget(station);
+        WorkstationScreenUtils.setupTemperatureWidget(station, temperature, 20f);
 
         burn.bindValue(
                 new Binding<Float>() {
@@ -178,47 +176,6 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
 
                     @Override
                     public void set(Float value) {
-                    }
-                }
-        );
-    }
-
-    private void setupTemperatureWidget(final EntityRef station) {
-        temperature.bindMaxTemperature(
-                new Binding<Float>() {
-                    @Override
-                    public Float get() {
-                        HeatProducerComponent producer = station.getComponent(HeatProducerComponent.class);
-                        return producer.maximumTemperature;
-                    }
-
-                    @Override
-                    public void set(Float value) {
-                    }
-                }
-        );
-        temperature.setMinTemperature(20f);
-
-        temperature.bindTemperature(
-                new Binding<Float>() {
-                    @Override
-                    public Float get() {
-                        return HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class));
-                    }
-
-                    @Override
-                    public void set(Float value) {
-                    }
-                });
-        temperature.bindTooltip(
-                new Binding<String>() {
-                    @Override
-                    public String get() {
-                        return Math.round(HeatUtils.calculateHeatForEntity(station, CoreRegistry.get(BlockEntityRegistry.class))) + " C";
-                    }
-
-                    @Override
-                    public void set(String value) {
                     }
                 }
         );
