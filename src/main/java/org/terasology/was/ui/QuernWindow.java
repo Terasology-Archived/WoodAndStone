@@ -57,13 +57,8 @@ public class QuernWindow extends CoreScreenLayer implements WorkstationUI {
 
     @Override
     public void initializeWorkstation(final EntityRef workstation) {
-        input.setTargetEntity(workstation);
-        input.setCellOffset(0);
-        input.setMaxCellCount(1);
-
-        output.setTargetEntity(workstation);
-        output.setCellOffset(1);
-        output.setMaxCellCount(1);
+        WorkstationScreenUtils.setupInventoryGrid(workstation, input, "INPUT");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, output, "OUTPUT");
 
         millButton.bindVisible(
                 new Binding<Boolean>() {

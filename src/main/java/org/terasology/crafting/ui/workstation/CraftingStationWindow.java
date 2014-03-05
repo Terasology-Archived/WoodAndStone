@@ -29,7 +29,7 @@ import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UIImage;
-import org.terasology.workstation.component.WorkstationInventoryComponent;
+import org.terasology.was.ui.WorkstationScreenUtils;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
@@ -75,29 +75,12 @@ public class CraftingStationWindow extends CoreScreenLayer implements Workstatio
 
         this.station = station;
 
-        WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
-        WorkstationInventoryComponent.SlotAssignment upgradeAssignments = workstationInventory.slotAssignments.get("UPGRADE");
-        WorkstationInventoryComponent.SlotAssignment inputAssignments = workstationInventory.slotAssignments.get("INPUT");
-        WorkstationInventoryComponent.SlotAssignment toolAssignments = workstationInventory.slotAssignments.get("TOOL");
-        WorkstationInventoryComponent.SlotAssignment resultAssignments = workstationInventory.slotAssignments.get("OUTPUT");
-
-        ingredients.setTargetEntity(station);
-        ingredients.setCellOffset(inputAssignments.slotStart);
-        ingredients.setMaxCellCount(inputAssignments.slotCount);
-
-        upgrades.setTargetEntity(station);
-        upgrades.setCellOffset(upgradeAssignments.slotStart);
-        upgrades.setMaxCellCount(upgradeAssignments.slotCount);
-
-        tools.setTargetEntity(station);
-        tools.setCellOffset(toolAssignments.slotStart);
-        tools.setMaxCellCount(toolAssignments.slotCount);
+        WorkstationScreenUtils.setupInventoryGrid(station, ingredients, "INPUT");
+        WorkstationScreenUtils.setupInventoryGrid(station, tools, "TOOL");
+        WorkstationScreenUtils.setupInventoryGrid(station, upgrades, "UPGRADE");
+        WorkstationScreenUtils.setupInventoryGrid(station, result, "OUTPUT");
 
         stationRecipes.setStation(station);
-
-        result.setTargetEntity(station);
-        result.setCellOffset(resultAssignments.slotStart);
-        result.setMaxCellCount(resultAssignments.slotCount);
 
         player.setTargetEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity());
         player.setCellOffset(10);

@@ -53,17 +53,9 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
 
     @Override
     public void initializeWorkstation(final EntityRef workstation) {
-        input.setTargetEntity(workstation);
-        input.setCellOffset(0);
-        input.setMaxCellCount(1);
-
-        fuel.setTargetEntity(workstation);
-        fuel.setCellOffset(1);
-        fuel.setMaxCellCount(1);
-
-        output.setTargetEntity(workstation);
-        output.setCellOffset(2);
-        output.setMaxCellCount(1);
+        WorkstationScreenUtils.setupInventoryGrid(workstation, input, "INPUT");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, fuel, "FUEL");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, output, "OUTPUT");
 
         heat.bindMaxTemperature(
                 new Binding<Float>() {

@@ -74,26 +74,15 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
     @Override
     public void initializeWorkstation(final EntityRef station) {
         WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
-        WorkstationInventoryComponent.SlotAssignment inputAssignments = workstationInventory.slotAssignments.get("INPUT");
-        WorkstationInventoryComponent.SlotAssignment toolAssignments = workstationInventory.slotAssignments.get("TOOL");
-        WorkstationInventoryComponent.SlotAssignment resultAssignments = workstationInventory.slotAssignments.get("OUTPUT");
-        WorkstationInventoryComponent.SlotAssignment fluidContainerInputAssignments = workstationInventory.slotAssignments.get("FLUID_CONTAINER_INPUT");
-        WorkstationInventoryComponent.SlotAssignment fluidContainerOutputAssignments = workstationInventory.slotAssignments.get("FLUID_CONTAINER_OUTPUT");
-        WorkstationInventoryComponent.SlotAssignment fuelAssignments = workstationInventory.slotAssignments.get("FUEL");
 
         WorkstationInventoryComponent.SlotAssignment fluidInputAssignments = workstationInventory.slotAssignments.get("FLUID_INPUT");
 
-        ingredientsInventory.setTargetEntity(station);
-        ingredientsInventory.setCellOffset(inputAssignments.slotStart);
-        ingredientsInventory.setMaxCellCount(inputAssignments.slotCount);
-
-        toolsInventory.setTargetEntity(station);
-        toolsInventory.setCellOffset(toolAssignments.slotStart);
-        toolsInventory.setMaxCellCount(toolAssignments.slotCount);
-
-        fluidContainerInput.setTargetEntity(station);
-        fluidContainerInput.setCellOffset(fluidContainerInputAssignments.slotStart);
-        fluidContainerInput.setMaxCellCount(fluidContainerInputAssignments.slotCount);
+        WorkstationScreenUtils.setupInventoryGrid(station, ingredientsInventory, "INPUT");
+        WorkstationScreenUtils.setupInventoryGrid(station, toolsInventory, "TOOL");
+        WorkstationScreenUtils.setupInventoryGrid(station, fluidContainerInput, "FLUID_CONTAINER_INPUT");
+        WorkstationScreenUtils.setupInventoryGrid(station, fluidContainerOutput, "FLUID_CONTAINER_OUTPUT");
+        WorkstationScreenUtils.setupInventoryGrid(station, fuelInput, "FUEL");
+        WorkstationScreenUtils.setupInventoryGrid(station, resultInventory, "OUTPUT");
 
         fluidContainer.setMinX(4);
         fluidContainer.setMaxX(45);
@@ -125,10 +114,6 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
                     }
                 });
 
-        fluidContainerOutput.setTargetEntity(station);
-        fluidContainerOutput.setCellOffset(fluidContainerOutputAssignments.slotStart);
-        fluidContainerOutput.setMaxCellCount(fluidContainerOutputAssignments.slotCount);
-
         setupTemperatureWidget(station);
 
         burn.bindValue(
@@ -153,10 +138,6 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
                     public void set(Float value) {
                     }
                 });
-
-        fuelInput.setTargetEntity(station);
-        fuelInput.setCellOffset(fuelAssignments.slotStart);
-        fuelInput.setMaxCellCount(fuelAssignments.slotCount);
 
         availableRecipes.setStation(station);
 
@@ -200,10 +181,6 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
                     }
                 }
         );
-
-        resultInventory.setTargetEntity(station);
-        resultInventory.setCellOffset(resultAssignments.slotStart);
-        resultInventory.setMaxCellCount(resultAssignments.slotCount);
     }
 
     private void setupTemperatureWidget(final EntityRef station) {
