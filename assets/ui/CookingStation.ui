@@ -82,7 +82,7 @@
                         }
                     },
                     {
-                        "type": "TermometerWidget",
+                        "type": "ThermometerWidget",
                         "id": "temperature",
                         "layoutInfo": {
                             "width": 20,

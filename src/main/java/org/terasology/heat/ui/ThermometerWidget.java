@@ -30,7 +30,7 @@ import org.terasology.rendering.nui.databinding.DefaultBinding;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class TermometerWidget extends CoreWidget {
+public class ThermometerWidget extends CoreWidget {
     private Binding<Float> temperature = new DefaultBinding<>();
     private Binding<Float> markedTemperature = new DefaultBinding<>();
     private Binding<Float> maxTemperature = new DefaultBinding<>();

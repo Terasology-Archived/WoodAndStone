@@ -7,7 +7,7 @@ import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidRegistry;
 import org.terasology.heat.component.HeatProducerComponent;
-import org.terasology.heat.ui.TermometerWidget;
+import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
@@ -32,7 +32,7 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
     private FluidContainerWidget fluidContainer;
     private InventoryGrid ingredientsInventory;
     private InventoryGrid toolsInventory;
-    private TermometerWidget temperature;
+    private ThermometerWidget temperature;
     private VerticalTextureProgressWidget burn;
     private InventoryGrid fuelInput;
     private StationAvailableRecipesWidget availableRecipes;
@@ -48,7 +48,7 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
         fluidContainer = find("fluidContainer", FluidContainerWidget.class);
         fluidContainerOutput = find("fluidContainerOutput", InventoryGrid.class);
 
-        temperature = find("temperature", TermometerWidget.class);
+        temperature = find("temperature", ThermometerWidget.class);
 
         burn = find("burn", VerticalTextureProgressWidget.class);
         burn.setMinY(76);

@@ -4,7 +4,7 @@ import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.component.HeatProcessedComponent;
 import org.terasology.heat.component.HeatProducerComponent;
-import org.terasology.heat.ui.TermometerWidget;
+import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
@@ -26,7 +26,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
     private InventoryGrid input;
     private InventoryGrid fuel;
     private InventoryGrid output;
-    private TermometerWidget heat;
+    private ThermometerWidget heat;
     private VerticalTextureProgressWidget burn;
     private UILoadBar craftingProgress;
 
@@ -42,7 +42,7 @@ public class FurnaceWindow extends CoreScreenLayer implements WorkstationUI {
         player.setCellOffset(10);
         player.setMaxCellCount(30);
 
-        heat = find("heat", TermometerWidget.class);
+        heat = find("heat", ThermometerWidget.class);
 
         burn = find("burn", VerticalTextureProgressWidget.class);
         burn.setMinY(76);

@@ -18,7 +18,7 @@ package org.terasology.was.ui;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.HeatUtils;
 import org.terasology.heat.component.HeatProducerComponent;
-import org.terasology.heat.ui.TermometerWidget;
+import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -38,8 +38,8 @@ public final class WorkstationScreenUtils {
         inventoryGrid.setMaxCellCount(assignment.slotCount);
     }
 
-    public static void setupTemperatureWidget(final EntityRef workstation, TermometerWidget termometerWidget, float minimumTemperature) {
-        termometerWidget.bindMaxTemperature(
+    public static void setupTemperatureWidget(final EntityRef workstation, ThermometerWidget thermometerWidget, float minimumTemperature) {
+        thermometerWidget.bindMaxTemperature(
                 new Binding<Float>() {
                     @Override
                     public Float get() {
@@ -52,9 +52,9 @@ public final class WorkstationScreenUtils {
                     }
                 }
         );
-        termometerWidget.setMinTemperature(minimumTemperature);
+        thermometerWidget.setMinTemperature(minimumTemperature);
 
-        termometerWidget.bindTemperature(
+        thermometerWidget.bindTemperature(
                 new Binding<Float>() {
                     @Override
                     public Float get() {
@@ -65,7 +65,7 @@ public final class WorkstationScreenUtils {
                     public void set(Float value) {
                     }
                 });
-        termometerWidget.bindTooltip(
+        thermometerWidget.bindTooltip(
                 new Binding<String>() {
                     @Override
                     public String get() {

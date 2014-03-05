@@ -43,11 +43,11 @@
                 "right": 5
             }
         },
-        "TermometerWidget": {
-            "background": "WoodAndStone:TermometerBack",
+        "ThermometerWidget": {
+            "background": "WoodAndStone:ThermometerBack",
             "parts": {
                 "front": {
-                    "background": "WoodAndStone:TermometerFront"
+                    "background": "WoodAndStone:ThermometerFront"
                 }
             }
         }
