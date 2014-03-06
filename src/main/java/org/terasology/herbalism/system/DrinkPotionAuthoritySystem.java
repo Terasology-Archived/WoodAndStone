@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.system;
+package org.terasology.herbalism.system;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -23,9 +23,9 @@ import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.HerbEffect;
 import org.terasology.herbalism.Herbalism;
+import org.terasology.herbalism.component.PotionComponent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.registry.In;
-import org.terasology.was.component.PotionComponent;
 
 @RegisterSystem
 public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
