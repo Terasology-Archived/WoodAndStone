@@ -28,6 +28,8 @@ import org.terasology.herbalism.HerbEffect;
 import org.terasology.herbalism.HerbEffectRegistry;
 import org.terasology.herbalism.HerbNameProvider;
 import org.terasology.herbalism.Herbalism;
+import org.terasology.herbalism.effect.DoNothingEffect;
+import org.terasology.herbalism.effect.HealEffect;
 import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 
@@ -42,6 +44,9 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
 
     @Override
     public void preBegin() {
+        herbEffectRegistry.registerHerbEffect(1f, new DoNothingEffect());
+        herbEffectRegistry.registerHerbEffect(1f, new HealEffect());
+
         final HerbNameProvider herbNameProvider = new HerbNameProvider(worldProvider.getSeed().hashCode());
 
         int genomeLength = 10;

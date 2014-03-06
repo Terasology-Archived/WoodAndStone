@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.herbalism;
+package org.terasology.herbalism.effect;
 
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.herbalism.HerbEffect;
 
-public interface HerbEffect {
-    void applyEffect(EntityRef instigator, EntityRef entity, float magnitude, long duration);
+public class DoNothingEffect implements HerbEffect {
+    @Override
+    public void applyEffect(EntityRef instigator, EntityRef entity, float magnitude, long duration) {
+    }
 }

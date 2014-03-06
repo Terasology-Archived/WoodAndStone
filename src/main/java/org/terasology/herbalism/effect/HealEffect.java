@@ -13,10 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.herbalism;
+package org.terasology.herbalism.effect;
 
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.herbalism.HerbEffect;
+import org.terasology.logic.health.DoHealEvent;
+import org.terasology.math.TeraMath;
 
-public interface HerbEffect {
-    void applyEffect(EntityRef instigator, EntityRef entity, float magnitude, long duration);
+public class HealEffect implements HerbEffect {
+    private int maxHeal = 100;
+
+    @Override
+    public void applyEffect(EntityRef instigator, EntityRef entity, float magnitude, long duration) {
+        entity.send(new DoHealEvent(TeraMath.floorToInt(maxHeal * magnitude), instigator));
+    }
 }
