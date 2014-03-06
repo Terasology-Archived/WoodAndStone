@@ -35,7 +35,7 @@ public class HerbNameProvider {
         familyGen = new MarkovNameGenerator(seed, families);
     }
 
-    public String getName(int seed) {
-        return generaGen.nextName()+" "+familyGen.nextName();
+    public String getName(String seed) {
+        return generaGen.getName(seed)+" "+familyGen.getName(seed);
     }
 }

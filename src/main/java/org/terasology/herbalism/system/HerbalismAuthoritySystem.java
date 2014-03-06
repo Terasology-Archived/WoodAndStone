@@ -93,7 +93,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                 new Function<String, String>() {
                     @Override
                     public String apply(String input) {
-                        return herbNameProvider.getName(input.hashCode());
+                        return herbNameProvider.getName(input);
                     }
                 });
 

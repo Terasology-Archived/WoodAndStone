@@ -23,13 +23,13 @@ import org.terasology.crafting.system.recipe.behaviour.InventorySlotResolver;
 import org.terasology.crafting.system.recipe.behaviour.InventorySlotTypeResolver;
 import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
 import org.terasology.crafting.system.recipe.workstation.AbstractWorkstationRecipe;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.HerbComponent;
 import org.terasology.herbalism.Herbalism;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
@@ -60,7 +60,7 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             super.setupDisplay(parameters, itemIcon);
             final String herbParameter = parameters.get(0);
             final String herbName = herbParameter.split("\\|")[3];
-            itemIcon.setTooltip("Extract from "+herbName);
+            itemIcon.setTooltip("Extract from " + herbName);
         }
 
         @Override
@@ -70,10 +70,14 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             final String[] herbSplit = herbParameter.split("\\|");
             final String genomeId = herbSplit[1];
             final String genes = herbSplit[2];
+            final String herbName = herbSplit[3];
             GenomeComponent genome = new GenomeComponent();
             genome.genomeId = genomeId;
             genome.genes = genes;
             result.addComponent(genome);
+            DisplayNameComponent displayName = result.getComponent(DisplayNameComponent.class);
+            displayName.name = "Extract from " + herbName;
+            result.saveComponent(displayName);
             return result;
         }
     }
