@@ -75,10 +75,13 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         workstationRegistry.registerProcessFactory(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, new CraftingWorkstationProcessFactory());
 
         workstationRegistry.registerProcessFactory(WoodAndStone.COOKING_PROCESS_TYPE, new CraftingWorkstationProcessFactory());
+        workstationRegistry.registerProcessFactory(WoodAndStone.HERBALISM_PROCESS_TYPE, new CraftingWorkstationProcessFactory());
 
         addWorkstationFormingRecipes();
 
         addCraftInHandRecipes();
+
+        addHerbalismWorkstationRecipes();
 
         addStandardWoodWorkstationBlockShapeRecipes();
 
@@ -103,6 +106,18 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
         cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(cookingStationRecipe);
+
+        LayeredMultiBlockFormItemRecipe herbalismStationRecipe = new LayeredMultiBlockFormItemRecipe(
+                new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(3, 1), new AnyActivityFilter(),
+                "WoodAndStone:HerbalismStation", null);
+        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
+        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
+        multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(herbalismStationRecipe);
+    }
+
+    private void addHerbalismWorkstationRecipes() {
+//        workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
+//                new );
     }
 
     private void addStandardWoodWorkstationBlockShapeRecipes() {

@@ -50,12 +50,12 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
-    public int getCount() {
+    public int getCount(List<String> parameters) {
         return count;
     }
 
     @Override
-    public void setupDisplay(ItemIcon itemIcon) {
+    public void setupDisplay(List<String> parameters, ItemIcon itemIcon) {
         itemIcon.setMesh(block.getMesh());
         itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
         itemIcon.setTooltip(block.getDisplayName());

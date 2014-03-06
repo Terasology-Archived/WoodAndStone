@@ -114,7 +114,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
-            resultFactory.setupDisplay(itemIcon);
+            resultFactory.setupDisplay(parameters, itemIcon);
         }
 
         private EntityRef createResult(int multiplier) {

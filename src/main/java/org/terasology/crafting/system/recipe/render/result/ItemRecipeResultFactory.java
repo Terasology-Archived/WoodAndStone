@@ -55,12 +55,12 @@ public class ItemRecipeResultFactory implements RecipeResultFactory {
     }
 
     @Override
-    public int getCount() {
+    public int getCount(List<String> parameters) {
         return count;
     }
 
     @Override
-    public void setupDisplay(ItemIcon itemIcon) {
+    public void setupDisplay(List<String> parameters, ItemIcon itemIcon) {
         itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
         DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
         if (displayName != null) {

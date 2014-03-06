@@ -13,19 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.crafting.system.recipe.render;
+package org.terasology.was.component;
 
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.entitySystem.Component;
 
-import java.util.List;
-
-public interface RecipeResultFactory {
-    int getMaxMultiplier(List<String> parameters);
-
-    EntityRef createResult(List<String> parameters, int multiplier);
-
-    int getCount(List<String> parameters);
-
-    void setupDisplay(List<String> parameters, ItemIcon itemIcon);
+public class PotionComponent implements Component {
 }
