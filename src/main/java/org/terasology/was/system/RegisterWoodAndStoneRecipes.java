@@ -46,6 +46,7 @@ import org.terasology.multiBlock.recipe.LayeredMultiBlockFormItemRecipe;
 import org.terasology.multiBlock.recipe.UniformMultiBlockFormItemRecipe;
 import org.terasology.registry.In;
 import org.terasology.was.WoodAndStone;
+import org.terasology.was.ui.HerbalismCraftingStationRecipe;
 import org.terasology.workstation.system.WorkstationRegistry;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
@@ -116,8 +117,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     }
 
     private void addHerbalismWorkstationRecipes() {
-//        workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
-//                new );
+        workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
+                new CraftingWorkstationProcess(WoodAndStone.HERBALISM_PROCESS_TYPE, "WoodAndStone:HerbPotion", new HerbalismCraftingStationRecipe()));
     }
 
     private void addStandardWoodWorkstationBlockShapeRecipes() {
