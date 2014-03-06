@@ -27,7 +27,7 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
-import org.terasology.herbalism.HerbComponent;
+import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.registry.CoreRegistry;
