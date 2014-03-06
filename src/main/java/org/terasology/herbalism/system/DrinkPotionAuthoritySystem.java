@@ -18,6 +18,7 @@ package org.terasology.herbalism.system;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
@@ -27,7 +28,7 @@ import org.terasology.herbalism.component.PotionComponent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.registry.In;
 
-@RegisterSystem
+@RegisterSystem(value = RegisterMode.AUTHORITY)
 public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
     @In
     private GenomeManager genomeManager;

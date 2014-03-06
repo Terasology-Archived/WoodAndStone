@@ -17,6 +17,7 @@ package org.terasology.herbalism.system;
 
 import com.google.common.base.Function;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.genome.GenomeDefinition;
 import org.terasology.genome.GenomeRegistry;
@@ -33,7 +34,7 @@ import org.terasology.herbalism.effect.HealEffect;
 import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 
-@RegisterSystem
+@RegisterSystem(value = RegisterMode.AUTHORITY)
 public class HerbalismAuthoritySystem extends BaseComponentSystem {
     @In
     private GenomeRegistry genomeRegistry;
