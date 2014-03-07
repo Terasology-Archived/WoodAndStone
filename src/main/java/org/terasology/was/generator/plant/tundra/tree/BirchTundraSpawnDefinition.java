@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.was.generator.plant.tree;
+package org.terasology.was.generator.plant.tundra.tree;
 
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
