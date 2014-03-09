@@ -16,7 +16,6 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
-import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -27,13 +26,12 @@ import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.InventoryUtils;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -108,8 +106,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             KNIFE_BEHAVIOUR.processIngredient(character, character, parameters.get(0), count);
             FRUIT_BEHAVIOUR.processIngredient(character, character, parameters.get(1), count);
 
-            BlockFamily blockFamily = CoreRegistry.get(BlockManager.class).getBlockFamily(FRUIT_BEHAVIOUR.getSaplingResult(parameters.get(1)));
-            return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(blockFamily, 1);
+            return CoreRegistry.get(EntityManager.class).create(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
         }
 
         @Override
@@ -145,11 +142,13 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
-            Block block = CoreRegistry.get(BlockManager.class).getBlockFamily(FRUIT_BEHAVIOUR.getSaplingResult(parameters.get(1))).getArchetypeBlock();
+            Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
 
-            itemIcon.setMesh(block.getMesh());
-            itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
-            itemIcon.setTooltip(block.getDisplayName());
+            itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
+            DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
+            if (displayName != null) {
+                itemIcon.setTooltip(displayName.name);
+            }
         }
     }
 
@@ -192,8 +191,8 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             return result;
         }
 
-        public String getSaplingResult(String parameter) {
-            return "PlantPack:" + parameter.substring(parameter.indexOf('|') + 1) + "1";
+        public String getSeedResult(String parameter) {
+            return "PlantPack:" + parameter.substring(parameter.indexOf('|') + 1) + "Seed";
         }
     }
 }
