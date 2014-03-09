@@ -23,10 +23,11 @@ import org.terasology.genome.GenomeDefinition;
 import org.terasology.genome.GenomeRegistry;
 import org.terasology.genome.breed.BreedingAlgorithm;
 import org.terasology.genome.breed.SimpleBreedingAlgorithm;
-import org.terasology.genome.breed.mutator.VocabularyGeneMutator;
+import org.terasology.genome.breed.mutator.GeneMutator;
 import org.terasology.genome.genomeMap.SeedBasedGenomeMap;
 import org.terasology.herbalism.HerbEffect;
 import org.terasology.herbalism.HerbEffectRegistry;
+import org.terasology.herbalism.HerbGeneMutator;
 import org.terasology.herbalism.HerbNameProvider;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.effect.DoNothingEffect;
@@ -52,7 +53,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
 
         int genomeLength = 10;
 
-        VocabularyGeneMutator herbGeneMutator = new VocabularyGeneMutator("ABCD");
+        GeneMutator herbGeneMutator = new HerbGeneMutator();
 
         BreedingAlgorithm herbBreedingAlgorithm = new SimpleBreedingAlgorithm(genomeLength, 9, 0.005f, herbGeneMutator);
 

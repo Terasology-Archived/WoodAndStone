@@ -22,9 +22,9 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.genome.breed.BiodiversityGenerator;
-import org.terasology.genome.breed.mutator.VocabularyGeneMutator;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
+import org.terasology.herbalism.HerbGeneMutator;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.GeneratedHerbComponent;
 import org.terasology.logic.common.DisplayNameComponent;
@@ -80,7 +80,7 @@ public class GeneratedHerbDropSystem extends BaseComponentSystem {
             final String herbBaseGenome = herbComp.herbBaseGenome;
             final Vector3f position = locationComp.getWorldPosition();
 
-            BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0, new VocabularyGeneMutator("ABCD"), herbBaseGenome,
+            BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0, new HerbGeneMutator(), herbBaseGenome,
                     3, 0.0002f);
             final String generatedGenes = generator.generateGenes(new Vector2i(TeraMath.floorToInt(position.x + 0.5f), TeraMath.floorToInt(position.z + 0.5f)));
 
