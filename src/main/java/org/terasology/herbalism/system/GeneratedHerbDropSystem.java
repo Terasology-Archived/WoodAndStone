@@ -81,7 +81,7 @@ public class GeneratedHerbDropSystem extends BaseComponentSystem {
             final Vector3f position = locationComp.getWorldPosition();
 
             BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0, new VocabularyGeneMutator("ABCD"), herbBaseGenome,
-                    3, 0.0005f);
+                    3, 0.0002f);
             final String generatedGenes = generator.generateGenes(new Vector2i(TeraMath.floorToInt(position.x + 0.5f), TeraMath.floorToInt(position.z + 0.5f)));
 
             EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
