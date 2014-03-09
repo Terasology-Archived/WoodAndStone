@@ -94,7 +94,7 @@ public class GeneratedHerbDropSystem extends BaseComponentSystem {
             final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
             DisplayNameComponent displayName = new DisplayNameComponent();
             displayName.name = herbName;
-            herb.addComponent(displayName);
+            herb.saveComponent(displayName);
 
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
                 createDrop(herb, locationComp.getWorldPosition(), false);
