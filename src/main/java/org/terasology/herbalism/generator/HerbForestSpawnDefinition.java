@@ -33,12 +33,12 @@ public class HerbForestSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbForestSpawnDefinition() {
         super(PlantType.GRASS, ForestBiome.ID, 0.5f, 0.3f, "Core:Herb",
                 Arrays.asList(
-                        new BlockUri("WoodAndStone:Herb1"),
+                        new BlockUri("WoodAndStone:Herb1")/*,
                         new BlockUri("WoodAndStone:Herb2"),
                         new BlockUri("WoodAndStone:Herb3"),
                         new BlockUri("WoodAndStone:Herb4"),
                         new BlockUri("WoodAndStone:Herb5"),
-                        new BlockUri("WoodAndStone:Herb6")),
+                        new BlockUri("WoodAndStone:Herb6")*/),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Grass")), null);
     }
 }

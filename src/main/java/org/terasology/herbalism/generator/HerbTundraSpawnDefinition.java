@@ -15,7 +15,6 @@
  */
 package org.terasology.herbalism.generator;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
@@ -34,7 +33,7 @@ public class HerbTundraSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbTundraSpawnDefinition() {
         super(PlantType.GRASS, TundraBiome.ID, 0.5f, 0.3f, "Core:Herb",
                 Arrays.asList(
-                        new BlockUri("WoodAndStone:Herb8")),
+                        new BlockUri("WoodAndStone:Herb1")),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Snow")), null);
     }
 }

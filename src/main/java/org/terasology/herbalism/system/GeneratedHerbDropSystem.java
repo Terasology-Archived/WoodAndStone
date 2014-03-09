@@ -18,8 +18,6 @@ package org.terasology.herbalism.system;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -43,7 +41,6 @@ import org.terasology.utilities.random.Random;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.entity.CreateBlockDropsEvent;
 import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
-import org.terasology.world.block.items.BlockItemFactory;
 
 import javax.vecmath.Vector3f;
 
@@ -84,7 +81,7 @@ public class GeneratedHerbDropSystem extends BaseComponentSystem {
             final Vector3f position = locationComp.getWorldPosition();
 
             BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0, new VocabularyGeneMutator("ABCD"), herbBaseGenome,
-                    3, 0.005f);
+                    3, 0.0005f);
             final String generatedGenes = generator.generateGenes(new Vector2i(TeraMath.floorToInt(position.x + 0.5f), TeraMath.floorToInt(position.z + 0.5f)));
 
             EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
