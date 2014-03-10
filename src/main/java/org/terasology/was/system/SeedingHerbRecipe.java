@@ -27,10 +27,16 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.farm.component.SeedComponent;
+import org.terasology.genome.component.GenomeComponent;
+import org.terasology.genome.system.GenomeManager;
+import org.terasology.herbalism.Herbalism;
+import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.world.block.Block;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -39,32 +45,32 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class SeedingFruitsRecipe implements CraftInHandRecipe {
+public class SeedingHerbRecipe implements CraftInHandRecipe {
     private static final IngredientCraftBehaviour<EntityRef> KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
             new CraftInHandIngredientPredicate("WoodAndStone:knife"), 1, PlayerInventorySlotResolver.singleton());
-    private static final ConsumeFruitBehaviour FRUIT_BEHAVIOUR = new ConsumeFruitBehaviour();
+    private static final ConsumeHerbBehaviour HERB_BEHAVIOUR = new ConsumeHerbBehaviour();
 
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
-        String knifeSlot = getKnifeSlot(character);
-        if (knifeSlot == null) {
+        String knifeParameter = getKnifeParameter(character);
+        if (knifeParameter == null) {
             return null;
         }
 
         List<CraftInHandResult> results = new LinkedList<>();
 
-        final List<String> fruitParameters = FRUIT_BEHAVIOUR.getValidToCraft(character, 1);
-        for (String fruitParameter : fruitParameters) {
-            results.add(new Result(Arrays.asList(knifeSlot, fruitParameter)));
+        final List<String> herbParameters = HERB_BEHAVIOUR.getValidToCraft(character, 1);
+        for (String herbParameter : herbParameters) {
+            results.add(new Result(Arrays.asList(knifeParameter, herbParameter)));
         }
 
         return results;
     }
 
-    private String getKnifeSlot(EntityRef character) {
-        List<String> slots = KNIFE_BEHAVIOUR.getValidToCraft(character, 1);
-        if (slots.size() > 0) {
-            return slots.get(0);
+    private String getKnifeParameter(EntityRef character) {
+        List<String> parameters = KNIFE_BEHAVIOUR.getValidToCraft(character, 1);
+        if (parameters.size() > 0) {
+            return parameters.get(0);
         }
         return null;
     }
@@ -90,7 +96,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         @Override
         public int getMaxMultiplier(EntityRef entity) {
             int maxMultiplier = KNIFE_BEHAVIOUR.getMaxMultiplier(entity, parameters.get(0));
-            maxMultiplier = Math.min(maxMultiplier, FRUIT_BEHAVIOUR.getMaxMultiplier(entity, parameters.get(1)));
+            maxMultiplier = Math.min(maxMultiplier, HERB_BEHAVIOUR.getMaxMultiplier(entity, parameters.get(1)));
             return maxMultiplier;
         }
 
@@ -101,9 +107,26 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             }
 
             KNIFE_BEHAVIOUR.processIngredient(character, character, parameters.get(0), count);
-            FRUIT_BEHAVIOUR.processIngredient(character, character, parameters.get(1), count);
+            HERB_BEHAVIOUR.processIngredient(character, character, parameters.get(1), count);
 
-            return CoreRegistry.get(EntityManager.class).create(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
+            final EntityRef herbSeed = CoreRegistry.get(EntityManager.class).create("WoodAndStone:HerbSeedBase");
+            final GenomeManager genomeManager = CoreRegistry.get(GenomeManager.class);
+
+            GenomeComponent genomeComponent = new GenomeComponent();
+            genomeComponent.genomeId = "Herbalism:herb";
+            genomeComponent.genes = HERB_BEHAVIOUR.getSeedGenome(parameters.get(1));
+            herbSeed.addComponent(genomeComponent);
+
+            final String herbName = genomeManager.getGenomeProperty(herbSeed, Herbalism.NAME_PROPERTY, String.class);
+            DisplayNameComponent displayName = new DisplayNameComponent();
+            displayName.name = "Seeds of " + herbName;
+            herbSeed.saveComponent(displayName);
+
+            SeedComponent seedComponent = new SeedComponent();
+            seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK, Block.class);
+            herbSeed.addComponent(seedComponent);
+
+            return herbSeed;
         }
 
         @Override
@@ -111,7 +134,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
             if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, parameters.get(0), multiplier)) {
                 return false;
             }
-            if (!FRUIT_BEHAVIOUR.isValidToCraft(entity, parameters.get(1), multiplier)) {
+            if (!HERB_BEHAVIOUR.isValidToCraft(entity, parameters.get(1), multiplier)) {
                 return false;
             }
             return true;
@@ -121,7 +144,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         public List<CraftIngredientRenderer> getIngredientRenderers(EntityRef entity) {
             if (renderers == null) {
                 renderers = new LinkedList<>();
-                renderers.add(FRUIT_BEHAVIOUR.getRenderer(entity, parameters.get(1)));
+                renderers.add(HERB_BEHAVIOUR.getRenderer(entity, parameters.get(1)));
                 renderers.add(KNIFE_BEHAVIOUR.getRenderer(entity, parameters.get(0)));
             }
             return renderers;
@@ -139,7 +162,7 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
-            Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
+            Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab("WoodAndStone:HerbSeedBase");
 
             itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
             DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
@@ -149,14 +172,12 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
         }
     }
 
-    private static class ConsumeFruitBehaviour extends ConsumeItemCraftBehaviour {
-        public ConsumeFruitBehaviour() {
+    private static class ConsumeHerbBehaviour extends ConsumeItemCraftBehaviour {
+        public ConsumeHerbBehaviour() {
             super(new Predicate<EntityRef>() {
                 @Override
                 public boolean apply(EntityRef input) {
-                    Prefab prefab = input.getParentPrefab();
-                    return prefab != null && prefab.getURI().getNormalisedModuleName().equals("plantpack")
-                            && prefab.getURI().getNormalisedAssetName().endsWith("fruit");
+                    return input.hasComponent(HerbComponent.class) && input.hasComponent(GenomeComponent.class);
                 }
             }, 1, PlayerInventorySlotResolver.singleton());
         }
@@ -168,14 +189,12 @@ public class SeedingFruitsRecipe implements CraftInHandRecipe {
 
         @Override
         protected String getParameter(List<Integer> slots, EntityRef item) {
-            Prefab prefab = item.getParentPrefab();
-            String assetName = prefab.getURI().getNormalisedAssetName();
-            String fruitName = assetName.substring(0, assetName.length() - 5);
-            return super.getParameter(slots, item) + "|" + fruitName;
+            final GenomeComponent genome = item.getComponent(GenomeComponent.class);
+            return super.getParameter(slots, item) + "|" + genome.genes;
         }
 
-        public String getSeedResult(String parameter) {
-            return "PlantPack:" + parameter.substring(parameter.indexOf('|') + 1) + "Seed";
+        public String getSeedGenome(String parameter) {
+            return parameter.substring(parameter.indexOf('|') + 1);
         }
     }
 }

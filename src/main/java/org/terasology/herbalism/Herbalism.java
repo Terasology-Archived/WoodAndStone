@@ -20,6 +20,8 @@ public final class Herbalism {
     public static final String DURATION_PROPERTY = "duration";
     public static final String MAGNITUDE_PROPERTY = "magnitude";
     public static final String NAME_PROPERTY = "name";
+    public static final String PLANTED_BLOCK = "plantedBlock";
 
-    private Herbalism() { }
+    private Herbalism() {
+    }
 }

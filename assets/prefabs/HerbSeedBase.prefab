@@ -4,6 +4,5 @@
         "icon": "WoodAndStone:items.CookedRice",
         "stackId": "WoodAndStone:herb",
         "renderWithIcon": true
-    },
-    "Herb": { }
+    }
 }

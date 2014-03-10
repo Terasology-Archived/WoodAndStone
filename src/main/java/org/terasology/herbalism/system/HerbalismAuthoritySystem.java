@@ -16,14 +16,19 @@
 package org.terasology.herbalism.system;
 
 import com.google.common.base.Function;
+import org.terasology.entitySystem.entity.EntityManager;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.farm.event.SeedPlanted;
 import org.terasology.genome.GenomeDefinition;
 import org.terasology.genome.GenomeRegistry;
 import org.terasology.genome.breed.BreedingAlgorithm;
 import org.terasology.genome.breed.SimpleBreedingAlgorithm;
 import org.terasology.genome.breed.mutator.GeneMutator;
+import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.genomeMap.SeedBasedGenomeMap;
 import org.terasology.herbalism.HerbEffect;
 import org.terasology.herbalism.HerbEffectRegistry;
@@ -32,8 +37,12 @@ import org.terasology.herbalism.HerbNameProvider;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.effect.DoNothingEffect;
 import org.terasology.herbalism.effect.HealEffect;
+import org.terasology.math.Vector3i;
 import org.terasology.registry.In;
+import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class HerbalismAuthoritySystem extends BaseComponentSystem {
@@ -43,6 +52,12 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
     private WorldProvider worldProvider;
     @In
     private HerbEffectRegistry herbEffectRegistry;
+    @In
+    private BlockManager blockManager;
+    @In
+    private BlockEntityRegistry blockEntityRegistry;
+    @In
+    private EntityManager entityManager;
 
     @Override
     public void preBegin() {
@@ -97,9 +112,25 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         return herbNameProvider.getName(input);
                     }
                 });
+        herbGenomeMap.addProperty(Herbalism.PLANTED_BLOCK, new int[]{0}, Block.class,
+                new Function<String, Block>() {
+                    @Override
+                    public Block apply(String input) {
+                        return blockManager.getBlock("WoodAndStone:HerbGrow" + input);
+                    }
+                });
 
         GenomeDefinition herbGenomeDefinition = new GenomeDefinition(herbBreedingAlgorithm, herbGenomeMap);
 
         genomeRegistry.registerType("Herbalism:herb", herbGenomeDefinition);
+    }
+
+    @ReceiveEvent
+    public void herbPlanted(SeedPlanted event, EntityRef seedItem, GenomeComponent genomeComponent) {
+        Vector3i location = event.getLocation();
+        EntityRef plantedEntity = blockEntityRegistry.getEntityAt(location);
+
+        final GenomeComponent genome = entityManager.getComponentLibrary().copy(genomeComponent);
+        plantedEntity.addComponent(genome);
     }
 }
