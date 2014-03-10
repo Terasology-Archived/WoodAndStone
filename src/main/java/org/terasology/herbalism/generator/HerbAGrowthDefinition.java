@@ -39,7 +39,7 @@ public class HerbAGrowthDefinition extends ReplaceBlockGrowthDefinition {
     public HerbAGrowthDefinition() {
         super(ID, Arrays.asList(
                 new BlockUri("WoodAndStone", "HerbGrowA"), new BlockUri("WoodAndStone", "HerbGrownA"), new BlockUri("Core", "DeadBush")),
-                10 * 1000, 100 * 1000,
+                50 * 1000, 200 * 1000,
                 new Predicate<LocalParameters>() {
                     @Override
                     public boolean apply(LocalParameters input) {
