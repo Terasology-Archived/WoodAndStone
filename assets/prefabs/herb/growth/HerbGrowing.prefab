@@ -1,0 +1,6 @@
+{
+    "LivingPlant": {
+        "type": "Core:Herb"
+    },
+    "BlockDropGrammar": {}
+}

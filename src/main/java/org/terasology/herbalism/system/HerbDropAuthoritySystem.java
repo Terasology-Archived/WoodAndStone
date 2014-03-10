@@ -27,6 +27,7 @@ import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.HerbGeneMutator;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.GeneratedHerbComponent;
+import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.health.DoDestroyEvent;
 import org.terasology.logic.inventory.PickupBuilder;
@@ -45,7 +46,7 @@ import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
 import javax.vecmath.Vector3f;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
-public class GeneratedHerbDropSystem extends BaseComponentSystem {
+public class HerbDropAuthoritySystem extends BaseComponentSystem {
     @In
     private WorldProvider worldProvider;
     @In
@@ -68,7 +69,38 @@ public class GeneratedHerbDropSystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void onDestroyed(DoDestroyEvent event, EntityRef entity, GeneratedHerbComponent herbComp, LocationComponent locationComp) {
+    public void whenBlockDropped(CreateBlockDropsEvent event, EntityRef blockEntity, HerbComponent component) {
+        event.consume();
+    }
+
+    @ReceiveEvent
+    public void onGrownHerbDestroyed(DoDestroyEvent event, EntityRef entity, HerbComponent herbComp, GenomeComponent genomeComponent, LocationComponent locationComp) {
+        BlockDamageModifierComponent blockDamageModifierComponent = event.getDamageType().getComponent(BlockDamageModifierComponent.class);
+        float chanceOfBlockDrop = 1;
+
+        if (blockDamageModifierComponent != null) {
+            chanceOfBlockDrop = 1 - blockDamageModifierComponent.blockAnnihilationChance;
+        }
+
+        if (random.nextFloat() < chanceOfBlockDrop) {
+            EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
+
+            final GenomeComponent genomeCopy = entityManager.getComponentLibrary().copy(genomeComponent);
+            herb.addComponent(genomeCopy);
+
+            final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
+            DisplayNameComponent displayName = new DisplayNameComponent();
+            displayName.name = herbName;
+            herb.saveComponent(displayName);
+
+            if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
+                createDrop(herb, locationComp.getWorldPosition(), false);
+            }
+        }
+    }
+
+    @ReceiveEvent
+    public void onGeneratedHerbDestroyed(DoDestroyEvent event, EntityRef entity, GeneratedHerbComponent herbComp, LocationComponent locationComp) {
         BlockDamageModifierComponent blockDamageModifierComponent = event.getDamageType().getComponent(BlockDamageModifierComponent.class);
         float chanceOfBlockDrop = 1;
 

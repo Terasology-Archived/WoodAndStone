@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class HerbTundraSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbTundraSpawnDefinition() {
-        super(PlantType.GRASS, TundraBiome.ID, 0.5f, 0.3f, "Core:Herb",
+        super(PlantType.GRASS, TundraBiome.ID, 0.5f, 0.3f, "Herbalism:Herb",
                 Arrays.asList(
                         new BlockUri("WoodAndStone:HerbGenerated1")),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Snow")), null);
