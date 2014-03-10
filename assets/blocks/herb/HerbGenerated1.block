@@ -1,6 +1,6 @@
 {
     "basedOn" : "core:plant",
     "entity": {
-        "prefab": "WoodAndStone:Herb1"
+        "prefab": "WoodAndStone:HerbGenerated1"
     }
 }

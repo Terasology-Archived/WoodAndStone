@@ -33,7 +33,7 @@ public class HerbTundraSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbTundraSpawnDefinition() {
         super(PlantType.GRASS, TundraBiome.ID, 0.5f, 0.3f, "Core:Herb",
                 Arrays.asList(
-                        new BlockUri("WoodAndStone:Herb1")),
+                        new BlockUri("WoodAndStone:HerbGenerated1")),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Snow")), null);
     }
 }
