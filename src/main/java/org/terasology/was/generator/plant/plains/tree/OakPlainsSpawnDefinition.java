@@ -18,7 +18,7 @@ package org.terasology.was.generator.plant.plains.tree;
 import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
-import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
 import org.terasology.plantPack.tree.OakGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
@@ -26,7 +26,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 import java.util.Arrays;
 
 @RegisterPlugin
-public class OakPlainsSpawnDefinition extends BlockFloraSpawnDefinition {
+public class OakPlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public OakPlainsSpawnDefinition() {
         super(PlantType.TREE, OakGrowthDefinition.ID, PlainsBiome.ID, 0.6f, 0.2f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));

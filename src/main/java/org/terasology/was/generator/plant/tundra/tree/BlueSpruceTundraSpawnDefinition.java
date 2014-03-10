@@ -18,7 +18,7 @@ package org.terasology.was.generator.plant.tundra.tree;
 import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
-import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
 import org.terasology.plantPack.tree.BlueSpruceGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
@@ -26,7 +26,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 import java.util.Arrays;
 
 @RegisterPlugin
-public class BlueSpruceTundraSpawnDefinition extends BlockFloraSpawnDefinition {
+public class BlueSpruceTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BlueSpruceTundraSpawnDefinition() {
         super(PlantType.TREE, BlueSpruceGrowthDefinition.ID, TundraBiome.ID, 0.7f, 0.3f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Snow"))));

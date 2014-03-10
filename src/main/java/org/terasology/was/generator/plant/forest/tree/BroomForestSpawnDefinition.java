@@ -18,7 +18,7 @@ package org.terasology.was.generator.plant.forest.tree;
 import org.terasology.anotherWorld.coreBiome.ForestBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
-import org.terasology.gf.generator.BlockFloraSpawnDefinition;
+import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
 import org.terasology.plantPack.tree.BroomGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
@@ -26,7 +26,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 import java.util.Arrays;
 
 @RegisterPlugin
-public class BroomForestSpawnDefinition extends BlockFloraSpawnDefinition {
+public class BroomForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BroomForestSpawnDefinition() {
         super(PlantType.TREE, BroomGrowthDefinition.ID, ForestBiome.ID, 0.6f, 0.6f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
