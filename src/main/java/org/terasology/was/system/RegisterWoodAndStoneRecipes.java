@@ -136,7 +136,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     }
 
     private void addCraftInHandRecipes() {
-        addCraftInHandRecipe("WoodAndStone:Seeding", new SeedingFruitsRecipe());
+        addCraftInHandRecipe("WoodAndStone:SeedingFruits", new SeedingFruitRecipe());
+        addCraftInHandRecipe("WoodAndStone:SeedingHerbs", new SeedingHerbRecipe());
 
         for (Prefab prefab : prefabManager.listPrefabs(CraftInHandRecipeComponent.class)) {
             parseCraftInHandRecipe(prefab.getComponent(CraftInHandRecipeComponent.class));

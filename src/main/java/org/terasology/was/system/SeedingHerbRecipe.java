@@ -117,9 +117,8 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             genomeComponent.genes = HERB_BEHAVIOUR.getSeedGenome(parameters.get(1));
             herbSeed.addComponent(genomeComponent);
 
-            final String herbName = genomeManager.getGenomeProperty(herbSeed, Herbalism.NAME_PROPERTY, String.class);
             DisplayNameComponent displayName = new DisplayNameComponent();
-            displayName.name = "Seeds of " + herbName;
+            displayName.name = "Seeds of " + HERB_BEHAVIOUR.getHerbName(parameters.get(1));
             herbSeed.saveComponent(displayName);
 
             SeedComponent seedComponent = new SeedComponent();
@@ -165,10 +164,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab("WoodAndStone:HerbSeedBase");
 
             itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
-            DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
-            if (displayName != null) {
-                itemIcon.setTooltip(displayName.name);
-            }
+            itemIcon.setTooltip("Seeds of " + HERB_BEHAVIOUR.getHerbName(parameters.get(1)));
         }
     }
 
@@ -190,11 +186,19 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
         @Override
         protected String getParameter(List<Integer> slots, EntityRef item) {
             final GenomeComponent genome = item.getComponent(GenomeComponent.class);
-            return super.getParameter(slots, item) + "|" + genome.genes;
+
+            final GenomeManager genomeManager = CoreRegistry.get(GenomeManager.class);
+            String herbName = genomeManager.getGenomeProperty(item, Herbalism.NAME_PROPERTY, String.class);
+
+            return super.getParameter(slots, item) + "|" + genome.genes + "|" + herbName;
         }
 
         public String getSeedGenome(String parameter) {
-            return parameter.substring(parameter.indexOf('|') + 1);
+            return parameter.split("\\|")[1];
+        }
+
+        public String getHerbName(String parameter) {
+            return parameter.split("\\|")[2];
         }
     }
 }

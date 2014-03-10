@@ -33,7 +33,7 @@ public class HerbPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbPlainsSpawnDefinition() {
         super(PlantType.GRASS, PlainsBiome.ID, 0.5f, 0.3f, "Herbalism:Herb",
                 Arrays.asList(
-                        new BlockUri("WoodAndStone:HerbGenerated1")/*,
+                        new BlockUri("WoodAndStone:HerbGeneratedA")/*,
                         new BlockUri("WoodAndStone:Herb2"),
                         new BlockUri("WoodAndStone:Herb6"),
                         new BlockUri("WoodAndStone:Herb7")*/),

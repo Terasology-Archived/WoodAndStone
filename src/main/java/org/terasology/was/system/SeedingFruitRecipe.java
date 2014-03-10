@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class SeedingFruitsRecipe implements CraftInHandRecipe {
+public class SeedingFruitRecipe implements CraftInHandRecipe {
     private static final IngredientCraftBehaviour<EntityRef> KNIFE_BEHAVIOUR = new ReduceDurabilityCraftBehaviour(
             new CraftInHandIngredientPredicate("WoodAndStone:knife"), 1, PlayerInventorySlotResolver.singleton());
     private static final ConsumeFruitBehaviour FRUIT_BEHAVIOUR = new ConsumeFruitBehaviour();
