@@ -113,7 +113,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             final GenomeManager genomeManager = CoreRegistry.get(GenomeManager.class);
 
             GenomeComponent genomeComponent = new GenomeComponent();
-            genomeComponent.genomeId = "Herbalism:herb";
+            genomeComponent.genomeId = "Herbalism:Herb";
             genomeComponent.genes = HERB_BEHAVIOUR.getSeedGenome(parameters.get(1));
             herbSeed.addComponent(genomeComponent);
 

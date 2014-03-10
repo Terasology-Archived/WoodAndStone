@@ -122,7 +122,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
 
         GenomeDefinition herbGenomeDefinition = new GenomeDefinition(herbBreedingAlgorithm, herbGenomeMap);
 
-        genomeRegistry.registerType("Herbalism:herb", herbGenomeDefinition);
+        genomeRegistry.registerType("Herbalism:Herb", herbGenomeDefinition);
     }
 
     @ReceiveEvent
@@ -130,7 +130,10 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
         Vector3i location = event.getLocation();
         EntityRef plantedEntity = blockEntityRegistry.getEntityAt(location);
 
-        final GenomeComponent genome = entityManager.getComponentLibrary().copy(genomeComponent);
+        GenomeComponent genome = new GenomeComponent();
+        genome.genomeId = genomeComponent.genomeId;
+        genome.genes = genomeComponent.genes;
+
         plantedEntity.addComponent(genome);
     }
 }
