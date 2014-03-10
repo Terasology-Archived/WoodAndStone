@@ -1,0 +1,7 @@
+{
+    "basedOn": "core:soil",
+    "entity": {
+        "prefab": "WoodAndStone:TilledEarth"
+    },
+    "tile": "Core:Dirt"
+}

@@ -1,0 +1,8 @@
+{
+    "CraftInHandRecipe": {
+        "recipeId": "WoodAndStone:CrudeHoe",
+        "itemResult": "WoodAndStone:CrudeHoe",
+        "recipeComponents": ["1*WoodAndStone:twig", "2*WoodAndStone:stick"],
+        "recipeTools": ["1*WoodAndStone:toolStone"]
+    }
+}

@@ -3,6 +3,7 @@
     "Item": {
         "icon": "WoodAndStone:items.CookedRice",
         "stackId": "WoodAndStone:herbSeed",
-        "renderWithIcon": true
+        "renderWithIcon": true,
+        "consumedOnUse": true
     }
 }
