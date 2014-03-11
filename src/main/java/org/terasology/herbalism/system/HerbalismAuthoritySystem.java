@@ -84,7 +84,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
         BreedingAlgorithm herbBreedingAlgorithm = new SimpleBreedingAlgorithm(genomeLength, 9, 0.005f, herbGeneMutator);
 
         SeedBasedGenomeMap herbGenomeMap = new SeedBasedGenomeMap(worldProvider.getSeed().hashCode());
-        herbGenomeMap.addSeedBasedProperty(Herbalism.EFFECT_PROPERTY, genomeLength, 3, HerbEffect.class,
+        herbGenomeMap.addSeedBasedProperty(Herbalism.EFFECT_PROPERTY, 1, genomeLength, 3, HerbEffect.class,
                 new Function<String, HerbEffect>() {
                     @Override
                     public HerbEffect apply(String input) {
@@ -98,7 +98,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         return herbEffectRegistry.getHerbEffect(value);
                     }
                 });
-        herbGenomeMap.addSeedBasedProperty(Herbalism.DURATION_PROPERTY, genomeLength, 2, Long.class,
+        herbGenomeMap.addSeedBasedProperty(Herbalism.DURATION_PROPERTY, 1, genomeLength, 2, Long.class,
                 new Function<String, Long>() {
                     @Override
                     public Long apply(String input) {
@@ -107,7 +107,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         return (long) (duration * multiplier);
                     }
                 });
-        herbGenomeMap.addSeedBasedProperty(Herbalism.MAGNITUDE_PROPERTY, genomeLength, 2, Float.class,
+        herbGenomeMap.addSeedBasedProperty(Herbalism.MAGNITUDE_PROPERTY, 1, genomeLength, 2, Float.class,
                 new Function<String, Float>() {
                     @Override
                     public Float apply(String input) {
