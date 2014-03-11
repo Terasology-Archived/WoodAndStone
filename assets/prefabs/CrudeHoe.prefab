@@ -1,0 +1,15 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:items.crudeAxeHammer",
+        "renderWithIcon": true
+    },
+    "DisplayName": {
+        "name": "Crude Hoe"
+    },
+    "Durability": {
+        "durability": 20,
+        "maxDurability": 20
+    },
+    "Hoe": {}
+}

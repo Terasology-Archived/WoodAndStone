@@ -85,8 +85,11 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
         if (random.nextFloat() < chanceOfBlockDrop) {
             EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
 
-            final GenomeComponent genomeCopy = entityManager.getComponentLibrary().copy(genomeComponent);
-            herb.addComponent(genomeCopy);
+            GenomeComponent genome = new GenomeComponent();
+            genome.genomeId = genomeComponent.genomeId;
+            genome.genes = genomeComponent.genes;
+
+            herb.addComponent(genome);
 
             final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
             DisplayNameComponent displayName = new DisplayNameComponent();
@@ -119,7 +122,7 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
 
             GenomeComponent genomeComponent = new GenomeComponent();
-            genomeComponent.genomeId = "Herbalism:herb";
+            genomeComponent.genomeId = "Herbalism:Herb";
             genomeComponent.genes = generatedGenes;
             herb.addComponent(genomeComponent);
 

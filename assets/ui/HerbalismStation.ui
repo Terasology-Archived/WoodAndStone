@@ -1,5 +1,5 @@
 {
-    "type": "HerblismStationWindow",
+    "type": "HerbalismStationWindow",
     "skin": "WoodAndStone:CraftingStation",
     "contents": {
         "type": "relativeLayout",

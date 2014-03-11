@@ -18,24 +18,23 @@ package org.terasology.herbalism;
 import org.terasology.asset.Assets;
 import org.terasology.namegenerator.data.NameGeneratorComponent;
 import org.terasology.namegenerator.generators.MarkovNameGenerator;
-import org.terasology.namegenerator.generators.NameGenerator;
-import org.terasology.namegenerator.generators.TrainingGenerator;
 
 import java.util.List;
 
 public class HerbNameProvider {
-    private final NameGenerator generaGen;
-    private final NameGenerator familyGen;
+    private final MarkovNameGenerator generaGen;
+    private final MarkovNameGenerator familyGen;
 
     public HerbNameProvider(int seed) {
         final List<String> families = Assets.getPrefab("NameGenerator:floweringPlantsFamilies").getComponent(NameGeneratorComponent.class).nameList;
         final List<String> generas = Assets.getPrefab("NameGenerator:floweringPlantsGenera").getComponent(NameGeneratorComponent.class).nameList;
 
         generaGen = new MarkovNameGenerator(seed, generas);
-        familyGen = new MarkovNameGenerator(seed, families);
+        familyGen = new MarkovNameGenerator(seed + 937623, families);
     }
 
     public String getName(String seed) {
-        return generaGen.getName(seed)+" "+familyGen.getName(seed);
+        int length = seed.length();
+        return generaGen.getName(4, 8, seed.substring(0, length / 2)) + " " + familyGen.getName(4, 8, seed.substring(0, length));
     }
 }

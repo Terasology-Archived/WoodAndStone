@@ -1,6 +1,7 @@
 {
     "LivingPlant": {
-        "type": "Core:Herb"
+        "type": "Herbalism:Herb"
     },
-    "Herb": {}
+    "Herb": {},
+    "PollinatingHerb": {}
 }

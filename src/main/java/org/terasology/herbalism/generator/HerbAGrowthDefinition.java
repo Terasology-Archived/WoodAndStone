@@ -18,7 +18,6 @@ package org.terasology.herbalism.generator;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.terasology.anotherWorld.LocalParameters;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.gf.grass.ReplaceBlockGrowthDefinition;
@@ -60,7 +59,10 @@ public class HerbAGrowthDefinition extends ReplaceBlockGrowthDefinition {
         if (!isLast) {
             // We need to copy the genome between stages
             final GenomeComponent genome = plant.getComponent(GenomeComponent.class);
-            final GenomeComponent genomeCopy = CoreRegistry.get(EntityManager.class).getComponentLibrary().copy(genome);
+
+            GenomeComponent genomeCopy = new GenomeComponent();
+            genomeCopy.genomeId = genome.genomeId;
+            genomeCopy.genes = genome.genes;
 
             super.replaceBlock(worldProvider, blockManager, plant, position, nextStage, isLast);
 
