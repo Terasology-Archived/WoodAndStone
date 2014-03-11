@@ -30,6 +30,7 @@ import org.terasology.herbalism.component.GeneratedHerbComponent;
 import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.health.DoDestroyEvent;
+import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.logic.location.LocationComponent;
@@ -37,6 +38,7 @@ import org.terasology.math.TeraMath;
 import org.terasology.math.Vector2i;
 import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.registry.In;
+import org.terasology.rendering.assets.texture.TextureRegion;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.utilities.random.Random;
 import org.terasology.world.WorldProvider;
@@ -90,6 +92,10 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             genome.genes = genomeComponent.genes;
 
             herb.addComponent(genome);
+
+            final ItemComponent item = herb.getComponent(ItemComponent.class);
+            item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegion.class);
+            herb.saveComponent(item);
 
             final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
             DisplayNameComponent displayName = new DisplayNameComponent();

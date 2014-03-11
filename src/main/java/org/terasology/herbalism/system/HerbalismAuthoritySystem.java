@@ -16,6 +16,7 @@
 package org.terasology.herbalism.system;
 
 import com.google.common.base.Function;
+import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -44,6 +45,7 @@ import org.terasology.herbalism.effect.HealEffect;
 import org.terasology.math.Vector3i;
 import org.terasology.randomUpdate.RandomUpdateEvent;
 import org.terasology.registry.In;
+import org.terasology.rendering.assets.texture.TextureRegion;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
@@ -121,7 +123,14 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         return herbNameProvider.getName(input);
                     }
                 });
-        herbGenomeMap.addProperty(Herbalism.PLANTED_BLOCK, new int[]{0}, Block.class,
+        herbGenomeMap.addProperty(Herbalism.ICON_PROPERTY, new int[]{0}, TextureRegion.class,
+                new Function<String, TextureRegion>() {
+                    @Override
+                    public TextureRegion apply(String input) {
+                        return Assets.getTextureRegion("WoodAndStone:Herb" + input);
+                    }
+                });
+        herbGenomeMap.addProperty(Herbalism.PLANTED_BLOCK_PROPERTY, new int[]{0}, Block.class,
                 new Function<String, Block>() {
                     @Override
                     public Block apply(String input) {
@@ -168,7 +177,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                             Vector3i plantLocation = new Vector3i(resultX, resultY, resultZ);
                             if (worldProvider.getBlock(plantLocation) == BlockManager.getAir()
                                     && blockEntityRegistry.getEntityAt(new Vector3i(resultX, resultY - 1, resultZ)).hasComponent(FarmSoilComponent.class)) {
-                                Block plantedBlock = genomeManager.getGenomeProperty(herb, Herbalism.PLANTED_BLOCK, Block.class);
+                                Block plantedBlock = genomeManager.getGenomeProperty(herb, Herbalism.PLANTED_BLOCK_PROPERTY, Block.class);
                                 worldProvider.setBlock(plantLocation, plantedBlock);
                                 EntityRef plantedHerbEntity = blockEntityRegistry.getEntityAt(plantLocation);
                                 plantedHerbEntity.addComponent(new PlantedSaplingComponent());

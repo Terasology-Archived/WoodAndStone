@@ -122,7 +122,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             herbSeed.saveComponent(displayName);
 
             SeedComponent seedComponent = new SeedComponent();
-            seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK, Block.class);
+            seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK_PROPERTY, Block.class);
             herbSeed.addComponent(seedComponent);
 
             return herbSeed;

@@ -1,7 +1,6 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.CookedRice",
         "stackId": "WoodAndStone:herb",
         "renderWithIcon": true
     },
