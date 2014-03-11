@@ -43,7 +43,7 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
 
     @Override
     public void initialise() {
-        pickupBuilder = new PickupBuilder();
+        pickupBuilder = new PickupBuilder(entityManager);
     }
 
     @ReceiveEvent

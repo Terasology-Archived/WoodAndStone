@@ -61,7 +61,7 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
 
     @Override
     public void preBegin() {
-        pickupBuilder = new PickupBuilder();
+        pickupBuilder = new PickupBuilder(entityManager);
         random = new FastRandom();
     }
 
