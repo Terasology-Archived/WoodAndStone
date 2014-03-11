@@ -7,9 +7,9 @@
         "tileNames": [
             "Branch", "Fiber", "Twig", "Stone", "Flint", "SharpStone", "ToolStone", "Resin",
             "StoneKnifeBlade", "AxeHammerHead", "StoneArrowHead", "StoneHammerHead", "Mortar", "", "", "",
-            "StoneKnife", "CrudeAxeHammer", "StoneAxe", "StoneHammer", "", "", "", "",
+            "StoneKnife", "CrudeAxeHammer", "StoneAxe", "StoneHammer", "StoneHoe", "", "", "",
             "", "", "", "", "", "", "", "",
-            "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick", "",
+            "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick", "DigginStick",
             "", "", "", "", "", "", "", "",
             "Clay", "Brick", "SmallPottery", "Pottery1", "Pottery2", "", "", "",
             "RockSalt", "GroundSalt", "Bread", "CornFlour", "CookedCorn", "Rice", "CookedRice", ""

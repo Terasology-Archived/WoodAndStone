@@ -3,5 +3,5 @@
     "entity": {
         "prefab": "WoodAndStone:TilledEarth"
     },
-    "tile": "Core:Dirt"
+    "tile": "WoodAndStone:TilledEarth"
 }
