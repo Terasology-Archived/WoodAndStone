@@ -6,6 +6,10 @@
     "description" : "Basic 'Stone Age' crafting",
     "dependencies" : [
             {
+                "id" : "AlterationEffects",
+                "minVersion" : "0.1.0"
+            },
+            {
                 "id" : "GrowingFlora",
                 "minVersion" : "0.1.0"
             },

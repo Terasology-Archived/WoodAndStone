@@ -16,6 +16,10 @@
 package org.terasology.herbalism.system;
 
 import com.google.common.base.Function;
+import org.terasology.alterationEffects.breath.WaterBreathingAlterationEffect;
+import org.terasology.alterationEffects.regenerate.RegenerationAlterationEffect;
+import org.terasology.alterationEffects.speed.SwimSpeedAlterationEffect;
+import org.terasology.alterationEffects.speed.WalkSpeedAlterationEffect;
 import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -40,6 +44,7 @@ import org.terasology.herbalism.HerbGeneMutator;
 import org.terasology.herbalism.HerbNameProvider;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.PollinatingHerbComponent;
+import org.terasology.herbalism.effect.AlterationEffectWrapperHerbEffect;
 import org.terasology.herbalism.effect.DoNothingEffect;
 import org.terasology.herbalism.effect.HealEffect;
 import org.terasology.math.Vector3i;
@@ -74,6 +79,10 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
     public void preBegin() {
         herbEffectRegistry.registerHerbEffect(1f, new DoNothingEffect());
         herbEffectRegistry.registerHerbEffect(1f, new HealEffect());
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WalkSpeedAlterationEffect(), 1f, 1f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new SwimSpeedAlterationEffect(), 1f, 1f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new RegenerationAlterationEffect(), 1f, 100f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WaterBreathingAlterationEffect(), 1f, 1f));
 
         final HerbNameProvider herbNameProvider = new HerbNameProvider(worldProvider.getSeed().hashCode());
 
