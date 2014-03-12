@@ -16,6 +16,8 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
+import org.terasology.asset.Asset;
+import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -25,8 +27,6 @@ import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.farm.component.SeedComponent;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
@@ -35,6 +35,7 @@ import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.assets.texture.TextureRegion;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.world.block.Block;
 
@@ -125,6 +126,10 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK_PROPERTY, Block.class);
             herbSeed.addComponent(seedComponent);
 
+            ItemComponent itemComponent = herbSeed.getComponent(ItemComponent.class);
+            itemComponent.icon = Assets.getTextureRegion("PlantPack:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")");
+            herbSeed.saveComponent(itemComponent);
+
             return herbSeed;
         }
 
@@ -161,9 +166,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
 
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
-            Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab("WoodAndStone:HerbSeedBase");
-
-            itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
+            itemIcon.setIcon(Assets.getTextureRegion("PlantPack:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")"));
             itemIcon.setTooltip("Seeds of " + HERB_BEHAVIOUR.getHerbName(parameters.get(1)));
         }
     }
@@ -189,8 +192,9 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
 
             final GenomeManager genomeManager = CoreRegistry.get(GenomeManager.class);
             String herbName = genomeManager.getGenomeProperty(item, Herbalism.NAME_PROPERTY, String.class);
+            String herbIconUri = ((Asset) genomeManager.getGenomeProperty(item, Herbalism.ICON_PROPERTY, TextureRegion.class)).getURI().toSimpleString();
 
-            return super.getParameter(slots, item) + "|" + genome.genes + "|" + herbName;
+            return super.getParameter(slots, item) + "|" + genome.genes + "|" + herbName + "|" + herbIconUri;
         }
 
         public String getSeedGenome(String parameter) {
@@ -199,6 +203,10 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
 
         public String getHerbName(String parameter) {
             return parameter.split("\\|")[2];
+        }
+
+        public String getHerbIconUri(String parameter) {
+            return parameter.split("\\|")[3];
         }
     }
 }
