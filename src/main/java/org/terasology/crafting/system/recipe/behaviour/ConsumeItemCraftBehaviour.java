@@ -20,9 +20,10 @@ import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.action.RemoveItemAction;
+import org.terasology.registry.CoreRegistry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,7 +151,6 @@ public class ConsumeItemCraftBehaviour implements IngredientCraftBehaviour<Entit
             items.add(InventoryUtils.getItemAt(entity, slot));
         }
 
-        RemoveItemAction removeAction = new RemoveItemAction(instigator, items, true, count * multiplier);
-        entity.send(removeAction);
+        CoreRegistry.get(InventoryManager.class).removeItem(entity, instigator, items, true, count * multiplier);
     }
 }

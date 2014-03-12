@@ -20,8 +20,8 @@ import org.terasology.entitySystem.Component;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.component.HeatFuelComponent;
 import org.terasology.heat.component.HeatProducerComponent;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.SpecificInputSlotComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
@@ -85,9 +85,7 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
 
         long time = CoreRegistry.get(Time.class).getGameTimeInMs();
 
-        RemoveItemAction remove = new RemoveItemAction(instigator, item, true, 1);
-        workstation.send(remove);
-        if (remove.isConsumed()) {
+        if (CoreRegistry.get(InventoryManager.class).removeItem(workstation, instigator, item, true, 1) != null) {
             HeatProducerComponent producer = workstation.getComponent(HeatProducerComponent.class);
             HeatProducerComponent.FuelSourceConsume fuelSource = new HeatProducerComponent.FuelSourceConsume();
             fuelSource.startTime = time;

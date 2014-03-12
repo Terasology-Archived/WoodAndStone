@@ -20,10 +20,9 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.action.GiveItemAction;
-import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.mill.component.MillProcessedComponent;
 import org.terasology.mill.component.MillProgressComponent;
 import org.terasology.registry.CoreRegistry;
@@ -132,12 +131,12 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
         if (!workstation.hasComponent(MillProgressComponent.class)) {
             SpecificInputSlotComponent specificInputSlotComponent = processEntity.getComponent(SpecificInputSlotComponent.class);
             EntityRef item = InventoryUtils.getItemAt(workstation, specificInputSlotComponent.slot);
-            RemoveItemAction removeItem = new RemoveItemAction(instigator, item, false, 1);
-            workstation.send(removeItem);
-            EntityRef removedItem = removeItem.getRemovedItem();
-            MillProgressComponent millProgress = new MillProgressComponent();
-            millProgress.processedItem = removedItem;
-            workstation.addComponent(millProgress);
+            final EntityRef removedItem = CoreRegistry.get(InventoryManager.class).removeItem(workstation, instigator, item, false, 1);
+            if (removedItem != null) {
+                MillProgressComponent millProgress = new MillProgressComponent();
+                millProgress.processedItem = removedItem;
+                workstation.addComponent(millProgress);
+            }
         }
     }
 
@@ -154,9 +153,7 @@ public class MillProcessingComponent implements Component, ProcessPart, Validate
             EntityRef resultItem = createResultItem(getResult(processed));
             millProgress.processedItem.destroy();
 
-            GiveItemAction action = new GiveItemAction(instigator, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
-            workstation.send(action);
-            if (action.isConsumed()) {
+            if (CoreRegistry.get(InventoryManager.class).giveItem(workstation, instigator, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"))) {
                 return;
             }
             resultItem.destroy();

@@ -19,7 +19,8 @@ import org.terasology.crafting.component.CraftingProcessComponent;
 import org.terasology.crafting.event.CraftingWorkstationProcessRequest;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.action.GiveItemAction;
+import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
@@ -120,9 +121,7 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
 
         final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation, craftingProcess.parameters);
         EntityRef resultItem = result.finishCrafting(workstation, craftingProcess.count);
-        GiveItemAction giveItem = new GiveItemAction(workstation, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
-        workstation.send(giveItem);
-        if (giveItem.isConsumed()) {
+        if (CoreRegistry.get(InventoryManager.class).giveItem(workstation, workstation, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"))) {
             return;
         }
         resultItem.destroy();

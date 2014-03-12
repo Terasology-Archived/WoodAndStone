@@ -30,9 +30,9 @@ import org.terasology.herbalism.component.GeneratedHerbComponent;
 import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.health.DoDestroyEvent;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.PickupBuilder;
-import org.terasology.logic.inventory.action.GiveItemAction;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.math.Vector2i;
@@ -55,6 +55,8 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
     private EntityManager entityManager;
     @In
     private GenomeManager genomeManager;
+    @In
+    private InventoryManager inventoryManager;
 
     private PickupBuilder pickupBuilder;
     private Random random;
@@ -144,14 +146,9 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
     }
 
     private boolean shouldDropToWorld(DoDestroyEvent event, BlockDamageModifierComponent blockDamageModifierComponent, EntityRef dropItem) {
+        EntityRef instigator = event.getInstigator();
         return blockDamageModifierComponent == null || !blockDamageModifierComponent.directPickup
-                || !giveItem(event.getInstigator(), dropItem);
-    }
-
-    private boolean giveItem(EntityRef instigator, EntityRef dropItem) {
-        GiveItemAction giveEvent = new GiveItemAction(instigator, dropItem);
-        instigator.send(giveEvent);
-        return giveEvent.isConsumed();
+                || !inventoryManager.giveItem(instigator, instigator, dropItem);
     }
 
     private void createDrop(EntityRef item, Vector3f location, boolean applyMovement) {

@@ -22,10 +22,9 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.heat.HeatUtils;
 import org.terasology.heat.component.HeatProcessedComponent;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.action.GiveItemAction;
-import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.component.OutputTypeComponent;
 import org.terasology.workstation.component.SpecificInputSlotComponent;
@@ -125,7 +124,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     public void executeStart(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         SpecificInputSlotComponent input = processEntity.getComponent(SpecificInputSlotComponent.class);
         EntityRef item = InventoryUtils.getItemAt(workstation, input.slot);
-        workstation.send(new RemoveItemAction(instigator, item, true, 1));
+        CoreRegistry.get(InventoryManager.class).removeItem(workstation, instigator, item, true, 1);
     }
 
     @Override
@@ -133,9 +132,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
         OutputTypeComponent output = processEntity.getComponent(OutputTypeComponent.class);
         EntityRef toGive = createResultItem(output.type);
 
-        GiveItemAction action = new GiveItemAction(instigator, toGive, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"));
-        workstation.send(action);
-        if (action.isConsumed()) {
+        if (CoreRegistry.get(InventoryManager.class).giveItem(workstation, instigator, toGive, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"))) {
             return;
         }
         toGive.destroy();

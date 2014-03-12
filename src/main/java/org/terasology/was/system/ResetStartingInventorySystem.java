@@ -21,7 +21,6 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.registry.In;
 
@@ -36,8 +35,7 @@ public class ResetStartingInventorySystem extends BaseComponentSystem {
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
     public void resetStartingInventory(OnPlayerSpawnedEvent event, EntityRef character) {
         for (int i = 0; i < manager.getNumSlots(character); i++) {
-            RemoveItemAction removeAction = new RemoveItemAction(EntityRef.NULL, manager.getItemInSlot(character, i), true);
-            character.send(removeAction);
+            manager.removeItem(character, EntityRef.NULL, manager.getItemInSlot(character, i), true);
         }
     }
 }

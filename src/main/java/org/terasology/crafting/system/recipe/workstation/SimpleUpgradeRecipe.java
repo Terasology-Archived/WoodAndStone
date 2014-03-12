@@ -6,7 +6,6 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.action.RemoveItemAction;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.Region3i;
 import org.terasology.math.Vector3i;
@@ -104,8 +103,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
 
             int index = 0;
             for (Map.Entry<String, Integer> ingredientCount : ingredientsMap.entrySet()) {
-                RemoveItemAction removeAction = new RemoveItemAction(station, inventoryManager.getItemInSlot(station, items.get(index)), true, ingredientCount.getValue());
-                station.send(removeAction);
+                inventoryManager.removeItem(station, station, inventoryManager.getItemInSlot(station, items.get(index)), true, ingredientCount.getValue());
                 index++;
             }
 
