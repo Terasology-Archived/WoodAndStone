@@ -134,6 +134,10 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             genomeComponent.genes = generatedGenes;
             herb.addComponent(genomeComponent);
 
+            final ItemComponent item = herb.getComponent(ItemComponent.class);
+            item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegion.class);
+            herb.saveComponent(item);
+
             final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
             DisplayNameComponent displayName = new DisplayNameComponent();
             displayName.name = herbName;

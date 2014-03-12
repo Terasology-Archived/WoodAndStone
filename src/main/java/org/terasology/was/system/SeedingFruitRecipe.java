@@ -16,6 +16,8 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
+import org.terasology.asset.Asset;
+import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -103,7 +105,12 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
             KNIFE_BEHAVIOUR.processIngredient(character, character, parameters.get(0), count);
             FRUIT_BEHAVIOUR.processIngredient(character, character, parameters.get(1), count);
 
-            return CoreRegistry.get(EntityManager.class).create(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
+            EntityRef result = CoreRegistry.get(EntityManager.class).create(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
+            ItemComponent itemComponent = result.getComponent(ItemComponent.class);
+            itemComponent.icon = Assets.getTextureRegion("PlantPack:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")");
+            result.saveComponent(itemComponent);
+
+            return result;
         }
 
         @Override
@@ -141,7 +148,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
         public void setupResultDisplay(ItemIcon itemIcon) {
             Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
 
-            itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
+            itemIcon.setIcon(Assets.getTextureRegion("PlantPack:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")"));
             DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
             if (displayName != null) {
                 itemIcon.setTooltip(displayName.name);
@@ -171,11 +178,19 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
             Prefab prefab = item.getParentPrefab();
             String assetName = prefab.getURI().getNormalisedAssetName();
             String fruitName = assetName.substring(0, assetName.length() - 5);
-            return super.getParameter(slots, item) + "|" + fruitName;
+
+            ItemComponent component = item.getComponent(ItemComponent.class);
+            return super.getParameter(slots, item) + "|" + fruitName + "|" + ((Asset) component.icon).getURI().toSimpleString();
         }
 
         public String getSeedResult(String parameter) {
-            return "PlantPack:" + parameter.substring(parameter.indexOf('|') + 1) + "Seed";
+            String[] split = parameter.split("\\|");
+            return "PlantPack:" + split[1] + "Seed";
+        }
+
+        public String getFruitIcon(String parameter) {
+            String[] split = parameter.split("\\|");
+            return split[2];
         }
     }
 }
