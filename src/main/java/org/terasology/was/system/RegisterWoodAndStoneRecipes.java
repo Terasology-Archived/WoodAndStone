@@ -84,9 +84,21 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
         addHerbalismWorkstationRecipes();
 
+        addWoodPlankRecipes();
+
         addStandardWoodWorkstationBlockShapeRecipes();
 
         addBasicStoneWorkstationBlockShapeRecipes();
+    }
+
+    private void addWoodPlankRecipes() {
+        workstationRegistry.registerProcess(WoodAndStone.BASIC_WOODCRAFTING_PROCESS_TYPE,
+                new CraftingWorkstationProcess(WoodAndStone.BASIC_WOODCRAFTING_PROCESS_TYPE, "Materials|WoodAndStone:WoodPlank",
+                        new PlankRecipe(2)));
+
+        workstationRegistry.registerProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE,
+                new CraftingWorkstationProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Materials|WoodAndStone:WoodPlank",
+                        new PlankRecipe(3)));
     }
 
     private void addWorkstationFormingRecipes() {

@@ -6,7 +6,7 @@
         "renderWithIcon": true
     },
     "DisplayName" : {
-        "name" : "Wood Plank"
+        "name" : "Plank"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:plank"
