@@ -24,6 +24,7 @@ import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
+import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -43,6 +44,7 @@ import org.terasology.herbalism.HerbEffectRegistry;
 import org.terasology.herbalism.HerbGeneMutator;
 import org.terasology.herbalism.HerbNameProvider;
 import org.terasology.herbalism.Herbalism;
+import org.terasology.herbalism.component.HerbHueComponent;
 import org.terasology.herbalism.component.PollinatingHerbComponent;
 import org.terasology.herbalism.effect.AlterationEffectWrapperHerbEffect;
 import org.terasology.herbalism.effect.DoNothingEffect;
@@ -74,6 +76,8 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
     private BlockEntityRegistry blockEntityRegistry;
     @In
     private EntityManager entityManager;
+    @In
+    private PrefabManager prefabManager;
 
     @Override
     public void preBegin() {
@@ -132,11 +136,26 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         return herbNameProvider.getName(input);
                     }
                 });
-        herbGenomeMap.addProperty(Herbalism.ICON_PROPERTY, new int[]{0}, TextureRegion.class,
+        herbGenomeMap.addProperty(Herbalism.ICON_PROPERTY, new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, TextureRegion.class,
                 new Function<String, TextureRegion>() {
                     @Override
                     public TextureRegion apply(String input) {
-                        return Assets.getTextureRegion("WoodAndStone:Herb" + input);
+                        String type = input.substring(0, 1);
+                        String genes = input.substring(1, 10);
+                        HerbHueComponent herbHue = prefabManager.getPrefab("WoodAndStone:HerbHue" + type).getComponent(HerbHueComponent.class);
+
+                        FastRandom rnd = new FastRandom(genes.hashCode() + 3497987);
+                        StringBuilder hueStr = new StringBuilder();
+                        for (String hueRange : herbHue.hueRanges) {
+                            String[] hueRangeSplit = hueRange.split("-");
+                            float min = Float.parseFloat(hueRangeSplit[0]);
+                            float max = Float.parseFloat(hueRangeSplit[1]);
+
+                            hueStr.append(String.valueOf(rnd.nextFloat(min, max))).append(",");
+                        }
+                        hueStr.replace(hueStr.length() - 1, hueStr.length(), "");
+
+                        return Assets.getTextureRegion("Herbalism:herb(WoodAndStone:Herb" + type + ")(" + hueStr.toString() + ")");
                     }
                 });
         herbGenomeMap.addProperty(Herbalism.PLANTED_BLOCK_PROPERTY, new int[]{0}, Block.class,
