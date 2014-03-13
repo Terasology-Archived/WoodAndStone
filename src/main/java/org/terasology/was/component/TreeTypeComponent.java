@@ -21,4 +21,16 @@ import org.terasology.logic.inventory.ItemDifferentiating;
 @ItemDifferentiating
 public class TreeTypeComponent implements Component {
     public String treeType;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TreeTypeComponent that = (TreeTypeComponent) o;
+
+        if (treeType != null ? !treeType.equals(that.treeType) : that.treeType != null) return false;
+
+        return true;
+    }
 }
