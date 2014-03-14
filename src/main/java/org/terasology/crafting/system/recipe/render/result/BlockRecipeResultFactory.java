@@ -30,6 +30,10 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
     private Block block;
     private int count;
 
+    protected BlockRecipeResultFactory(int count) {
+        this(null, count);
+    }
+
     public BlockRecipeResultFactory(Block block, int count) {
         this.block = block;
         this.count = count;
@@ -37,16 +41,20 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
 
     @Override
     public int getMaxMultiplier(List<String> parameters) {
-        if (block.isStackable()) {
+        if (getBlock(parameters).isStackable()) {
             return 99 / count;
         } else {
             return 1;
         }
     }
 
+    protected Block getBlock(List<String> parameters) {
+        return block;
+    }
+
     @Override
     public EntityRef createResult(List<String> parameters, int multiplier) {
-        return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(block.getBlockFamily(), count * multiplier);
+        return new BlockItemFactory(CoreRegistry.get(EntityManager.class)).newInstance(getBlock(parameters).getBlockFamily(), count * multiplier);
     }
 
     @Override
@@ -56,8 +64,9 @@ public class BlockRecipeResultFactory implements RecipeResultFactory {
 
     @Override
     public void setupDisplay(List<String> parameters, ItemIcon itemIcon) {
-        itemIcon.setMesh(block.getMesh());
+        Block blockToDisplay = getBlock(parameters);
+        itemIcon.setMesh(blockToDisplay.getMesh());
         itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
-        itemIcon.setTooltip(block.getDisplayName());
+        itemIcon.setTooltip(blockToDisplay.getDisplayName());
     }
 }

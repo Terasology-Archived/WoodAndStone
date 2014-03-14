@@ -134,8 +134,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     }
 
     private void addStandardWoodWorkstationBlockShapeRecipes() {
-        addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Planks|WoodAndStone:PlankBlock",
-                "WoodAndStone:plank", 2, "hammer", 1, "Core:Plank", 4);
+        addPlankBlockRecipes();
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, "Building|Fine Planks|WoodAndStone:FinePlankBlock",
                 "WoodAndStone:plank", 4, "hammer", 1, "WoodAndStone:FinePlank", 1);
     }
@@ -145,6 +144,37 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
                 "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
+    }
+
+    private void addPlankBlockShapeRecipe(String shape, int ingredientMultiplier, int durabilityMultiplier, int resultMultiplier) {
+        String recipeName = "Building|Planks|WoodAndStone:PlankBlock";
+        if (shape != null) {
+            recipeName += shape;
+        }
+        workstationRegistry.registerProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE,
+                new CraftingWorkstationProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, recipeName,
+                        new PlankBlockRecipe(2 * ingredientMultiplier, 1 * durabilityMultiplier, shape, 4 * resultMultiplier)));
+    }
+
+    private void addPlankBlockRecipes() {
+        addPlankBlockShapeRecipe(null, 1, 1, 1);
+        addPlankBlockShapeRecipe("Stair", 3, 4, 2);
+
+        addPlankBlockShapeRecipe("Slope", 1, 2, 2);
+        addPlankBlockShapeRecipe("UpperHalfSlope", 1, 2, 2);
+        addPlankBlockShapeRecipe("SlopeCorner", 1, 2, 2);
+
+        addPlankBlockShapeRecipe("SteepSlope", 1, 1, 2);
+        addPlankBlockShapeRecipe("QuarterSlope", 1, 8, 2);
+
+        addPlankBlockShapeRecipe("HalfBlock", 1, 2, 1);
+        addPlankBlockShapeRecipe("EighthBlock", 1, 8, 1);
+        addPlankBlockShapeRecipe("HalfSlope", 1, 4, 2);
+        addPlankBlockShapeRecipe("HalfSlopeCorner", 1, 6, 1);
+
+        addPlankBlockShapeRecipe("PillarTop", 1, 1, 2);
+        addPlankBlockShapeRecipe("Pillar", 1, 1, 2);
+        addPlankBlockShapeRecipe("PillarBase", 1, 1, 2);
     }
 
     private void addCraftInHandRecipes() {
