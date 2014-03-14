@@ -35,7 +35,7 @@ import java.util.List;
 
 public class PlankRecipe extends AbstractWorkstationRecipe {
     public PlankRecipe(int plankCount) {
-        Predicate<EntityRef> woodPredicate = new CraftingStationIngredientPredicate("1*WoodAndStone:wood");
+        Predicate<EntityRef> woodPredicate = new CraftingStationIngredientPredicate("WoodAndStone:wood");
         Predicate<EntityRef> axePredicate = new CraftingStationToolPredicate("axe");
 
         addIngredientBehaviour(new ConsumeWoodIngredientBehaviour(woodPredicate, 1, new InventorySlotTypeResolver("INPUT")));
@@ -54,7 +54,7 @@ public class PlankRecipe extends AbstractWorkstationRecipe {
             super.setupDisplay(parameters, itemIcon);
 
             final String[] split = parameters.get(0).split("\\|");
-            if (split.length > 0) {
+            if (split.length > 1) {
                 itemIcon.setTooltip(split[1] + " Plank");
             }
         }

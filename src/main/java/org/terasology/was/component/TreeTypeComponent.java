@@ -17,19 +17,27 @@ package org.terasology.was.component;
 
 import org.terasology.entitySystem.Component;
 import org.terasology.logic.inventory.ItemDifferentiating;
+import org.terasology.world.block.items.AddToBlockBasedItem;
 
 @ItemDifferentiating
+@AddToBlockBasedItem
 public class TreeTypeComponent implements Component {
     public String treeType;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         TreeTypeComponent that = (TreeTypeComponent) o;
 
-        if (treeType != null ? !treeType.equals(that.treeType) : that.treeType != null) return false;
+        if (treeType != null ? !treeType.equals(that.treeType) : that.treeType != null) {
+            return false;
+        }
 
         return true;
     }
