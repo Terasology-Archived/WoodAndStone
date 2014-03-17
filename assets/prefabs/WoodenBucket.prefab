@@ -12,7 +12,7 @@
         "volume": 10,
         "fluidMinPerc": [0.1875, 0.15625],
         "fluidSizePerc": [0.625, 0.4375],
-        "textureWithWhole": "WoodAndStone:items.WoodenBucket",
+        "textureWithHole": "WoodAndStone:items.WoodenBucket",
         "emptyTexture": "WoodAndStone:items.WoodenBucketEmpty"
     }
 }
