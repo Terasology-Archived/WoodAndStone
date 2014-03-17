@@ -29,7 +29,7 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.was.component.TreeTypeComponent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
+import org.terasology.world.block.BlockUri;
 
 import java.util.List;
 
@@ -59,8 +59,8 @@ public class PlankBlockRecipe extends AbstractWorkstationRecipe {
             if (split.length == 2) {
                 String treeType = split[1];
                 String blockType = "WoodAndStone:" + treeType + "Plank";
-                BlockFamily blockFamily = blockManager.getBlockFamily(blockType);
-                if (blockFamily != null) {
+                BlockUri customBlockUri = new BlockUri("WoodAndStone", treeType + "Plank");
+                if (blockManager.hasBlockFamily(customBlockUri)) {
                     return blockManager.getBlockFamily(appendShapeIfNeeded(blockType)).getArchetypeBlock();
                 }
             }
