@@ -32,6 +32,18 @@ import java.nio.ByteBuffer;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData> {
+    public static String getHerbUri(String iconUri, float[] hueValues) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Herbalism:Herb(");
+        sb.append(iconUri);
+        for (float hueValue : hueValues) {
+            sb.append(",").append(String.valueOf(hueValue));
+        }
+        sb.append(")");
+
+        return sb.toString();
+    }
+
     @Override
     public AssetUri resolve(String partialUri) {
         String[] parts = partialUri.split("\\(", 2);
@@ -53,15 +65,16 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
         String assetName = uri.getAssetName();
         String[] split = assetName.split("\\(");
 
-        String textureResourceUri = split[1].substring(0, split[1].length() - 1);
-        String[] hueValuesStr = split[2].substring(0, split[2].length() - 1).split(",");
+        String parameters = split[1].substring(0, split[1].length() - 1);
+        String[] parameterValues = parameters.split(",");
+        String textureResourceUri = parameterValues[0];
 
         BufferedImage resourceImage = TextureUtil.convertToImage(Assets.getTextureRegion(textureResourceUri));
         int imageSize = resourceImage.getHeight();
 
         int frameCount = resourceImage.getWidth() / imageSize;
 
-        if (frameCount != hueValuesStr.length) {
+        if (frameCount != parameterValues.length - 1) {
             return null;
         }
 
@@ -70,7 +83,7 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
         float[] hsv = new float[3];
 
         for (int i = 0; i < frameCount; i++) {
-            float hue = Float.parseFloat(hueValuesStr[i]);
+            float hue = Float.parseFloat(parameterValues[i + 1]);
             for (int y = 0; y < imageSize; y++) {
                 for (int x = 0; x < imageSize; x++) {
                     int argb = resourceImage.getRGB(x + i * imageSize, y);

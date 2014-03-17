@@ -145,17 +145,15 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         HerbHueComponent herbHue = prefabManager.getPrefab("WoodAndStone:HerbHue" + type).getComponent(HerbHueComponent.class);
 
                         FastRandom rnd = new FastRandom(genes.hashCode() + 3497987);
-                        StringBuilder hueStr = new StringBuilder();
-                        for (String hueRange : herbHue.hueRanges) {
-                            String[] hueRangeSplit = hueRange.split("-");
+                        float[] hueValues = new float[herbHue.hueRanges.size()];
+                        for (int i = 0; i < hueValues.length; i++) {
+                            String[] hueRangeSplit = herbHue.hueRanges.get(i).split("-");
                             float min = Float.parseFloat(hueRangeSplit[0]);
                             float max = Float.parseFloat(hueRangeSplit[1]);
-
-                            hueStr.append(String.valueOf(rnd.nextFloat(min, max))).append(",");
+                            hueValues[i] = rnd.nextFloat(min, max);
                         }
-                        hueStr.replace(hueStr.length() - 1, hueStr.length(), "");
 
-                        return Assets.getTextureRegion("Herbalism:herb(WoodAndStone:Herb" + type + ")(" + hueStr.toString() + ")");
+                        return Assets.getTextureRegion(HerbIconAssetResolver.getHerbUri("WoodAndStone:Herb" + type, hueValues));
                     }
                 });
         herbGenomeMap.addProperty(Herbalism.PLANTED_BLOCK_PROPERTY, new int[]{0}, Block.class,
