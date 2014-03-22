@@ -27,9 +27,8 @@ import org.terasology.math.Vector2i;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
 import org.terasology.rendering.nui.Canvas;
+import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
-
-import java.awt.*;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
