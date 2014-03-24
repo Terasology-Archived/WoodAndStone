@@ -18,26 +18,42 @@ package org.terasology.was.system;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.DurabilityExhaustedEvent;
 import org.terasology.durability.OverTimeDurabilityReduceComponent;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.items.OnBlockItemPlaced;
+import org.terasology.world.block.items.OnBlockToItem;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem
 public class LitTorchSystem extends BaseComponentSystem {
+    @In
+    private EntityManager entityManager;
+
     @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class})
     public void whenTorchPlaced(OnBlockItemPlaced event, EntityRef item) {
-        event.getPlacedBlock().saveComponent(item.getComponent(DurabilityComponent.class));
-        event.getPlacedBlock().saveComponent(item.getComponent(OverTimeDurabilityReduceComponent.class));
+        EntityRef blockEntity = event.getPlacedBlock();
+        DurabilityComponent durability = blockEntity.getComponent(DurabilityComponent.class);
+        durability.durability = item.getComponent(DurabilityComponent.class).durability;
+        blockEntity.saveComponent(durability);
+    }
+
+    @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class})
+    public void whenTorchRemoved(OnBlockToItem event, EntityRef block) {
+        EntityRef itemEntity = event.getItem();
+        DurabilityComponent durability = itemEntity.getComponent(DurabilityComponent.class);
+        durability.durability = block.getComponent(DurabilityComponent.class).durability;
+        itemEntity.saveComponent(durability);
     }
 
     @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class, BlockComponent.class})
