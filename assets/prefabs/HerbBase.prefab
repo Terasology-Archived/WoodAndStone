@@ -4,5 +4,8 @@
         "stackId": "WoodAndStone:herb",
         "renderWithIcon": true
     },
-    "Herb": { }
+    "Herb": { },
+    "DisplayName": {
+        "name": "Herb"
+    }
 }

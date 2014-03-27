@@ -28,7 +28,6 @@ import org.terasology.herbalism.HerbGeneMutator;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.GeneratedHerbComponent;
 import org.terasology.herbalism.component.HerbComponent;
-import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.health.DoDestroyEvent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
@@ -99,11 +98,6 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegion.class);
             herb.saveComponent(item);
 
-            final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
-            DisplayNameComponent displayName = new DisplayNameComponent();
-            displayName.name = herbName;
-            herb.saveComponent(displayName);
-
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
                 createDrop(herb, locationComp.getWorldPosition(), false);
             }
@@ -137,11 +131,6 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             final ItemComponent item = herb.getComponent(ItemComponent.class);
             item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegion.class);
             herb.saveComponent(item);
-
-            final String herbName = genomeManager.getGenomeProperty(herb, Herbalism.NAME_PROPERTY, String.class);
-            DisplayNameComponent displayName = new DisplayNameComponent();
-            displayName.name = herbName;
-            herb.saveComponent(displayName);
 
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
                 createDrop(herb, locationComp.getWorldPosition(), false);

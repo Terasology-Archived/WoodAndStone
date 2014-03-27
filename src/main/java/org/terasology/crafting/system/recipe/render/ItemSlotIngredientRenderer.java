@@ -24,6 +24,7 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
 import org.terasology.rendering.nui.Canvas;
+import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.world.block.items.BlockItemComponent;
 
@@ -47,10 +48,16 @@ public class ItemSlotIngredientRenderer implements CraftIngredientRenderer {
             itemIcon.setMesh(blockItemComp.blockFamily.getArchetypeBlock().getMesh());
             itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
         }
+        GetItemTooltip tooltipEvent;
         DisplayNameComponent displayName = item.getComponent(DisplayNameComponent.class);
         if (displayName != null) {
-            itemIcon.setTooltip(displayName.name);
+            tooltipEvent = new GetItemTooltip(displayName.name);
+        } else {
+            tooltipEvent = new GetItemTooltip();
         }
+        item.send(tooltipEvent);
+
+        itemIcon.setTooltipLines(tooltipEvent.getTooltipLines());
     }
 
     @Override

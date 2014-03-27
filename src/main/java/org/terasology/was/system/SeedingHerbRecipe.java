@@ -32,11 +32,12 @@ import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.HerbComponent;
-import org.terasology.logic.common.DisplayNameComponent;
+import org.terasology.herbalism.system.HerbalismClientSystem;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.assets.texture.TextureRegion;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.rendering.nui.widgets.TooltipLine;
 import org.terasology.world.block.Block;
 
 import java.util.Arrays;
@@ -118,10 +119,6 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             genomeComponent.genes = HERB_BEHAVIOUR.getSeedGenome(parameters.get(1));
             herbSeed.addComponent(genomeComponent);
 
-            DisplayNameComponent displayName = new DisplayNameComponent();
-            displayName.name = "Seeds of " + HERB_BEHAVIOUR.getHerbName(parameters.get(1));
-            herbSeed.saveComponent(displayName);
-
             SeedComponent seedComponent = new SeedComponent();
             seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK_PROPERTY, Block.class);
             herbSeed.addComponent(seedComponent);
@@ -167,7 +164,8 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
             itemIcon.setIcon(Assets.getTextureRegion("PlantPack:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")"));
-            itemIcon.setTooltip("Seeds of " + HERB_BEHAVIOUR.getHerbName(parameters.get(1)));
+            itemIcon.setTooltipLines(
+                    Arrays.asList(new TooltipLine("Herb Seed"), HerbalismClientSystem.getHerbTooltipLine(HERB_BEHAVIOUR.getHerbName(parameters.get(1)))));
         }
     }
 

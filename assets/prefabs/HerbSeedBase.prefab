@@ -5,5 +5,8 @@
         "stackId": "WoodAndStone:herbSeed",
         "renderWithIcon": true,
         "consumedOnUse": true
+    },
+    "DisplayName": {
+        "name": "Herb Seed"
     }
 }

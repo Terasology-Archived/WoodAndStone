@@ -27,12 +27,14 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
-import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.Herbalism;
-import org.terasology.logic.common.DisplayNameComponent;
+import org.terasology.herbalism.component.HerbComponent;
+import org.terasology.herbalism.system.HerbalismClientSystem;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.rendering.nui.widgets.TooltipLine;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
@@ -60,7 +62,8 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             super.setupDisplay(parameters, itemIcon);
             final String herbParameter = parameters.get(0);
             final String herbName = herbParameter.split("\\|")[3];
-            itemIcon.setTooltip("Extract from " + herbName);
+            itemIcon.setTooltipLines(
+                    Arrays.asList(new TooltipLine("Herb Potion"), HerbalismClientSystem.getHerbTooltipLine(herbName)));
         }
 
         @Override
@@ -75,9 +78,6 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             genome.genomeId = genomeId;
             genome.genes = genes;
             result.addComponent(genome);
-            DisplayNameComponent displayName = result.getComponent(DisplayNameComponent.class);
-            displayName.name = "Extract from " + herbName;
-            result.saveComponent(displayName);
             return result;
         }
     }
