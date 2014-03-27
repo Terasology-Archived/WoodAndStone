@@ -73,7 +73,6 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             final String[] herbSplit = herbParameter.split("\\|");
             final String genomeId = herbSplit[1];
             final String genes = herbSplit[2];
-            final String herbName = herbSplit[3];
             GenomeComponent genome = new GenomeComponent();
             genome.genomeId = genomeId;
             genome.genes = genes;
