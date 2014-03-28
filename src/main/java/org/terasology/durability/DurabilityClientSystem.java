@@ -28,15 +28,17 @@ import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.Color;
+import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
+import org.terasology.rendering.nui.widgets.TooltipLine;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterSystem(RegisterMode.CLIENT)
 public class DurabilityClientSystem extends BaseComponentSystem {
-    @ReceiveEvent(components = {DurabilityComponent.class})
-    public void drawDurabilityBar(InventoryCellRendered event, EntityRef entity) {
+    @ReceiveEvent
+    public void drawDurabilityBar(InventoryCellRendered event, EntityRef entity, DurabilityComponent durability) {
         Canvas canvas = event.getCanvas();
 
         Vector2i size = canvas.size();
@@ -47,20 +49,33 @@ public class DurabilityClientSystem extends BaseComponentSystem {
         int minY = (int) (size.y * 0.8f);
         int maxY = (int) (size.y * 0.9f);
 
-        DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
         float durabilityPercentage = 1f * durability.durability / durability.maxDurability;
 
         if (durabilityPercentage != 1f) {
             AssetUri backgroundTexture = TextureUtil.getTextureUriForColor(Color.WHITE);
-            float red = Math.min(1, (1f - durabilityPercentage) * 2);
-            float green = Math.min(1, durabilityPercentage * 2);
 
-            AssetUri barTexture = TextureUtil.getTextureUriForColor(new Color(red, green, 0));
+            final Color terasologyColor = getTerasologyColorForDurability(durabilityPercentage);
+
+            AssetUri barTexture = TextureUtil.getTextureUriForColor(terasologyColor);
 
             canvas.drawTexture(Assets.get(backgroundTexture, Texture.class), Rect2i.createFromMinAndMax(minX, minY, maxX, maxY));
             int durabilityBarLength = (int) (durabilityPercentage * (maxX - minX - 1));
             int durabilityBarHeight = maxY - minY - 1;
             canvas.drawTexture(Assets.get(barTexture, Texture.class), Rect2i.createFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
         }
+    }
+
+    private Color getTerasologyColorForDurability(float durabilityPercentage) {
+        final java.awt.Color awtColor = java.awt.Color.getHSBColor(0.33f * durabilityPercentage, 1f, 0.8f);
+
+        return new Color(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue());
+    }
+
+    @ReceiveEvent
+    public void getDurabilityItemTooltip(GetItemTooltip event, EntityRef entity, DurabilityComponent durability) {
+        float durabilityPercentage = 1f * durability.durability / durability.maxDurability;
+
+        final Color color = getTerasologyColorForDurability(durabilityPercentage);
+        event.getTooltipLines().add(new TooltipLine("Durability: " + durability.durability + "/" + durability.maxDurability, color));
     }
 }
