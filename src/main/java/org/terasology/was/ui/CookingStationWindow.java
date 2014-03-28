@@ -13,6 +13,7 @@ import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
+import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.was.WoodAndStone;
@@ -93,8 +94,8 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
         final int waterSlot = fluidInputAssignments.slotStart;
         fluidContainer.setSlotNo(waterSlot);
 
-        fluidContainer.bindTooltip(
-                new Binding<String>() {
+        fluidContainer.bindTooltipString(
+                new ReadOnlyBinding<String>() {
                     @Override
                     public String get() {
                         FluidInventoryComponent fluidInventory = station.getComponent(FluidInventoryComponent.class);
@@ -105,10 +106,6 @@ public class CookingStationWindow extends CoreScreenLayer implements Workstation
                             FluidRegistry fluidRegistry = CoreRegistry.get(FluidRegistry.class);
                             return TeraMath.floorToInt(fluid.volume * 1000) + "ml of " + fluidRegistry.getFluidRenderer(fluid.fluidType).getFluidName();
                         }
-                    }
-
-                    @Override
-                    public void set(String value) {
                     }
                 });
 

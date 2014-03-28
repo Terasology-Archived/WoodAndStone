@@ -164,8 +164,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
             itemIcon.setIcon(Assets.getTextureRegion("PlantPack:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")"));
-            itemIcon.setTooltipLines(
-                    Arrays.asList(new TooltipLine("Herb Seed"), HerbalismClientSystem.getHerbTooltipLine(HERB_BEHAVIOUR.getHerbName(parameters.get(1)))));
+            itemIcon.setTooltipLines(Arrays.asList(new TooltipLine("Herb Seed"), HerbalismClientSystem.getHerbTooltipLine(HERB_BEHAVIOUR.getHerbName(parameters.get(1)))));
         }
     }
 

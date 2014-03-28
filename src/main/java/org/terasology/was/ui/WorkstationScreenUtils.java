@@ -21,6 +21,7 @@ import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.databinding.Binding;
+import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.world.BlockEntityRegistry;
@@ -65,15 +66,11 @@ public final class WorkstationScreenUtils {
                     public void set(Float value) {
                     }
                 });
-        thermometerWidget.bindTooltip(
-                new Binding<String>() {
+        thermometerWidget.bindTooltipString(
+                new ReadOnlyBinding<String>() {
                     @Override
                     public String get() {
                         return Math.round(HeatUtils.calculateHeatForEntity(workstation, CoreRegistry.get(BlockEntityRegistry.class))) + "C";
-                    }
-
-                    @Override
-                    public void set(String value) {
                     }
                 });
     }
