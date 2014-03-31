@@ -1,0 +1,12 @@
+{
+    "inherit": "Engine:itemTooltip",
+    "elements": {
+        "UIList": {
+            "parts": {
+                "item": {
+                    "text-color": "ccccccff",
+                }
+            }
+        }
+    }
+}

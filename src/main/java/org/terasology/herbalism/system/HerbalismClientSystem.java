@@ -15,6 +15,7 @@
  */
 package org.terasology.herbalism.system;
 
+import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -27,7 +28,6 @@ import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.component.PotionComponent;
 import org.terasology.registry.In;
-import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.widgets.TooltipLine;
 
@@ -60,6 +60,6 @@ public class HerbalismClientSystem extends BaseComponentSystem {
     }
 
     public static TooltipLine getHerbTooltipLine(String herbName) {
-        return new TooltipLine("Specie: " + herbName, new Color(0.8f, 0.8f, 0.8f));
+        return new TooltipLine("Specie: " + herbName, Assets.getSkin("WoodAndStone:herbTooltip"));
     }
 }
