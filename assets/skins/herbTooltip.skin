@@ -4,7 +4,7 @@
         "UIList": {
             "parts": {
                 "item": {
-                    "text-color": "ccccccff",
+                    "text-color": "ccccccff"
                 }
             }
         }
