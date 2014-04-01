@@ -2,5 +2,9 @@
     "BlockDropGrammar": {
         "itemDrops": ["0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint"]
     },
-    "Tillable": {}
+    "Tillable": {},
+    "BlockSupportRequired": {
+        "sideAllowed": true,
+        "bottomAllowed": true
+    }
 }
