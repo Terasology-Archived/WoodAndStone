@@ -9,8 +9,9 @@
             "StoneKnifeBlade", "AxeHammerHead", "StoneArrowHead", "StoneHammerHead", "Mortar", "", "", "",
             "StoneKnife", "CrudeAxeHammer", "StoneAxe", "StoneHammer", "StoneHoe", "", "", "",
             "", "", "", "", "", "", "", "",
-            "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick", "DigginStick",
-            "", "", "", "", "", "", "", "",
+            "WoodPlank", "WoodenBucketEmpty", "WoodenBucket", "WoodenHammer", "UnlitTorch", "Basket", "Stick",
+            "DiggingStick",
+            "Firewood", "", "", "", "", "", "", "",
             "Clay", "Brick", "SmallPottery", "Pottery1", "Pottery2", "", "", "",
             "RockSalt", "GroundSalt", "Bread", "CornFlour", "CookedCorn", "Rice", "CookedRice", ""
         ]
