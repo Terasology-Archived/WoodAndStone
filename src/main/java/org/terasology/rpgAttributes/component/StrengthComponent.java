@@ -15,5 +15,8 @@
  */
 package org.terasology.rpgAttributes.component;
 
+import org.terasology.network.Replicate;
+
+@Replicate
 public class StrengthComponent extends AttributeComponent {
 }
