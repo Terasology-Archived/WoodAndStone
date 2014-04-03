@@ -40,7 +40,7 @@ public class AttributeManagerImpl extends BaseComponentSystem implements Attribu
         if (attributeBaseSource != null) {
             attributeBaseValue = attributeBaseSource.getAttributeBase(entity);
         }
-        GetAttributeValue attributeEvent = new GetAttributeValue(attributeBaseValue);
+        GetAttributeValue attributeEvent = new GetAttributeValue(attributeName, attributeBaseValue);
         entity.send(attributeEvent);
         return attributeEvent.getResultValue();
     }
