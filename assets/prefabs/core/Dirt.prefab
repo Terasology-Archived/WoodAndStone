@@ -3,8 +3,9 @@
         "itemDrops": ["0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint"]
     },
     "Tillable": {},
-    "BlockSupportRequired": {
+    "SideBlockSupportRequired": {
         "sideAllowed": true,
-        "bottomAllowed": true
+        "bottomAllowed": true,
+        "dropDelay": 200
     }
 }
