@@ -147,13 +147,17 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     }
 
     private void addPlankBlockShapeRecipe(String shape, int ingredientMultiplier, int durabilityMultiplier, int resultMultiplier) {
+        addPlankBlockShapeRecipe(shape, "Engine", ingredientMultiplier, durabilityMultiplier, resultMultiplier);
+    }
+
+    private void addPlankBlockShapeRecipe(String shape, String module, int ingredientMultiplier, int durabilityMultiplier, int resultMultiplier) {
         String recipeName = "Building|Planks|WoodAndStone:PlankBlock";
         if (shape != null) {
             recipeName += shape;
         }
         workstationRegistry.registerProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE,
-                new CraftingWorkstationProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, recipeName,
-                        new PlankBlockRecipe(2 * ingredientMultiplier, 1 * durabilityMultiplier, shape, 4 * resultMultiplier)));
+            new CraftingWorkstationProcess(WoodAndStone.ADVANCED_WOODCRAFTING_PROCESS_TYPE, recipeName,
+                new PlankBlockRecipe(2 * ingredientMultiplier, durabilityMultiplier, module + ":" + shape, 4 * resultMultiplier)));
     }
 
     private void addPlankBlockRecipes() {
@@ -172,9 +176,9 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         addPlankBlockShapeRecipe("HalfSlope", 1, 4, 2);
         addPlankBlockShapeRecipe("HalfSlopeCorner", 1, 6, 1);
 
-        addPlankBlockShapeRecipe("PillarTop", 1, 1, 2);
-        addPlankBlockShapeRecipe("Pillar", 1, 1, 2);
-        addPlankBlockShapeRecipe("PillarBase", 1, 1, 2);
+        addPlankBlockShapeRecipe("PillarTop", "StructuralResources", 1, 1, 2);
+        addPlankBlockShapeRecipe("Pillar", "StructuralResources", 1, 1, 2);
+        addPlankBlockShapeRecipe("PillarBase", "StructuralResources", 1, 1, 2);
     }
 
     private void addCraftInHandRecipes() {
@@ -189,10 +193,18 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
     private void addShapeRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
                                 String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
                                 String shape, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
+        addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount, shape,
+            "engine", ingredientMultiplier, resultMultiplier, toolDurabilityMultiplier);
+    }
+
+    private void addShapeRecipe(String processType, String recipeNamePrefix, String ingredient, int ingredientBasicCount,
+                                String tool, int toolDurability, String blockResultPrefix, int blockResultCount,
+                                String shape, String module, int ingredientMultiplier, int resultMultiplier, int toolDurabilityMultiplier) {
         DefaultWorkstationRecipe shapeRecipe = new DefaultWorkstationRecipe();
         shapeRecipe.addIngredient(ingredient, ingredientBasicCount * ingredientMultiplier);
         shapeRecipe.addRequiredTool(tool, toolDurability * toolDurabilityMultiplier);
-        shapeRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(blockResultPrefix + ":Engine:" + shape).getArchetypeBlock(), blockResultCount * resultMultiplier));
+        shapeRecipe.setResultFactory(new BlockRecipeResultFactory(blockManager.getBlockFamily(blockResultPrefix + ":" + module + ":" + shape).getArchetypeBlock(),
+            blockResultCount * resultMultiplier));
 
         workstationRegistry.registerProcess(processType, new CraftingWorkstationProcess(processType, recipeNamePrefix + shape, shapeRecipe));
     }
@@ -231,11 +243,11 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 "HalfSlopeCorner", 1, 6, 1);
 
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
-                "PillarTop", 1, 1, 2);
+            "PillarTop", "structuralResources", 1, 1, 2);
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
-                "Pillar", 1, 1, 2);
+            "Pillar", "structuralResources", 1, 1, 2);
         addShapeRecipe(processType, recipeNamePrefix, ingredient, ingredientBasicCount, tool, toolDurability, blockResultPrefix, blockResultCount,
-                "PillarBase", 1, 1, 2);
+            "PillarBase", "structuralResources", 1, 1, 2);
     }
 
     private void parseCraftInHandRecipe(CraftInHandRecipeComponent recipeComponent) {
@@ -261,7 +273,8 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
                 String[] split = tool.split("\\*");
                 int durability = Integer.parseInt(split[0]);
                 String type = split[1];
-                recipe.addItemCraftBehaviour(new ReduceDurabilityCraftBehaviour(new CraftInHandIngredientPredicate(type), durability, PlayerInventorySlotResolver.singleton()));
+                recipe.addItemCraftBehaviour(new ReduceDurabilityCraftBehaviour(new CraftInHandIngredientPredicate(type), durability,
+                    PlayerInventorySlotResolver.singleton()));
             }
         }
         if (recipeComponent.recipeActivators != null) {
