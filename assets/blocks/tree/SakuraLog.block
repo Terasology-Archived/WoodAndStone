@@ -19,7 +19,7 @@
 
     "categories": ["wood"],
 
-    "shape": "Engine:pillar",
+    "shape": "StructuralResources:Pillar",
 
     "entity": {
         "prefab": "WoodAndStone:SakuraLog"
