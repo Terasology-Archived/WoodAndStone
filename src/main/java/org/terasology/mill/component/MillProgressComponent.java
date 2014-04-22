@@ -22,8 +22,9 @@ import org.terasology.network.Replicate;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@Replicate
 public class MillProgressComponent implements Component {
+    @Replicate
     public EntityRef processedItem;
+    @Replicate
     public int processedStep;
 }

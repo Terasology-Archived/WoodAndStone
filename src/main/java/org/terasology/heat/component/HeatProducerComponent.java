@@ -27,18 +27,25 @@ import java.util.List;
 import java.util.Set;
 
 @ForceBlockActive
-@Replicate
 public class HeatProducerComponent implements Component {
+    @Replicate
     public List<FuelSourceConsume> fuelConsumed = Lists.newArrayList();
+    @Replicate
     public float temperatureAbsorptionRate;
+    @Replicate
     public float temperatureLossRate;
+    @Replicate
     public float maximumTemperature;
+    @Replicate
     public Set<Side> heatDirections = Sets.newHashSet();
 
     @MappedContainer
     public static class FuelSourceConsume {
+        @Replicate
         public long startTime;
+        @Replicate
         public float heatProvided;
+        @Replicate
         public long burnLength;
     }
 }

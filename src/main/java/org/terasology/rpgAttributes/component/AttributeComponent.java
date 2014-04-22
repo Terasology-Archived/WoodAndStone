@@ -16,7 +16,9 @@
 package org.terasology.rpgAttributes.component;
 
 import org.terasology.entitySystem.Component;
+import org.terasology.network.Replicate;
 
 public abstract class AttributeComponent implements Component {
+    @Replicate
     public int value;
 }

@@ -21,7 +21,7 @@ import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.Share;
 
-@RegisterSystem(value = RegisterMode.AUTHORITY)
+@RegisterSystem
 @Share(value = {HerbEffectRegistry.class})
 public class DefaultHerbEffectRegistry extends BaseComponentSystem implements HerbEffectRegistry {
     private ChanceRandomizer<HerbEffect> herbEffectRandomizer = new ChanceRandomizer<>(1000);

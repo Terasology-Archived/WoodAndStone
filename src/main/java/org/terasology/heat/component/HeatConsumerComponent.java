@@ -26,15 +26,19 @@ import java.util.List;
 import java.util.Set;
 
 @ForceBlockActive
-@Replicate
 public class HeatConsumerComponent implements Component {
+    @Replicate
     public Set<Side> heatDirections;
+    @Replicate
     public float heatConsumptionEfficiency;
+    @Replicate
     public List<ResidualHeat> residualHeat = Lists.newArrayList();
 
     @MappedContainer
     public static class ResidualHeat {
+        @Replicate
         public long time;
+        @Replicate
         public float baseHeat;
     }
 }
