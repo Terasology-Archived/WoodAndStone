@@ -29,7 +29,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.genome.GenomeDefinition;
 import org.terasology.genome.GenomeRegistry;
 import org.terasology.genome.breed.BreedingAlgorithm;
-import org.terasology.genome.breed.SimpleBreedingAlgorithm;
+import org.terasology.genome.breed.MonoploidBreedingAlgorithm;
 import org.terasology.genome.breed.mutator.GeneMutator;
 import org.terasology.genome.genomeMap.SeedBasedGenomeMap;
 import org.terasology.herbalism.HerbEffect;
@@ -83,7 +83,7 @@ public class HerbalismCommonSystem extends BaseComponentSystem {
 
         GeneMutator herbGeneMutator = new HerbGeneMutator();
 
-        BreedingAlgorithm herbBreedingAlgorithm = new SimpleBreedingAlgorithm(genomeLength, 9, 0.005f, herbGeneMutator);
+        BreedingAlgorithm herbBreedingAlgorithm = new MonoploidBreedingAlgorithm(9, 0.005f, herbGeneMutator);
 
         SeedBasedGenomeMap herbGenomeMap = new SeedBasedGenomeMap(worldProvider.getSeed().hashCode());
         herbGenomeMap.addSeedBasedProperty(Herbalism.EFFECT_PROPERTY, 1, genomeLength, 3, HerbEffect.class,
