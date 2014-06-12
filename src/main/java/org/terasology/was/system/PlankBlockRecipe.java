@@ -69,7 +69,7 @@ public class PlankBlockRecipe extends AbstractWorkstationRecipe {
 
         private String appendShapeIfNeeded(String value) {
             if (shape != null) {
-                return value + ":Engine:" + shape;
+                return value + ":" + shape;
             } else {
                 return value;
             }
