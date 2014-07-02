@@ -162,8 +162,8 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
                 @Override
                 public boolean apply(EntityRef input) {
                     Prefab prefab = input.getParentPrefab();
-                    return prefab != null && prefab.getURI().getNormalisedModuleName().equals("plantpack")
-                            && prefab.getURI().getNormalisedAssetName().endsWith("fruit");
+                    return prefab != null && prefab.getURI().getModuleName().toString().equals("plantpack")
+                            && prefab.getURI().getAssetName().toString().endsWith("fruit");
                 }
             }, 1, PlayerInventorySlotResolver.singleton());
         }
@@ -176,7 +176,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
         @Override
         protected String getParameter(List<Integer> slots, EntityRef item) {
             Prefab prefab = item.getParentPrefab();
-            String assetName = prefab.getURI().getNormalisedAssetName();
+            String assetName = prefab.getURI().getAssetName().toString();
             String fruitName = assetName.substring(0, assetName.length() - 5);
 
             ItemComponent component = item.getComponent(ItemComponent.class);

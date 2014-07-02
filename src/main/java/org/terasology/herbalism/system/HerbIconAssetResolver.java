@@ -20,6 +20,7 @@ import org.terasology.asset.AssetResolver;
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
+import org.terasology.naming.Name;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureData;
 import org.terasology.rendering.assets.texture.TextureUtil;
@@ -45,8 +46,8 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
     }
 
     @Override
-    public AssetUri resolve(String partialUri) {
-        String[] parts = partialUri.split("\\(", 2);
+    public AssetUri resolve(Name partialUri) {
+        String[] parts = partialUri.toString().split("\\(", 2);
         if (parts.length > 1) {
             AssetUri uri = Assets.resolveAssetUri(AssetType.TEXTURE, parts[0]);
             if (uri != null) {
@@ -58,11 +59,11 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
 
     @Override
     public Texture resolve(AssetUri uri, AssetFactory<TextureData, Texture> factory) {
-        if (!"herbalism".equals(uri.getNormalisedModuleName())
-                || !uri.getNormalisedAssetName().startsWith("herb(")) {
+        if (!"herbalism".equals(uri.getModuleName().toString())
+                || !uri.getAssetName().toString().startsWith("herb(")) {
             return null;
         }
-        String assetName = uri.getAssetName();
+        String assetName = uri.getAssetName().toString();
         String[] split = assetName.split("\\(");
 
         String parameters = split[1].substring(0, split[1].length() - 1);
