@@ -31,6 +31,7 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;
+import org.terasology.naming.Name;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
@@ -157,13 +158,15 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
     }
 
     private static class ConsumeFruitBehaviour extends ConsumeItemCraftBehaviour {
+        private static final Name PLANT_PACK_MODULE = new Name("plantpack");
+
         public ConsumeFruitBehaviour() {
             super(new Predicate<EntityRef>() {
                 @Override
                 public boolean apply(EntityRef input) {
                     Prefab prefab = input.getParentPrefab();
-                    return prefab != null && prefab.getURI().getModuleName().toString().equals("plantpack")
-                            && prefab.getURI().getAssetName().toString().endsWith("fruit");
+                    return prefab != null && prefab.getURI().getModuleName().equals(PLANT_PACK_MODULE)
+                            && prefab.getURI().getAssetName().toString().toLowerCase().endsWith("fruit");
                 }
             }, 1, PlayerInventorySlotResolver.singleton());
         }

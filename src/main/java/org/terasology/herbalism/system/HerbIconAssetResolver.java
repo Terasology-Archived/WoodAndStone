@@ -33,6 +33,8 @@ import java.nio.ByteBuffer;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData> {
+    private static final Name HERBALISM_MODULE = new Name("herbalism");
+
     public static String getHerbUri(String iconUri, float[] hueValues) {
         StringBuilder sb = new StringBuilder();
         sb.append("Herbalism:Herb(");
@@ -59,11 +61,11 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
 
     @Override
     public Texture resolve(AssetUri uri, AssetFactory<TextureData, Texture> factory) {
-        if (!"herbalism".equals(uri.getModuleName().toString())
-                || !uri.getAssetName().toString().startsWith("herb(")) {
+        final String assetName = uri.getAssetName().toString().toLowerCase();
+        if (!HERBALISM_MODULE.equals(uri.getModuleName())
+                || !assetName.startsWith("herb(")) {
             return null;
         }
-        String assetName = uri.getAssetName().toString();
         String[] split = assetName.split("\\(");
 
         String parameters = split[1].substring(0, split[1].length() - 1);
