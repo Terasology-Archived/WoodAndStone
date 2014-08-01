@@ -17,7 +17,6 @@ package org.terasology.was.generator;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import org.terasology.anotherWorld.PerlinLandscapeGenerator;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.coreBiome.AlpineBiome;
 import org.terasology.anotherWorld.coreBiome.CliffBiome;
@@ -41,9 +40,8 @@ import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.UniformNoiseAlpha;
 import org.terasology.engine.SimpleUri;
 import org.terasology.gf.generator.FloraFeatureGenerator;
+import org.terasology.gf.generator.FloraProvider;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.utilities.procedural.Noise3D;
-import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -88,20 +86,20 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         final Block snow = blockManager.getBlock("Core:Snow");
         final Block ice = blockManager.getBlock("Core:Ice");
 
-        setLandscapeProvider(
-                new PerlinLandscapeGenerator(
-                        // 40% of the landscape is under water
-                        0.4f,
-                        // Semi high continent size
-                        0.1f,
-                        // Height is distributed uniformly between 0 and maxLevel
-                        new UniformNoiseAlpha(IdentityAlphaFunction.singleton()),
-                        // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel height
-                        new MinMaxAlphaFunction(new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.7f), 0.3f, 1f),
-                        // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
-                        new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 2f),
-                        // Smoothen the terrain a bit
-                        0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f)));
+
+        setLandscapeOptions(
+                // 40% of the landscape is under water
+                0.4f,
+                // Semi high continent size
+                0.1f,
+                // Height is distributed uniformly between 0 and maxLevel
+                new UniformNoiseAlpha(IdentityAlphaFunction.singleton()),
+                // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel height
+                new MinMaxAlphaFunction(new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.7f), 0.3f, 1f),
+                // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
+                new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 2f),
+                // Smoothen the terrain a bit
+                0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f));
 
         // Setup biome terrain layers
         setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);
@@ -132,6 +130,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
 
         addFeatureGenerator(floraDecorator);
+        addFacetProvider(new FloraProvider());
     }
 
 
@@ -183,8 +182,6 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     private final class BeachBlockProvider implements Provider<Block> {
-        private UniformNoiseAlpha alpha = new UniformNoiseAlpha(IdentityAlphaFunction.singleton());
-        private Noise3D noise;
         private float chance;
         private Block block1;
         private Block block2;
@@ -196,14 +193,8 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         }
 
         @Override
-        public void initializeWithSeed(String seed) {
-            noise = new SimplexNoise(seed.hashCode() + 2349873);
-        }
-
-        @Override
-        public Block provide(int x, int y, int z) {
-            float noiseValue = alpha.apply((float) (1 + noise.noise(x * 0.01f, y * 0.01f, z * 0.01f)) / 2f);
-            return (noiseValue < chance) ? block1 : block2;
+        public Block provide(float randomValue) {
+            return (randomValue < chance) ? block1 : block2;
         }
     }
 }
