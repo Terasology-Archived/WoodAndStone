@@ -39,8 +39,11 @@ import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.UniformNoiseAlpha;
 import org.terasology.engine.SimpleUri;
+import org.terasology.gf.generator.BushProvider;
 import org.terasology.gf.generator.FloraFeatureGenerator;
 import org.terasology.gf.generator.FloraProvider;
+import org.terasology.gf.generator.FoliageProvider;
+import org.terasology.gf.generator.TreeProvider;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -127,10 +130,19 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     private void setupFlora() {
-        FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator(new PDist(2f, 0.4f), new PDist(20f, 0.6f), new PDist(160f, 40f));
-
+        FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator();
         addFeatureGenerator(floraDecorator);
+
         addFacetProvider(new FloraProvider());
+
+        // new PDist(2f, 0.4f)
+        addFacetProvider(new TreeProvider(1.2f / (16 * 16)));
+        // new PDist(20f, 0.6f)
+        addFacetProvider(new BushProvider(10.3f / (16 * 16)));
+        // new PDist(160f, 40f)
+        addFacetProvider(new FoliageProvider(100f / (16 * 16)));
+
+
     }
 
 
