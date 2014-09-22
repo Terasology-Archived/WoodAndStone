@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.forest.tree;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class LongPineForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public LongPineForestSpawnDefinition() {
-        super(PlantType.TREE, LongPineGrowthDefinition.ID, ForestBiome.ID, 0.4f, 0.4f,
+        super(PlantType.TREE, LongPineGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.4f, 0.4f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

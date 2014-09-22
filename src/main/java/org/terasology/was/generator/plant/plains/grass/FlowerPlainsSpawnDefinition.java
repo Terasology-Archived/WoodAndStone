@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.plains.grass;
 
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.StaticBlockFloraSpawnDefinition;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class FlowerPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public FlowerPlainsSpawnDefinition() {
-        super(PlantType.GRASS, PlainsBiome.ID, 0.5f, 1f, "Core:Flower",
+        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId(), 0.5f, 1f, "Core:Flower",
                 Arrays.asList(new BlockUri("Core:Dandelion"), new BlockUri("Core:Iris"),
                         new BlockUri("Core:Lavender"), new BlockUri("Core:RedClover"), new BlockUri("Core:RedFlower"),
                         new BlockUri("Core:Tulip"), new BlockUri("Core:YellowFlower")),

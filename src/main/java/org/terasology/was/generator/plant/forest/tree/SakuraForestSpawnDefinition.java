@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.forest.tree;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class SakuraForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public SakuraForestSpawnDefinition() {
-        super(PlantType.TREE, SakuraGrowthDefinition.ID, ForestBiome.ID, 0.2f, 0.6f,
+        super(PlantType.TREE, SakuraGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.2f, 0.6f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }
