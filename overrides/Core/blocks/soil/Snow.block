@@ -6,5 +6,6 @@
     },
     "entity": {
         "prefab": "WoodAndStone:Snow"
-    }
+    },
+    "sounds": "Core:snow"
 }
