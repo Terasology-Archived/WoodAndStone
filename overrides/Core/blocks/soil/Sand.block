@@ -4,5 +4,6 @@
     "mass": 32,
     "entity": {
         "prefab": "WoodAndStone:Sand"
-    }
+    },
+    "sounds": "Core:sand"
 }

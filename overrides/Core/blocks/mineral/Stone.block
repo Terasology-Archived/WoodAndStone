@@ -4,5 +4,6 @@
     "categories": ["stone"],
     "entity": {
         "prefab": "WoodAndStone:StoneBlock"
-    }
+    },
+    "sounds": "Core:stone"
 }
