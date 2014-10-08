@@ -129,6 +129,10 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         return Optional.absent();
     }
 
+    @Override
+    public void setConfigurator(WorldConfigurator newConfigurator) {
+    }
+
     private void setupFlora() {
         FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator();
         addFeatureGenerator(floraDecorator);
