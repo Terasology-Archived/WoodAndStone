@@ -16,8 +16,8 @@
 package org.terasology.was.generator.plant.plains.grass;
 
 import com.google.common.base.Predicate;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.LocalParameters;
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.StaticBlockFloraSpawnDefinition;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class GrassPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public GrassPlainsSpawnDefinition() {
-        super(PlantType.GRASS, PlainsBiome.ID, 1f, 1f, "Core:TallGrass",
+        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId(), 1f, 1f, "Core:TallGrass",
                 Arrays.asList(new BlockUri("Core:TallGrass1"), new BlockUri("Core:TallGrass2"), new BlockUri("Core:TallGrass3")),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Grass")),
                 new Predicate<LocalParameters>() {

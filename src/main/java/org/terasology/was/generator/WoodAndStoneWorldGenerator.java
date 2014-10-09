@@ -17,15 +17,10 @@ package org.terasology.was.generator;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
-import org.terasology.anotherWorld.coreBiome.AlpineBiome;
-import org.terasology.anotherWorld.coreBiome.CliffBiome;
-import org.terasology.anotherWorld.coreBiome.DesertBiome;
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
-import org.terasology.anotherWorld.coreBiome.TaigaBiome;
-import org.terasology.anotherWorld.coreBiome.TundraBiome;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
+import org.terasology.anotherWorld.decorator.BiomeDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.anotherWorld.decorator.CaveDecorator;
 import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
@@ -66,6 +61,9 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
     @Override
     protected void setupGenerator() {
+
+        addChunkDecorator(new BiomeDecorator());
+
         setSeaLevel(100);
         setMaxLevel(200);
 
@@ -165,13 +163,13 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         LayeringDecorator layering = new LayeringDecorator(config);
 
-        DefaultLayersDefinition desertDef = new DefaultLayersDefinition(DesertBiome.ID);
+        DefaultLayersDefinition desertDef = new DefaultLayersDefinition(AnotherWorldBiomes.DESERT.getId());
         desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
         desertDef.addLayerDefinition(new PDist(4, 2), dirt, true);
         layering.addBiomeLayers(desertDef);
 
-        DefaultLayersDefinition forestDef = new DefaultLayersDefinition(ForestBiome.ID);
-        DefaultLayersDefinition plainsDef = new DefaultLayersDefinition(PlainsBiome.ID);
+        DefaultLayersDefinition forestDef = new DefaultLayersDefinition(AnotherWorldBiomes.FOREST.getId());
+        DefaultLayersDefinition plainsDef = new DefaultLayersDefinition(AnotherWorldBiomes.PLAINS.getId());
         forestDef.addLayerDefinition(new PDist(1, 0), grass, false);
         plainsDef.addLayerDefinition(new PDist(1, 0), grass, false);
         forestDef.addLayerDefinition(new PDist(4, 2), dirt, true);
@@ -179,19 +177,19 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         layering.addBiomeLayers(forestDef);
         layering.addBiomeLayers(plainsDef);
 
-        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition(TundraBiome.ID);
-        DefaultLayersDefinition taigaDef = new DefaultLayersDefinition(TaigaBiome.ID);
+        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition(AnotherWorldBiomes.TUNDRA.getId());
+        DefaultLayersDefinition taigaDef = new DefaultLayersDefinition(AnotherWorldBiomes.TAIGA.getId());
         tundraDef.addLayerDefinition(new PDist(1, 0), snow, false);
         taigaDef.addLayerDefinition(new PDist(1, 0), snow, false);
         layering.addBiomeLayers(tundraDef);
         layering.addBiomeLayers(taigaDef);
 
-        DefaultLayersDefinition alpineDef = new DefaultLayersDefinition(AlpineBiome.ID);
+        DefaultLayersDefinition alpineDef = new DefaultLayersDefinition(AnotherWorldBiomes.ALPINE.getId());
         alpineDef.addLayerDefinition(new PDist(2f, 1f), ice, false);
         alpineDef.addLayerDefinition(new PDist(1f, 0f), snow, false);
         layering.addBiomeLayers(alpineDef);
 
-        DefaultLayersDefinition cliffDef = new DefaultLayersDefinition(CliffBiome.ID);
+        DefaultLayersDefinition cliffDef = new DefaultLayersDefinition(AnotherWorldBiomes.CLIFF.getId());
         layering.addBiomeLayers(cliffDef);
 
         addChunkDecorator(layering);

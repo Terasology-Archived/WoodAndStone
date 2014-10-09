@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.forest.tree;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class BlueSpruceForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BlueSpruceForestSpawnDefinition() {
-        super(PlantType.TREE, BlueSpruceGrowthDefinition.ID, ForestBiome.ID, 0.2f, 0.4f,
+        super(PlantType.TREE, BlueSpruceGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.2f, 0.4f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

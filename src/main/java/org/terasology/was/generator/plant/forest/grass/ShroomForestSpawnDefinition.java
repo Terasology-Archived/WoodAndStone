@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.forest.grass;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.StaticBlockFloraSpawnDefinition;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class ShroomForestSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public ShroomForestSpawnDefinition() {
-        super(PlantType.GRASS, ForestBiome.ID, 0.5f, 0.3f, "Core:Shroom",
+        super(PlantType.GRASS, AnotherWorldBiomes.FOREST.getId(), 0.5f, 0.3f, "Core:Shroom",
                 Arrays.asList(new BlockUri("Core:BigBrownShroom"), new BlockUri("Core:BrownShroom"), new BlockUri("Core:RedShroom")),
                 new BlockCollectionPredicate(Blocks.getBlock("Core:Grass")), null);
     }

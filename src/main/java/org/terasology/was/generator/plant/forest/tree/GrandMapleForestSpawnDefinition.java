@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.forest.tree;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class GrandMapleForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public GrandMapleForestSpawnDefinition() {
-        super(PlantType.TREE, GrandMapleGrowthDefinition.ID, ForestBiome.ID, 0.4f, 0.6f,
+        super(PlantType.TREE, GrandMapleGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.4f, 0.6f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }

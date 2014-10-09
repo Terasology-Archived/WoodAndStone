@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.tundra.tree;
 
-import org.terasology.anotherWorld.coreBiome.TundraBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class PineTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public PineTundraSpawnDefinition() {
-        super(PlantType.TREE, PineGrowthDefinition.ID, TundraBiome.ID, 0.45f, 0.6f,
+        super(PlantType.TREE, PineGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId(), 0.45f, 0.6f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Snow"))));
     }
 }

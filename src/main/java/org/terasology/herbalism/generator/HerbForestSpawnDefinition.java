@@ -15,7 +15,7 @@
  */
 package org.terasology.herbalism.generator;
 
-import org.terasology.anotherWorld.coreBiome.ForestBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.StaticBlockFloraSpawnDefinition;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class HerbForestSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbForestSpawnDefinition() {
-        super(PlantType.GRASS, ForestBiome.ID, 0.5f, 0.3f, "Herbalism:Herb",
+        super(PlantType.GRASS, AnotherWorldBiomes.FOREST.getId(), 0.5f, 0.3f, "Herbalism:Herb",
                 Arrays.asList(
                         new BlockUri("WoodAndStone:HerbGeneratedA")/*,
                         new BlockUri("WoodAndStone:Herb2"),

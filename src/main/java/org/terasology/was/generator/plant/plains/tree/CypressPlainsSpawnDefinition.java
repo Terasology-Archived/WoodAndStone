@@ -15,7 +15,7 @@
  */
 package org.terasology.was.generator.plant.plains.tree;
 
-import org.terasology.anotherWorld.coreBiome.PlainsBiome;
+import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class CypressPlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public CypressPlainsSpawnDefinition() {
-        super(PlantType.TREE, CypressGrowthDefinition.ID, PlainsBiome.ID, 0.5f, 0.2f,
+        super(PlantType.TREE, CypressGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId(), 0.5f, 0.2f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
     }
 }
