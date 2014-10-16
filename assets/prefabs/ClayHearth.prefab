@@ -1,6 +1,9 @@
 {
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "WoodAndStone:Furnace"
+    },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:Furnace",
         "supportedProcessTypes": {
             "Machines:Heater": true,
             "Machines:Furnace": true

@@ -2,8 +2,11 @@
     "BlockDropGrammar": {
         "blockDrops": ["2*WoodAndStone:WoodenTable"]
     },
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "WoodAndStone:CraftInStation"
+    },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:CraftInStation",
         "supportedProcessTypes": {
             "WoodAndStone:BasicStonecrafting": false,
             "Crafting:UpgradeCraftingWorkstation": false

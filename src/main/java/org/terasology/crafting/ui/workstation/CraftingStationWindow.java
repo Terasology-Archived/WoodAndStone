@@ -22,7 +22,6 @@ import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -33,14 +32,14 @@ import org.terasology.was.ui.WorkstationScreenUtils;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
-import org.terasology.workstation.ui.WorkstationUI;
+import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 import java.util.Collections;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CraftingStationWindow extends CoreScreenLayer implements WorkstationUI {
+public class CraftingStationWindow extends BaseWorkstationScreen {
     private InventoryGrid ingredients;
     private InventoryGrid upgrades;
     private UIButton upgradeButton;

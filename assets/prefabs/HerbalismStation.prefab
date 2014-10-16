@@ -2,8 +2,11 @@
     "BlockDropGrammar": {
         "itemDrops": ["4*WoodAndStone:Brick"]
     },
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "WoodAndStone:HerbalismStation"
+    },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:HerbalismStation",
         "supportedProcessTypes": {
             "Machines:Furnace": true,
             "Workstation:FillFluid": true,

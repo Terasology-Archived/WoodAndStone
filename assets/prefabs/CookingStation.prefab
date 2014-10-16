@@ -2,8 +2,11 @@
     "BlockDropGrammar": {
         "itemDrops": ["4*WoodAndStone:Brick"]
     },
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "WoodAndStone:CookingStation"
+    },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:CookingStation",
         "supportedProcessTypes": {
             "Machines:Furnace": true,
             "Workstation:FillFluid": true,

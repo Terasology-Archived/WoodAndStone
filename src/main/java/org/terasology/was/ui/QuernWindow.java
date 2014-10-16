@@ -21,7 +21,6 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.mill.component.MillProgressComponent;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -30,12 +29,12 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.event.WorkstationProcessRequest;
-import org.terasology.workstation.ui.WorkstationUI;
+import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class QuernWindow extends CoreScreenLayer implements WorkstationUI {
+public class QuernWindow extends BaseWorkstationScreen {
     private InventoryGrid input;
     private InventoryGrid output;
     private UIButton millButton;

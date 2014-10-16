@@ -2,8 +2,11 @@
     "BlockDropGrammar": {
         "itemDrops": ["4*WoodAndStone:Stone", "2*WoodAndStone:Stick"]
     },
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "WoodAndStone:Quern"
+    },
     "Workstation": {
-        "uiPrefab": "WoodAndStone:Quern",
         "supportedProcessTypes": {
             "WoodAndStone:Milling": false
         }

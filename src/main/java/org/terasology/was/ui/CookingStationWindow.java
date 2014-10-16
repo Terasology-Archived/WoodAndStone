@@ -11,7 +11,6 @@ import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -19,14 +18,14 @@ import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
-import org.terasology.workstation.ui.WorkstationUI;
+import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CookingStationWindow extends CoreScreenLayer implements WorkstationUI {
+public class CookingStationWindow extends BaseWorkstationScreen {
 
     private InventoryGrid fluidContainerInput;
     private InventoryGrid fluidContainerOutput;
