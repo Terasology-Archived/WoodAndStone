@@ -161,7 +161,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     private void setupLayers(Block mantle, Block sea, LiquidType seaType, Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice) {
         LayeringConfig config = new LayeringConfig(mantle, stone, sea, seaType);
 
-        LayeringDecorator layering = new LayeringDecorator(config);
+        LayeringDecorator layering = new LayeringDecorator(config, getWorldSeed().hashCode());
 
         DefaultLayersDefinition desertDef = new DefaultLayersDefinition(AnotherWorldBiomes.DESERT.getId());
         desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
