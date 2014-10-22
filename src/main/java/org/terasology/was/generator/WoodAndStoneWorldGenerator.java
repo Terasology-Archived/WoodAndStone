@@ -64,8 +64,8 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         addChunkDecorator(new BiomeDecorator());
 
-        setSeaLevel(100);
-        setMaxLevel(200);
+        setSeaLevel(1700);
+        setMaxLevel(4000);
 
         // Make sure that area on the sea level is not dry, this will prevent deserts spawning next to sea
         setHumidityFunction(
@@ -93,8 +93,8 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 0.4f,
                 // Semi high continent size
                 0.1f,
-                // Height is distributed uniformly between 0 and maxLevel
-                new UniformNoiseAlpha(IdentityAlphaFunction.singleton()),
+                // Height is distributed Gaussian
+                IdentityAlphaFunction.singleton(),
                 // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel height
                 new MinMaxAlphaFunction(new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.7f), 0.3f, 1f),
                 // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
