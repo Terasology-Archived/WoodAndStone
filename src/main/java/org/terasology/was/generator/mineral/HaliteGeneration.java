@@ -30,7 +30,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 public class HaliteGeneration extends PocketStructureDefinition implements OreDefinition {
     public HaliteGeneration() {
         super(new UniformPocketBlockProvider(CoreRegistry.get(BlockManager.class).getBlock("WoodAndStone:Halite")),
-                new PDist(0.45f, 0.15f), new PDist(4f, 1f), new PDist(2f, 1f), new PDist(100f, 20f), new PDist(0f, 0.35f),
+                new PDist(0.45f, 0.15f), new PDist(4f, 1f), new PDist(2f, 1f), new PDist(1800f, 300f), new PDist(0f, 0.35f),
                 new PDist(1f, 0f), new PDist(0.7f, 0.1f), new PDist(0.2f, 0f), new PDist(0f, 0f));
     }
 
