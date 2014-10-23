@@ -145,10 +145,12 @@ public abstract class AbstractWorkstationRecipe implements CraftingStationRecipe
                 if (index + 1 < listOfResults.size()) {
                     List<List<String>> nextParameterCombinations = createParameterCombinations(listOfResults, index + 1);
                     for (List<String> followingParameterCombinations : nextParameterCombinations) {
-                        List<String> parameterCombination = new LinkedList<>();
-                        parameterCombination.add(parameter);
-                        parameterCombination.addAll(followingParameterCombinations);
-                        result.add(parameterCombination);
+                        for (String combination : followingParameterCombinations) {
+                            List<String> parameterCombination = new LinkedList<>();
+                            parameterCombination.add(parameter);
+                            parameterCombination.add(combination);
+                            result.add(parameterCombination);
+                        }
                     }
                 }
             }
