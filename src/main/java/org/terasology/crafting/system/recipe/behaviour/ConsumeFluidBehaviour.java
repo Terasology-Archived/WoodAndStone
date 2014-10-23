@@ -32,7 +32,7 @@ public class ConsumeFluidBehaviour implements IngredientCraftBehaviour<String> {
     private InventorySlotResolver resolver;
 
     public ConsumeFluidBehaviour(String fluidType, float volume, InventorySlotResolver resolver) {
-        this.fluidType = fluidType;
+        this.fluidType = fluidType.toLowerCase();
         this.volume = volume;
         this.resolver = resolver;
     }
