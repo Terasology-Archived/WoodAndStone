@@ -113,7 +113,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         // Dig some caves in the terrain
         addChunkDecorator(
-                new CaveDecorator(removableBlocks, new PDist(0.1f, 0f), new PDist(5f, 1f), new PDist(2000f, 1000f), new PDist(70f, 10f), new PDist(2f, 0.5f)));
+                new CaveDecorator(removableBlocks, new PDist(0.2f, 0f), new PDist(5f, 1f), new PDist(1750f, 400f), new PDist(50f, 10f), new PDist(2f, 0.5f)));
 
         // Setup ore spawning
         setupOreGenerator(stone);
