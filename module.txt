@@ -60,6 +60,10 @@
             {
                 "id" : "StructuralResources",
                 "minVersion" : "0.1.0"
+            },
+            {
+                "id" : "Seasons",
+                "minVersion" : "0.1.0"
             }],
     "isServerSideOnly" : false,
     "isGameplay" : "true",
