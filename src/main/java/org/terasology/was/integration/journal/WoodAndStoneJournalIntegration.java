@@ -15,6 +15,7 @@
  */
 package org.terasology.was.integration.journal;
 
+import com.google.common.base.Supplier;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
@@ -29,6 +30,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
 import org.terasology.journal.StaticJournalChapterHandler;
+import org.terasology.journal.part.DynamicTextJournalPart;
 import org.terasology.journal.part.TextJournalPart;
 import org.terasology.journal.part.TimestampJournalPart;
 import org.terasology.journal.part.TitleJournalPart;
@@ -37,6 +39,8 @@ import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
+import org.terasology.rendering.nui.HorizontalAlign;
+import org.terasology.seasons.SeasonSystem;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 
@@ -54,11 +58,16 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
     private PrefabManager prefabManager;
     @In
     private BlockManager blockManager;
+    @In
+    private SeasonSystem seasonSystem;
 
-    private String chapterId = "WoodAndStone";
+    private String wasChapterId = "WoodAndStone";
+    private String seasonsChapterId = "Seasons";
 
     @Override
     public void preBegin() {
+        createSeasonsChapter();
+
         StaticJournalChapterHandler chapterHandler = new StaticJournalChapterHandler();
 
         Prefab stoneItem = prefabManager.getPrefab("WoodAndStone:Stone");
@@ -124,14 +133,34 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 new RecipeJournalPart(new Block[2], new Prefab[]{unlitTorchItem, flintItem}, litTorchBlock, null, 1));
         chapterHandler.registerJournalEntry("6", stoneHammer);
 
-        journalManager.registerJournalChapter(chapterId,
+        journalManager.registerJournalChapter(wasChapterId,
             Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone"),
             "Wood and Stone", chapterHandler);
     }
 
+    private void createSeasonsChapter() {
+        StaticJournalChapterHandler chapterHandler = new StaticJournalChapterHandler();
+
+        List<JournalManager.JournalEntryPart> timeEntry = Arrays.asList(
+                new TitleJournalPart("Time of Year"),
+                new DynamicTextJournalPart(new Supplier<String>() {
+                    @Override
+                    public String get() {
+                        return "It is " + seasonSystem.getSeasonDayDescription();
+                    }
+                }, HorizontalAlign.CENTER));
+
+        chapterHandler.registerJournalEntry("1", timeEntry);
+
+        journalManager.registerJournalChapter(seasonsChapterId,
+                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone"),
+                "Seasons", chapterHandler);
+    }
+
     @ReceiveEvent
     public void playerSpawned(OnPlayerSpawnedEvent event, EntityRef player) {
-        player.send(new DiscoveredNewJournalEntry(chapterId, "1"));
+        player.send(new DiscoveredNewJournalEntry(seasonsChapterId, "1"));
+        player.send(new DiscoveredNewJournalEntry(wasChapterId, "1"));
     }
 
     @ReceiveEvent(components = {CraftingStationComponent.class})
@@ -139,18 +168,18 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         EntityRef character = craftingStationFormed.getInstigator();
         String workstationType = station.getComponent(CraftingStationComponent.class).type;
         if (workstationType.equals("WoodAndStone:BasicWoodcrafting")
-                && !journalManager.hasEntry(character, chapterId, "4")) {
-            character.send(new DiscoveredNewJournalEntry(chapterId, "4"));
-        } else if (workstationType.equals("WoodAndStone:BasicStonecrafting") && !journalManager.hasEntry(character, chapterId, "6")) {
-            character.send(new DiscoveredNewJournalEntry(chapterId, "6"));
+                && !journalManager.hasEntry(character, wasChapterId, "4")) {
+            character.send(new DiscoveredNewJournalEntry(wasChapterId, "4"));
+        } else if (workstationType.equals("WoodAndStone:BasicStonecrafting") && !journalManager.hasEntry(character, wasChapterId, "6")) {
+            character.send(new DiscoveredNewJournalEntry(wasChapterId, "6"));
         }
     }
 
     @ReceiveEvent
     public void craftingStationUpgraded(CraftingStationUpgraded craftingStationUpgraded, EntityRef character) {
         if (craftingStationUpgraded.getCraftingStation().getComponent(CraftingStationComponent.class).type.equals("WoodAndStone:StandardWoodcrafting")
-                && !journalManager.hasEntry(character, chapterId, "5")) {
-            character.send(new DiscoveredNewJournalEntry(chapterId, "5"));
+                && !journalManager.hasEntry(character, wasChapterId, "5")) {
+            character.send(new DiscoveredNewJournalEntry(wasChapterId, "5"));
         }
     }
 
@@ -160,14 +189,14 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         CraftingStationIngredientComponent ingredientComponent = event.getNewItem().getComponent(CraftingStationIngredientComponent.class);
         if (toolComponent != null) {
             List<String> toolTypes = toolComponent.type;
-            if (toolTypes.contains("hammer") && toolTypes.contains("axe") && !journalManager.hasEntry(character, chapterId, "2")) {
-                character.send(new DiscoveredNewJournalEntry(chapterId, "2"));
+            if (toolTypes.contains("hammer") && toolTypes.contains("axe") && !journalManager.hasEntry(character, wasChapterId, "2")) {
+                character.send(new DiscoveredNewJournalEntry(wasChapterId, "2"));
             }
         }
         if (ingredientComponent != null) {
             String ingredientType = ingredientComponent.type;
-            if (ingredientType.equals("WoodAndStone:wood") && !journalManager.hasEntry(character, chapterId, "3")) {
-                character.send(new DiscoveredNewJournalEntry(chapterId, "3"));
+            if (ingredientType.equals("WoodAndStone:wood") && !journalManager.hasEntry(character, wasChapterId, "3")) {
+                character.send(new DiscoveredNewJournalEntry(wasChapterId, "3"));
             }
         }
     }
