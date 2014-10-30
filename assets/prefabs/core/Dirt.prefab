@@ -1,6 +1,11 @@
 {
     "BlockDropGrammar": {
-        "itemDrops": ["0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint"]
+        "itemDrops": ["0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint"],
+        "droppedWithTool": {
+            "soil": {
+                blockDrops: ["1|Core:Dirt"]
+            }
+        }
     },
     "Tillable": {},
     "SideBlockSupportRequired": {
