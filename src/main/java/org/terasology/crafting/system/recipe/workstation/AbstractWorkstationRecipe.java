@@ -118,7 +118,7 @@ public abstract class AbstractWorkstationRecipe implements CraftingStationRecipe
 
         List<Result> resultList = new LinkedList<>();
 
-        List<List<String>> grouping = createParameterCombinations(listOfResults, 0);
+        List<List<String>> grouping = createParameterCombinationsFromIndex(listOfResults, 0);
         for (List<String> groupingEntry : grouping) {
             resultList.add(new Result(groupingEntry));
         }
@@ -136,26 +136,28 @@ public abstract class AbstractWorkstationRecipe implements CraftingStationRecipe
         return true;
     }
 
-    private List<List<String>> createParameterCombinations(List<List<String>> listOfResults, int index) {
+    private List<List<String>> createParameterCombinationsFromIndex(List<List<String>> listOfResults, int index) {
         List<List<String>> result = new LinkedList<>();
 
         List<String> parameters = listOfResults.get(index);
         if (index + 1 < listOfResults.size()) {
+            List<List<String>> nextParameterCombinations = createParameterCombinationsFromIndex(listOfResults, index + 1);
+
+            // Combination of each parameter for this index and all following
             for (String parameter : parameters) {
-                if (index + 1 < listOfResults.size()) {
-                    List<List<String>> nextParameterCombinations = createParameterCombinations(listOfResults, index + 1);
-                    for (List<String> followingParameterCombinations : nextParameterCombinations) {
-                        for (String combination : followingParameterCombinations) {
-                            List<String> parameterCombination = new LinkedList<>();
-                            parameterCombination.add(parameter);
-                            parameterCombination.add(combination);
-                            result.add(parameterCombination);
-                        }
-                    }
+                for (List<String> followingParameterCombinations : nextParameterCombinations) {
+                    List<String> parameterCombination = new LinkedList<>();
+                    parameterCombination.add(parameter);
+                    parameterCombination.addAll(followingParameterCombinations);
+                    result.add(parameterCombination);
                 }
             }
         } else {
-            result.add(parameters);
+            for (String parameter : parameters) {
+                List<String> paramCombination = new LinkedList<>();
+                paramCombination.add(parameter);
+                result.add(paramCombination);
+            }
         }
 
         return result;
