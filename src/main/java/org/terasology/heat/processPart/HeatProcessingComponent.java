@@ -139,17 +139,18 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
     }
 
     private EntityRef createResultItem(String itemResult) {
+        String resultText = itemResult;
         int count = 1;
-        int starIndex = itemResult.indexOf("*");
+        int starIndex = resultText.indexOf("*");
         if (starIndex > -1) {
-            count = Integer.parseInt(itemResult.substring(0, starIndex));
-            itemResult = itemResult.substring(starIndex + 1);
+            count = Integer.parseInt(resultText.substring(0, starIndex));
+            resultText = resultText.substring(starIndex + 1);
         }
 
         EntityManager entityManager = CoreRegistry.get(EntityManager.class);
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         PrefabManager prefabManager = CoreRegistry.get(PrefabManager.class);
-        Prefab prefab = prefabManager.getPrefab(itemResult);
+        Prefab prefab = prefabManager.getPrefab(resultText);
 
         EntityRef result;
         if (prefab != null) {
@@ -159,7 +160,7 @@ public class HeatProcessingComponent implements Component, ProcessPart, Validate
             result.saveComponent(item);
         } else {
             BlockItemFactory blockItemFactory = new BlockItemFactory(entityManager);
-            BlockFamily blockFamily = blockManager.getBlockFamily(itemResult);
+            BlockFamily blockFamily = blockManager.getBlockFamily(resultText);
             result = blockItemFactory.newInstance(blockFamily, count);
         }
         return result;

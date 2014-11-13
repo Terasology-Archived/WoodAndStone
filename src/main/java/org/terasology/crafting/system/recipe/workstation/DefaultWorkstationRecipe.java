@@ -17,24 +17,8 @@ package org.terasology.crafting.system.recipe.workstation;
 
 import org.terasology.crafting.system.recipe.behaviour.ConsumeFluidBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
-import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.InventorySlotTypeResolver;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
-import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.heat.HeatUtils;
-import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.math.TeraMath;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.workstation.process.WorkstationInventoryUtils;
-import org.terasology.world.BlockEntityRegistry;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -46,7 +30,8 @@ public class DefaultWorkstationRecipe extends AbstractWorkstationRecipe {
     }
 
     public void addRequiredTool(String toolType, int durability) {
-        final ReduceDurabilityCraftBehaviour behaviour = new ReduceDurabilityCraftBehaviour(new CraftingStationToolPredicate(toolType), durability, new InventorySlotTypeResolver("TOOL"));
+        final ReduceDurabilityCraftBehaviour behaviour = new ReduceDurabilityCraftBehaviour(
+                new CraftingStationToolPredicate(toolType), durability, new InventorySlotTypeResolver("TOOL"));
         addToolBehaviour(behaviour);
     }
 

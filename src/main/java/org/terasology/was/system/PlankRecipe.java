@@ -44,7 +44,7 @@ public class PlankRecipe extends AbstractWorkstationRecipe {
         setResultFactory(new PlankRecipeResultFactory(Assets.getPrefab("WoodAndStone:WoodPlank"), plankCount));
     }
 
-    private class PlankRecipeResultFactory extends ItemRecipeResultFactory {
+    private final class PlankRecipeResultFactory extends ItemRecipeResultFactory {
         private PlankRecipeResultFactory(Prefab prefab, int count) {
             super(prefab, count);
         }
@@ -80,7 +80,7 @@ public class PlankRecipe extends AbstractWorkstationRecipe {
         }
     }
 
-    private class ConsumeWoodIngredientBehaviour extends ConsumeItemCraftBehaviour {
+    private final class ConsumeWoodIngredientBehaviour extends ConsumeItemCraftBehaviour {
         private ConsumeWoodIngredientBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
             super(matcher, count, resolver);
         }

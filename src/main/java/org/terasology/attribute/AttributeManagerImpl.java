@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RegisterSystem
-@Share(value = {AttributeManager.class})
+@Share(AttributeManager.class)
 public class AttributeManagerImpl extends BaseComponentSystem implements AttributeManager {
     private Map<String, AttributeBaseSource> attributeBases = new HashMap<>();
 

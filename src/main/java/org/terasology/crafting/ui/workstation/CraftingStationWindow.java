@@ -69,17 +69,17 @@ public class CraftingStationWindow extends BaseWorkstationScreen {
     }
 
     @Override
-    public void initializeWorkstation(final EntityRef station) {
-        CraftingStationComponent craftingStation = station.getComponent(CraftingStationComponent.class);
+    public void initializeWorkstation(final EntityRef workstation) {
+        CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
 
-        this.station = station;
+        this.station = workstation;
 
-        WorkstationScreenUtils.setupInventoryGrid(station, ingredients, "INPUT");
-        WorkstationScreenUtils.setupInventoryGrid(station, tools, "TOOL");
-        WorkstationScreenUtils.setupInventoryGrid(station, upgrades, "UPGRADE");
-        WorkstationScreenUtils.setupInventoryGrid(station, result, "OUTPUT");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, ingredients, "INPUT");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, tools, "TOOL");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, upgrades, "UPGRADE");
+        WorkstationScreenUtils.setupInventoryGrid(workstation, result, "OUTPUT");
 
-        stationRecipes.setStation(station);
+        stationRecipes.setStation(workstation);
 
         player.setTargetEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity());
         player.setCellOffset(10);
@@ -90,7 +90,7 @@ public class CraftingStationWindow extends BaseWorkstationScreen {
                     @Override
                     public void onActivated(UIWidget widget) {
                         EntityRef character = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                        station.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe));
+                        workstation.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe));
                     }
                 });
         upgradeButton.setVisible(false);
@@ -135,8 +135,8 @@ public class CraftingStationWindow extends BaseWorkstationScreen {
         for (WorkstationProcess workstationProcess : craftingRegistry.getWorkstationProcesses(Collections.singleton(CraftingStationUpgradeRecipeComponent.PROCESS_TYPE))) {
             if (workstationProcess instanceof CraftingWorkstationUpgradeProcess) {
                 UpgradeRecipe upgradeRecipe = ((CraftingWorkstationUpgradeProcess) workstationProcess).getUpgradeRecipe();
-                final UpgradeRecipe.UpgradeResult result = upgradeRecipe.getMatchingUpgradeResult(station);
-                if (result != null) {
+                final UpgradeRecipe.UpgradeResult upgradeResult = upgradeRecipe.getMatchingUpgradeResult(station);
+                if (upgradeResult != null) {
                     return workstationProcess.getId();
                 }
             }

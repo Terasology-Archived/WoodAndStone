@@ -77,8 +77,8 @@ public class ThermometerWidget extends CoreWidget {
         temperature.set(value);
     }
 
-    public void bindTemperature(Binding<Float> temperature) {
-        this.temperature = temperature;
+    public void bindTemperature(Binding<Float> temperatureToBind) {
+        temperature = temperatureToBind;
     }
 
     public float getTemperature() {
@@ -89,8 +89,8 @@ public class ThermometerWidget extends CoreWidget {
         temperature.set(value);
     }
 
-    public void bindMarkedTemperature(Binding<Float> markedTemperature) {
-        this.markedTemperature = markedTemperature;
+    public void bindMarkedTemperature(Binding<Float> markedTemperatureToBind) {
+        markedTemperature = markedTemperatureToBind;
     }
 
     public Float getMarkedTemperature() {
@@ -101,8 +101,8 @@ public class ThermometerWidget extends CoreWidget {
         maxTemperature.set(value);
     }
 
-    public void bindMaxTemperature(Binding<Float> maxTemperature) {
-        this.maxTemperature = maxTemperature;
+    public void bindMaxTemperature(Binding<Float> maxTemperatureToBind) {
+        maxTemperature = maxTemperatureToBind;
     }
 
     public float getMaxTemperature() {
@@ -113,8 +113,8 @@ public class ThermometerWidget extends CoreWidget {
         minTemperature.set(value);
     }
 
-    public void bindMinTemperature(Binding<Float> minTemperature) {
-        this.minTemperature = minTemperature;
+    public void bindMinTemperature(Binding<Float> minTemperatureToBind) {
+        minTemperature = minTemperatureToBind;
     }
 
     public float getMinTemperature() {

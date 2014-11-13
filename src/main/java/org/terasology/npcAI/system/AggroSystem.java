@@ -36,14 +36,15 @@ import java.util.Map;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class AggroSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+    private static final float MAX_AGGRO_PERIOD = 10000;
+    private static final long TRIGGER_INTERVAL = 100;
+    private static final int AGGRO_VALUES_MAX_MEMORY = 20;
+
     @In
     private Time time;
     @In
     private EntityManager entityManager;
 
-    private static final float MAX_AGGRO_PERIOD = 10000;
-    private static final long TRIGGER_INTERVAL = 100;
-    private static final int AGGRO_VALUES_MAX_MEMORY = 20;
     private long lastChecked;
 
     @Override

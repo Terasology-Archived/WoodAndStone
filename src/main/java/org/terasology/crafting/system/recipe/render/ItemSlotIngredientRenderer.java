@@ -36,8 +36,8 @@ public class ItemSlotIngredientRenderer implements CraftIngredientRenderer {
         itemIcon = new ItemIcon();
     }
 
-    public void update(EntityRef entity, int slot, Function<Integer, Integer> multiplierFunction) {
-        this.multiplierFunction = multiplierFunction;
+    public void update(EntityRef entity, int slot, Function<Integer, Integer> newMultiplierFunction) {
+        multiplierFunction = newMultiplierFunction;
 
         EntityRef item = InventoryUtils.getItemAt(entity, slot);
         ItemComponent itemComp = item.getComponent(ItemComponent.class);

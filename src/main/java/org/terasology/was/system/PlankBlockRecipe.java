@@ -44,7 +44,7 @@ public class PlankBlockRecipe extends AbstractWorkstationRecipe {
         setResultFactory(new PlankBlockRecipeResultFactory(shape, resultCount));
     }
 
-    private class PlankBlockRecipeResultFactory extends BlockRecipeResultFactory {
+    private final class PlankBlockRecipeResultFactory extends BlockRecipeResultFactory {
         private String shape;
 
         private PlankBlockRecipeResultFactory(String shape, int count) {
@@ -76,7 +76,7 @@ public class PlankBlockRecipe extends AbstractWorkstationRecipe {
         }
     }
 
-    private class ConsumePlankIngredientBehaviour extends ConsumeItemCraftBehaviour {
+    private final class ConsumePlankIngredientBehaviour extends ConsumeItemCraftBehaviour {
         private ConsumePlankIngredientBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
             super(matcher, count, resolver);
         }

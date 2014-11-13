@@ -63,8 +63,8 @@ public class QuernWindow extends BaseWorkstationScreen {
                 new Binding<Boolean>() {
                     @Override
                     public Boolean get() {
-                        return (!workstation.hasComponent(WorkstationProcessingComponent.class) &&
-                                (workstation.hasComponent(MillProgressComponent.class) || InventoryUtils.getItemAt(workstation, 0).exists()));
+                        return (!workstation.hasComponent(WorkstationProcessingComponent.class)
+                                && (workstation.hasComponent(MillProgressComponent.class) || InventoryUtils.getItemAt(workstation, 0).exists()));
                     }
 
                     @Override
@@ -97,7 +97,8 @@ public class QuernWindow extends BaseWorkstationScreen {
 
                         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
-                        return millProgress.processedStep * 0.25f + 0.25f * (gameTime - processDef.processingStartTime) / (processDef.processingFinishTime - processDef.processingStartTime);
+                        return millProgress.processedStep * 0.25f + 0.25f * (gameTime - processDef.processingStartTime)
+                                / (processDef.processingFinishTime - processDef.processingStartTime);
                     }
 
                     @Override

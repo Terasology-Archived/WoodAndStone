@@ -52,7 +52,7 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
         setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab("WoodAndStone:HerbPotion"), 1));
     }
 
-    private class PotionRecipeResultFactory extends ItemRecipeResultFactory {
+    private final class PotionRecipeResultFactory extends ItemRecipeResultFactory {
         private PotionRecipeResultFactory(Prefab prefab, int count) {
             super(prefab, count);
         }
@@ -81,7 +81,7 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
         }
     }
 
-    private class ConsumeHerbIngredientBehaviour extends ConsumeItemCraftBehaviour {
+    private final class ConsumeHerbIngredientBehaviour extends ConsumeItemCraftBehaviour {
         private ConsumeHerbIngredientBehaviour(Predicate<EntityRef> matcher, int count, InventorySlotResolver resolver) {
             super(matcher, count, resolver);
         }

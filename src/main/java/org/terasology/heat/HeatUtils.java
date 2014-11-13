@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class HeatUtils {
-    private static final Logger logger = LoggerFactory.getLogger(HeatUtils.class);
     public static final float HEAT_MAGIC_VALUE = 2000f;
+    private static final Logger logger = LoggerFactory.getLogger(HeatUtils.class);
 
     private HeatUtils() {
 
@@ -61,7 +61,8 @@ public final class HeatUtils {
                     lastCalculated = fuelSourceConsume.startTime;
                 }
                 long heatEndTime = Math.min(fuelSourceConsume.startTime + fuelSourceConsume.burnLength, time);
-                heat = Math.min(producer.maximumTemperature, solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate, heatEndTime - lastCalculated));
+                heat = Math.min(producer.maximumTemperature,
+                        solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate, heatEndTime - lastCalculated));
                 lastCalculated = heatEndTime;
             } else {
                 break;

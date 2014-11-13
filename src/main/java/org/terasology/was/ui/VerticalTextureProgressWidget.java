@@ -121,8 +121,8 @@ public class VerticalTextureProgressWidget extends CoreWidget {
         return mark.get();
     }
 
-    public void setMark(Float value) {
-        this.mark.set(value);
+    public void setMark(Float markValue) {
+        mark.set(markValue);
     }
 
     public void bindMark(Binding<Float> binding) {

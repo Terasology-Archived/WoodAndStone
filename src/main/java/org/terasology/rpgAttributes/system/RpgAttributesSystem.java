@@ -43,7 +43,7 @@ public class RpgAttributesSystem extends BaseComponentSystem {
     public void doingDamage(BeforeDamagedEvent event, EntityRef damageTarget) {
         final float strength = attributeManager.getAttribute(event.getInstigator(), RPG.STRENGTH);
         if (strength != 100) {
-            event.multiply(strength/100f);
+            event.multiply(strength / 100f);
         }
     }
 
@@ -51,7 +51,7 @@ public class RpgAttributesSystem extends BaseComponentSystem {
     public void impactOnSpeed(GetMaxSpeedEvent event, EntityRef entity) {
         final float agility = attributeManager.getAttribute(entity, RPG.AGILITY);
         if (agility != 100) {
-            event.multiply(agility/100f);
+            event.multiply(agility / 100f);
         }
     }
 }

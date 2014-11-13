@@ -39,6 +39,10 @@ import java.util.Map;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+    private static final float REMOVE_FUEL_THRESHOLD = 21f;
+    private static final float REMOVE_RESIDUAL_HEAT_THRESHOLD = 21f;
+    private static final long TRIGGER_INTERVAL = 100;
+
     @In
     private BlockEntityRegistry blockEntityRegistry;
     @In
@@ -46,9 +50,6 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
     @In
     private Time time;
 
-    private static final float REMOVE_FUEL_THRESHOLD = 21f;
-    private static final float REMOVE_RESIDUAL_HEAT_THRESHOLD = 21f;
-    private static final long TRIGGER_INTERVAL = 100;
     private long lastChecked;
 
     @Override

@@ -17,5 +17,6 @@ package org.terasology.herbalism;
 
 public interface HerbEffectRegistry {
     void registerHerbEffect(float rarity, HerbEffect herbEffect);
+
     HerbEffect getHerbEffect(float value);
 }

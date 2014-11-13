@@ -17,12 +17,11 @@ package org.terasology.herbalism;
 
 import org.terasology.anotherWorld.util.ChanceRandomizer;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.Share;
 
 @RegisterSystem
-@Share(value = {HerbEffectRegistry.class})
+@Share(HerbEffectRegistry.class)
 public class DefaultHerbEffectRegistry extends BaseComponentSystem implements HerbEffectRegistry {
     private ChanceRandomizer<HerbEffect> herbEffectRandomizer = new ChanceRandomizer<>(1000);
 

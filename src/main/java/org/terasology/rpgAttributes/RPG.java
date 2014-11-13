@@ -16,8 +16,9 @@
 package org.terasology.rpgAttributes;
 
 public final class RPG {
-    public final static String STRENGTH = "RPG:Strength";
-    public final static String AGILITY = "RPG:Agility";
+    public static final String STRENGTH = "RPG:Strength";
+    public static final String AGILITY = "RPG:Agility";
 
-    private RPG() {}
+    private RPG() {
+    }
 }

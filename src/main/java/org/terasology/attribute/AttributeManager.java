@@ -18,6 +18,7 @@ package org.terasology.attribute;
 import org.terasology.entitySystem.entity.EntityRef;
 
 public interface AttributeManager {
-    public void registerAttribute(String attributeName, AttributeBaseSource attributeBaseSource);
-    public float getAttribute(EntityRef entity, String attributeName);
+    void registerAttribute(String attributeName, AttributeBaseSource attributeBaseSource);
+
+    float getAttribute(EntityRef entity, String attributeName);
 }
