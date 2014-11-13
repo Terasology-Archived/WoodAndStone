@@ -39,8 +39,9 @@ public class CraftInHandClientSystem extends BaseComponentSystem {
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
 
-    @ReceiveEvent(components = {ClientComponent.class})
-    public void craftRequested(CraftInHandButton event, EntityRef entity) {
+    @ReceiveEvent
+    public void craftRequested(CraftInHandButton event, EntityRef entity,
+                               ClientComponent clientComponent) {
         if (!recipeRegistry.isCraftingInHandDisabled()) {
             if (event.getState() == ButtonState.DOWN) {
                 nuiManager.toggleScreen("WoodAndStone:CraftInHand");

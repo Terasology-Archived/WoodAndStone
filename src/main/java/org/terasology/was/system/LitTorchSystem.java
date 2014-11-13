@@ -40,25 +40,30 @@ public class LitTorchSystem extends BaseComponentSystem {
     @In
     private EntityManager entityManager;
 
-    @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class})
-    public void whenTorchPlaced(OnBlockItemPlaced event, EntityRef item) {
+    @ReceiveEvent
+    public void whenTorchPlaced(OnBlockItemPlaced event, EntityRef item,
+                                OverTimeDurabilityReduceComponent overTimeDurabilityReduceComponent,
+                                DurabilityComponent itemDurability) {
         EntityRef blockEntity = event.getPlacedBlock();
         DurabilityComponent durability = blockEntity.getComponent(DurabilityComponent.class);
-        durability.durability = item.getComponent(DurabilityComponent.class).durability;
+        durability.durability = itemDurability.durability;
         blockEntity.saveComponent(durability);
     }
 
-    @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class})
-    public void whenTorchRemoved(OnBlockToItem event, EntityRef block) {
+    @ReceiveEvent
+    public void whenTorchRemoved(OnBlockToItem event, EntityRef block,
+                                 OverTimeDurabilityReduceComponent overTimeDurabilityReduceComponent,
+                                 DurabilityComponent blockDurability) {
         EntityRef itemEntity = event.getItem();
         DurabilityComponent durability = itemEntity.getComponent(DurabilityComponent.class);
-        durability.durability = block.getComponent(DurabilityComponent.class).durability;
+        durability.durability = blockDurability.durability;
         itemEntity.saveComponent(durability);
     }
 
-    @ReceiveEvent(components = {OverTimeDurabilityReduceComponent.class, BlockComponent.class})
-    public void whenTorchAsBlockExpires(DurabilityExhaustedEvent event, EntityRef entity) {
-        BlockComponent block = entity.getComponent(BlockComponent.class);
+    @ReceiveEvent
+    public void whenTorchAsBlockExpires(DurabilityExhaustedEvent event, EntityRef entity,
+                                        OverTimeDurabilityReduceComponent overTimeDurabilityReduceComponent,
+                                        BlockComponent block) {
         Vector3i position = block.getPosition();
         CoreRegistry.get(WorldProvider.class).setBlock(position, BlockManager.getAir());
         entity.removeComponent(DurabilityComponent.class);

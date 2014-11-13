@@ -163,10 +163,11 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         player.send(new DiscoveredNewJournalEntry(wasChapterId, "1"));
     }
 
-    @ReceiveEvent(components = {CraftingStationComponent.class})
-    public void craftingStationFormed(MultiBlockFormed craftingStationFormed, EntityRef station) {
+    @ReceiveEvent
+    public void craftingStationFormed(MultiBlockFormed craftingStationFormed, EntityRef station,
+                                      CraftingStationComponent craftingStationComponent) {
         EntityRef character = craftingStationFormed.getInstigator();
-        String workstationType = station.getComponent(CraftingStationComponent.class).type;
+        String workstationType = craftingStationComponent.type;
         if (workstationType.equals("WoodAndStone:BasicWoodcrafting")
                 && !journalManager.hasEntry(character, wasChapterId, "4")) {
             character.send(new DiscoveredNewJournalEntry(wasChapterId, "4"));
@@ -183,8 +184,9 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
         }
     }
 
-    @ReceiveEvent(components = {CharacterComponent.class})
-    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef character) {
+    @ReceiveEvent
+    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef character,
+                                   CharacterComponent characterComponent) {
         CraftingStationToolComponent toolComponent = event.getNewItem().getComponent(CraftingStationToolComponent.class);
         CraftingStationIngredientComponent ingredientComponent = event.getNewItem().getComponent(CraftingStationIngredientComponent.class);
         if (toolComponent != null) {

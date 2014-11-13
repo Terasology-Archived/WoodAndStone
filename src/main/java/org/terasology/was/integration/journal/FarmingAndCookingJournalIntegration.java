@@ -132,8 +132,9 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
         }
     }
 
-    @ReceiveEvent(components = {CharacterComponent.class})
-    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef character) {
+    @ReceiveEvent
+    public void playerPickedUpItem(InventorySlotChangedEvent event, EntityRef character,
+                                   CharacterComponent characterComponent) {
         Prefab prefab = event.getNewItem().getParentPrefab();
         if (prefab != null) {
             AssetUri prefabUri = prefab.getURI();
