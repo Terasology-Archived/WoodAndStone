@@ -28,7 +28,7 @@ public interface CraftInHandRecipe {
 
     CraftInHandResult getResultByParameters(List<String> parameters);
 
-    public interface CraftInHandResult extends CraftProcessDisplay {
+    interface CraftInHandResult extends CraftProcessDisplay {
         List<String> getParameters();
 
         EntityRef craft(EntityRef character, int count);

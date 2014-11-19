@@ -15,20 +15,16 @@
  */
 package org.terasology.herbalism.system;
 
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.farm.component.FarmSoilComponent;
 import org.terasology.farm.event.SeedPlanted;
-import org.terasology.genome.GenomeRegistry;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.gf.PlantedSaplingComponent;
-import org.terasology.herbalism.HerbEffectRegistry;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.PollinatingHerbComponent;
 import org.terasology.math.Vector3i;
@@ -44,21 +40,11 @@ import org.terasology.world.block.BlockManager;
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class HerbalismAuthoritySystem extends BaseComponentSystem {
     @In
-    private GenomeRegistry genomeRegistry;
-    @In
     private GenomeManager genomeManager;
     @In
     private WorldProvider worldProvider;
     @In
-    private HerbEffectRegistry herbEffectRegistry;
-    @In
-    private BlockManager blockManager;
-    @In
     private BlockEntityRegistry blockEntityRegistry;
-    @In
-    private EntityManager entityManager;
-    @In
-    private PrefabManager prefabManager;
 
     @ReceiveEvent
     public void herbPlanted(SeedPlanted event, EntityRef seedItem, GenomeComponent genomeComponent) {

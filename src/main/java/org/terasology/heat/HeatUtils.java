@@ -15,8 +15,6 @@
  */
 package org.terasology.heat;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.component.HeatConsumerComponent;
@@ -35,7 +33,6 @@ import java.util.Map;
 
 public final class HeatUtils {
     public static final float HEAT_MAGIC_VALUE = 2000f;
-    private static final Logger logger = LoggerFactory.getLogger(HeatUtils.class);
 
     private HeatUtils() {
 

@@ -22,7 +22,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.input.ButtonState;
-import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.NUIManager;
@@ -34,8 +33,6 @@ import org.terasology.rendering.nui.NUIManager;
 public class CraftInHandClientSystem extends BaseComponentSystem {
     @In
     private NUIManager nuiManager;
-    @In
-    private InventoryManager inventoryManager;
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
 

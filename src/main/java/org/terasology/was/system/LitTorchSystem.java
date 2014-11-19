@@ -18,14 +18,12 @@ package org.terasology.was.system;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.DurabilityExhaustedEvent;
 import org.terasology.durability.OverTimeDurabilityReduceComponent;
-import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.Vector3i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
@@ -37,9 +35,6 @@ import org.terasology.world.block.items.OnBlockToItem;
  */
 @RegisterSystem
 public class LitTorchSystem extends BaseComponentSystem {
-    @In
-    private EntityManager entityManager;
-
     @ReceiveEvent
     public void whenTorchPlaced(OnBlockItemPlaced event, EntityRef item,
                                 OverTimeDurabilityReduceComponent overTimeDurabilityReduceComponent,

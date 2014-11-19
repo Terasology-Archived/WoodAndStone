@@ -52,7 +52,7 @@ public interface CraftingStationRecipe {
 
     CraftingStationResult getResultByParameters(EntityRef station, List<String> resultParameters);
 
-    public interface CraftingStationResult extends CraftProcessDisplay {
+    interface CraftingStationResult extends CraftProcessDisplay {
         List<String> getResultParameters();
 
         boolean startCrafting(EntityRef station, int count);

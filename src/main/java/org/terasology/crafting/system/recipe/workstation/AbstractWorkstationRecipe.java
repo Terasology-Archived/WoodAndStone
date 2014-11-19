@@ -15,8 +15,6 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
@@ -35,8 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class AbstractWorkstationRecipe implements CraftingStationRecipe {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractWorkstationRecipe.class);
-
     private List<IngredientCraftBehaviour<EntityRef>> ingredientBehaviours = new ArrayList<>();
     private List<IngredientCraftBehaviour<EntityRef>> toolBehaviours = new ArrayList<>();
     private List<IngredientCraftBehaviour<String>> fluidBehaviours = new ArrayList<>();

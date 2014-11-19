@@ -25,7 +25,7 @@ public interface UpgradeRecipe {
 
     UpgradeResult getMatchingUpgradeResult(EntityRef station);
 
-    public interface UpgradeResult {
+    interface UpgradeResult {
         String getResultStationType();
 
         EntityRef processUpgrade(EntityRef station);

@@ -30,9 +30,6 @@ import org.terasology.workstation.process.ProcessPart;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.inventory.ValidateInventoryItem;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 public class HeatFuelingComponent implements Component, ProcessPart, ValidateInventoryItem {
     @Override
     public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
@@ -55,7 +52,6 @@ public class HeatFuelingComponent implements Component, ProcessPart, ValidateInv
             return false;
         }
 
-        Set<String> result = new LinkedHashSet<>();
         for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "FUEL")) {
             HeatFuelComponent fuel = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatFuelComponent.class);
             if (fuel != null) {
