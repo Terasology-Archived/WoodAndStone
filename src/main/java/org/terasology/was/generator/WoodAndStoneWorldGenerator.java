@@ -64,8 +64,11 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
         addChunkDecorator(new BiomeDecorator());
 
-        setSeaLevel(1700);
-        setMaxLevel(4000);
+        int seaLevel = 1700;
+        int maxLevel = 4000;
+
+        setSeaLevel(seaLevel);
+        setMaxLevel(maxLevel);
 
         // Make sure that area on the sea level is not dry, this will prevent deserts spawning next to sea
         setHumidityFunction(
@@ -103,23 +106,23 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f));
 
         // Setup biome terrain layers
-        setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice);
+        setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice, seaLevel);
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), 2, 5));
+                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), seaLevel - 5, seaLevel + 2));
 
         Predicate<Block> removableBlocks = new BlockCollectionPredicate(Arrays.asList(stone, sand, dirt, grass, snow));
 
         // Dig some caves in the terrain
         addChunkDecorator(
-                new CaveDecorator(removableBlocks, new PDist(0.2f, 0f), new PDist(5f, 1f), new PDist(1750f, 400f), new PDist(50f, 10f), new PDist(2f, 0.5f)));
+                new CaveDecorator(getSeed(), removableBlocks, new PDist(0.2f, 0f), new PDist(5f, 1f), new PDist(1750f, 400f), new PDist(50f, 10f), new PDist(2f, 0.5f)));
 
         // Setup ore spawning
         setupOreGenerator(stone);
 
         // Setup flora growing in the world
-        setupFlora();
+        setupFlora(seaLevel);
     }
 
     @Override
@@ -131,11 +134,11 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     public void setConfigurator(WorldConfigurator newConfigurator) {
     }
 
-    private void setupFlora() {
+    private void setupFlora(int seaLevel) {
         FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator();
         addFeatureGenerator(floraDecorator);
 
-        addFacetProvider(new FloraProvider());
+        addFacetProvider(new FloraProvider(seaLevel));
 
         // new PDist(2f, 0.4f)
         addFacetProvider(new TreeProvider(1.2f / (16 * 16)));
@@ -150,7 +153,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
     private void setupOreGenerator(Block stone) {
         Predicate<Block> replacedBlocks = new BlockCollectionPredicate(stone);
-        OreDecorator oreDecorator = new OreDecorator(replacedBlocks);
+        OreDecorator oreDecorator = new OreDecorator(getSeed(), replacedBlocks);
 
         // Use plugin mechanism to setup required ores for the modules, by default WoodAndStone requires no
         // ores
@@ -158,18 +161,19 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         addChunkDecorator(oreDecorator);
     }
 
-    private void setupLayers(Block mantle, Block sea, LiquidType seaType, Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice) {
+    private void setupLayers(Block mantle, Block sea, LiquidType seaType, Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice,
+                             int seaLevel) {
         LayeringConfig config = new LayeringConfig(mantle, stone, sea, seaType);
 
-        LayeringDecorator layering = new LayeringDecorator(config, getWorldSeed().hashCode());
+        LayeringDecorator layering = new LayeringDecorator(config, getSeed());
 
-        DefaultLayersDefinition desertDef = new DefaultLayersDefinition(AnotherWorldBiomes.DESERT.getId());
+        DefaultLayersDefinition desertDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.DESERT.getId());
         desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
         desertDef.addLayerDefinition(new PDist(4, 2), dirt, true);
         layering.addBiomeLayers(desertDef);
 
-        DefaultLayersDefinition forestDef = new DefaultLayersDefinition(AnotherWorldBiomes.FOREST.getId());
-        DefaultLayersDefinition plainsDef = new DefaultLayersDefinition(AnotherWorldBiomes.PLAINS.getId());
+        DefaultLayersDefinition forestDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.FOREST.getId());
+        DefaultLayersDefinition plainsDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.PLAINS.getId());
         forestDef.addLayerDefinition(new PDist(1, 0), grass, false);
         plainsDef.addLayerDefinition(new PDist(1, 0), grass, false);
         forestDef.addLayerDefinition(new PDist(4, 2), dirt, true);
@@ -177,19 +181,19 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         layering.addBiomeLayers(forestDef);
         layering.addBiomeLayers(plainsDef);
 
-        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition(AnotherWorldBiomes.TUNDRA.getId());
-        DefaultLayersDefinition taigaDef = new DefaultLayersDefinition(AnotherWorldBiomes.TAIGA.getId());
+        DefaultLayersDefinition tundraDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.TUNDRA.getId());
+        DefaultLayersDefinition taigaDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.TAIGA.getId());
         tundraDef.addLayerDefinition(new PDist(1, 0), snow, false);
         taigaDef.addLayerDefinition(new PDist(1, 0), snow, false);
         layering.addBiomeLayers(tundraDef);
         layering.addBiomeLayers(taigaDef);
 
-        DefaultLayersDefinition alpineDef = new DefaultLayersDefinition(AnotherWorldBiomes.ALPINE.getId());
+        DefaultLayersDefinition alpineDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.ALPINE.getId());
         alpineDef.addLayerDefinition(new PDist(2f, 1f), ice, false);
         alpineDef.addLayerDefinition(new PDist(1f, 0f), snow, false);
         layering.addBiomeLayers(alpineDef);
 
-        DefaultLayersDefinition cliffDef = new DefaultLayersDefinition(AnotherWorldBiomes.CLIFF.getId());
+        DefaultLayersDefinition cliffDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.CLIFF.getId());
         layering.addBiomeLayers(cliffDef);
 
         addChunkDecorator(layering);
