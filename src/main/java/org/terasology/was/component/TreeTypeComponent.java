@@ -15,10 +15,11 @@
  */
 package org.terasology.was.component;
 
-import com.google.common.hash.HashCode;
 import org.terasology.entitySystem.Component;
 import org.terasology.logic.inventory.ItemDifferentiating;
 import org.terasology.world.block.items.AddToBlockBasedItem;
+
+import java.util.Objects;
 
 @ItemDifferentiating
 @AddToBlockBasedItem
@@ -45,6 +46,6 @@ public class TreeTypeComponent implements Component {
 
     @Override
     public int hashCode() {
-        return HashCode.fromString(treeType).asInt();
+        return Objects.hashCode(treeType);
     }
 }
