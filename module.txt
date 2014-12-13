@@ -2,7 +2,7 @@
     "id" : "WoodAndStone",
     "version" : "0.1.0",
     "author" : "Marcin Sciesinski <marcins78@gmail.com>",
-    "displayName" : "Throughout the Ages - I",
+    "displayName" : "Wood and Stone",
     "description" : "Basic 'Stone Age' crafting",
     "dependencies" : [
             {
@@ -65,7 +65,5 @@
                 "id" : "Seasons",
                 "minVersion" : "0.1.0"
             }],
-    "isServerSideOnly" : false,
-    "isGameplay" : "true",
-    "defaultWorldGenerator" : "WoodAndStone:throughoutTheAges"
+    "isServerSideOnly" : false
 }
