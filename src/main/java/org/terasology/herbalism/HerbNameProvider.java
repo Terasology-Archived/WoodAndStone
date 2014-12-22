@@ -35,6 +35,6 @@ public class HerbNameProvider {
 
     public String getName(String seed) {
         int length = seed.length();
-        return generaGen.getName(4, 8, seed.substring(0, length / 2)) + " " + familyGen.getName(4, 8, seed.substring(0, length));
+        return generaGen.getName(4, 8, seed.substring(0, length / 2).hashCode()) + " " + familyGen.getName(4, 8, seed.substring(0, length).hashCode());
     }
 }
