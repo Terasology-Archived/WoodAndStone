@@ -134,7 +134,7 @@ public final class HeatUtils {
 
         for (Vector3i entityBlock : entityBlocks) {
             for (Side heatDirection : consumerComp.heatDirections) {
-                Vector3i heatedBlock = entityBlock.clone();
+                Vector3i heatedBlock = new Vector3i(entityBlock);
                 heatedBlock.add(heatDirection.getVector3i());
                 if (!entityBlocks.encompasses(heatedBlock)) {
                     result.put(heatedBlock, heatDirection);
@@ -157,7 +157,7 @@ public final class HeatUtils {
 
         for (Vector3i entityBlock : entityBlocks) {
             for (Side heatDirection : producerComp.heatDirections) {
-                Vector3i heatedBlock = entityBlock.clone();
+                Vector3i heatedBlock = new Vector3i(entityBlock);
                 heatedBlock.add(heatDirection.getVector3i());
                 if (!entityBlocks.encompasses(heatedBlock)) {
                     result.put(heatedBlock, heatDirection);
