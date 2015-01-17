@@ -22,6 +22,7 @@ import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -32,14 +33,13 @@ import org.terasology.was.ui.WorkstationScreenUtils;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;
-import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 import java.util.Collections;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CraftingStationWindow extends BaseWorkstationScreen {
+public class CraftingStationWindow extends BaseInteractionScreen {
     private InventoryGrid ingredients;
     private InventoryGrid upgrades;
     private UIButton upgradeButton;
@@ -69,7 +69,7 @@ public class CraftingStationWindow extends BaseWorkstationScreen {
     }
 
     @Override
-    public void initializeWorkstation(final EntityRef workstation) {
+    protected void initializeWithInteractionTarget(final EntityRef workstation) {
         CraftingStationComponent craftingStation = workstation.getComponent(CraftingStationComponent.class);
 
         this.station = workstation;
@@ -90,7 +90,7 @@ public class CraftingStationWindow extends BaseWorkstationScreen {
                     @Override
                     public void onActivated(UIWidget widget) {
                         EntityRef character = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                        workstation.send(new WorkstationProcessRequest(character, matchingUpgradeRecipe));
+                        character.send(new WorkstationProcessRequest(workstation, matchingUpgradeRecipe));
                     }
                 });
         upgradeButton.setVisible(false);

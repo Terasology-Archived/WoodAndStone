@@ -23,20 +23,20 @@ import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
-import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class FurnaceWindow extends BaseWorkstationScreen {
+public class FurnaceWindow extends BaseInteractionScreen {
     private InventoryGrid input;
     private InventoryGrid fuel;
     private InventoryGrid output;
@@ -64,7 +64,7 @@ public class FurnaceWindow extends BaseWorkstationScreen {
     }
 
     @Override
-    public void initializeWorkstation(final EntityRef workstation) {
+    protected void initializeWithInteractionTarget(final EntityRef workstation) {
         WorkstationScreenUtils.setupInventoryGrid(workstation, input, "INPUT");
         WorkstationScreenUtils.setupInventoryGrid(workstation, fuel, "FUEL");
         WorkstationScreenUtils.setupInventoryGrid(workstation, output, "OUTPUT");

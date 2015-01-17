@@ -26,6 +26,7 @@ import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.TeraMath;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -33,14 +34,13 @@ import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
-import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class CookingStationWindow extends BaseWorkstationScreen {
+public class CookingStationWindow extends BaseInteractionScreen {
 
     private InventoryGrid fluidContainerInput;
     private InventoryGrid fluidContainerOutput;
@@ -85,7 +85,8 @@ public class CookingStationWindow extends BaseWorkstationScreen {
     }
 
     @Override
-    public void initializeWorkstation(final EntityRef station) {
+    protected void initializeWithInteractionTarget(final EntityRef station) {
+
         WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
 
         WorkstationInventoryComponent.SlotAssignment fluidInputAssignments = workstationInventory.slotAssignments.get("FLUID_INPUT");

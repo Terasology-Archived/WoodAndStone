@@ -27,8 +27,8 @@ public class CraftingWorkstationProcessRequest extends WorkstationProcessRequest
     public CraftingWorkstationProcessRequest() {
     }
 
-    public CraftingWorkstationProcessRequest(EntityRef instigator, String processId, List<String> parameters, int count) {
-        super(instigator, processId);
+    public CraftingWorkstationProcessRequest(EntityRef workstation, String processId, List<String> parameters, int count) {
+        super(workstation, processId);
         this.parameters = parameters;
         this.count = count;
     }

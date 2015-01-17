@@ -206,7 +206,7 @@ public class StationAvailableRecipesWidget extends CoreWidget {
                         @Override
                         public void create(int count) {
                             EntityRef player = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-                            station.send(new CraftingWorkstationProcessRequest(player, recipeId, parameters, count));
+                            player.send(new CraftingWorkstationProcessRequest(station, recipeId, parameters, count));
                         }
                     });
             layout.addWidget(recipeDisplay);

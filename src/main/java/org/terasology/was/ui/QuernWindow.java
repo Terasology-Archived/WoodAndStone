@@ -21,6 +21,7 @@ import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.mill.component.MillProgressComponent;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.BaseInteractionScreen;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
@@ -29,12 +30,11 @@ import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.event.WorkstationProcessRequest;
-import org.terasology.workstation.ui.BaseWorkstationScreen;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class QuernWindow extends BaseWorkstationScreen {
+public class QuernWindow extends BaseInteractionScreen {
     private InventoryGrid input;
     private InventoryGrid output;
     private UIButton millButton;
@@ -55,7 +55,7 @@ public class QuernWindow extends BaseWorkstationScreen {
     }
 
     @Override
-    public void initializeWorkstation(final EntityRef workstation) {
+    protected void initializeWithInteractionTarget(final EntityRef workstation) {
         WorkstationScreenUtils.setupInventoryGrid(workstation, input, "INPUT");
         WorkstationScreenUtils.setupInventoryGrid(workstation, output, "OUTPUT");
 
@@ -77,7 +77,7 @@ public class QuernWindow extends BaseWorkstationScreen {
                     public void onActivated(UIWidget widget) {
                         EntityRef instigator = CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
 
-                        workstation.send(new WorkstationProcessRequest(instigator, "Prefab:WoodAndStone:MillingProcess"));
+                        instigator.send(new WorkstationProcessRequest(workstation, "Prefab:WoodAndStone:MillingProcess"));
                     }
                 });
 
