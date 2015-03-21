@@ -27,7 +27,7 @@ import org.terasology.genome.system.GenomeManager;
 import org.terasology.gf.PlantedSaplingComponent;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.PollinatingHerbComponent;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.randomUpdate.RandomUpdateEvent;
 import org.terasology.registry.In;
 import org.terasology.utilities.random.FastRandom;

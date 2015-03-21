@@ -21,7 +21,7 @@ import org.terasology.anotherWorld.LocalParameters;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.gf.grass.ReplaceBlockGrowthDefinition;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;

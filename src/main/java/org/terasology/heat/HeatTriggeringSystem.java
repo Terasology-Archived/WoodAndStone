@@ -27,7 +27,7 @@ import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.heat.component.HeatConsumerComponent;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.math.Side;
-import org.terasology.math.Vector3i;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.monitoring.PerformanceMonitor;
 import org.terasology.registry.In;
 import org.terasology.workstation.event.WorkstationStateChanged;
