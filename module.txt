@@ -31,7 +31,7 @@
             },
             {
                 "id" : "Core",
-                "minVersion" : "0.1.0"
+                "minVersion" : "0.53.1"
             },
             {
                 "id" : "Fences",
@@ -55,15 +55,15 @@
             },
             {
                 "id" : "NameGenerator",
-                "minVersion" : "0.1.0"
+                "minVersion" : "0.4.0"
             },
             {
                 "id" : "StructuralResources",
-                "minVersion" : "0.1.0"
+                "minVersion" : "0.2.0"
             },
             {
                 "id" : "Seasons",
-                "minVersion" : "0.1.0"
+                "minVersion" : "0.9.0"
             }],
     "isServerSideOnly" : false
 }
