@@ -17,9 +17,9 @@ package org.terasology.was.generator.plant.forest.tree;
 
 import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
+import org.terasology.anotherWorldPlants.tree.PineGrowthDefinition;
 import org.terasology.gf.PlantType;
 import org.terasology.gf.generator.GrowthBasedPlantSpawnDefinition;
-import org.terasology.plantPack.tree.PineGrowthDefinition;
 import org.terasology.was.generator.Blocks;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 

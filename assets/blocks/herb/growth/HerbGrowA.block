@@ -3,5 +3,5 @@
     "entity": {
         "prefab": "WoodAndStone:HerbGrowing"
     },
-    "tile": "Crops:Corn1"
+    "tile": "PlantPack:Corn1"
 }
