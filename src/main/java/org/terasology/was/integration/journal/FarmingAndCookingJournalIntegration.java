@@ -138,9 +138,9 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
         Prefab prefab = event.getNewItem().getParentPrefab();
         if (prefab != null) {
             AssetUri prefabUri = prefab.getURI();
-            if (prefabUri.equals(new AssetUri(AssetType.PREFAB, "PlantPack", "CornFruit"))) {
+            if (prefabUri.equals(new AssetUri(AssetType.PREFAB, "AnotherWorldPlants", "CornFruit"))) {
                 discoveredEntry(character, "corn");
-            } else if (prefabUri.equals(new AssetUri(AssetType.PREFAB, "PlantPack", "RiceFruit"))) {
+            } else if (prefabUri.equals(new AssetUri(AssetType.PREFAB, "AnotherWorldPlants", "RiceFruit"))) {
                 discoveredEntry(character, "rice");
             }
         }

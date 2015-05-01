@@ -30,6 +30,10 @@
                 "minVersion" : "0.1.0"
             },
             {
+                "id" : "AnotherWorldPlants",
+                "minVersion" : "0.1.0"
+            },
+            {
                 "id" : "Core",
                 "minVersion" : "0.53.1"
             },

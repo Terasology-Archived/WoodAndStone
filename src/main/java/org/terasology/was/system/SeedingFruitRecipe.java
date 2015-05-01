@@ -108,7 +108,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
 
             EntityRef result = CoreRegistry.get(EntityManager.class).create(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
             ItemComponent itemComponent = result.getComponent(ItemComponent.class);
-            itemComponent.icon = Assets.getTextureRegion("PlantPack:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")");
+            itemComponent.icon = Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")");
             result.saveComponent(itemComponent);
 
             return result;
@@ -149,7 +149,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
         public void setupResultDisplay(ItemIcon itemIcon) {
             Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
 
-            itemIcon.setIcon(Assets.getTextureRegion("PlantPack:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")"));
+            itemIcon.setIcon(Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")"));
             DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
             if (displayName != null) {
                 itemIcon.setTooltip(displayName.name);
@@ -158,7 +158,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
     }
 
     private static class ConsumeFruitBehaviour extends ConsumeItemCraftBehaviour {
-        private static final Name PLANT_PACK_MODULE = new Name("plantpack");
+        private static final Name PLANT_PACK_MODULE = new Name("anotherworldplants");
 
         public ConsumeFruitBehaviour() {
             super(new Predicate<EntityRef>() {
@@ -188,7 +188,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
 
         public String getSeedResult(String parameter) {
             String[] split = parameter.split("\\|");
-            return "PlantPack:" + split[1] + "Seed";
+            return "AnotherWorldPlants:" + split[1] + "Seed";
         }
 
         public String getFruitIcon(String parameter) {

@@ -16,6 +16,7 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
+import org.terasology.anotherWorldPlants.farm.component.SeedComponent;
 import org.terasology.asset.Asset;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
@@ -27,7 +28,6 @@ import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.farm.component.SeedComponent;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.Herbalism;
@@ -124,7 +124,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             herbSeed.addComponent(seedComponent);
 
             ItemComponent itemComponent = herbSeed.getComponent(ItemComponent.class);
-            itemComponent.icon = Assets.getTextureRegion("PlantPack:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")");
+            itemComponent.icon = Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")");
             herbSeed.saveComponent(itemComponent);
 
             return herbSeed;
@@ -163,7 +163,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
 
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
-            itemIcon.setIcon(Assets.getTextureRegion("PlantPack:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")"));
+            itemIcon.setIcon(Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")"));
             itemIcon.setTooltipLines(Arrays.asList(new TooltipLine("Herb Seed"), HerbalismClientSystem.getHerbTooltipLine(HERB_BEHAVIOUR.getHerbName(parameters.get(1)))));
         }
     }
