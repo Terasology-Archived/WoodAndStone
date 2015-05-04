@@ -1,0 +1,6 @@
+{
+    "BlockDropGrammar": {
+        "blockDrops": ["1-2*WoodAndStone:CypressLog"],
+        "itemDrops": ["0.1|WoodAndStone:Resin"]
+    }
+}

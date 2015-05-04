@@ -1,0 +1,6 @@
+{
+    "BlockDropGrammar": {
+        "blockDrops": ["0.05|PlantPack:PineSapling"],
+        "itemDrops": ["0.2|WoodAndStone:twig"]
+    }
+}

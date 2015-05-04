@@ -1,9 +1,0 @@
-{
-    "PartOfTree": {
-        "part": "TRUNK"
-    },
-    "BlockDropGrammar": {
-        "blockDrops": ["1-2*WoodAndStone:BroomLog"],
-        "itemDrops": ["0.1|WoodAndStone:Resin"]
-    }
-}

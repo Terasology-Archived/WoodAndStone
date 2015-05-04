@@ -1,9 +1,0 @@
-{
-    "PartOfTree": {
-        "part": "LEAF"
-    },
-    "BlockDropGrammar": {
-        "blockDrops": ["0.05|PlantPack:BirchSapling"],
-        "itemDrops": ["0.2|WoodAndStone:twig"]
-    }
-}
