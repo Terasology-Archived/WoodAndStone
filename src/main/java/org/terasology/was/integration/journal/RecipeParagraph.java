@@ -25,20 +25,23 @@ import org.terasology.math.Vector2i;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.HorizontalAlign;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.rendering.nui.widgets.browser.data.ParagraphData;
+import org.terasology.rendering.nui.widgets.browser.ui.ParagraphRenderable;
+import org.terasology.rendering.nui.widgets.browser.ui.style.ParagraphRenderStyle;
+import org.terasology.rendering.nui.widgets.browser.ui.style.TextRenderStyle;
 import org.terasology.world.block.Block;
 
-public class RecipeJournalPart implements JournalManager.JournalEntryPart {
+public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
     private int indentAbove = 5;
     private int indentBelow = 5;
     private int ingredientSpacing = 3;
     private int resultSpacing = 30;
 
     private int iconSize = 64;
-    private HorizontalAlign horizontalAlign = HorizontalAlign.CENTER;
     private ItemIcon[] ingredientIcons;
     private ItemIcon resultIcon;
 
-    public RecipeJournalPart(Block[] blockIngredients, Prefab[] itemIngredients, Block blockResult, Prefab itemResult, int resultCount) {
+    public RecipeParagraph(Block[] blockIngredients, Prefab[] itemIngredients, Block blockResult, Prefab itemResult, int resultCount) {
         if (blockIngredients.length != itemIngredients.length) {
             throw new IllegalArgumentException("Arrays have to be of the same length");
         }
@@ -61,6 +64,21 @@ public class RecipeJournalPart implements JournalManager.JournalEntryPart {
         resultIcon.setQuantity(resultCount);
     }
 
+    @Override
+    public ParagraphRenderStyle getParagraphRenderStyle() {
+        return new ParagraphRenderStyle() {
+            @Override
+            public HorizontalAlign getHorizontalAlignment() {
+                return HorizontalAlign.CENTER;
+            }
+        };
+    }
+
+    @Override
+    public ParagraphRenderable getParagraphContents() {
+        return this;
+    }
+
     private void initializeForItem(ItemIcon itemIcon, Prefab itemIngredient) {
         ItemComponent item = itemIngredient.getComponent(ItemComponent.class);
         DisplayNameComponent displayName = itemIngredient.getComponent(DisplayNameComponent.class);
@@ -77,22 +95,7 @@ public class RecipeJournalPart implements JournalManager.JournalEntryPart {
     }
 
     @Override
-    public Vector2i getPreferredSize(Canvas canvas, long date) {
-        int x = 0;
-        int y = 0;
-
-        int ingredientsCount = ingredientIcons.length;
-        x += ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing;
-        x += resultSpacing + iconSize;
-
-        y += iconSize;
-
-        y += indentAbove + indentBelow;
-        return new Vector2i(x, y);
-    }
-
-    @Override
-    public void render(Canvas canvas, Rect2i region, long date) {
+    public void render(Canvas canvas, Rect2i region, TextRenderStyle defaultStyle, HorizontalAlign horizontalAlign, HyperlinkRegister hyperlinkRegister) {
         int ingredientsCount = ingredientIcons.length;
         int drawingWidth = ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing + resultSpacing + iconSize;
         int x = region.minX() + horizontalAlign.getOffset(drawingWidth, region.width());
@@ -104,5 +107,29 @@ public class RecipeJournalPart implements JournalManager.JournalEntryPart {
         x -= ingredientSpacing;
         x += resultSpacing;
         canvas.drawWidget(resultIcon, Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
+    }
+
+    @Override
+    public int getPreferredHeight(TextRenderStyle defaultStyle, int width) {
+        return getPreferredSize().y;
+    }
+
+    @Override
+    public int getMinWidth(TextRenderStyle defaultStyle) {
+        return getPreferredSize().x;
+    }
+
+    private Vector2i getPreferredSize() {
+        int x = 0;
+        int y = 0;
+
+        int ingredientsCount = ingredientIcons.length;
+        x += ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing;
+        x += resultSpacing + iconSize;
+
+        y += iconSize;
+
+        y += indentAbove + indentBelow;
+        return new Vector2i(x, y);
     }
 }
