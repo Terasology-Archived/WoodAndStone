@@ -15,8 +15,8 @@
  */
 package org.terasology.was.generator;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+
 import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
@@ -44,6 +44,7 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.WorldConfigurator;
+import org.terasology.world.generator.WorldConfiguratorAdapter;
 import org.terasology.world.liquid.LiquidType;
 
 import java.util.Arrays;
@@ -126,12 +127,8 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     @Override
-    public Optional<WorldConfigurator> getConfigurator() {
-        return Optional.absent();
-    }
-
-    @Override
-    public void setConfigurator(WorldConfigurator newConfigurator) {
+    public WorldConfigurator getConfigurator() {
+        return new WorldConfiguratorAdapter();
     }
 
     private void setupFlora(int seaLevel) {
