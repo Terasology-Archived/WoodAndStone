@@ -40,10 +40,10 @@ public class ModifyBlockDestruction extends BaseComponentSystem {
 
     @Override
     public void initialise() {
-        exceptions.add(new BlockUri("Core", "Grass"));
-        exceptions.add(new BlockUri("Core", "Dirt"));
-        exceptions.add(new BlockUri("Core", "Sand"));
-        exceptions.add(new BlockUri("WoodAndStone", "ClayStone"));
+        exceptions.add(new BlockUri("Core:Grass"));
+        exceptions.add(new BlockUri("Core:Dirt"));
+        exceptions.add(new BlockUri("Core:Sand"));
+        exceptions.add(new BlockUri("WoodAndStone:ClayStone"));
     }
 
     @ReceiveEvent

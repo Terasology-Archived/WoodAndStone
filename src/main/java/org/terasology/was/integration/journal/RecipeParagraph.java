@@ -17,7 +17,6 @@ package org.terasology.was.integration.journal;
 
 import org.terasology.asset.Assets;
 import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.journal.JournalManager;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.math.Rect2i;
@@ -90,7 +89,7 @@ public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
 
     private void initializeForBlock(ItemIcon itemIcon, Block blockIngredient) {
         itemIcon.setMesh(blockIngredient.getMesh());
-        itemIcon.setMeshTexture(Assets.getTexture("engine:terrain"));
+        itemIcon.setMeshTexture(Assets.getTexture("engine:terrain").get());
         itemIcon.setTooltip(blockIngredient.getDisplayName());
     }
 

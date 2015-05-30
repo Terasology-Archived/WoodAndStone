@@ -17,9 +17,8 @@ package org.terasology.was.integration.journal;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
+import org.terasology.assets.ResourceUrn;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -29,8 +28,6 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.journal.BrowserJournalChapterHandler;
 import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalManager;
-import org.terasology.journal.part.TextJournalPart;
-import org.terasology.journal.part.TitleJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.registry.In;
@@ -42,7 +39,6 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -126,7 +122,7 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
         dependencyMap.put("rice", "cookingStation");
 
         journalManager.registerJournalChapter(chapterId,
-                Assets.getTextureRegion("WoodAndStone:journalIcons.FarmingAndCooking"),
+                Assets.getTextureRegion("WoodAndStone:journalIcons.FarmingAndCooking").get(),
                 "Farming and Cooking", chapterHandler);
     }
 
@@ -160,10 +156,10 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
                                    CharacterComponent characterComponent) {
         Prefab prefab = event.getNewItem().getParentPrefab();
         if (prefab != null) {
-            AssetUri prefabUri = prefab.getURI();
-            if (prefabUri.equals(new AssetUri(AssetType.PREFAB, "AnotherWorldPlants", "CornFruit"))) {
+            ResourceUrn prefabUri = prefab.getUrn();
+            if (prefabUri.equals(new ResourceUrn("AnotherWorldPlants", "CornFruit"))) {
                 discoveredEntry(character, "corn");
-            } else if (prefabUri.equals(new AssetUri(AssetType.PREFAB, "AnotherWorldPlants", "RiceFruit"))) {
+            } else if (prefabUri.equals(new ResourceUrn("AnotherWorldPlants", "RiceFruit"))) {
                 discoveredEntry(character, "rice");
             }
         }

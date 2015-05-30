@@ -24,6 +24,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.BlockManager;
@@ -35,6 +36,9 @@ import org.terasology.world.block.items.OnBlockToItem;
  */
 @RegisterSystem
 public class LitTorchSystem extends BaseComponentSystem {
+    @In
+    private BlockManager blockManager;
+
     @ReceiveEvent
     public void whenTorchPlaced(OnBlockItemPlaced event, EntityRef item,
                                 OverTimeDurabilityReduceComponent overTimeDurabilityReduceComponent,
@@ -60,7 +64,7 @@ public class LitTorchSystem extends BaseComponentSystem {
                                         OverTimeDurabilityReduceComponent overTimeDurabilityReduceComponent,
                                         BlockComponent block) {
         Vector3i position = block.getPosition();
-        CoreRegistry.get(WorldProvider.class).setBlock(position, BlockManager.getAir());
+        CoreRegistry.get(WorldProvider.class).setBlock(position, blockManager.getBlock(BlockManager.AIR_ID));
         entity.removeComponent(DurabilityComponent.class);
         entity.removeComponent(OverTimeDurabilityReduceComponent.class);
         event.consume();

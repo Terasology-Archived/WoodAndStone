@@ -15,7 +15,6 @@
  */
 package org.terasology.was.integration.journal;
 
-import com.google.common.base.Supplier;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
@@ -31,12 +30,7 @@ import org.terasology.journal.BrowserJournalChapterHandler;
 import org.terasology.journal.DiscoveredNewJournalEntry;
 import org.terasology.journal.JournalEntryProducer;
 import org.terasology.journal.JournalManager;
-import org.terasology.journal.StaticJournalChapterHandler;
 import org.terasology.journal.TimestampResolver;
-import org.terasology.journal.part.DynamicTextJournalPart;
-import org.terasology.journal.part.TextJournalPart;
-import org.terasology.journal.part.TimestampJournalPart;
-import org.terasology.journal.part.TitleJournalPart;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
@@ -158,7 +152,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 });
 
         journalManager.registerJournalChapter(wasChapterId,
-                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone"),
+                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone").get(),
                 "Wood and Stone", chapterHandler);
     }
 
@@ -197,7 +191,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 });
 
         journalManager.registerJournalChapter(seasonsChapterId,
-                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone"),
+                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone").get(),
                 "Seasons", chapterHandler);
     }
 

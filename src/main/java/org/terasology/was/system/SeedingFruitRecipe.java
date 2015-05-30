@@ -16,7 +16,6 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
-import org.terasology.asset.Asset;
 import org.terasology.asset.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
@@ -108,7 +107,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
 
             EntityRef result = CoreRegistry.get(EntityManager.class).create(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
             ItemComponent itemComponent = result.getComponent(ItemComponent.class);
-            itemComponent.icon = Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")");
+            itemComponent.icon = Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")").get();
             result.saveComponent(itemComponent);
 
             return result;
@@ -149,7 +148,7 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
         public void setupResultDisplay(ItemIcon itemIcon) {
             Prefab prefab = CoreRegistry.get(PrefabManager.class).getPrefab(FRUIT_BEHAVIOUR.getSeedResult(parameters.get(1)));
 
-            itemIcon.setIcon(Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")"));
+            itemIcon.setIcon(Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + FRUIT_BEHAVIOUR.getFruitIcon(parameters.get(1)) + ")").get());
             DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
             if (displayName != null) {
                 itemIcon.setTooltip(displayName.name);
@@ -165,8 +164,8 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
                 @Override
                 public boolean apply(EntityRef input) {
                     Prefab prefab = input.getParentPrefab();
-                    return prefab != null && prefab.getURI().getModuleName().equals(PLANT_PACK_MODULE)
-                            && prefab.getURI().getAssetName().toString().toLowerCase().endsWith("fruit");
+                    return prefab != null && prefab.getUrn().getModuleName().equals(PLANT_PACK_MODULE)
+                            && prefab.getUrn().getResourceName().toString().toLowerCase().endsWith("fruit");
                 }
             }, 1, PlayerInventorySlotResolver.singleton());
         }
@@ -179,11 +178,11 @@ public class SeedingFruitRecipe implements CraftInHandRecipe {
         @Override
         protected String getParameter(List<Integer> slots, EntityRef item) {
             Prefab prefab = item.getParentPrefab();
-            String assetName = prefab.getURI().getAssetName().toString();
+            String assetName = prefab.getUrn().getResourceName().toString();
             String fruitName = assetName.substring(0, assetName.length() - 5);
 
             ItemComponent component = item.getComponent(ItemComponent.class);
-            return super.getParameter(slots, item) + "|" + fruitName + "|" + ((Asset) component.icon).getURI().toSimpleString();
+            return super.getParameter(slots, item) + "|" + fruitName + "|" + component.icon.getUrn().toString();
         }
 
         public String getSeedResult(String parameter) {

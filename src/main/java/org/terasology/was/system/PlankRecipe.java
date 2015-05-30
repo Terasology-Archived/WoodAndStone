@@ -41,7 +41,7 @@ public class PlankRecipe extends AbstractWorkstationRecipe {
         addIngredientBehaviour(new ConsumeWoodIngredientBehaviour(woodPredicate, 1, new InventorySlotTypeResolver("INPUT")));
         addToolBehaviour(new ReduceDurabilityCraftBehaviour(axePredicate, 1, new InventorySlotTypeResolver("TOOL")));
 
-        setResultFactory(new PlankRecipeResultFactory(Assets.getPrefab("WoodAndStone:WoodPlank"), plankCount));
+        setResultFactory(new PlankRecipeResultFactory(Assets.getPrefab("WoodAndStone:WoodPlank").get(), plankCount));
     }
 
     private final class PlankRecipeResultFactory extends ItemRecipeResultFactory {

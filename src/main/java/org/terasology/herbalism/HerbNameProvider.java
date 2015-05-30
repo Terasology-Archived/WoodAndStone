@@ -26,8 +26,8 @@ public class HerbNameProvider {
     private final MarkovNameGenerator familyGen;
 
     public HerbNameProvider(int seed) {
-        final List<String> families = Assets.getPrefab("NameGenerator:floweringPlantsFamilies").getComponent(NameGeneratorComponent.class).nameList;
-        final List<String> generas = Assets.getPrefab("NameGenerator:floweringPlantsGenera").getComponent(NameGeneratorComponent.class).nameList;
+        final List<String> families = Assets.getPrefab("NameGenerator:floweringPlantsFamilies").get().getComponent(NameGeneratorComponent.class).nameList;
+        final List<String> generas = Assets.getPrefab("NameGenerator:floweringPlantsGenera").get().getComponent(NameGeneratorComponent.class).nameList;
 
         generaGen = new MarkovNameGenerator(seed, generas);
         familyGen = new MarkovNameGenerator(seed + 937623, families);

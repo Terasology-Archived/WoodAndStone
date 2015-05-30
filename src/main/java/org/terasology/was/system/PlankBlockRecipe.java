@@ -59,8 +59,8 @@ public class PlankBlockRecipe extends AbstractWorkstationRecipe {
             if (split.length == 2) {
                 String treeType = split[1];
                 String blockType = "WoodAndStone:" + treeType + "Plank";
-                BlockUri customBlockUri = new BlockUri("WoodAndStone", treeType + "Plank");
-                if (blockManager.hasBlockFamily(customBlockUri)) {
+                BlockUri customBlockUri = new BlockUri("WoodAndStone:" + treeType + "Plank");
+                if (blockManager.getBlockFamily(customBlockUri) != null) {
                     return blockManager.getBlockFamily(appendShapeIfNeeded(blockType)).getArchetypeBlock();
                 }
             }

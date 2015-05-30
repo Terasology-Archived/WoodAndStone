@@ -16,6 +16,7 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
+import org.terasology.assets.ResourceUrn;
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.component.CraftingStationMaterialComponent;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
@@ -116,15 +117,15 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         LayeredMultiBlockFormItemRecipe cookingStationRecipe = new LayeredMultiBlockFormItemRecipe(
                 new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(2, 1), new AnyActivityFilter(),
                 "WoodAndStone:CookingStation", null);
-        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
-        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
+        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core:Brick")));
+        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri(new ResourceUrn("Core:CobbleStone"), new ResourceUrn(("Engine:EighthBlock")))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(cookingStationRecipe);
 
         LayeredMultiBlockFormItemRecipe herbalismStationRecipe = new LayeredMultiBlockFormItemRecipe(
                 new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(3, 1), new AnyActivityFilter(),
                 "WoodAndStone:HerbalismStation", null);
-        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "Brick")));
-        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core", "CobbleStone", "Engine", "EighthBlock")));
+        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core:Brick")));
+        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri(new ResourceUrn("Core:CobbleStone"), new ResourceUrn(("Engine:EighthBlock")))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(herbalismStationRecipe);
     }
 

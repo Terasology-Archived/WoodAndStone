@@ -15,25 +15,37 @@
  */
 package org.terasology.herbalism.system;
 
-import org.terasology.asset.AssetFactory;
-import org.terasology.asset.AssetResolver;
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
-import org.terasology.asset.Assets;
+import com.google.common.collect.ImmutableSet;
+import org.terasology.assets.AssetDataProducer;
+import org.terasology.assets.ResourceUrn;
+import org.terasology.assets.management.AssetManager;
+import org.terasology.assets.module.annotations.RegisterAssetDataProducer;
 import org.terasology.naming.Name;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureData;
+import org.terasology.rendering.assets.texture.TextureRegionAsset;
 import org.terasology.rendering.assets.texture.TextureUtil;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData> {
+@RegisterAssetDataProducer
+public class HerbIconAssetResolver implements AssetDataProducer<TextureData>  {
     private static final Name HERBALISM_MODULE = new Name("herbalism");
+
+    private AssetManager assetManager;
+
+    public HerbIconAssetResolver(AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
 
     public static String getHerbUri(String iconUri, float[] hueValues) {
         StringBuilder sb = new StringBuilder();
@@ -47,24 +59,31 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
         return sb.toString();
     }
 
+
     @Override
-    public AssetUri resolve(Name partialUri) {
-        String[] parts = partialUri.toString().split("\\(", 2);
-        if (parts.length > 1) {
-            AssetUri uri = Assets.resolveAssetUri(AssetType.TEXTURE, parts[0]);
-            if (uri != null) {
-                return new AssetUri(AssetType.TEXTURE, uri.getModuleName(), partialUri);
-            }
-        }
-        return null;
+    public Set<ResourceUrn> getAvailableAssetUrns() {
+        return Collections.emptySet();
     }
 
     @Override
-    public Texture resolve(AssetUri uri, AssetFactory<TextureData, Texture> factory) {
-        final String assetName = uri.getAssetName().toString().toLowerCase();
-        if (!HERBALISM_MODULE.equals(uri.getModuleName())
+    public Set<Name> getModulesProviding(Name resourceName) {
+        if (!resourceName.toLowerCase().startsWith("herb(")) {
+            return Collections.emptySet();
+        }
+        return ImmutableSet.of(HERBALISM_MODULE);
+    }
+
+    @Override
+    public ResourceUrn redirect(ResourceUrn urn) {
+        return urn;
+    }
+
+    @Override
+    public Optional<TextureData> getAssetData(ResourceUrn urn) throws IOException {
+        final String assetName = urn.getResourceName().toString().toLowerCase();
+        if (!HERBALISM_MODULE.equals(urn.getModuleName())
                 || !assetName.startsWith("herb(")) {
-            return null;
+            return Optional.empty();
         }
         String[] split = assetName.split("\\(");
 
@@ -72,13 +91,15 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
         String[] parameterValues = parameters.split(",");
         String textureResourceUri = parameterValues[0];
 
-        BufferedImage resourceImage = TextureUtil.convertToImage(Assets.getTextureRegion(textureResourceUri));
+        Optional<TextureRegionAsset> resourceImageAsset = assetManager.getAsset(textureResourceUri,
+                TextureRegionAsset.class);
+        BufferedImage resourceImage = TextureUtil.convertToImage(resourceImageAsset.get());
         int imageSize = resourceImage.getHeight();
 
         int frameCount = resourceImage.getWidth() / imageSize;
 
         if (frameCount != parameterValues.length - 1) {
-            return null;
+            return Optional.empty();
         }
 
         BufferedImage resultImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
@@ -103,7 +124,8 @@ public class HerbIconAssetResolver implements AssetResolver<Texture, TextureData
         }
 
         final ByteBuffer byteBuffer = TextureUtil.convertToByteBuffer(resultImage);
-        return factory.buildAsset(uri, new TextureData(resultImage.getWidth(), resultImage.getHeight(),
+        return Optional.of(new TextureData(resultImage.getWidth(), resultImage.getHeight(),
                 new ByteBuffer[]{byteBuffer}, Texture.WrapMode.REPEAT, Texture.FilterMode.NEAREST));
     }
+
 }

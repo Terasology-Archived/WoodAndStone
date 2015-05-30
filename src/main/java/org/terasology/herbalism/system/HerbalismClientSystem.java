@@ -60,6 +60,6 @@ public class HerbalismClientSystem extends BaseComponentSystem {
     }
 
     public static TooltipLine getHerbTooltipLine(String herbName) {
-        return new TooltipLine("Specie: " + herbName, Assets.getSkin("WoodAndStone:herbTooltip"));
+        return new TooltipLine("Specie: " + herbName, Assets.getSkin("WoodAndStone:herbTooltip").get());
     }
 }

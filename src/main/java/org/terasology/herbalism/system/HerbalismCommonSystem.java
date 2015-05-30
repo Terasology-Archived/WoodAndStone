@@ -20,9 +20,8 @@ import org.terasology.alterationEffects.breath.WaterBreathingAlterationEffect;
 import org.terasology.alterationEffects.regenerate.RegenerationAlterationEffect;
 import org.terasology.alterationEffects.speed.SwimSpeedAlterationEffect;
 import org.terasology.alterationEffects.speed.WalkSpeedAlterationEffect;
-import org.terasology.asset.AssetManager;
-import org.terasology.asset.AssetType;
 import org.terasology.asset.Assets;
+import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -42,7 +41,7 @@ import org.terasology.herbalism.effect.AlterationEffectWrapperHerbEffect;
 import org.terasology.herbalism.effect.DoNothingEffect;
 import org.terasology.herbalism.effect.HealEffect;
 import org.terasology.registry.In;
-import org.terasology.rendering.assets.texture.TextureRegion;
+import org.terasology.rendering.assets.texture.TextureRegionAsset;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
@@ -68,8 +67,6 @@ public class HerbalismCommonSystem extends BaseComponentSystem {
 
     @Override
     public void preBegin() {
-        assetManager.addResolver(AssetType.TEXTURE, new HerbIconAssetResolver());
-
         herbEffectRegistry.registerHerbEffect(1f, new DoNothingEffect());
         herbEffectRegistry.registerHerbEffect(1f, new HealEffect());
         herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WalkSpeedAlterationEffect(), 1f, 1f));
@@ -125,10 +122,10 @@ public class HerbalismCommonSystem extends BaseComponentSystem {
                         return herbNameProvider.getName(input);
                     }
                 });
-        herbGenomeMap.addProperty(Herbalism.ICON_PROPERTY, new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, TextureRegion.class,
-                new Function<String, TextureRegion>() {
+        herbGenomeMap.addProperty(Herbalism.ICON_PROPERTY, new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, TextureRegionAsset.class,
+                new Function<String, TextureRegionAsset>() {
                     @Override
-                    public TextureRegion apply(String input) {
+                    public TextureRegionAsset apply(String input) {
                         String type = input.substring(0, 1);
                         String genes = input.substring(1, 10);
                         HerbHueComponent herbHue = prefabManager.getPrefab("WoodAndStone:HerbHue" + type).getComponent(HerbHueComponent.class);
@@ -142,7 +139,7 @@ public class HerbalismCommonSystem extends BaseComponentSystem {
                             hueValues[i] = rnd.nextFloat(min, max);
                         }
 
-                        return Assets.getTextureRegion(HerbIconAssetResolver.getHerbUri("WoodAndStone:Herb" + type, hueValues));
+                        return Assets.getTextureRegion(HerbIconAssetResolver.getHerbUri("WoodAndStone:Herb" + type, hueValues)).get();
                     }
                 });
         herbGenomeMap.addProperty(Herbalism.PLANTED_BLOCK_PROPERTY, new int[]{0}, Block.class,

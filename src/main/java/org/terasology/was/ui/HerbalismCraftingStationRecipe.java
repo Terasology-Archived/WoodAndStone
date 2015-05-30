@@ -49,7 +49,7 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
         addFluidBehaviour(new ConsumeFluidBehaviour("Fluid:Water", 0.2f, new InventorySlotTypeResolver("FLUID_INPUT")));
         setRequiredHeat(95f);
         setProcessingDuration(10000);
-        setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab("WoodAndStone:HerbPotion"), 1));
+        setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab("WoodAndStone:HerbPotion").get(), 1));
     }
 
     private final class PotionRecipeResultFactory extends ItemRecipeResultFactory {

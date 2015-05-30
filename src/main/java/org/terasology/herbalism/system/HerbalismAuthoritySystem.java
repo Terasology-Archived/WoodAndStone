@@ -35,7 +35,6 @@ import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class HerbalismAuthoritySystem extends BaseComponentSystem {
@@ -78,7 +77,7 @@ public class HerbalismAuthoritySystem extends BaseComponentSystem {
                         for (int resultDY = 1; resultDY >= -1; resultDY--) {
                             int resultY = blockPosition.y + resultDY;
                             Vector3i plantLocation = new Vector3i(resultX, resultY, resultZ);
-                            if (worldProvider.getBlock(plantLocation) == BlockManager.getAir()
+                            if (worldProvider.getBlock(plantLocation).isPenetrable()
                                     && blockEntityRegistry.getEntityAt(new Vector3i(resultX, resultY - 1, resultZ)).hasComponent(FarmSoilComponent.class)) {
                                 Block plantedBlock = genomeManager.getGenomeProperty(herb, Herbalism.PLANTED_BLOCK_PROPERTY, Block.class);
                                 worldProvider.setBlock(plantLocation, plantedBlock);

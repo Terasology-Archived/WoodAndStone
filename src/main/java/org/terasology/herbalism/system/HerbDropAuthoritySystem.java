@@ -38,7 +38,7 @@ import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.registry.In;
-import org.terasology.rendering.assets.texture.TextureRegion;
+import org.terasology.rendering.assets.texture.TextureRegionAsset;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.utilities.random.Random;
 import org.terasology.world.WorldProvider;
@@ -94,7 +94,7 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             herb.addComponent(genome);
 
             final ItemComponent item = herb.getComponent(ItemComponent.class);
-            item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegion.class);
+            item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegionAsset.class);
             herb.saveComponent(item);
 
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
@@ -128,7 +128,7 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             herb.addComponent(genomeComponent);
 
             final ItemComponent item = herb.getComponent(ItemComponent.class);
-            item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegion.class);
+            item.icon = genomeManager.getGenomeProperty(herb, Herbalism.ICON_PROPERTY, TextureRegionAsset.class);
             herb.saveComponent(item);
 
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {

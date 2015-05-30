@@ -1,6 +1,6 @@
 {
     "id" : "WoodAndStone",
-    "version" : "0.1.0",
+    "version" : "0.1.1-SNAPSHOT",
     "author" : "Marcin Sciesinski <marcins78@gmail.com>",
     "displayName" : "Wood and Stone",
     "description" : "Basic 'Stone Age' crafting",
@@ -27,7 +27,7 @@
             },
             {
                 "id" : "AnotherWorld",
-                "minVersion" : "0.1.0"
+                "minVersion" : "0.2.0"
             },
             {
                 "id" : "AnotherWorldPlants",
@@ -35,7 +35,7 @@
             },
             {
                 "id" : "Core",
-                "minVersion" : "0.53.1"
+                "minVersion" : "0.54.0"
             },
             {
                 "id" : "Fences",
