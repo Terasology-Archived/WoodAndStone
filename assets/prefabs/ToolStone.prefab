@@ -1,7 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.ToolStone",
+        "icon": "WoodAndStone:items#ToolStone",
         "renderWithIcon": true
     },
     "DisplayName": {

@@ -1,7 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.Flint",
+        "icon": "WoodAndStone:items#Flint",
         "stackId": "WoodAndStone:flint",
         "renderWithIcon": true
     },

@@ -152,7 +152,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 });
 
         journalManager.registerJournalChapter(wasChapterId,
-                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone").get(),
+                Assets.getTextureRegion("WoodAndStone:journalIcons#WoodAndStone").get(),
                 "Wood and Stone", chapterHandler);
     }
 
@@ -191,7 +191,7 @@ public class WoodAndStoneJournalIntegration extends BaseComponentSystem {
                 });
 
         journalManager.registerJournalChapter(seasonsChapterId,
-                Assets.getTextureRegion("WoodAndStone:journalIcons.WoodAndStone").get(),
+                Assets.getTextureRegion("WoodAndStone:journalIcons#WoodAndStone").get(),
                 "Seasons", chapterHandler);
     }
 

@@ -1,8 +1,8 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.AxeHammerHead",
-        "stackId": "WoodAndStone:items.AxeHammerHead",
+        "icon": "WoodAndStone:items#AxeHammerHead",
+        "stackId": "WoodAndStone:items#AxeHammerHead",
         "renderWithIcon": true
     },
     "DisplayName": {

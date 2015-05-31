@@ -1,8 +1,8 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.WoodPlank",
-        "stackId": "WoodAndStone:items.WoodPlank",
+        "icon": "WoodAndStone:items#WoodPlank",
+        "stackId": "WoodAndStone:items#WoodPlank",
         "renderWithIcon": true
     },
     "DisplayName" : {

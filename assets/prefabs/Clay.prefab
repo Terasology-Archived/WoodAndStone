@@ -1,8 +1,8 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.Clay",
-        "stackId": "WoodAndStone:items.Clay",
+        "icon": "WoodAndStone:items#Clay",
+        "stackId": "WoodAndStone:items#Clay",
         "renderWithIcon": true
     },
     "DisplayName": {

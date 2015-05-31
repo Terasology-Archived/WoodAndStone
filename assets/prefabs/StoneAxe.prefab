@@ -1,7 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.StoneAxe",
+        "icon": "WoodAndStone:items#StoneAxe",
         "renderWithIcon": true,
         "damageType": "axeDamage"
     },

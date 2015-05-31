@@ -1,8 +1,8 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.WoodenBucketEmpty",
-        "stackId": "WoodAndStone:items.WoodenBucket",
+        "icon": "WoodAndStone:items#WoodenBucketEmpty",
+        "stackId": "WoodAndStone:items#WoodenBucket",
         "renderWithIcon": true
     },
     "DisplayName": {
@@ -12,7 +12,7 @@
         "volume": 10,
         "fluidMinPerc": [0.1875, 0.15625],
         "fluidSizePerc": [0.625, 0.4375],
-        "textureWithHole": "WoodAndStone:items.WoodenBucket",
-        "emptyTexture": "WoodAndStone:items.WoodenBucketEmpty"
+        "textureWithHole": "WoodAndStone:items#WoodenBucket",
+        "emptyTexture": "WoodAndStone:items#WoodenBucketEmpty"
     }
 }

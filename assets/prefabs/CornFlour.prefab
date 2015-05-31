@@ -1,7 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items.CornFlour",
+        "icon": "WoodAndStone:items#CornFlour",
         "stackId": "WoodAndStone:cornFlour",
         "renderWithIcon": true
     },
