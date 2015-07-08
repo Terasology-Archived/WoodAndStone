@@ -25,9 +25,9 @@ import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.HorizontalAlign;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.rendering.nui.widgets.browser.data.ParagraphData;
+import org.terasology.rendering.nui.widgets.browser.data.basic.flow.ContainerRenderSpace;
 import org.terasology.rendering.nui.widgets.browser.ui.ParagraphRenderable;
 import org.terasology.rendering.nui.widgets.browser.ui.style.ParagraphRenderStyle;
-import org.terasology.rendering.nui.widgets.browser.ui.style.TextRenderStyle;
 import org.terasology.world.block.Block;
 
 public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
@@ -94,11 +94,11 @@ public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
     }
 
     @Override
-    public void render(Canvas canvas, Rect2i region, TextRenderStyle defaultStyle, HorizontalAlign horizontalAlign, HyperlinkRegister hyperlinkRegister) {
+    public void renderContents(Canvas canvas, Vector2i startPos, ContainerRenderSpace containerRenderSpace, int leftIndent, int rightIndent, ParagraphRenderStyle defaultStyle, HorizontalAlign horizontalAlign, HyperlinkRegister hyperlinkRegister) {
         int ingredientsCount = ingredientIcons.length;
         int drawingWidth = ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing + resultSpacing + iconSize;
-        int x = region.minX() + horizontalAlign.getOffset(drawingWidth, region.width());
-        int y = region.minY() + indentAbove;
+        int x = startPos.x + horizontalAlign.getOffset(drawingWidth, containerRenderSpace.getWidthForVerticalPosition(startPos.y));
+        int y = startPos.y + indentAbove;
         for (int i = 0; i < ingredientIcons.length; i++) {
             canvas.drawWidget(ingredientIcons[i], Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
             x += iconSize + ingredientSpacing;
@@ -109,12 +109,12 @@ public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
     }
 
     @Override
-    public int getPreferredHeight(TextRenderStyle defaultStyle, int width) {
+    public int getPreferredContentsHeight(ParagraphRenderStyle defaultStyle, int yStart, ContainerRenderSpace containerRenderSpace, int sideIndents) {
         return getPreferredSize().y;
     }
 
     @Override
-    public int getMinWidth(TextRenderStyle defaultStyle) {
+    public int getContentsMinWidth(ParagraphRenderStyle defaultStyle) {
         return getPreferredSize().x;
     }
 
