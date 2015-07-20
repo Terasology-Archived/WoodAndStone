@@ -24,6 +24,7 @@ import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.CoreWidget;
 import org.terasology.rendering.nui.InteractionListener;
 import org.terasology.rendering.nui.TextLineBuilder;
+import org.terasology.rendering.nui.events.NUIMouseClickEvent;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class RecipeCategoryWidget extends CoreWidget {
 
     private InteractionListener interactionListener = new BaseInteractionListener() {
         @Override
-        public boolean onMouseClick(MouseInput button, Vector2i pos) {
+        public boolean onMouseClick(NUIMouseClickEvent event) {
             if (button == MouseInput.MOUSE_LEFT) {
                 callback.categoryToggled();
                 return true;

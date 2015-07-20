@@ -25,6 +25,7 @@ import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.CoreWidget;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.databinding.Binding;
+import org.terasology.rendering.nui.events.NUIKeyEvent;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
@@ -114,17 +115,21 @@ public class CraftRecipeWidget extends CoreWidget {
         canvas.drawWidget(result, Rect2i.createFromMinAndSize(size.x - resultSize.x, 0, resultSize.x, resultSize.y));
     }
 
+
     @Override
-    public void update(float delta) {
+    public boolean onKeyEvent(NUIKeyEvent event) {
         int maxMultiplier = processDisplay.getMaxMultiplier(entity);
-        if (Keyboard.isKeyDown(Keyboard.KeyId.LEFT_SHIFT)) {
+        if (keyboard.isKeyDown(Keyboard.KeyId.LEFT_SHIFT)) {
             multiplier = Math.min(maxMultiplier, 5);
-        } else if (Keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL)) {
+        } else if (keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL)) {
             multiplier = maxMultiplier;
         } else {
             multiplier = 1;
         }
+    }
 
+    @Override
+    public void update(float delta) {
         result.update(delta);
         button.update(delta);
     }
