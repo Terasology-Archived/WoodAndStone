@@ -22,6 +22,7 @@ import org.terasology.alterationEffects.speed.SwimSpeedAlterationEffect;
 import org.terasology.alterationEffects.speed.WalkSpeedAlterationEffect;
 import org.terasology.asset.Assets;
 import org.terasology.assets.management.AssetManager;
+import org.terasology.context.Context;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -64,15 +65,17 @@ public class HerbalismCommonSystem extends BaseComponentSystem {
     private BlockManager blockManager;
     @In
     private GenomeRegistry genomeRegistry;
+    @In
+    private Context context;
 
     @Override
     public void preBegin() {
         herbEffectRegistry.registerHerbEffect(1f, new DoNothingEffect());
         herbEffectRegistry.registerHerbEffect(1f, new HealEffect());
-        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WalkSpeedAlterationEffect(), 1f, 1f));
-        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new SwimSpeedAlterationEffect(), 1f, 1f));
-        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new RegenerationAlterationEffect(), 1f, 100f));
-        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WaterBreathingAlterationEffect(), 1f, 1f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WalkSpeedAlterationEffect(context), 1f, 1f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new SwimSpeedAlterationEffect(context), 1f, 1f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new RegenerationAlterationEffect(context), 1f, 100f));
+        herbEffectRegistry.registerHerbEffect(1f, new AlterationEffectWrapperHerbEffect(new WaterBreathingAlterationEffect(context), 1f, 1f));
 
         final HerbNameProvider herbNameProvider = new HerbNameProvider(worldProvider.getSeed().hashCode());
 
