@@ -41,7 +41,7 @@ public class RecipeCategoryWidget extends CoreWidget {
     private InteractionListener interactionListener = new BaseInteractionListener() {
         @Override
         public boolean onMouseClick(NUIMouseClickEvent event) {
-            if (button == MouseInput.MOUSE_LEFT) {
+            if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {
                 callback.categoryToggled();
                 return true;
             }

@@ -119,13 +119,14 @@ public class CraftRecipeWidget extends CoreWidget {
     @Override
     public boolean onKeyEvent(NUIKeyEvent event) {
         int maxMultiplier = processDisplay.getMaxMultiplier(entity);
-        if (keyboard.isKeyDown(Keyboard.KeyId.LEFT_SHIFT)) {
+        if (event.getKeyboard().isKeyDown(Keyboard.KeyId.LEFT_SHIFT)) {
             multiplier = Math.min(maxMultiplier, 5);
-        } else if (keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL)) {
+        } else if (event.getKeyboard().isKeyDown(Keyboard.KeyId.LEFT_CTRL)) {
             multiplier = maxMultiplier;
         } else {
             multiplier = 1;
         }
+        return false;
     }
 
     @Override
