@@ -23,6 +23,7 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.registry.In;
@@ -41,9 +42,12 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
 
     private PickupBuilder pickupBuilder;
 
+    @In
+    private InventoryManager inventoryManager;
+
     @Override
     public void initialise() {
-        pickupBuilder = new PickupBuilder(entityManager);
+        pickupBuilder = new PickupBuilder(entityManager, inventoryManager);
     }
 
     @ReceiveEvent
