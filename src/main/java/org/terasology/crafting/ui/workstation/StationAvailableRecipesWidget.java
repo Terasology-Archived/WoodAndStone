@@ -28,7 +28,7 @@ import org.terasology.crafting.ui.CraftRecipeWidget;
 import org.terasology.crafting.ui.CreationCallback;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.Vector2i;
+import org.terasology.math.geom.Vector2i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.CoreWidget;
