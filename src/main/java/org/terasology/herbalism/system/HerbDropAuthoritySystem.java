@@ -34,7 +34,7 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.PickupBuilder;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.TeraMath;
-import org.terasology.math.Vector2i;
+import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.registry.In;
