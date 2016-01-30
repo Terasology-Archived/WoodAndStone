@@ -2,8 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#Twig",
-        "stackId": "WoodAndStone:items#Twig",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:items#Twig"
     },
     "DisplayName": {
         "name": "Twig"

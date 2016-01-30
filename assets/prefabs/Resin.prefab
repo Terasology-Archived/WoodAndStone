@@ -1,8 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items#Resin",
-        "renderWithIcon": true
+        "icon": "WoodAndStone:items#Resin"
     },
     "DisplayName": {
         "name": "Resin"

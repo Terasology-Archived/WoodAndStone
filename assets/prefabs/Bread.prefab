@@ -3,7 +3,6 @@
     "Item": {
         "icon": "WoodAndStone:items#Bread",
         "stackId": "WoodAndStone:bread",
-        "renderWithIcon": true,
         "consumedOnUse": true
     },
     "DisplayName": {

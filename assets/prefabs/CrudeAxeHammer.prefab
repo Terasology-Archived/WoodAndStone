@@ -2,7 +2,6 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#crudeAxeHammer",
-        "renderWithIcon": true,
         "damageType": "axeHammerDamage"
     },
     "DisplayName": {

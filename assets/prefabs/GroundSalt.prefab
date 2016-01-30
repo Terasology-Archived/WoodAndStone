@@ -2,8 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#GroundSalt",
-        "stackId": "WoodAndStone:groundSalt",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:groundSalt"
     },
     "DisplayName": {
         "name": "Ground Salt"

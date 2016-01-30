@@ -1,8 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items#StoneKnifeBlade",
-        "renderWithIcon": true
+        "icon": "WoodAndStone:items#StoneKnifeBlade"
     },
     "DisplayName": {
         "name": "Stone Knife Blade"

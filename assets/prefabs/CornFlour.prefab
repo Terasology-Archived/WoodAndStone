@@ -2,8 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#CornFlour",
-        "stackId": "WoodAndStone:cornFlour",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:cornFlour"
     },
     "DisplayName": {
         "name": "Corn Flour"

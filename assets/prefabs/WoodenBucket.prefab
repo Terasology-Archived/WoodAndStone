@@ -2,8 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#WoodenBucketEmpty",
-        "stackId": "WoodAndStone:items#WoodenBucket",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:items#WoodenBucket"
     },
     "DisplayName": {
         "name": "Wooden Bucket"

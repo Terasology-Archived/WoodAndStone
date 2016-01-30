@@ -42,7 +42,7 @@ public class ItemSlotIngredientRenderer implements CraftIngredientRenderer {
         EntityRef item = InventoryUtils.getItemAt(entity, slot);
         ItemComponent itemComp = item.getComponent(ItemComponent.class);
         BlockItemComponent blockItemComp = item.getComponent(BlockItemComponent.class);
-        if (itemComp != null && itemComp.renderWithIcon) {
+        if (itemComp != null && itemComp.icon != null) {
             itemIcon.setIcon(itemComp.icon);
         } else if (blockItemComp != null) {
             itemIcon.setMesh(blockItemComp.blockFamily.getArchetypeBlock().getMesh());

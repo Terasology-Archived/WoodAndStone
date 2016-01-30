@@ -1,8 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "stackId": "WoodAndStone:herb",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:herb"
     },
     "Herb": { },
     "DisplayName": {

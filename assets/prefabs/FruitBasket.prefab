@@ -1,8 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items#Basket",
-        "renderWithIcon": true
+        "icon": "WoodAndStone:items#Basket"
     },
     "DisplayName": {
         "name": "Simple Basket"

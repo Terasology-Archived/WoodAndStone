@@ -2,8 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#Rice",
-        "stackId": "WoodAndStone:rice",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:rice"
     },
     "DisplayName": {
         "name": "Grains of Rice"

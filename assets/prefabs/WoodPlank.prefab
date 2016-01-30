@@ -2,8 +2,7 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#WoodPlank",
-        "stackId": "WoodAndStone:items#WoodPlank",
-        "renderWithIcon": true
+        "stackId": "WoodAndStone:items#WoodPlank"
     },
     "DisplayName" : {
         "name" : "Plank"

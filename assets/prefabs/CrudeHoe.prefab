@@ -1,8 +1,7 @@
 {
     "parent": "engine:iconItem",
     "Item": {
-        "icon": "WoodAndStone:items#StoneHoe",
-        "renderWithIcon": true
+        "icon": "WoodAndStone:items#StoneHoe"
     },
     "DisplayName": {
         "name": "Crude Hoe"
