@@ -24,15 +24,12 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.PickupBuilder;
+import org.terasology.logic.inventory.events.DropItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.registry.In;
 
 import java.util.List;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class CraftInHandAuthoritySystem extends BaseComponentSystem {
     @In
@@ -40,15 +37,8 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
     @In
     private CraftInHandRecipeRegistry recipeRegistry;
 
-    private PickupBuilder pickupBuilder;
-
     @In
     private InventoryManager inventoryManager;
-
-    @Override
-    public void initialise() {
-        pickupBuilder = new PickupBuilder(entityManager, inventoryManager);
-    }
 
     @ReceiveEvent
     public void craftInHandRequestReceived(UserCraftInHandRequest event, EntityRef character) {
@@ -61,7 +51,7 @@ public class CraftInHandAuthoritySystem extends BaseComponentSystem {
                 if (result != null) {
                     EntityRef resultEntity = result.craft(character, event.getCount());
                     if (resultEntity.exists()) {
-                        pickupBuilder.createPickupFor(resultEntity, character.getComponent(LocationComponent.class).getWorldPosition(), 200, true);
+                        resultEntity.send(new DropItemEvent(character.getComponent(LocationComponent.class).getWorldPosition()));
                     }
                 }
             }

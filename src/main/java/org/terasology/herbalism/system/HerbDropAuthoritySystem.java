@@ -31,7 +31,7 @@ import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.logic.health.DoDestroyEvent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.logic.inventory.PickupBuilder;
+import org.terasology.logic.inventory.events.DropItemEvent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector2i;
@@ -56,12 +56,10 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
     @In
     private InventoryManager inventoryManager;
 
-    private PickupBuilder pickupBuilder;
     private Random random;
 
     @Override
     public void preBegin() {
-        pickupBuilder = new PickupBuilder(entityManager, inventoryManager);
         random = new FastRandom();
     }
 
@@ -144,9 +142,9 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
     }
 
     private void createDrop(EntityRef item, Vector3f location, boolean applyMovement) {
-        EntityRef pickup = pickupBuilder.createPickupFor(item, location, 60, true);
+        item.send(new DropItemEvent(location));
         if (applyMovement) {
-            pickup.send(new ImpulseEvent(random.nextVector3f(30.0f)));
+            item.send(new ImpulseEvent(random.nextVector3f(30.0f)));
         }
     }
 
