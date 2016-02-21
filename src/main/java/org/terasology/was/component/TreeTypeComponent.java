@@ -21,9 +21,8 @@ import org.terasology.world.block.items.AddToBlockBasedItem;
 
 import java.util.Objects;
 
-@ItemDifferentiating
 @AddToBlockBasedItem
-public class TreeTypeComponent implements Component {
+public class TreeTypeComponent implements Component, ItemDifferentiating {
     public String treeType;
 
     @Override

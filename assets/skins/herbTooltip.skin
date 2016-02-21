@@ -1,5 +1,5 @@
 {
-    "inherit": "Engine:itemTooltip",
+    "inherit": "core:itemTooltip",
     "elements": {
         "UIList": {
             "parts": {
