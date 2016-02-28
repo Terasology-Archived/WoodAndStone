@@ -16,7 +16,7 @@
 package org.terasology.crafting.system.recipe.render;
 
 import com.google.common.base.Function;
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.InventoryUtils;

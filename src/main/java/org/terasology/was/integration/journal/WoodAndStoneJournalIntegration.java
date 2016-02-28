@@ -15,7 +15,7 @@
  */
 package org.terasology.was.integration.journal;
 
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
 import org.terasology.crafting.component.CraftingStationToolComponent;

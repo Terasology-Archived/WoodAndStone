@@ -16,7 +16,7 @@
 package org.terasology.herbalism.system;
 
 import org.terasology.anotherWorldPlants.farm.component.SeedComponent;
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;

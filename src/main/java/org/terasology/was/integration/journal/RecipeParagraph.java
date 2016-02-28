@@ -15,7 +15,7 @@
  */
 package org.terasology.was.integration.journal;
 
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;

@@ -16,7 +16,7 @@
 package org.terasology.was.ui;
 
 import com.google.common.base.Predicate;
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeFluidBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.InventorySlotResolver;

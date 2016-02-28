@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.system.recipe.render.result;
 
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;

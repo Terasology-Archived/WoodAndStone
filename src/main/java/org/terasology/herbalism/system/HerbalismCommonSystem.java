@@ -20,7 +20,7 @@ import org.terasology.alterationEffects.breath.WaterBreathingAlterationEffect;
 import org.terasology.alterationEffects.regenerate.RegenerationAlterationEffect;
 import org.terasology.alterationEffects.speed.SwimSpeedAlterationEffect;
 import org.terasology.alterationEffects.speed.WalkSpeedAlterationEffect;
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.context.Context;
 import org.terasology.entitySystem.prefab.PrefabManager;
