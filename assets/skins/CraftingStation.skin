@@ -1,5 +1,5 @@
 {
-    "inherit": "default",
+    "inherit": "inventoryDefault",
     "elements": {
         "ScrollableArea": {
             "background": "",
