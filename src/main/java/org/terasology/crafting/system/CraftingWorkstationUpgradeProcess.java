@@ -24,7 +24,7 @@ import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.WorkstationProcess;
-import org.terasology.workstation.process.inventory.ValidateInventoryItem;
+import org.terasology.workstation.system.ValidateInventoryItem;
 
 public class CraftingWorkstationUpgradeProcess implements WorkstationProcess, ValidateInventoryItem {
     private String workstationType;
@@ -53,14 +53,13 @@ public class CraftingWorkstationUpgradeProcess implements WorkstationProcess, Va
     }
 
     @Override
-    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
-        return WorkstationInventoryUtils.getAssignedSlots(workstation, "UPGRADE").contains(slotNo);
-    }
-
-    @Override
     public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
-        CraftingStationComponent station = workstation.getComponent(CraftingStationComponent.class);
-        return station != null && station.type.equals(workstationType) && upgradeRecipe.isUpgradeComponent(item);
+        if (WorkstationInventoryUtils.getAssignedSlots(workstation, "UPGRADE").contains(slotNo)) {
+            CraftingStationComponent station = workstation.getComponent(CraftingStationComponent.class);
+            return station != null && station.type.equals(workstationType) && upgradeRecipe.isUpgradeComponent(item);
+        } else {
+            return true;
+        }
     }
 
     @Override

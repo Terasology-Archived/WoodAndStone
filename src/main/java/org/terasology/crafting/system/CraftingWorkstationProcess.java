@@ -26,7 +26,7 @@ import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.process.fluid.ValidateFluidInventoryItem;
-import org.terasology.workstation.process.inventory.ValidateInventoryItem;
+import org.terasology.workstation.system.ValidateInventoryItem;
 
 import java.util.List;
 
@@ -42,13 +42,6 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
     }
 
     @Override
-    public boolean isResponsibleForSlot(EntityRef workstation, int slotNo) {
-        return WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT").contains(slotNo)
-                || WorkstationInventoryUtils.getAssignedSlots(workstation, "TOOL").contains(slotNo)
-                || WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT").contains(slotNo);
-    }
-
-    @Override
     public boolean isValid(EntityRef workstation, int slotNo, EntityRef instigator, EntityRef item) {
         if (WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT").contains(slotNo)) {
             return recipe.hasAsComponent(item);
@@ -56,17 +49,19 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
         if (WorkstationInventoryUtils.getAssignedSlots(workstation, "TOOL").contains(slotNo)) {
             return recipe.hasAsTool(item);
         }
-        return instigator == workstation;
-    }
-
-    @Override
-    public boolean isResponsibleForFluidSlot(EntityRef workstation, int slotNo) {
-        return WorkstationInventoryUtils.getAssignedSlots(workstation, "FLUID_INPUT").contains(slotNo);
+        if (WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT").contains(slotNo)) {
+            return instigator == workstation;
+        }
+        return true;
     }
 
     @Override
     public boolean isValidFluid(EntityRef workstation, int slotNo, EntityRef instigator, String fluidType) {
-        return recipe.hasFluidAsComponent(fluidType);
+        if (WorkstationInventoryUtils.getAssignedSlots(workstation, "FLUID_INPUT").contains(slotNo)) {
+            return recipe.hasFluidAsComponent(fluidType);
+        } else {
+            return true;
+        }
     }
 
     @Override
