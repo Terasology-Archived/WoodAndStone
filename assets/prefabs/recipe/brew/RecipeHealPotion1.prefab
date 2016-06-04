@@ -1,0 +1,18 @@
+{
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:Herbalism"
+    },
+    "CraftingStationRecipe": {
+        "recipeId": "WoodAndStone:HealPotion",
+
+        "recipeComponents": ["2*WoodAndStone:HealthHerb"],
+        "recipeFluids": ["0.5*Fluid:Water"],
+        "requiredTemperature": 90,
+        "processingDuration": 3000,
+
+        "itemResult": "1*WoodAndStone:HealPotion"
+    },
+    "HerbalismStationRecipe": {
+        "recipeId": "WoodAndStone:HealPotion"
+    }
+}

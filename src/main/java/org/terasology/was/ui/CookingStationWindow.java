@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.terasology.was.ui;
 
 import org.terasology.crafting.ui.workstation.StationAvailableRecipesWidget;
@@ -44,7 +45,7 @@ public class CookingStationWindow extends BaseInteractionScreen {
 
     private InventoryGrid fluidContainerInput;
     private InventoryGrid fluidContainerOutput;
-    private FluidContainerWidget fluidContainer;
+    private FluidHolderWidget fluidContainer;
     private InventoryGrid ingredientsInventory;
     private InventoryGrid toolsInventory;
     private ThermometerWidget temperature;
@@ -60,7 +61,7 @@ public class CookingStationWindow extends BaseInteractionScreen {
         toolsInventory = find("toolsInventory", InventoryGrid.class);
 
         fluidContainerInput = find("fluidContainerInput", InventoryGrid.class);
-        fluidContainer = find("fluidContainer", FluidContainerWidget.class);
+        fluidContainer = find("fluidContainer", FluidHolderWidget.class);
         fluidContainerOutput = find("fluidContainerOutput", InventoryGrid.class);
 
         temperature = find("temperature", ThermometerWidget.class);
@@ -86,7 +87,6 @@ public class CookingStationWindow extends BaseInteractionScreen {
 
     @Override
     protected void initializeWithInteractionTarget(final EntityRef station) {
-
         WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
 
         WorkstationInventoryComponent.SlotAssignment fluidInputAssignments = workstationInventory.slotAssignments.get("FLUID_INPUT");
@@ -108,6 +108,24 @@ public class CookingStationWindow extends BaseInteractionScreen {
 
         final int waterSlot = fluidInputAssignments.slotStart;
         fluidContainer.setSlotNo(waterSlot);
+
+        fluidContainerInput.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Put fluid container here.";
+                    }
+                }
+        );
+
+        fluidContainerOutput.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Fluid container is returned here after use.";
+                    }
+                }
+        );
 
         fluidContainer.bindTooltipString(
                 new ReadOnlyBinding<String>() {

@@ -39,6 +39,7 @@ public class VerticalTextureProgressWidget extends CoreWidget {
     private Binding<Float> mark = new DefaultBinding<>();
 
     public VerticalTextureProgressWidget() {
+        int test = 0;
     }
 
     public VerticalTextureProgressWidget(String id) {

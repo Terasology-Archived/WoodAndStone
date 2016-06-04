@@ -1,0 +1,8 @@
+{
+    "CraftInHandRecipe": {
+        "recipeId": "WoodAndStone:StoneLongKnifeBlade",
+        "itemResult": "WoodAndStone:StoneLongKnifeBlade",
+        "recipeComponents": ["2*WoodAndStone:flint"],
+        "recipeTools": ["1*WoodAndStone:toolStone"]
+    }
+}

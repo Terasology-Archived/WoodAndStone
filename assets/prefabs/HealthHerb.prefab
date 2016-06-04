@@ -1,0 +1,21 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:HealthHerb",
+        "stackId": "WoodAndStone:healthHerb"
+    },
+    "Herb": { },
+    "GeneratedHerb": {
+        "herbBaseGenome": "BCDABCDABC"
+    },
+    "DisplayName": {
+        "name": "Health Herb"
+    },
+    "Genome": {
+        "genomeId": "ABCDEFGHIJ",
+        "genes": "12345"
+    }
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:healthHerb"
+    }
+}

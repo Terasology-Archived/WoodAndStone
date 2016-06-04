@@ -1,0 +1,12 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:StoneLongKnifeBlade"
+    },
+    "DisplayName": {
+        "name": "Stone Long Knife Blade"
+    },
+    "CraftInHandIngredient": {
+        "componentType": "WoodAndStone:stoneLongKnifeBlade"
+    }
+}

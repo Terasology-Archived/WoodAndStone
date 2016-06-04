@@ -2,10 +2,10 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:items#Rice",
-        "stackId": "WoodAndStone:rice"
+        "stackId": "WoodAndStone:whiteRice"
     },
     "DisplayName": {
-        "name": "Grains of Rice"
+        "name": "Grains of White Rice"
     },
     "CraftingStationIngredient": {
         "type": "WoodAndStone:whiteRice"

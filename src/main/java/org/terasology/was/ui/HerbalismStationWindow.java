@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.terasology.was.ui;
 
 import org.terasology.crafting.ui.workstation.StationAvailableRecipesWidget;
@@ -44,7 +45,7 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
 
     private InventoryGrid fluidContainerInput;
     private InventoryGrid fluidContainerOutput;
-    private FluidContainerWidget fluidContainer;
+    private FluidHolderWidget fluidContainer;
     private InventoryGrid ingredientsInventory;
     private InventoryGrid toolsInventory;
     private ThermometerWidget temperature;
@@ -59,8 +60,8 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
         ingredientsInventory = find("ingredientsInventory", InventoryGrid.class);
         toolsInventory = find("toolsInventory", InventoryGrid.class);
 
-        fluidContainerInput = find("fluidContainerInput", InventoryGrid.class);
-        fluidContainer = find("fluidContainer", FluidContainerWidget.class);
+        fluidContainerInput = find("fluidContainerInputX", InventoryGrid.class);
+        fluidContainer = find("fluidContainer", FluidHolderWidget.class);
         fluidContainerOutput = find("fluidContainerOutput", InventoryGrid.class);
 
         temperature = find("temperature", ThermometerWidget.class);

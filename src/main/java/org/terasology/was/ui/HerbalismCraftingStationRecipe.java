@@ -52,9 +52,46 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
         setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab("WoodAndStone:HerbPotion").get(), 1));
     }
 
+    public HerbalismCraftingStationRecipe(String prefabPath, String toolTip) {
+        Predicate<EntityRef> herbComponentPredicate = new Predicate<EntityRef>() {
+            @Override
+            public boolean apply(EntityRef input) {
+                return input.hasComponent(HerbComponent.class);
+            }
+        };
+        addIngredientBehaviour(new ConsumeHerbIngredientBehaviour(herbComponentPredicate, 1, new InventorySlotTypeResolver("INPUT")));
+        addFluidBehaviour(new ConsumeFluidBehaviour("Fluid:Water", 0.2f, new InventorySlotTypeResolver("FLUID_INPUT")));
+        setRequiredHeat(95f);
+        setProcessingDuration(10000);
+        setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab(prefabPath).get(), toolTip, 1));
+    }
+
+    public HerbalismCraftingStationRecipe(String prefabPath, String displayName, float requiredTemperature, long processingDuration) {
+        Predicate<EntityRef> herbComponentPredicate = new Predicate<EntityRef>() {
+            @Override
+            public boolean apply(EntityRef input) {
+                return input.hasComponent(HerbComponent.class);
+            }
+        };
+        addIngredientBehaviour(new ConsumeHerbIngredientBehaviour(herbComponentPredicate, 1, new InventorySlotTypeResolver("INPUT")));
+        addFluidBehaviour(new ConsumeFluidBehaviour("Fluid:Water", 0.2f, new InventorySlotTypeResolver("FLUID_INPUT")));
+        setRequiredHeat(requiredTemperature);
+        setProcessingDuration(processingDuration);
+        setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab(prefabPath).get(), displayName, 1));
+    }
+
+
     private final class PotionRecipeResultFactory extends ItemRecipeResultFactory {
+        private String toolTip;
+
         private PotionRecipeResultFactory(Prefab prefab, int count) {
             super(prefab, count);
+            toolTip = "Herb Potion";
+        }
+
+        private PotionRecipeResultFactory(Prefab prefab, String toolTip, int count) {
+            super(prefab, count);
+            this.toolTip = toolTip;
         }
 
         @Override
@@ -63,7 +100,7 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             final String herbParameter = parameters.get(0);
             final String herbName = herbParameter.split("\\|")[3];
             itemIcon.setTooltipLines(
-                    Arrays.asList(new TooltipLine("Herb Potion"), HerbalismClientSystem.getHerbTooltipLine(herbName)));
+                    Arrays.asList(new TooltipLine(toolTip), HerbalismClientSystem.getHerbTooltipLine(herbName)));
         }
 
         @Override

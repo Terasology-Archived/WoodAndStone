@@ -15,13 +15,17 @@
  */
 package org.terasology.was.system;
 
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.EventPriority;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.characters.CharacterComponent;
+import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.protobuf.EntityData;
 import org.terasology.registry.In;
 
 /**
@@ -30,9 +34,16 @@ import org.terasology.registry.In;
 @RegisterSystem
 public class ResetStartingInventorySystem extends BaseComponentSystem {
     @In
+    private EntityManager entityManager;
+
+    @In
     private InventoryManager manager;
 
-    @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
+    @In
+    public EntityRef player;
+
+    @ReceiveEvent(components = {InventoryComponent.class, CharacterComponent.class}, priority = EventPriority.PRIORITY_TRIVIAL)
+    //@ReceiveEvent()
     public void resetStartingInventory(OnPlayerSpawnedEvent event, EntityRef character) {
         for (int i = 0; i < manager.getNumSlots(character); i++) {
             manager.removeItem(character, EntityRef.NULL, manager.getItemInSlot(character, i), true);

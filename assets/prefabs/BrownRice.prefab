@@ -1,0 +1,13 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:BrownRice",
+        "stackId": "WoodAndStone:brownRice"
+    },
+    "DisplayName": {
+        "name": "Grains of Brown Rice"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:brownRice"
+    }
+}

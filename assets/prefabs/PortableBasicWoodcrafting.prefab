@@ -1,0 +1,69 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:PortableBasicWoodcraftingStation",
+        "stackId": "WoodAndStone:portableBasicWoodcrafting"
+    },
+    "DisplayName": {
+        "name": "Portable Basic Wood Station"
+    },
+    "BlockDropGrammar": {
+        "itemDrops": ["4*WoodAndStone:WoodPlank"]
+    },
+    "InteractionTarget": {},
+    "InteractionScreen": {
+        "screen": "WoodAndStone:CraftInStation"
+    },
+    "Workstation": {
+        "supportedProcessTypes": {
+            "WoodAndStone:BasicWoodcrafting": false,
+            "Crafting:UpgradeCraftingWorkstation": false
+        }
+    },
+    "WorkstationInventory": {
+        "slotAssignments": {
+            "INPUT": {
+                "slotStart": 2,
+                "slotCount": 3
+            },
+            "TOOL": {
+                "slotStart": 1,
+                "slotCount": 1
+            },
+            "UPGRADE": {
+                "slotStart": 0,
+                "slotCount": 1
+            },
+            "OUTPUT": {
+                "slotStart": 5,
+                "slotCount": 1
+            }
+        }
+    },
+    "CraftingStation": {
+        "type": "WoodAndStone:BasicWoodcrafting",
+        "workstationUITexture": "WoodAndStone:BasicWoodworking"
+    },
+    "Inventory": {
+        "privateToOwner": false,
+        "itemSlots": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    "Health": {
+        "currentHealth": 5,
+        "maxHealth": 5,
+        "regenRate": 1,
+        "waitBeforeRegen": 2,
+        "destroyEntityOnNoHealth": true
+    },
+    "ActAsBlock": {
+        "block": "WoodAndStone:BasicWoodStation"
+    },
+    "DropBlockInventory": {}
+}

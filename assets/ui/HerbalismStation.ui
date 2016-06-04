@@ -40,7 +40,7 @@
                     },
                     {
                         "type": "InventoryGrid",
-                        "id": "fluidContainerInput",
+                        "id": "fluidContainerInputX",
                         "layoutInfo": {
                             "width": 56,
                             "height": 56,
@@ -49,21 +49,6 @@
                             },
                             "position-top": {
                                 "offset": 45
-                            }
-                        }
-                    },
-                    {
-                        "type": "FluidContainerWidget",
-                        "id": "fluidContainer",
-                        "image": "WoodAndStone:FluidContainer",
-                        "layoutInfo": {
-                            "width": 50,
-                            "height": 150,
-                            "position-left": {
-                                "offset": 141
-                            },
-                            "position-top": {
-                                "offset": 131
                             }
                         }
                     },
@@ -92,6 +77,21 @@
                             },
                             "position-top": {
                                 "offset": 45
+                            }
+                        }
+                    },
+                    {
+                        "type": "FluidHolderWidget",
+                        "id": "fluidContainer",
+                        "image": "WoodAndStone:FluidHolder",
+                        "layoutInfo": {
+                            "width": 50,
+                            "height": 150,
+                            "position-left": {
+                                "offset": 251
+                            },
+                            "position-top": {
+                                "offset": 50
                             }
                         }
                     },

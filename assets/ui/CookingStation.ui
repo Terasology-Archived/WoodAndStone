@@ -53,17 +53,17 @@
                         }
                     },
                     {
-                        "type": "FluidContainerWidget",
+                        "type": "FluidHolderWidget",
                         "id": "fluidContainer",
-                        "image": "WoodAndStone:FluidContainer",
+                        "image": "WoodAndStone:FluidHolder",
                         "layoutInfo": {
                             "width": 50,
                             "height": 150,
                             "position-left": {
-                                "offset": 141
+                                "offset": 251
                             },
                             "position-top": {
-                                "offset": 131
+                                "offset": 50
                             }
                         }
                     },

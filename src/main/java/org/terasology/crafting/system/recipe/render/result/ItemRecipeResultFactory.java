@@ -61,6 +61,8 @@ public class ItemRecipeResultFactory implements RecipeResultFactory {
 
     @Override
     public void setupDisplay(List<String> parameters, ItemIcon itemIcon) {
+        ItemComponent i = prefab.getComponent(ItemComponent.class);
+
         itemIcon.setIcon(prefab.getComponent(ItemComponent.class).icon);
         DisplayNameComponent displayName = prefab.getComponent(DisplayNameComponent.class);
         if (displayName != null) {

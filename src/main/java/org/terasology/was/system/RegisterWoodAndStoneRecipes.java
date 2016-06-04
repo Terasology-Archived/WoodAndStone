@@ -19,6 +19,7 @@ import com.google.common.base.Predicate;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.component.CraftingStationMaterialComponent;
+import org.terasology.crafting.component.CraftingStationRecipeComponent;
 import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.CraftingWorkstationProcess;
 import org.terasology.crafting.system.CraftingWorkstationProcessFactory;
@@ -32,12 +33,14 @@ import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.BlockRecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
+import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.crafting.system.recipe.workstation.DefaultWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.herbalism.component.HerbalismStationRecipeComponent;
 import org.terasology.multiBlock.Basic2DSizeFilter;
 import org.terasology.multiBlock.Basic3DSizeFilter;
 import org.terasology.multiBlock.BlockUriEntityFilter;
@@ -129,9 +132,20 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(herbalismStationRecipe);
     }
 
+    // Add all of the recipes to the HerbalismStation.
     private void addHerbalismWorkstationRecipes() {
         workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
                 new CraftingWorkstationProcess(WoodAndStone.HERBALISM_PROCESS_TYPE, "WoodAndStone:HerbPotion", new HerbalismCraftingStationRecipe()));
+
+        // Add all the recipes marked with "HerbalismStationRecipeComponent" in their prefabs and add them to the list.
+        for (Prefab prefab : prefabManager.listPrefabs(HerbalismStationRecipeComponent.class)) {
+            CraftingStationRecipeComponent recipeComponent = prefab.getComponent(CraftingStationRecipeComponent.class);
+
+            workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
+                    new CraftingWorkstationProcess(WoodAndStone.HERBALISM_PROCESS_TYPE, recipeComponent.recipeId,
+                            new HerbalismCraftingStationRecipe(
+                                    recipeComponent.recipeId, "Potion", recipeComponent.requiredTemperature, recipeComponent.processingDuration)));
+        }
     }
 
     private void addStandardWoodWorkstationBlockShapeRecipes() {

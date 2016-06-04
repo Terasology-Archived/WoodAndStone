@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2016 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,11 @@ import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.assets.texture.TextureRegion;
-import org.terasology.rendering.nui.BaseInteractionListener;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.CoreWidget;
-import org.terasology.rendering.nui.InteractionListener;
-import org.terasology.rendering.nui.LayoutConfig;
+import org.terasology.rendering.nui.*;
 import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.databinding.DefaultBinding;
 
-/**
- * @author Marcin Sciesinski <marcins78@gmail.com>
- */
-public class FluidContainerWidget extends CoreWidget {
+public class FluidHolderWidget extends CoreWidget {
     @LayoutConfig
     private Binding<TextureRegion> image = new DefaultBinding<>();
     private InteractionListener listener = new BaseInteractionListener();
@@ -49,25 +42,40 @@ public class FluidContainerWidget extends CoreWidget {
     private EntityRef entity;
     private int slotNo;
 
-    public FluidContainerWidget() {
+    public FluidHolderWidget() {
+        int x = 0;
     }
 
-    public FluidContainerWidget(String id) {
+    public FluidHolderWidget(String id) {
         super(id);
     }
 
-    public FluidContainerWidget(TextureRegion image) {
+    public FluidHolderWidget(TextureRegion image) {
         this.image.set(image);
     }
 
-    public FluidContainerWidget(String id, TextureRegion image) {
+    public FluidHolderWidget(String id, TextureRegion image) {
         super(id);
         this.image.set(image);
     }
 
     @Override
+    public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
+        if (image.get() != null) {
+            return image.get().size();
+        }
+        return Vector2i.zero();
+    }
+
+    @Override
     public void onDraw(Canvas canvas) {
         TextureRegion texture = getImage();
+
+        if (texture == null)
+        {
+            texture = canvas.getCurrentStyle().getBackground();
+        }
+
         if (texture != null) {
             FluidInventoryComponent fluidInventory = entity.getComponent(FluidInventoryComponent.class);
             FluidComponent fluid = fluidInventory.fluidSlots.get(slotNo).getComponent(FluidComponent.class);
@@ -102,14 +110,6 @@ public class FluidContainerWidget extends CoreWidget {
 
     public void setSlotNo(int slotNo) {
         this.slotNo = slotNo;
-    }
-
-    @Override
-    public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
-        if (image.get() != null) {
-            return image.get().size();
-        }
-        return Vector2i.zero();
     }
 
     public TextureRegion getImage() {

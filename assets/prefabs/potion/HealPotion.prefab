@@ -1,0 +1,12 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:HealPotion1",
+        "stackId": "WoodAndStone:healPotion",
+        "consumedOnUse": true
+    },
+    "DisplayName": {
+        "name": "Heal Potion I"
+    },
+    "Potion": { }
+}

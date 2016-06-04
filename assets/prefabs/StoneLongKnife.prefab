@@ -1,0 +1,19 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:StoneLongKnife"
+    },
+    "DisplayName": {
+        "name": "Stone Long Knife"
+    },
+    "Durability": {
+        "durability": 120,
+        "maxDurability": 120
+    },
+    "CraftingStationTool": {
+        "type": ["knife"]
+    },
+    "CraftInHandIngredient": {
+        "componentType": "WoodAndStone:knife"
+    }
+}
