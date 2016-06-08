@@ -1,0 +1,16 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:SwimSpeedPotion1",
+        "stackId": "WoodAndStone:swimSpeedPotion",
+        "consumedOnUse": true
+    },
+    "DisplayName": {
+        "name": "Swim Speed Potion I"
+    },
+    "Potion": {
+        "effect": "SWIM",
+        "magnitude": 2,
+        "duration": 10000
+    }
+}

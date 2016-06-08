@@ -2,15 +2,15 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:HealPotion1",
-        "stackId": "WoodAndStone:healPotion",
+        "stackId": "WoodAndStone:jumpPotion",
         "consumedOnUse": true
     },
     "DisplayName": {
-        "name": "Heal Potion I"
+        "name": "Jump Potion I"
     },
     "Potion": {
-        "effect": "HEAL",
-        "magnitude": 0.2,
-        "duration": 1
+        "effect": "JUMP",
+        "magnitude": 2,
+        "duration": 10000
     }
 }

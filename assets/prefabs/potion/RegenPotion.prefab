@@ -1,0 +1,16 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:RegenPotion1",
+        "stackId": "WoodAndStone:regenPotion",
+        "consumedOnUse": true
+    },
+    "DisplayName": {
+        "name": "Regen Potion I"
+    },
+    "Potion": {
+        "effect": "REGEN",
+        "magnitude": 3,
+        "duration": 10000
+    }
+}

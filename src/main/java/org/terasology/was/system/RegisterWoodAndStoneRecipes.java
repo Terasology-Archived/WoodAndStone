@@ -134,8 +134,9 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
     // Add all of the recipes to the HerbalismStation.
     private void addHerbalismWorkstationRecipes() {
-        workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
-                new CraftingWorkstationProcess(WoodAndStone.HERBALISM_PROCESS_TYPE, "WoodAndStone:HerbPotion", new HerbalismCraftingStationRecipe()));
+        // TODO: Temporarily removed for sake of testing.
+        /* workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
+                new CraftingWorkstationProcess(WoodAndStone.HERBALISM_PROCESS_TYPE, "WoodAndStone:HerbPotion", new HerbalismCraftingStationRecipe()));*/
 
         // Add all the recipes marked with "HerbalismStationRecipeComponent" in their prefabs and add them to the list.
         for (Prefab prefab : prefabManager.listPrefabs(HerbalismStationRecipeComponent.class)) {
@@ -143,8 +144,7 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
             workstationRegistry.registerProcess(WoodAndStone.HERBALISM_PROCESS_TYPE,
                     new CraftingWorkstationProcess(WoodAndStone.HERBALISM_PROCESS_TYPE, recipeComponent.recipeId,
-                            new HerbalismCraftingStationRecipe(
-                                    recipeComponent.recipeId, "Potion", recipeComponent.requiredTemperature, recipeComponent.processingDuration)));
+                            new HerbalismCraftingStationRecipe(recipeComponent)));
         }
     }
 

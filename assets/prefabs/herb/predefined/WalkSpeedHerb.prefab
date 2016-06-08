@@ -1,0 +1,21 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:WalkSpeedHerb",
+        "stackId": "WoodAndStone:walkSpeedHerb"
+    },
+    "DisplayName": {
+        "name": "Walk Speed Herb"
+    },
+    "Herb": { },
+    "GeneratedHerb": {
+        "herbBaseGenome": "BCDABCDABB"
+    },
+    "Genome": {
+        "genomeId": "ABCDEFGHIH",
+        "genes": "12347"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:walkSpeedHerb"
+    }
+}

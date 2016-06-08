@@ -3,16 +3,16 @@
         "processType": "WoodAndStone:Herbalism"
     },
     "CraftingStationRecipe": {
-        "recipeId": "WoodAndStone:HealPotion",
+        "recipeId": "WoodAndStone:RegenPotion",
 
-        "recipeComponents": ["2*WoodAndStone:HealingHerb"],
+        "recipeComponents": ["2*WoodAndStone:RegenHerb"],
         "recipeFluids": ["0.5*Fluid:Water"],
         "requiredTemperature": 150,
         "processingDuration": 3000,
 
-        "itemResult": "1*WoodAndStone:HealPotion"
+        "itemResult": "1*WoodAndStone:RegenPotion"
     },
     "HerbalismStationRecipe": {
-        "recipeId": "WoodAndStone:HealPotion"
+        "recipeId": "WoodAndStone:RegenPotion"
     }
 }

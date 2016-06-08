@@ -1,0 +1,21 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:RegenHerb",
+        "stackId": "WoodAndStone:regenHerb"
+    },
+    "DisplayName": {
+        "name": "Regen Herb"
+    },
+    "Herb": { },
+    "GeneratedHerb": {
+        "herbBaseGenome": "BCDABCDABB"
+    },
+    "Genome": {
+        "genomeId": "ABCDEFGHIH",
+        "genes": "12346"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:regenHerb"
+    }
+}

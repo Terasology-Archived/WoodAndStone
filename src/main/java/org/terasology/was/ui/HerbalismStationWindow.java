@@ -109,6 +109,60 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
         final int waterSlot = fluidInputAssignments.slotStart;
         fluidContainer.setSlotNo(waterSlot);
 
+        ingredientsInventory.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place herbs here.";
+                    }
+                }
+        );
+
+        toolsInventory.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place tools here.";
+                    }
+                }
+        );
+
+        fuelInput.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place fuel for burner here.";
+                    }
+                }
+        );
+
+        fluidContainerInput.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place fluid container here.";
+                    }
+                }
+        );
+
+        fluidContainerOutput.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Fluid container is returned here after use.";
+                    }
+                }
+        );
+
+        resultInventory.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Resultant product is sent here.";
+                    }
+                }
+        );
+
         fluidContainer.bindTooltipString(
                 new ReadOnlyBinding<String>() {
                     @Override

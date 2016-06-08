@@ -16,6 +16,8 @@
 package org.terasology.was.ui;
 
 import com.google.common.base.Predicate;
+import org.terasology.crafting.component.CraftingStationRecipeComponent;
+import org.terasology.herbalism.system.HerbalismStationIngredientPredicate;
 import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeFluidBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
@@ -80,6 +82,50 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
         setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab(prefabPath).get(), displayName, 1));
     }
 
+    public HerbalismCraftingStationRecipe(String prefabPath, String displayName, List<String> recipeComponents, float requiredTemperature, long processingDuration) {
+        Predicate<EntityRef> herbComponentPredicate = new Predicate<EntityRef>() {
+            @Override
+            public boolean apply(EntityRef input) {
+                return input.hasComponent(HerbComponent.class);
+            }
+        };
+
+        for (String component : recipeComponents) {
+            String[] split = component.split("\\*");
+            int count = Integer.parseInt(split[0]);
+            String type = split[1];
+            addIngredientBehaviour(new ConsumeHerbIngredientBehaviour(herbComponentPredicate, count, new InventorySlotTypeResolver("INPUT")));
+        }
+
+        addFluidBehaviour(new ConsumeFluidBehaviour("Fluid:Water", 0.2f, new InventorySlotTypeResolver("FLUID_INPUT")));
+        setRequiredHeat(requiredTemperature);
+        setProcessingDuration(processingDuration);
+        setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab(prefabPath).get(), displayName, 1));
+    }
+
+    public HerbalismCraftingStationRecipe(CraftingStationRecipeComponent recipe) {
+        Predicate<EntityRef> herbComponentPredicate = new Predicate<EntityRef>() {
+            @Override
+            public boolean apply(EntityRef input) {
+                return input.hasComponent(HerbComponent.class);
+            }
+        };
+
+        for (String component : recipe.recipeComponents) {
+            String[] split = component.split("\\*");
+            int count = Integer.parseInt(split[0]);
+            String type = split[1];
+
+            //addIngredientBehaviour(new ConsumeHerbIngredientBehaviour(herbComponentPredicate, count, new InventorySlotTypeResolver("INPUT")));
+
+            addIngredientBehaviour(new ConsumeHerbIngredientBehaviour(new HerbalismStationIngredientPredicate(type), count, new InventorySlotTypeResolver("INPUT")));
+        }
+
+        addFluidBehaviour(new ConsumeFluidBehaviour("Fluid:Water", 0.2f, new InventorySlotTypeResolver("FLUID_INPUT")));
+        setRequiredHeat(recipe.requiredTemperature);
+        setProcessingDuration(recipe.processingDuration);
+        setResultFactory(new PotionRecipeResultFactory(Assets.getPrefab(recipe.recipeId).get(), recipe.itemResult.split("\\*")[1], 1));
+    }
 
     private final class PotionRecipeResultFactory extends ItemRecipeResultFactory {
         private String toolTip;

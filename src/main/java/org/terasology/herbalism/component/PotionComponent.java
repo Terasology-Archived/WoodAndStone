@@ -18,4 +18,7 @@ package org.terasology.herbalism.component;
 import org.terasology.entitySystem.Component;
 
 public class PotionComponent implements Component {
+    public String effect;
+    public float magnitude;
+    public long duration;
 }

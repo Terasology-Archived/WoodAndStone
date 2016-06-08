@@ -3,16 +3,16 @@
         "processType": "WoodAndStone:Herbalism"
     },
     "CraftingStationRecipe": {
-        "recipeId": "WoodAndStone:HealPotion",
+        "recipeId": "WoodAndStone:SwimSpeedPotion",
 
-        "recipeComponents": ["2*WoodAndStone:HealingHerb"],
+        "recipeComponents": ["2*WoodAndStone:SwimSpeedHerb"],
         "recipeFluids": ["0.5*Fluid:Water"],
         "requiredTemperature": 150,
         "processingDuration": 3000,
 
-        "itemResult": "1*WoodAndStone:HealPotion"
+        "itemResult": "1*WoodAndStone:SwimSpeedPotion"
     },
     "HerbalismStationRecipe": {
-        "recipeId": "WoodAndStone:HealPotion"
+        "recipeId": "WoodAndStone:SwimSpeedPotion"
     }
 }

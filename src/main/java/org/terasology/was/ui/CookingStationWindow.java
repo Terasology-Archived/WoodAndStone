@@ -109,11 +109,38 @@ public class CookingStationWindow extends BaseInteractionScreen {
         final int waterSlot = fluidInputAssignments.slotStart;
         fluidContainer.setSlotNo(waterSlot);
 
+        ingredientsInventory.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place ingredients here.";
+                    }
+                }
+        );
+
+        toolsInventory.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place tools here.";
+                    }
+                }
+        );
+
+        fuelInput.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Place fuel for burner here.";
+                    }
+                }
+        );
+
         fluidContainerInput.bindTooltipString(
                 new ReadOnlyBinding<String>() {
                     @Override
                     public String get() {
-                        return "Put fluid container here.";
+                        return "Place fluid container here.";
                     }
                 }
         );
@@ -123,6 +150,15 @@ public class CookingStationWindow extends BaseInteractionScreen {
                     @Override
                     public String get() {
                         return "Fluid container is returned here after use.";
+                    }
+                }
+        );
+
+        resultInventory.bindTooltipString(
+                new ReadOnlyBinding<String>() {
+                    @Override
+                    public String get() {
+                        return "Resultant product is sent here.";
                     }
                 }
         );

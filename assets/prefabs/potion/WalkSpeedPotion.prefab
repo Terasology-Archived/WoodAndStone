@@ -1,0 +1,16 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:WalkSpeedPotion1",
+        "stackId": "WoodAndStone:walkSpeedPotion",
+        "consumedOnUse": true
+    },
+    "DisplayName": {
+        "name": "Walk Speed Potion I"
+    },
+    "Potion": {
+        "effect": "WALK",
+        "magnitude": 2,
+        "duration": 10000
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "parent": "engine:iconItem",
+    "Item": {
+        "icon": "WoodAndStone:SwimSpeedHerb",
+        "stackId": "WoodAndStone:swimSpeedHerb"
+    },
+    "DisplayName": {
+        "name": "Swim Speed Herb"
+    },
+    "Herb": { },
+    "GeneratedHerb": {
+        "herbBaseGenome": "BCDAACDABB"
+    },
+    "Genome": {
+        "genomeId": "ABCCEFGHIH",
+        "genes": "12348"
+    },
+    "CraftingStationIngredient": {
+        "type": "WoodAndStone:swimSpeedHerb"
+    }
+}
