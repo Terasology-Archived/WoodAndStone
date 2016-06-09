@@ -1,0 +1,18 @@
+{
+    "ProcessDefinition": {
+        "processType": "WoodAndStone:Herbalism"
+    },
+    "CraftingStationRecipe": {
+        "recipeId": "WoodAndStone:JumpSpeedPotion",
+
+        "recipeComponents": ["1*WoodAndStone:WalkSpeedHerb", "1*WoodAndStone:SwimSpeedHerb"],
+        "recipeFluids": ["0.5*Fluid:Water"],
+        "requiredTemperature": 150,
+        "processingDuration": 3250,
+
+        "itemResult": "1*WoodAndStone:JumpSpeedPotion"
+    },
+    "HerbalismStationRecipe": {
+        "recipeId": "WoodAndStone:JumpSpeedPotion"
+    }
+}

@@ -29,7 +29,7 @@ public final class PotionCommonEffects {
     public static final String DAMAGE_REDUCE = "DAMAGE_REDUCE";
     public static final String FEATHER_FALL = "FEATHER_FALL";
     public static final String BRICK_FALL = "BRICK_FALL";
-
+    public static final String MULTI_JUMP = "MULTI_JUMP";
 
     private PotionCommonEffects() {
 
