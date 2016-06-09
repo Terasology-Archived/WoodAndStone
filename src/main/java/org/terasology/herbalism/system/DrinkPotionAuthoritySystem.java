@@ -20,6 +20,8 @@ import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.TIntList;
 import org.terasology.alterationEffects.regenerate.RegenerationAlterationEffect;
+import org.terasology.alterationEffects.speed.JumpSpeedAlterationEffect;
+import org.terasology.alterationEffects.speed.JumpSpeedComponent;
 import org.terasology.alterationEffects.speed.SwimSpeedAlterationEffect;
 import org.terasology.alterationEffects.speed.WalkSpeedAlterationEffect;
 import org.terasology.audio.AudioManager;
@@ -41,10 +43,8 @@ import org.terasology.herbalism.events.BeforeDrinkPotionEvent;
 import org.terasology.herbalism.events.DrinkPotionEvent;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.delay.DelayedActionTriggeredEvent;
-import org.terasology.protobuf.EntityData;
 import org.terasology.registry.In;
 import org.terasology.utilities.Assets;
-import org.terasology.was.WoodAndStone;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,28 +103,20 @@ public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
 
         if (p.effect.equals(PotionCommonEffects.HEAL)) {
             e = new HealEffect();
-            //e.applyEffect(item, event.getInstigator(), p.magnitude, p.duration);
         } else if (p.effect.equals(PotionCommonEffects.REGEN)) {
             RegenerationAlterationEffect effect = new RegenerationAlterationEffect(context);
-            //effect.applyEffect(item, event.getInstigator(), p.magnitude, p.duration);
-
             e = new AlterationEffectWrapperHerbEffect(effect, 1f, 1f);
         } else if (p.effect.equals(PotionCommonEffects.WALK_SPEED)) {
             WalkSpeedAlterationEffect effect = new WalkSpeedAlterationEffect(context);
-            //effect.applyEffect(item, event.getInstigator(), p.magnitude, p.duration);
-
             e = new AlterationEffectWrapperHerbEffect(effect, 1f, 1f);
         } else if (p.effect.equals(PotionCommonEffects.SWIM_SPEED)) {
             SwimSpeedAlterationEffect effect = new SwimSpeedAlterationEffect(context);
-            //effect.applyEffect(item, event.getInstigator(), p.magnitude, p.duration);
-
             e = new AlterationEffectWrapperHerbEffect(effect, 1f, 1f);
         } else if (p.effect.equals(PotionCommonEffects.JUMP_SPEED)) {
             JumpSpeedAlterationEffect effect = new JumpSpeedAlterationEffect(context);
             e = new AlterationEffectWrapperHerbEffect(effect, 1f, 1f);
         } else {
             e = new DoNothingEffect();
-            //e.applyEffect(item, event.getInstigator(), p.magnitude, p.duration);
         }
 
         checkDrink(event.getInstigator(), event.getItem(), p, e);
@@ -174,18 +166,4 @@ public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
 
         return p.duration;
     }
-
-    // TODO: Temp until moved to AlterationEffects.
-    @ReceiveEvent
-    public void expireEffects(DelayedActionTriggeredEvent event, EntityRef entity) {
-        final String actionId = event.getActionId();
-        if (actionId.startsWith(DrinkPotionAuthoritySystem.EXPIRE_TRIGGER_PREFIX)) {
-            String effectName = actionId.substring(DrinkPotionAuthoritySystem.EXPIRE_TRIGGER_PREFIX.length());
-            final Class<? extends Component> component = effectComponents.get(effectName);
-            if (component != null) {
-                entity.removeComponent(component);
-            }
-        }
-    }
-
 }
