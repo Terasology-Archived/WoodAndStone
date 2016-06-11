@@ -11,6 +11,7 @@
     "Potion": {
         "effect": "REGEN",
         "magnitude": 3,
-        "duration": 10000
+        "duration": 10000,
+        "hasGenome": false
     }
 }

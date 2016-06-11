@@ -71,6 +71,12 @@ public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void potionConsumed(ActivateEvent event, EntityRef item, PotionComponent potion, GenomeComponent genome) {
+
+        // TODO: Stopgap fix. If this potion is not supposed to have a dynamically-set Genome, return.
+        if (!potion.hasGenome) {
+            return;
+        }
+
         final HerbEffect effect = genomeManager.getGenomeProperty(item, Herbalism.EFFECT_PROPERTY, HerbEffect.class);
         final float magnitude = genomeManager.getGenomeProperty(item, Herbalism.MAGNITUDE_PROPERTY, Float.class);
         final long duration = genomeManager.getGenomeProperty(item, Herbalism.DURATION_PROPERTY, Long.class);
@@ -82,9 +88,7 @@ public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
 
         if (!beforeDrink.isConsumed()) {
             float modifiedMagnitude = beforeDrink.getMagnitudeResultValue();
-            //calculateMagnitudeTotal(beforeDrink.getBasePotion(), beforeDrink.getMagnitudeMultipliers(), beforeDrink.getModifiers());
             long modifiedDuration = (long) beforeDrink.getDurationResultValue();
-            //calculateDurationTotal(beforeDrink.getBasePotion(), beforeDrink.getDurationMultipliers(), beforeDrink.getModifiers());
 
             if (modifiedMagnitude > 0 && modifiedDuration > 0){
                 h.applyEffect(item, instigator, modifiedMagnitude, modifiedDuration);
@@ -127,43 +131,5 @@ public class DrinkPotionAuthoritySystem extends BaseComponentSystem {
     public void potionWithoutGenomeConsumed(ActivateEvent event, EntityRef item, PotionComponent potion) {
         PotionComponent p = item.getComponent(PotionComponent.class);
         event.getInstigator().send(new DrinkPotionEvent(p, event.getInstigator(), item));
-    }
-
-    private float calculateMagnitudeTotal(PotionComponent p, TFloatList multipliers, TIntList modifiers) {
-        // For now, add all modifiers and multiply by all multipliers. Negative modifiers cap to zero, but negative
-        // multipliers remain.
-
-        float result = p.magnitude;
-        TIntIterator modifierIter = modifiers.iterator();
-        while (modifierIter.hasNext()) {
-            result += modifierIter.next();
-        }
-        result = Math.max(0, result);
-
-        TFloatIterator multiplierIter = multipliers.iterator();
-        while (multiplierIter.hasNext()) {
-            result *= multiplierIter.next();
-        }
-
-        return p.magnitude;
-    }
-
-    private long calculateDurationTotal(PotionComponent p, TFloatList multipliers, TIntList modifiers) {
-        // For now, add all modifiers and multiply by all multipliers. Negative modifiers cap to zero, but negative
-        // multipliers remain.
-
-        long result = p.duration;
-        TIntIterator modifierIter = modifiers.iterator();
-        while (modifierIter.hasNext()) {
-            result += modifierIter.next();
-        }
-        result = Math.max(0, result);
-
-        TFloatIterator multiplierIter = multipliers.iterator();
-        while (multiplierIter.hasNext()) {
-            result *= multiplierIter.next();
-        }
-
-        return p.duration;
     }
 }

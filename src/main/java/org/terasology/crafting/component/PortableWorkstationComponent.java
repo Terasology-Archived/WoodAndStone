@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2016 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.terasology.herbalism.component;
+package org.terasology.crafting.component;
 
 import org.terasology.entitySystem.Component;
 
-public class PotionComponent implements Component {
-    public String effect;
-    public float magnitude;
-    public long duration;
-    public boolean hasGenome = true; // If a potion has been predefined by a developer, set this to false.
+// Used to distinguish that a workstation is in fact portable and should not be treated as a block.
+public class PortableWorkstationComponent implements Component {
 }

@@ -11,6 +11,7 @@
     "Potion": {
         "effect": "SWIM",
         "magnitude": 2,
-        "duration": 10000
+        "duration": 10000,
+        "hasGenome": false
     }
 }

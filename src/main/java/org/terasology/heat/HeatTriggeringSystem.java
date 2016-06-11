@@ -15,6 +15,7 @@
  */
 package org.terasology.heat;
 
+import org.terasology.crafting.component.PortableWorkstationComponent;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -33,6 +34,7 @@ import org.terasology.registry.In;
 import org.terasology.workstation.event.WorkstationStateChanged;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.block.BlockComponent;
+import org.terasology.world.block.regions.BlockRegionComponent;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -106,6 +108,61 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
             } finally {
                 PerformanceMonitor.endActivity();
             }
+
+
+
+            // TODO: TEST for PortableWorkstations.
+
+            PerformanceMonitor.startActivity("Heat - heat update2");
+            try {
+                lastChecked = currentTime;
+
+                for (EntityRef entity : entityManager.getEntitiesWith(HeatConsumerComponent.class, PortableWorkstationComponent.class)) {
+                    HeatConsumerComponent heatConsumer = entity.getComponent(HeatConsumerComponent.class);
+                    Iterator<HeatConsumerComponent.ResidualHeat> residualHeatIterator = heatConsumer.residualHeat.iterator();
+                    boolean changed = false;
+                    while (residualHeatIterator.hasNext()) {
+                        HeatConsumerComponent.ResidualHeat residualHeat = residualHeatIterator.next();
+                        if (HeatUtils.calculateResidualHeatValue(currentTime, residualHeat) < REMOVE_RESIDUAL_HEAT_THRESHOLD) {
+                            residualHeatIterator.remove();
+                            changed = true;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (changed) {
+                        entity.saveComponent(heatConsumer);
+                    }
+
+                    entity.send(new WorkstationStateChanged());
+                }
+
+                for (EntityRef entity : entityManager.getEntitiesWith(HeatProducerComponent.class, PortableWorkstationComponent.class)) {
+                    HeatProducerComponent producer = entity.getComponent(HeatProducerComponent.class);
+
+                    boolean changed = false;
+                    Iterator<HeatProducerComponent.FuelSourceConsume> fuelConsumedIterator = producer.fuelConsumed.iterator();
+                    while (fuelConsumedIterator.hasNext()) {
+                        HeatProducerComponent.FuelSourceConsume fuelSourceConsume = fuelConsumedIterator.next();
+                        // If the fuel no longer has any meaningful impact on the producer - remove it
+                        if (fuelSourceConsume.startTime + fuelSourceConsume.burnLength < currentTime
+                                && HeatUtils.solveHeatEquation(fuelSourceConsume.heatProvided, 20, producer.temperatureLossRate,
+                                currentTime - (fuelSourceConsume.startTime + fuelSourceConsume.burnLength)) < REMOVE_FUEL_THRESHOLD) {
+                            fuelConsumedIterator.remove();
+                            changed = true;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (changed) {
+                        entity.saveComponent(producer);
+                    }
+
+                    entity.send(new WorkstationStateChanged());
+                }
+            } finally {
+                PerformanceMonitor.endActivity();
+            }
         }
     }
 
@@ -120,6 +177,17 @@ public class HeatTriggeringSystem extends BaseComponentSystem implements UpdateS
         long gameTime = time.getGameTimeInMs();
 
         float heat = HeatUtils.calculateHeatForProducer(producer);
+
+        // If this is a portable Workstation entity, this will have neither. So return.
+        if (!entity.hasComponent(BlockComponent.class) && !entity.hasComponent(BlockRegionComponent.class))
+        {
+            return;
+        }
+
+        if (entity.hasComponent(PortableWorkstationComponent.class)) {
+            return;
+        }
+
 
         for (Map.Entry<Vector3i, Side> heatedBlock : HeatUtils.getPotentialHeatedBlocksForProducer(entity).entrySet()) {
             EntityRef potentialConsumer = blockEntityRegistry.getEntityAt(heatedBlock.getKey());

@@ -79,6 +79,9 @@
         "temperatureLossRate": 0.8,
         "maximumTemperature": 300
     },
+    "PortableWorkstation": {
+
+    },
     "FluidInventory": {
         "fluidSlots": [ 0 ],
         "maximumVolumes": [ 10 ]
