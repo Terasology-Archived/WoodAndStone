@@ -9,6 +9,7 @@
     },
     "FluidContainerItem": {
         "volume": 10,
+        "maxVolume": 10,
         "fluidMinPerc": [0.1875, 0.15625],
         "fluidSizePerc": [0.625, 0.4375],
         "textureWithHole": "WoodAndStone:QualityWoodenBucket",

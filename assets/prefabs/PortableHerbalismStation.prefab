@@ -2,7 +2,8 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:PortableHerbalismStation",
-        "stackId": "WoodAndStone:portableHerbalismStation"
+        "stackId": "WoodAndStone:portableHerbalismStation",
+        "maxStackSize": 1
     },
     "DisplayName": {
         "name": "Portable Herbalism Station"

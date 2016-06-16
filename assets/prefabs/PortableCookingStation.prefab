@@ -2,7 +2,8 @@
     "parent": "engine:iconItem",
     "Item": {
         "icon": "WoodAndStone:PortableCookingStation",
-        "stackId": "WoodAndStone:portableCookingStation"
+        "stackId": "WoodAndStone:portableCookingStation",
+        "maxStackSize": 1
     },
     "DisplayName": {
         "name": "Portable Cooking Station"
@@ -78,6 +79,9 @@
         "temperatureAbsorptionRate": 1,
         "temperatureLossRate": 0.8,
         "maximumTemperature": 300
+    },
+    "PortableWorkstation": {
+
     },
     "FluidInventory": {
         "fluidSlots": [ 0 ],

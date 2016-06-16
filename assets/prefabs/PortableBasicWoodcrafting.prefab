@@ -3,6 +3,7 @@
     "Item": {
         "icon": "WoodAndStone:PortableBasicWoodcraftingStation",
         "stackId": "WoodAndStone:portableBasicWoodcrafting"
+        "maxStackSize": 1
     },
     "DisplayName": {
         "name": "Portable Basic Wood Station"
