@@ -44,6 +44,21 @@ public class ModifyBlockDestruction extends BaseComponentSystem {
         exceptions.add(new BlockUri("Core:Dirt"));
         exceptions.add(new BlockUri("Core:Sand"));
         exceptions.add(new BlockUri("WoodAndStone:ClayStone"));
+
+        // TODO: Probably a better way to "whitelist" these leaf blocks in bulk
+        exceptions.add(new BlockUri("PlantPack:BirchLeaf"));
+        exceptions.add(new BlockUri("PlantPack:BlueSpruceLeaf"));
+        exceptions.add(new BlockUri("PlantPack:BroomLeaf"));
+        exceptions.add(new BlockUri("PlantPack:CypressLeaf"));
+        exceptions.add(new BlockUri("PlantPack:GrandMapleLeaf"));
+        exceptions.add(new BlockUri("PlantPack:LongPineLeaf"));
+        exceptions.add(new BlockUri("PlantPack:MapleLeaf"));
+        exceptions.add(new BlockUri("PlantPack:MirthrootLeaf"));
+        exceptions.add(new BlockUri("PlantPack:OakLeaf"));
+        exceptions.add(new BlockUri("PlantPack:PineLeaf"));
+        exceptions.add(new BlockUri("PlantPack:SakuraLeaf"));
+        exceptions.add(new BlockUri("PlantPack:SpruceLeaf"));
+        exceptions.add(new BlockUri("PlantPack:StisusLeaf"));
     }
 
     @ReceiveEvent
