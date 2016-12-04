@@ -1,0 +1,8 @@
+{
+    "CraftInHandRecipe": {
+        "recipeId": "WoodAndStone:Crossbow",
+        "itemResult": "Core:crossbow",
+        "recipeComponents": ["1*WoodAndStone:stick", "1*WoodAndStone:twig"],
+        "recipeTools": ["1*WoodAndStone:toolStone"]
+    }
+}
