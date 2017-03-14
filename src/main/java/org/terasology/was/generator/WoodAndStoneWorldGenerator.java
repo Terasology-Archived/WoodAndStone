@@ -21,7 +21,6 @@ import com.google.common.base.Predicate;
 import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.ChunkDecorator;
 import org.terasology.anotherWorld.FeatureGenerator;
-import org.terasology.anotherWorld.PluggableWorldGenerator;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BiomeDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
@@ -54,7 +53,6 @@ import org.terasology.gf.generator.FoliageProvider;
 import org.terasology.gf.generator.TreeProvider;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
@@ -212,10 +210,7 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         // only exist in higher Y-levels
         setTemperatureFunction(
                 new MinMaxAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 0.4f, 1f));
-
         
-
-
         setLandscapeOptions(
                 // 40% of the landscape is under water
                 0.4f,
@@ -229,9 +224,7 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
                 new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 2f),
                 // Smoothen the terrain a bit
                 0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f));
-
         
-
         // Setup flora growing in the world
         setupFlora(seaLevel);
     }
@@ -261,13 +254,6 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         for (FacetProvider facetProvider : facetProviders) {
             worldBuilder.addProvider(facetProvider);
         }
-//
-//        for (ChunkDecorator chunkDecorator : chunkDecorators) {
-//            worldBuilder.addRasterizer(chunkDecorator);
-//        }
-//        for (FeatureGenerator featureGenerator : featureGenerators) {
-//            worldBuilder.addRasterizer(featureGenerator);
-//        }
         
         return worldBuilder;
     }
