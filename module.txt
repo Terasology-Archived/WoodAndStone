@@ -7,7 +7,7 @@
     "dependencies" : [
             {
                 "id" : "AlterationEffects",
-                "minVersion" : "0.2.0"
+                "minVersion" : "1.0.0"
             },
             {
                 "id" : "GrowingFlora",
@@ -55,7 +55,7 @@
             },
             {
                 "id" : "Genome",
-                "minVersion" : "0.1.0"
+                "minVersion" : "0.1.1"
             },
             {
                 "id" : "NameGenerator",
