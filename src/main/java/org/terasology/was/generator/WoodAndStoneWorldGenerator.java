@@ -15,10 +15,12 @@
  */
 package org.terasology.was.generator;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 
 import org.terasology.anotherWorld.AnotherWorldBiomes;
-import org.terasology.anotherWorld.PluggableWorldGenerator;
+import org.terasology.anotherWorld.ChunkDecorator;
+import org.terasology.anotherWorld.FeatureGenerator;
 import org.terasology.anotherWorld.decorator.BeachDecorator;
 import org.terasology.anotherWorld.decorator.BiomeDecorator;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
@@ -27,12 +29,22 @@ import org.terasology.anotherWorld.decorator.layering.DefaultLayersDefinition;
 import org.terasology.anotherWorld.decorator.layering.LayeringConfig;
 import org.terasology.anotherWorld.decorator.layering.LayeringDecorator;
 import org.terasology.anotherWorld.decorator.ore.OreDecorator;
+import org.terasology.anotherWorld.generation.BiomeProvider;
+import org.terasology.anotherWorld.generation.HillynessProvider;
+import org.terasology.anotherWorld.generation.HumidityProvider;
+import org.terasology.anotherWorld.generation.PerlinSurfaceHeightProvider;
+import org.terasology.anotherWorld.generation.TemperatureProvider;
+import org.terasology.anotherWorld.generation.TerrainVariationProvider;
 import org.terasology.anotherWorld.util.PDist;
 import org.terasology.anotherWorld.util.Provider;
 import org.terasology.anotherWorld.util.alpha.IdentityAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.MinMaxAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.UniformNoiseAlpha;
+import org.terasology.climateConditions.ClimateConditionsSystem;
+import org.terasology.climateConditions.ConditionsBaseField;
+import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.engine.SimpleUri;
 import org.terasology.gf.generator.BushProvider;
 import org.terasology.gf.generator.FloraFeatureGenerator;
@@ -40,31 +52,151 @@ import org.terasology.gf.generator.FloraProvider;
 import org.terasology.gf.generator.FoliageProvider;
 import org.terasology.gf.generator.TreeProvider;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.registry.In;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.world.generation.FacetProvider;
+import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.WorldConfigurator;
 import org.terasology.world.generator.WorldConfiguratorAdapter;
+import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 import org.terasology.world.liquid.LiquidType;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterWorldGenerator(id = "throughoutTheAges", displayName = "Throughout the Ages", description = "Generates the world for playing 'Throughout the Ages' content mods.")
-public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
+public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
     private BlockManager blockManager;
+    
+    @In
+    private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
+    
+    private List<ChunkDecorator> chunkDecorators = new LinkedList<>();
+    private List<FeatureGenerator> featureGenerators = new LinkedList<>();
+    private List<FacetProvider> facetProviders = new LinkedList<>();
+    
+    private int seaLevel = 32;
+    private int maxLevel = 220;
+    private float biomeDiversity = 0.5f;
+    
+    private Function<Float, Float> temperatureFunction = IdentityAlphaFunction.singleton();
+    private Function<Float, Float> humidityFunction = IdentityAlphaFunction.singleton();
+    
+    private PerlinSurfaceHeightProvider surfaceHeightProvider;
 
     public WoodAndStoneWorldGenerator(SimpleUri uri) {
         super(uri);
     }
+    
+    public void addChunkDecorator(ChunkDecorator chunkGenerator) {
+        chunkDecorators.add(chunkGenerator);
+    }
 
+    public void addFeatureGenerator(FeatureGenerator featureGenerator) {
+        featureGenerators.add(featureGenerator);
+    }
+
+    public void addFacetProvider(FacetProvider facetProvider) {
+        facetProviders.add(facetProvider);
+    }
+    
+    public void setSeaLevel(int seaLevel) {
+        this.seaLevel = seaLevel;
+    }
+
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
+    /**
+     * 0=changing slowly, 1=changing frequently
+     *
+     * @param biomeDiversity
+     */
+    public void setBiomeDiversity(float biomeDiversity) {
+        this.biomeDiversity = biomeDiversity;
+    }
+
+    public void setTemperatureFunction(Function<Float, Float> temperatureFunction) {
+        this.temperatureFunction = temperatureFunction;
+    }
+
+    public void setHumidityFunction(Function<Float, Float> humidityFunction) {
+        this.humidityFunction = humidityFunction;
+    }
+
+    public void setLandscapeOptions(float seaFrequency, float terrainDiversity, Function<Float, Float> generalTerrainFunction,
+                                    Function<Float, Float> heightBelowSeaLevelFunction,
+                                    Function<Float, Float> heightAboveSeaLevelFunction,
+                                    float hillinessDiversity, Function<Float, Float> hillynessFunction) {
+        surfaceHeightProvider = new PerlinSurfaceHeightProvider(seaFrequency, terrainDiversity, generalTerrainFunction,
+                heightBelowSeaLevelFunction,
+                heightAboveSeaLevelFunction,
+                hillinessDiversity, hillynessFunction, seaLevel, maxLevel);
+    }
+    
     @Override
-    protected void setupGenerator() {
+    public void initialize() {
+    	setupRasterizerInitializer();
+    	
+        getWorld().initialize();
+    }
+    
+    private void setupRasterizerInitializer(){
+    	addChunkDecorator(new BiomeDecorator());
+    	
+    	blockManager = CoreRegistry.get(BlockManager.class);
 
-        addChunkDecorator(new BiomeDecorator());
+        final Block mantle = blockManager.getBlock("Core:MantleStone");
+        final Block stone = blockManager.getBlock("Core:Stone");
+        final Block water = blockManager.getBlock("Core:Water");
+        final Block sand = blockManager.getBlock("Core:Sand");
+        final Block clay = blockManager.getBlock("WoodAndStone:ClayStone");
+        final Block dirt = blockManager.getBlock("Core:Dirt");
+        final Block grass = blockManager.getBlock("Core:Grass");
+        final Block snow = blockManager.getBlock("Core:Snow");
+        final Block ice = blockManager.getBlock("Core:Ice");
+        
+        // Setup biome terrain layers
+        setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice, seaLevel);
 
+        // Replace stone with sand on the sea shores
+        addChunkDecorator(
+                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), seaLevel - 5, seaLevel + 2));
+
+        Predicate<Block> removableBlocks = new BlockCollectionPredicate(Arrays.asList(stone, sand, dirt, grass, snow));
+
+        // Dig some caves in the terrain
+        addChunkDecorator(
+                new CaveDecorator(getWorldSeed().hashCode(), removableBlocks, new PDist(0.2f, 0f), new PDist(5f, 1f),
+                        new PDist(1750f, 400f), new PDist(50f, 10f), new PDist(2f, 0.5f), blockManager));
+
+        // Setup ore spawning
+        setupOreGenerator(stone);
+        
+        FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator();
+        addFeatureGenerator(floraDecorator);
+        
+        if(worldBuilder == null){
+        	worldBuilder = createWorld();
+        }
+        
+        for (ChunkDecorator chunkDecorator : chunkDecorators) {
+            worldBuilder.addRasterizer(chunkDecorator);
+        }
+        for (FeatureGenerator featureGenerator : featureGenerators) {
+            worldBuilder.addRasterizer(featureGenerator);
+        }
+    }
+
+    private void setupGenerator() {
         int seaLevel = 1700;
         int maxLevel = 4000;
 
@@ -78,20 +210,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
         // only exist in higher Y-levels
         setTemperatureFunction(
                 new MinMaxAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 0.4f, 1f));
-
-        blockManager = CoreRegistry.get(BlockManager.class);
-
-        final Block mantle = blockManager.getBlock("Core:MantleStone");
-        final Block stone = blockManager.getBlock("Core:Stone");
-        final Block water = blockManager.getBlock("Core:Water");
-        final Block sand = blockManager.getBlock("Core:Sand");
-        final Block clay = blockManager.getBlock("WoodAndStone:ClayStone");
-        final Block dirt = blockManager.getBlock("Core:Dirt");
-        final Block grass = blockManager.getBlock("Core:Grass");
-        final Block snow = blockManager.getBlock("Core:Snow");
-        final Block ice = blockManager.getBlock("Core:Ice");
-
-
+        
         setLandscapeOptions(
                 // 40% of the landscape is under water
                 0.4f,
@@ -105,26 +224,38 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                 new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 2f),
                 // Smoothen the terrain a bit
                 0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f));
-
-        // Setup biome terrain layers
-        setupLayers(mantle, water, LiquidType.WATER, stone, sand, dirt, grass, snow, ice, seaLevel);
-
-        // Replace stone with sand on the sea shores
-        addChunkDecorator(
-                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), seaLevel - 5, seaLevel + 2));
-
-        Predicate<Block> removableBlocks = new BlockCollectionPredicate(Arrays.asList(stone, sand, dirt, grass, snow));
-
-        // Dig some caves in the terrain
-        addChunkDecorator(
-                new CaveDecorator(getSeed(), removableBlocks, new PDist(0.2f, 0f), new PDist(5f, 1f),
-                        new PDist(1750f, 400f), new PDist(50f, 10f), new PDist(2f, 0.5f), blockManager));
-
-        // Setup ore spawning
-        setupOreGenerator(stone);
-
+        
         // Setup flora growing in the world
         setupFlora(seaLevel);
+    }
+    
+    @Override
+    protected WorldBuilder createWorld(){
+    	setupGenerator();
+    	
+    	ClimateConditionsSystem environmentSystem = new ClimateConditionsSystem();
+    	environmentSystem.setWorldSeed(getWorldSeed());
+        environmentSystem.configureHumidity(seaLevel, maxLevel, biomeDiversity, humidityFunction, 0, 1);
+        environmentSystem.configureTemperature(seaLevel, maxLevel, biomeDiversity, temperatureFunction, -20, 40);
+        
+    	ConditionsBaseField temperatureBaseField = environmentSystem.getTemperatureBaseField();
+        ConditionsBaseField humidityBaseField = environmentSystem.getHumidityBaseField();
+        
+    	WorldBuilder worldBuilder = new WorldBuilder(worldGeneratorPluginLibrary);
+        worldBuilder.addProvider(new BiomeProvider());
+        worldBuilder.addProvider(new HillynessProvider());
+        worldBuilder.addProvider(surfaceHeightProvider);
+        worldBuilder.addProvider(new SurfaceToDensityProvider());
+        worldBuilder.addProvider(new HumidityProvider(humidityBaseField));
+        worldBuilder.addProvider(new TemperatureProvider(temperatureBaseField));
+        worldBuilder.addProvider(new TerrainVariationProvider());
+        worldBuilder.addProvider(new SeaLevelProvider(seaLevel));
+
+        for (FacetProvider facetProvider : facetProviders) {
+            worldBuilder.addProvider(facetProvider);
+        }
+        
+        return worldBuilder;
     }
 
     @Override
@@ -133,9 +264,6 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
     }
 
     private void setupFlora(int seaLevel) {
-        FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator();
-        addFeatureGenerator(floraDecorator);
-
         addFacetProvider(new FloraProvider(seaLevel));
 
         // new PDist(2f, 0.4f)
@@ -151,7 +279,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
 
     private void setupOreGenerator(Block stone) {
         Predicate<Block> replacedBlocks = new BlockCollectionPredicate(stone);
-        OreDecorator oreDecorator = new OreDecorator(getSeed(), replacedBlocks);
+        OreDecorator oreDecorator = new OreDecorator(getWorldSeed().hashCode(), replacedBlocks);
 
         // Use plugin mechanism to setup required ores for the modules, by default WoodAndStone requires no
         // ores
@@ -163,7 +291,7 @@ public class WoodAndStoneWorldGenerator extends PluggableWorldGenerator {
                              int seaLevel) {
         LayeringConfig config = new LayeringConfig(mantle, stone, sea, seaType);
 
-        LayeringDecorator layering = new LayeringDecorator(config, getSeed());
+        LayeringDecorator layering = new LayeringDecorator(config, getWorldSeed().hashCode());
 
         DefaultLayersDefinition desertDef = new DefaultLayersDefinition(seaLevel, AnotherWorldBiomes.DESERT.getId());
         desertDef.addLayerDefinition(new PDist(3, 1), sand, false);
