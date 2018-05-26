@@ -1,18 +1,12 @@
 {
     "hardness": 12,
-
     "shape": "WoodAndStone:ClayHearth",
-
-    "rotation": "horizontal",
-
+    "family": "horizontal",
     "displayName": "Clay Hearth",
-
     "categories": ["stone"],
-
     "entity": {
         "prefab": "WoodAndStone:ClayHearth"
     },
-
     "tiles": {
         "center": "WoodAndStone:ClayHearth",
         "bottom": "WoodAndStone:ClayHearth"

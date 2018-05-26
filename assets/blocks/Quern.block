@@ -1,19 +1,13 @@
 {
     "shape": "WoodAndStone:Quern",
-
-    "rotation": "horizontal",
-
+    "family": "horizontal",
     "categories": ["stone"],
-
     "displayName": "Quern",
-
     "entity": {
         "prefab": "WoodAndStone:Quern"
     },
-
     "tiles": {
         "center": "WoodAndStone:Quern"
     },
-
     "translucent": true
 }

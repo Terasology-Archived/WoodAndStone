@@ -1,5 +1,5 @@
 {
-    "rotation": "attachedToSurface",
+    "family": "attachedToSurface",
     "sides": {
         "shape": "Core:TorchWall"
     },
@@ -10,9 +10,7 @@
     "entity": {
         "prefab": "WoodAndStone:LitTorch"
     },
-
     "displayName": "Lit Torch",
-
     "penetrable": true,
     "attachmentAllowed": false,
     "shadowCasting": false,
