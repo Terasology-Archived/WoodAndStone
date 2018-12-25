@@ -137,7 +137,7 @@ public class FarmingAndCookingJournalIntegration extends BaseComponentSystem {
                     public HorizontalAlign getHorizontalAlignment() {
                         return HorizontalAlign.CENTER;
                     }
-                }, "<f engine:title>" + title + "</f>");
+                }, "<f engine:NotoSans-Regular-Title>" + title + "</f>");
     }
 
     private void discoveredEntry(EntityRef character, String entryId) {
