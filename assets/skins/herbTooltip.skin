@@ -1,5 +1,5 @@
 {
-    "inherit": "core:itemTooltip",
+    "inherit": "inventory:itemTooltip",
     "elements": {
         "UIList": {
             "parts": {
