@@ -17,7 +17,7 @@ package org.terasology.herbalism.effect;
 
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.herbalism.HerbEffect;
-import org.terasology.logic.health.DoHealEvent;
+import org.terasology.logic.health.event.DoRestoreEvent;
 import org.terasology.math.TeraMath;
 
 public class HealEffect implements HerbEffect {
@@ -25,6 +25,6 @@ public class HealEffect implements HerbEffect {
 
     @Override
     public void applyEffect(EntityRef instigator, EntityRef entity, float magnitude, long duration) {
-        entity.send(new DoHealEvent(TeraMath.floorToInt(maxHeal * magnitude), instigator));
+        entity.send(new DoRestoreEvent(TeraMath.floorToInt(maxHeal * magnitude), instigator));
     }
 }

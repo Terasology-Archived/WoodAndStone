@@ -21,7 +21,7 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.GetMaxSpeedEvent;
-import org.terasology.logic.health.BeforeDamagedEvent;
+import org.terasology.logic.health.event.BeforeDamagedEvent;
 import org.terasology.registry.In;
 import org.terasology.rpgAttributes.RPG;
 import org.terasology.rpgAttributes.component.AgilityComponent;
