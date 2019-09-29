@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class OakTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public OakTundraSpawnDefinition() {
         super(PlantType.TREE, OakGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId(), 0.1f, 0.4f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Snow"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Snow"))));
     }
 }

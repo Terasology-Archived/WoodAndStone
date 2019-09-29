@@ -1,5 +1,5 @@
 {
-    "basedOn" : "core:plant",
+    "basedOn" : "CoreAssets:plant",
     "entity": {
         "prefab": "WoodAndStone:HerbGrowing"
     },

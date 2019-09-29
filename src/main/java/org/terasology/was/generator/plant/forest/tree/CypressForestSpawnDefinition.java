@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class CypressForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public CypressForestSpawnDefinition() {
         super(PlantType.TREE, CypressGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.4f, 0.8f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
     }
 }

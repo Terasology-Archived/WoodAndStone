@@ -1,5 +1,5 @@
 {
-    "basedOn": "core:plant",
+    "basedOn": "CoreAssets:plant",
     "colorSource": "foliage_lut",
     "waving": true,
     "entity": {

@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class BroomPlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BroomPlainsSpawnDefinition() {
         super(PlantType.TREE, BroomGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId(), 0.6f, 0.3f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
     }
 }

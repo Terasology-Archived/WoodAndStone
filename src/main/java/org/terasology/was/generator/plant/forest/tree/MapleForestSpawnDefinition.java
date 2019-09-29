@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class MapleForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public MapleForestSpawnDefinition() {
         super(PlantType.TREE, MapleGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 1f, 0.8f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
     }
 }

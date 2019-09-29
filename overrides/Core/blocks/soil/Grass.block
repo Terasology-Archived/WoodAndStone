@@ -1,5 +1,5 @@
 {
-    "basedOn": "core:soil",
+    "basedOn": "CoreAssets:soil",
     "grass": true,
     // Graphics
     "tiles": {                     // "tiles" being present means we'll override some with a different graphic

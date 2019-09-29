@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class SpruceTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public SpruceTundraSpawnDefinition() {
         super(PlantType.TREE, SpruceGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId(), 0.9f, 0.6f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Snow"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Snow"))));
     }
 }

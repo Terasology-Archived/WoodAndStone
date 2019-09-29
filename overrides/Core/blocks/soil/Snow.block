@@ -1,5 +1,5 @@
 {
-    "basedOn": "core:soil",
+    "basedOn": "CoreAssets:soil",
     "tiles": {
         "sides": "SnowSide",
         "bottom": "dirt"
@@ -7,5 +7,5 @@
     "entity": {
         "prefab": "WoodAndStone:Snow"
     },
-    "sounds": "Core:snow"
+    "sounds": "CoreAssets:snow"
 }
