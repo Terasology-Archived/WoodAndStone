@@ -1,0 +1,6 @@
+{
+    "basedOn": "CoreAssets:soil",
+    "entity": {
+        "prefab": "WoodAndStone:Dirt"
+    }
+}
