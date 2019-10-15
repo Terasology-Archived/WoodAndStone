@@ -1,8 +1,0 @@
-{
-    "ice": true,
-    "translucent": true,
-    "hardness": 1,
-    "entity": {
-        "prefab": "WoodAndStone:Ice"
-    }
-}
