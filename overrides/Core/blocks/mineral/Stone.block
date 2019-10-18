@@ -5,5 +5,5 @@
     "entity": {
         "prefab": "WoodAndStone:StoneBlock"
     },
-    "sounds": "Core:stone"
+    "sounds": "CoreAssets:stone"
 }

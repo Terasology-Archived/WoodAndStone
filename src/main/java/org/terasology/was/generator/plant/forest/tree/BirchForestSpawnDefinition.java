@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class BirchForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BirchForestSpawnDefinition() {
         super(PlantType.TREE, BirchGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.6f, 0.8f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
     }
 }

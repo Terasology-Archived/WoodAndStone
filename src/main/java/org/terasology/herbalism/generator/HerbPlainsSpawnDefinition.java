@@ -37,6 +37,6 @@ public class HerbPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
                         new BlockUri("WoodAndStone:Herb2"),
                         new BlockUri("WoodAndStone:Herb6"),
                         new BlockUri("WoodAndStone:Herb7")*/),
-                new BlockCollectionPredicate(Blocks.getBlock("Core:Grass")), null);
+                new BlockCollectionPredicate(Blocks.getBlock("CoreBlocks:Grass")), null);
     }
 }

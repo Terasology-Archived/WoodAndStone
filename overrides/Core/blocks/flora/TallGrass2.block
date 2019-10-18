@@ -1,5 +1,5 @@
 {
-    "basedOn": "core:plant",
+    "basedOn": "CoreAssets:plant",
     "colorSource": "foliage_lut",
     "colorOffset": [0.7, 0.7, 0.7, 1.0],
     "waving": true,

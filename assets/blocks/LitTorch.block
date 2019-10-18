@@ -1,10 +1,10 @@
 {
     "family": "attachedToSurface",
     "sides": {
-        "shape": "Core:TorchWall"
+        "shape": "CoreAssets:TorchWall"
     },
     "top": {
-        "shape": "Core:TorchGrounded"
+        "shape": "CoreAssets:TorchGrounded"
     },
 
     "entity": {

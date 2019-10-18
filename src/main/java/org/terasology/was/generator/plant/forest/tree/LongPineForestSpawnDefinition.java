@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class LongPineForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public LongPineForestSpawnDefinition() {
         super(PlantType.TREE, LongPineGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.4f, 0.4f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("Core:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
     }
 }

@@ -33,7 +33,6 @@ import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.BlockRecipeResultFactory;
 import org.terasology.crafting.system.recipe.render.result.ItemRecipeResultFactory;
-import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.crafting.system.recipe.workstation.DefaultWorkstationRecipe;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
@@ -120,15 +119,15 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
         LayeredMultiBlockFormItemRecipe cookingStationRecipe = new LayeredMultiBlockFormItemRecipe(
                 new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(2, 1), new AnyActivityFilter(),
                 "WoodAndStone:CookingStation", null);
-        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core:Brick")));
-        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri(new ResourceUrn("Core:CobbleStone"), new ResourceUrn(("Engine:EighthBlock")))));
+        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("CoreBlocks:Brick")));
+        cookingStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri(new ResourceUrn("CoreBlocks:CobbleStone"), new ResourceUrn(("Engine:EighthBlock")))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(cookingStationRecipe);
 
         LayeredMultiBlockFormItemRecipe herbalismStationRecipe = new LayeredMultiBlockFormItemRecipe(
                 new ToolTypeEntityFilter("hammer"), new Basic2DSizeFilter(3, 1), new AnyActivityFilter(),
                 "WoodAndStone:HerbalismStation", null);
-        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("Core:Brick")));
-        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri(new ResourceUrn("Core:CobbleStone"), new ResourceUrn(("Engine:EighthBlock")))));
+        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri("CoreBlocks:Brick")));
+        herbalismStationRecipe.addLayer(1, 1, new BlockUriEntityFilter(new BlockUri(new ResourceUrn("CoreBlocks:CobbleStone"), new ResourceUrn(("Engine:EighthBlock")))));
         multiBlockFormRecipeRegistry.addMultiBlockFormItemRecipe(herbalismStationRecipe);
     }
 
@@ -156,9 +155,9 @@ public class RegisterWoodAndStoneRecipes extends BaseComponentSystem {
 
     private void addBasicStoneWorkstationBlockShapeRecipes() {
         addWorkstationBlockShapesRecipe(WoodAndStone.BASIC_STONECRAFTING_PROCESS_TYPE, "Building|Cobble Stone|WoodAndStone:CobbleBlock",
-                "WoodAndStone:stone", 2, "hammer", 1, "Core:CobbleStone", 1);
+                "WoodAndStone:stone", 2, "hammer", 1, "CoreBlocks:CobbleStone", 1);
         addWorkstationBlockShapesRecipe(WoodAndStone.ADVANCED_STONECRAFTING_PROCESS_TYPE, "Building|Bricks|WoodAndStone:BrickBlock",
-                "WoodAndStone:brick", 2, "hammer", 1, "Core:Brick", 1);
+                "WoodAndStone:brick", 2, "hammer", 1, "CoreBlocks:Brick", 1);
     }
 
     private void addPlankBlockShapeRecipe(String shape, int ingredientMultiplier, int durabilityMultiplier, int resultMultiplier) {

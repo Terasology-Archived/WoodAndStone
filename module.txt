@@ -1,6 +1,6 @@
 {
     "id" : "WoodAndStone",
-    "version" : "0.1.3-SNAPSHOT",
+    "version" : "0.1.4-SNAPSHOT",
     "author" : "Marcin Sciesinski <marcins78@gmail.com>",
     "displayName" : "Wood and Stone",
     "description" : "Basic 'Stone Age' crafting",
@@ -13,6 +13,7 @@
         {"id" : "BiomesAPI", "minVersion" : "1.0.0"},
         {"id" : "AnotherWorld", "minVersion" : "0.2.0"},
         {"id" : "AnotherWorldPlants", "minVersion" : "0.1.0"},
+        {"id" : "CoreBlocks", "minVersion" : "1.0.0"},
         {"id" : "Core", "minVersion" : "2.0.0"},
         {"id" : "Fences", "minVersion" : "0.1.0"},
         {"id" : "Workstation", "minVersion" : "1.0.0"},
