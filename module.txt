@@ -21,7 +21,7 @@
         {"id" : "Hunger", "minVersion" : "1.0.0"},
         {"id" : "Genome", "minVersion" : "0.1.1"},
         {"id" : "NameGenerator", "minVersion" : "0.4.0"},
-        {"id" : "StructuralResources", "minVersion" : "1.0.0"},
+        {"id" : "StructuralResources", "minVersion" : "2.0.0"},
         {"id" : "Seasons", "minVersion" : "0.9.0"}
     ],
     "isServerSideOnly" : false
