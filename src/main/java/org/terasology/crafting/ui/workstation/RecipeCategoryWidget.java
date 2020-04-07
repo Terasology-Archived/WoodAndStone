@@ -16,6 +16,7 @@
 package org.terasology.crafting.ui.workstation;
 
 import org.terasology.input.MouseInput;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.rendering.assets.font.Font;
@@ -73,7 +74,7 @@ public class RecipeCategoryWidget extends CoreWidget {
         Font font = canvas.getCurrentStyle().getFont();
 
         List<String> lines = TextLineBuilder.getLines(font, getText(), canvas.size().x);
-        Vector2i textSize = font.getSize(lines);
+        Vector2i textSize = JomlUtil.from(font.getSize(lines));
         return new Vector2i(canvas.size().x, textSize.y);
     }
 

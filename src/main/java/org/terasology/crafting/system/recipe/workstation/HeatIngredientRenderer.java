@@ -16,6 +16,7 @@
 package org.terasology.crafting.system.recipe.workstation;
 
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.rendering.assets.font.Font;
@@ -39,7 +40,7 @@ public class HeatIngredientRenderer implements CraftIngredientRenderer {
         Font font = canvas.getCurrentStyle().getFont();
 
         List<String> lines = TextLineBuilder.getLines(font, getText(), canvas.size().x);
-        Vector2i result = font.getSize(lines);
+        Vector2i result = JomlUtil.from(font.getSize(lines));
         return new Vector2i(result.x, result.y + 3);
     }
 
