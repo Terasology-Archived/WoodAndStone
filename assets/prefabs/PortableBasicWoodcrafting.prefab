@@ -8,7 +8,7 @@
     "DisplayName": {
         "name": "Portable Basic Wood Station"
     },
-    "BlockDropGrammar": {
+    "DropGrammar": {
         "itemDrops": ["4*WoodAndStone:WoodPlank"]
     },
     "InteractionTarget": {},

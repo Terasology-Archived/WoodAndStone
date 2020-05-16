@@ -1,9 +1,9 @@
 {
-    "BlockDropGrammar": {
+    "DropGrammar": {
         "itemDrops": ["0.5|WoodAndStone:stone", "0.1|WoodAndStone:flint"],
         "droppedWithTool": {
             "soil": {
-                blockDrops: ["1|CoreBlocks:Dirt"]
+                blockDrops: ["1|CoreAssets:Dirt"]
             }
         }
     },

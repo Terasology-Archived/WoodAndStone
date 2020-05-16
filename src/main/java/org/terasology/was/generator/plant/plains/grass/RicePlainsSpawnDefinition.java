@@ -32,6 +32,6 @@ import java.util.Arrays;
 public class RicePlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public RicePlainsSpawnDefinition() {
         super(PlantType.GRASS, RiceGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId(), 0.8f, 0.3f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class PineTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public PineTundraSpawnDefinition() {
         super(PlantType.TREE, PineGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId(), 0.45f, 0.6f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Snow"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Snow"))));
     }
 }

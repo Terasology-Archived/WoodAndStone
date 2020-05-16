@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class SakuraForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public SakuraForestSpawnDefinition() {
         super(PlantType.TREE, SakuraGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.2f, 0.6f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

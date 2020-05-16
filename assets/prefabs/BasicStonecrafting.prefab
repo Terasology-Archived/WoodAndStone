@@ -1,5 +1,5 @@
 {
-    "BlockDropGrammar": {
+    "DropGrammar": {
         "blockDrops": ["2*WoodAndStone:WoodenTable"]
     },
     "InteractionTarget": {},

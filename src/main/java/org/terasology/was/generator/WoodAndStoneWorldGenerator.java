@@ -152,15 +152,15 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
     	
     	blockManager = CoreRegistry.get(BlockManager.class);
 
-        final Block mantle = blockManager.getBlock("CoreBlocks:MantleStone");
-        final Block stone = blockManager.getBlock("CoreBlocks:Stone");
-        final Block water = blockManager.getBlock("CoreBlocks:Water");
-        final Block sand = blockManager.getBlock("CoreBlocks:Sand");
+        final Block mantle = blockManager.getBlock("CoreAssets:MantleStone");
+        final Block stone = blockManager.getBlock("CoreAssets:Stone");
+        final Block water = blockManager.getBlock("CoreAssets:Water");
+        final Block sand = blockManager.getBlock("CoreAssets:Sand");
         final Block clay = blockManager.getBlock("WoodAndStone:ClayStone");
-        final Block dirt = blockManager.getBlock("CoreBlocks:Dirt");
-        final Block grass = blockManager.getBlock("CoreBlocks:Grass");
-        final Block snow = blockManager.getBlock("CoreBlocks:Snow");
-        final Block ice = blockManager.getBlock("CoreBlocks:Ice");
+        final Block dirt = blockManager.getBlock("CoreAssets:Dirt");
+        final Block grass = blockManager.getBlock("CoreAssets:Grass");
+        final Block snow = blockManager.getBlock("CoreAssets:Snow");
+        final Block ice = blockManager.getBlock("CoreAssets:Ice");
         
         // Setup biome terrain layers
         setupLayers(mantle, water, stone, sand, dirt, grass, snow, ice, seaLevel);
