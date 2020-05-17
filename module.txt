@@ -11,7 +11,7 @@
         { "id": "BiomesAPI", "minVersion": "4.0.0" },
         { "id": "CombatSystem", "minVersion": "1.0.0" },
         { "id": "CoreAssets", "minVersion": "2.0.1" },
-        { "id": "CoreWorlds", "minVersion": "1.0.0" },
+        { "id": "CoreWorlds", "minVersion": "1.1.0" },
         { "id": "Drops", "minVersion": "1.0.1" },
         { "id": "Fences", "minVersion": "0.1.0" },
         { "id": "Fluid", "minVersion": "1.0.0" },
