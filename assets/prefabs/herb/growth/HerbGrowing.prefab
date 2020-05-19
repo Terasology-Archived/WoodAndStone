@@ -2,5 +2,5 @@
     "LivingPlant": {
         "type": "Herbalism:Herb"
     },
-    "BlockDropGrammar": {}
+    "DropGrammar": {}
 }

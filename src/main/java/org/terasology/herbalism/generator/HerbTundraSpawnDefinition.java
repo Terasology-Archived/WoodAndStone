@@ -34,6 +34,6 @@ public class HerbTundraSpawnDefinition extends StaticBlockFloraSpawnDefinition {
         super(PlantType.GRASS, AnotherWorldBiomes.TUNDRA.getId(), 0.5f, 0.3f, "Herbalism:Herb",
                 Arrays.asList(
                         new BlockUri("WoodAndStone:HerbGeneratedA")),
-                new BlockCollectionPredicate(Blocks.getBlock("CoreBlocks:Snow")), null);
+                new BlockCollectionPredicate(Blocks.getBlock("CoreAssets:Snow")), null);
     }
 }

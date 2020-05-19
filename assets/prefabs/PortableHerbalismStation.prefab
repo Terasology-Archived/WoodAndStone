@@ -8,7 +8,7 @@
     "DisplayName": {
         "name": "Portable Herbalism Station"
     },
-    "BlockDropGrammar": {
+    "DropGrammar": {
         "itemDrops": ["4*WoodAndStone:Brick"]
     },
     "InteractionTarget": {},

@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class BlueSpruceForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BlueSpruceForestSpawnDefinition() {
         super(PlantType.TREE, BlueSpruceGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.2f, 0.4f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

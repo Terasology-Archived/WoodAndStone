@@ -29,6 +29,6 @@ import java.util.Arrays;
 public class OakForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public OakForestSpawnDefinition() {
         super(PlantType.TREE, OakGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 1f, 0.8f,
-                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreBlocks:Grass"))));
+                new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

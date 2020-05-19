@@ -64,7 +64,7 @@ public class PlankBlockRecipe extends AbstractWorkstationRecipe {
                     return blockManager.getBlockFamily(appendShapeIfNeeded(blockType)).getArchetypeBlock();
                 }
             }
-            return blockManager.getBlockFamily(appendShapeIfNeeded("CoreBlocks:Plank")).getArchetypeBlock();
+            return blockManager.getBlockFamily(appendShapeIfNeeded("CoreAssets:Plank")).getArchetypeBlock();
         }
 
         private String appendShapeIfNeeded(String value) {
