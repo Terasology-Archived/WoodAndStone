@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class HerbForestSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public HerbForestSpawnDefinition() {
-        super(PlantType.GRASS, AnotherWorldBiomes.FOREST.getId(), 0.5f, 0.3f, "Herbalism:Herb",
+        super(PlantType.GRASS, AnotherWorldBiomes.FOREST.getId().toLowerCase(), 0.5f, 0.3f, "Herbalism:Herb",
                 Arrays.asList(
                         new BlockUri("WoodAndStone:HerbGeneratedA")/*,
                         new BlockUri("WoodAndStone:Herb2"),

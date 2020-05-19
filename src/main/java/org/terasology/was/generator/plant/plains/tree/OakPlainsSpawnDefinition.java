@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class OakPlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public OakPlainsSpawnDefinition() {
-        super(PlantType.TREE, OakGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId(), 0.6f, 0.2f,
+        super(PlantType.TREE, OakGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 0.6f, 0.2f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

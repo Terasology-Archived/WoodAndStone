@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class BirchTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BirchTundraSpawnDefinition() {
-        super(PlantType.TREE, BirchGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId(), 0.3f, 0.6f,
+        super(PlantType.TREE, BirchGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId().toLowerCase(), 0.3f, 0.6f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Snow"))));
     }
 }

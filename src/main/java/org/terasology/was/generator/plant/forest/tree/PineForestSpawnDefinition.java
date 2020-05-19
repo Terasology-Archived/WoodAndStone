@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class PineForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public PineForestSpawnDefinition() {
-        super(PlantType.TREE, PineGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.6f, 0.8f,
+        super(PlantType.TREE, PineGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId().toLowerCase(), 0.6f, 0.8f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

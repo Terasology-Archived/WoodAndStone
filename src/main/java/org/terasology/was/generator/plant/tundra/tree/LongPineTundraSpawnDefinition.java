@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class LongPineTundraSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public LongPineTundraSpawnDefinition() {
-        super(PlantType.TREE, LongPineGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId(), 0.45f, 0.6f,
+        super(PlantType.TREE, LongPineGrowthDefinition.ID, AnotherWorldBiomes.TUNDRA.getId().toLowerCase(), 0.45f, 0.6f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Snow"))));
     }
 }

@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class MapleForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public MapleForestSpawnDefinition() {
-        super(PlantType.TREE, MapleGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 1f, 0.8f,
+        super(PlantType.TREE, MapleGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId().toLowerCase(), 1f, 0.8f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

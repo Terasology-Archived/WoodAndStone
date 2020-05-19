@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class ShroomForestSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public ShroomForestSpawnDefinition() {
-        super(PlantType.GRASS, AnotherWorldBiomes.FOREST.getId(), 0.5f, 0.3f, "CoreAssets:Shroom",
+        super(PlantType.GRASS, AnotherWorldBiomes.FOREST.getId().toLowerCase(), 0.5f, 0.3f, "CoreAssets:Shroom",
                 Arrays.asList(new BlockUri("CoreAssets:BigBrownShroom"), new BlockUri("CoreAssets:BrownShroom"), new BlockUri("CoreAssets:RedShroom")),
                 new BlockCollectionPredicate(Blocks.getBlock("CoreAssets:Grass")), null);
     }

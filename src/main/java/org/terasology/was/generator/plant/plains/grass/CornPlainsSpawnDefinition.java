@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class CornPlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public CornPlainsSpawnDefinition() {
-        super(PlantType.GRASS, CornGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId(), 0.8f, 0.3f,
+        super(PlantType.GRASS, CornGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 0.8f, 0.3f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

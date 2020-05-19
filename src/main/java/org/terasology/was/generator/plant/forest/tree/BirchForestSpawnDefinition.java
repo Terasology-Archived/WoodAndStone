@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class BirchForestSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BirchForestSpawnDefinition() {
-        super(PlantType.TREE, BirchGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId(), 0.6f, 0.8f,
+        super(PlantType.TREE, BirchGrowthDefinition.ID, AnotherWorldBiomes.FOREST.getId().toLowerCase(), 0.6f, 0.8f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }

@@ -33,7 +33,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class GrassPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public GrassPlainsSpawnDefinition() {
-        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId(), 1f, 1f, "CoreAssets:TallGrass",
+        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 1f, 1f, "CoreAssets:TallGrass",
                 Arrays.asList(new BlockUri("CoreAssets:TallGrass1"), new BlockUri("CoreAssets:TallGrass2"), new BlockUri("CoreAssets:TallGrass3")),
                 new BlockCollectionPredicate(Blocks.getBlock("CoreAssets:Grass")),
                 new Predicate<LocalParameters>() {

@@ -31,7 +31,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class FlowerPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
     public FlowerPlainsSpawnDefinition() {
-        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId(), 0.5f, 1f, "CoreAssets:Flower",
+        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 0.5f, 1f, "CoreAssets:Flower",
                 Arrays.asList(new BlockUri("CoreAssets:Dandelion"), new BlockUri("CoreAssets:Iris"),
                         new BlockUri("CoreAssets:Lavender"), new BlockUri("CoreAssets:RedClover"), new BlockUri("CoreAssets:RedFlower"),
                         new BlockUri("CoreAssets:Tulip"), new BlockUri("CoreAssets:YellowFlower")),

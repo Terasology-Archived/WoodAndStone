@@ -28,7 +28,7 @@ import java.util.Arrays;
 @RegisterPlugin
 public class BroomPlainsSpawnDefinition extends GrowthBasedPlantSpawnDefinition {
     public BroomPlainsSpawnDefinition() {
-        super(PlantType.TREE, BroomGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId(), 0.6f, 0.3f,
+        super(PlantType.TREE, BroomGrowthDefinition.ID, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 0.6f, 0.3f,
                 new BlockCollectionPredicate(Arrays.asList(Blocks.getBlock("CoreAssets:Grass"))));
     }
 }
