@@ -15,17 +15,17 @@
  */
 package org.terasology.heat.ui;
 
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.rendering.assets.texture.TextureRegion;
-import org.terasology.rendering.nui.BaseInteractionListener;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.Color;
-import org.terasology.rendering.nui.CoreWidget;
-import org.terasology.rendering.nui.InteractionListener;
-import org.terasology.rendering.nui.ScaleMode;
-import org.terasology.rendering.nui.databinding.Binding;
-import org.terasology.rendering.nui.databinding.DefaultBinding;
+import org.joml.Vector2i;
+import org.terasology.nui.BaseInteractionListener;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.CoreWidget;
+import org.terasology.nui.InteractionListener;
+import org.terasology.nui.ScaleMode;
+import org.terasology.nui.UITextureRegion;
+import org.terasology.nui.databinding.Binding;
+import org.terasology.nui.databinding.DefaultBinding;
+import org.terasology.nui.Color;
+import org.terasology.nui.util.RectUtility;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -48,7 +48,7 @@ public class ThermometerWidget extends CoreWidget {
     @Override
     public void onDraw(Canvas canvas) {
         canvas.setPart("front");
-        TextureRegion foreground = canvas.getCurrentStyle().getBackground();
+        UITextureRegion foreground = canvas.getCurrentStyle().getBackground();
         float min = getMinTemperature();
         float max = getMaxTemperature();
 
@@ -59,7 +59,7 @@ public class ThermometerWidget extends CoreWidget {
         float temperaturePerc = minHeightPerc - (current - min) / (max - min) * (minHeightPerc - maxHeightPerc);
 
         canvas.drawTextureRaw(foreground,
-                Rect2i.createFromMinAndSize(0, Math.round(temperaturePerc * size.y), size.x,
+                RectUtility.createFromMinAndSize(0, Math.round(temperaturePerc * size.y), size.x,
                         Math.round((1 - temperaturePerc) * size.y)),
                 ScaleMode.STRETCH, 0, temperaturePerc, 1, (1 - temperaturePerc));
 

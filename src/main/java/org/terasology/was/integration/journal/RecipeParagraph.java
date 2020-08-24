@@ -15,14 +15,14 @@
  */
 package org.terasology.was.integration.journal;
 
+import org.joml.Vector2i;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.HorizontalAlign;
+import org.terasology.nui.util.RectUtility;
 import org.terasology.utilities.Assets;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.HorizontalAlign;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.rendering.nui.widgets.browser.data.ParagraphData;
 import org.terasology.rendering.nui.widgets.browser.data.basic.flow.ContainerRenderSpace;
@@ -100,12 +100,12 @@ public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
         int x = startPos.x + horizontalAlign.getOffset(drawingWidth, containerRenderSpace.getWidthForVerticalPosition(startPos.y));
         int y = startPos.y + indentAbove;
         for (int i = 0; i < ingredientIcons.length; i++) {
-            canvas.drawWidget(ingredientIcons[i], Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
+            canvas.drawWidget(ingredientIcons[i], RectUtility.createFromMinAndSize(x, y, iconSize, iconSize));
             x += iconSize + ingredientSpacing;
         }
         x -= ingredientSpacing;
         x += resultSpacing;
-        canvas.drawWidget(resultIcon, Rect2i.createFromMinAndSize(x, y, iconSize, iconSize));
+        canvas.drawWidget(resultIcon, RectUtility.createFromMinAndSize(x, y, iconSize, iconSize));
     }
 
     @Override

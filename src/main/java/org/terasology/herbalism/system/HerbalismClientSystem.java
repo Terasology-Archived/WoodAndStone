@@ -16,6 +16,7 @@
 package org.terasology.herbalism.system;
 
 import org.terasology.anotherWorldPlants.farm.component.SeedComponent;
+import org.terasology.nui.widgets.TooltipLine;
 import org.terasology.utilities.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -29,7 +30,6 @@ import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.component.PotionComponent;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
-import org.terasology.rendering.nui.widgets.TooltipLine;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

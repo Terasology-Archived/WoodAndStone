@@ -15,6 +15,11 @@
  */
 package org.terasology.durability;
 
+import org.joml.Rectanglei;
+import org.joml.Vector2i;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.util.RectUtility;
+import org.terasology.nui.widgets.TooltipLine;
 import org.terasology.utilities.Assets;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -22,15 +27,11 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.Color;
+import org.terasology.nui.Color;
 import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
-import org.terasology.rendering.nui.widgets.TooltipLine;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -58,10 +59,10 @@ public class DurabilityClientSystem extends BaseComponentSystem {
 
             ResourceUrn barTexture = TextureUtil.getTextureUriForColor(terasologyColor);
 
-            canvas.drawTexture(Assets.get(backgroundTexture, Texture.class).get(), Rect2i.createFromMinAndMax(minX, minY, maxX, maxY));
+            canvas.drawTexture(Assets.get(backgroundTexture, Texture.class).get(), new Rectanglei(minX, minY, maxX, maxY));
             int durabilityBarLength = (int) (durabilityPercentage * (maxX - minX - 1));
             int durabilityBarHeight = maxY - minY - 1;
-            canvas.drawTexture(Assets.get(barTexture, Texture.class).get(), Rect2i.createFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
+            canvas.drawTexture(Assets.get(barTexture, Texture.class).get(), RectUtility.createFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
         }
     }
 

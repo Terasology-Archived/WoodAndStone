@@ -15,12 +15,12 @@
  */
 package org.terasology.crafting.system.recipe.render;
 
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.rendering.nui.Canvas;
+import org.joml.Rectanglei;
+import org.joml.Vector2i;
+import org.terasology.nui.Canvas;
 
 public interface CraftIngredientRenderer {
     Vector2i getPreferredSize(Canvas canvas, int multiplier);
 
-    void render(Canvas canvas, Rect2i region, int multiplier);
+    void render(Canvas canvas, Rectanglei region, int multiplier);
 }

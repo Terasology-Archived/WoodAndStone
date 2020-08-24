@@ -26,12 +26,12 @@ import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.ThermometerWidget;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.math.TeraMath;
+import org.terasology.nui.databinding.Binding;
+import org.terasology.nui.databinding.ReadOnlyBinding;
+import org.terasology.nui.widgets.UILoadBar;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.databinding.Binding;
-import org.terasology.rendering.nui.databinding.ReadOnlyBinding;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
-import org.terasology.rendering.nui.widgets.UILoadBar;
 import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
@@ -173,7 +173,7 @@ public class CookingStationWindow extends BaseInteractionScreen {
                             return "0ml";
                         } else {
                             FluidRegistry fluidRegistry = CoreRegistry.get(FluidRegistry.class);
-                            return TeraMath.floorToInt(fluid.volume * 1000) + "ml of " + fluidRegistry.getFluidRenderer(fluid.fluidType).getFluidName();
+                            return TeraMath.floorToInt(fluid.volume * 1000) + "ml of " + fluidRegistry.getDisplayName(fluid.fluidType);
                         }
                     }
                 });

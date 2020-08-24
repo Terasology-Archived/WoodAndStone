@@ -17,6 +17,7 @@ package org.terasology.was.integration.journal;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import org.terasology.nui.HorizontalAlign;
 import org.terasology.utilities.Assets;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -31,7 +32,6 @@ import org.terasology.journal.JournalManager;
 import org.terasology.logic.characters.CharacterComponent;
 import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.registry.In;
-import org.terasology.rendering.nui.HorizontalAlign;
 import org.terasology.rendering.nui.widgets.browser.data.ParagraphData;
 import org.terasology.rendering.nui.widgets.browser.data.basic.HTMLLikeParser;
 import org.terasology.rendering.nui.widgets.browser.ui.style.ParagraphRenderStyle;
