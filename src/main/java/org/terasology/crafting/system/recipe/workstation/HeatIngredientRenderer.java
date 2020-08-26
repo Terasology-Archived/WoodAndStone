@@ -15,13 +15,12 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
+import org.joml.Rectanglei;
+import org.joml.Vector2i;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.rendering.assets.font.Font;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.TextLineBuilder;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.TextLineBuilder;
+import org.terasology.nui.asset.font.Font;
 
 import java.util.List;
 
@@ -40,12 +39,12 @@ public class HeatIngredientRenderer implements CraftIngredientRenderer {
         Font font = canvas.getCurrentStyle().getFont();
 
         List<String> lines = TextLineBuilder.getLines(font, getText(), canvas.size().x);
-        Vector2i result = JomlUtil.from(font.getSize(lines));
+        Vector2i result = font.getSize(lines);
         return new Vector2i(result.x, result.y + 3);
     }
 
     @Override
-    public void render(Canvas canvas, Rect2i region, int multiplier) {
+    public void render(Canvas canvas, Rectanglei region, int multiplier) {
         canvas.drawText(getText(), region);
     }
 

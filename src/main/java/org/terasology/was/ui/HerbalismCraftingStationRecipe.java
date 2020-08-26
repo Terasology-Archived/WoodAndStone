@@ -18,6 +18,7 @@ package org.terasology.was.ui;
 import com.google.common.base.Predicate;
 import org.terasology.crafting.component.CraftingStationRecipeComponent;
 import org.terasology.herbalism.system.HerbalismStationIngredientPredicate;
+import org.terasology.nui.widgets.TooltipLine;
 import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeFluidBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
@@ -34,7 +35,6 @@ import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.system.HerbalismClientSystem;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.rendering.nui.widgets.TooltipLine;
 
 import java.util.Arrays;
 import java.util.List;
@@ -146,7 +146,7 @@ public class HerbalismCraftingStationRecipe extends AbstractWorkstationRecipe {
             final String herbParameter = parameters.get(0);
             final String herbName = herbParameter.split("\\|")[3];
             itemIcon.setTooltipLines(
-                    Arrays.asList(new TooltipLine(toolTip), HerbalismClientSystem.getHerbTooltipLine(herbName)));
+                Arrays.asList(new TooltipLine(toolTip), HerbalismClientSystem.getHerbTooltipLine(herbName)));
         }
 
         @Override

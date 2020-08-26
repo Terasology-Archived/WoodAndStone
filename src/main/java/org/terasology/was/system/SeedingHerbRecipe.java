@@ -17,6 +17,7 @@ package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
 import org.terasology.anotherWorldPlants.farm.component.SeedComponent;
+import org.terasology.nui.widgets.TooltipLine;
 import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
@@ -36,7 +37,6 @@ import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.assets.texture.TextureRegionAsset;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.rendering.nui.widgets.TooltipLine;
 import org.terasology.world.block.Block;
 
 import java.util.Arrays;

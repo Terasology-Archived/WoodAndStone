@@ -16,14 +16,14 @@
 package org.terasology.crafting.system.recipe.render;
 
 import com.google.common.base.Function;
+import org.joml.Rectanglei;
+import org.joml.Vector2i;
+import org.terasology.nui.Canvas;
 import org.terasology.utilities.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.rendering.nui.Canvas;
 import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.world.block.items.BlockItemComponent;
@@ -66,7 +66,7 @@ public class ItemSlotIngredientRenderer implements CraftIngredientRenderer {
     }
 
     @Override
-    public void render(Canvas canvas, Rect2i region, int multiplier) {
+    public void render(Canvas canvas, Rectanglei region, int multiplier) {
         itemIcon.setQuantity(multiplierFunction.apply(multiplier));
         canvas.drawWidget(itemIcon, region);
     }

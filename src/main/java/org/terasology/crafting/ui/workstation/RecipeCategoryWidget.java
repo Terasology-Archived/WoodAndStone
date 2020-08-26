@@ -15,17 +15,16 @@
  */
 package org.terasology.crafting.ui.workstation;
 
+import org.joml.Rectanglei;
+import org.joml.Vector2i;
 import org.terasology.input.MouseInput;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.rendering.assets.font.Font;
-import org.terasology.rendering.nui.BaseInteractionListener;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.CoreWidget;
-import org.terasology.rendering.nui.InteractionListener;
-import org.terasology.rendering.nui.TextLineBuilder;
-import org.terasology.rendering.nui.events.NUIMouseClickEvent;
+import org.terasology.nui.BaseInteractionListener;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.CoreWidget;
+import org.terasology.nui.InteractionListener;
+import org.terasology.nui.TextLineBuilder;
+import org.terasology.nui.asset.font.Font;
+import org.terasology.nui.events.NUIMouseClickEvent;
 
 import java.util.List;
 
@@ -50,7 +49,8 @@ public class RecipeCategoryWidget extends CoreWidget {
         }
     };
 
-    public RecipeCategoryWidget(boolean opened, int leftIndent, String name, int count, CategoryToggleCallback callback) {
+    public RecipeCategoryWidget(boolean opened, int leftIndent, String name, int count,
+                                CategoryToggleCallback callback) {
         this.opened = opened;
         this.leftIndent = leftIndent;
         this.name = name;
@@ -61,7 +61,7 @@ public class RecipeCategoryWidget extends CoreWidget {
     @Override
     public void onDraw(Canvas canvas) {
         Vector2i size = canvas.size();
-        canvas.drawText(getText(), Rect2i.createFromMinAndMax(leftIndent, 0, size.x, size.y));
+        canvas.drawText(getText(), new Rectanglei(leftIndent, 0, size.x, size.y));
         canvas.addInteractionRegion(interactionListener, "Toggle " + name);
     }
 
@@ -74,7 +74,7 @@ public class RecipeCategoryWidget extends CoreWidget {
         Font font = canvas.getCurrentStyle().getFont();
 
         List<String> lines = TextLineBuilder.getLines(font, getText(), canvas.size().x);
-        Vector2i textSize = JomlUtil.from(font.getSize(lines));
+        Vector2i textSize = font.getSize(lines);
         return new Vector2i(canvas.size().x, textSize.y);
     }
 

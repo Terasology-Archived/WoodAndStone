@@ -15,6 +15,7 @@
  */
 package org.terasology.was.integration.journal;
 
+import org.terasology.nui.HorizontalAlign;
 import org.terasology.utilities.Assets;
 import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
@@ -36,7 +37,6 @@ import org.terasology.logic.inventory.events.InventorySlotChangedEvent;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.multiBlock.MultiBlockFormed;
 import org.terasology.registry.In;
-import org.terasology.rendering.nui.HorizontalAlign;
 import org.terasology.rendering.nui.widgets.browser.data.ParagraphData;
 import org.terasology.rendering.nui.widgets.browser.data.basic.HTMLLikeParser;
 import org.terasology.rendering.nui.widgets.browser.ui.style.ParagraphRenderStyle;

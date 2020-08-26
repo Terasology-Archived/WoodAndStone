@@ -15,18 +15,22 @@
  */
 package org.terasology.was.ui;
 
+import org.joml.Vector2i;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidRegistry;
-import org.terasology.fluid.system.FluidRenderer;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
+import org.terasology.nui.BaseInteractionListener;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.CoreWidget;
+import org.terasology.nui.InteractionListener;
+import org.terasology.nui.LayoutConfig;
+import org.terasology.nui.UITextureRegion;
+import org.terasology.nui.databinding.Binding;
+import org.terasology.nui.databinding.DefaultBinding;
+import org.terasology.nui.util.RectUtility;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.assets.texture.TextureRegion;
-import org.terasology.rendering.nui.*;
-import org.terasology.rendering.nui.databinding.Binding;
-import org.terasology.rendering.nui.databinding.DefaultBinding;
 
 public class FluidHolderWidget extends CoreWidget {
     @LayoutConfig
@@ -64,15 +68,14 @@ public class FluidHolderWidget extends CoreWidget {
         if (image.get() != null) {
             return image.get().size();
         }
-        return Vector2i.zero();
+        return new Vector2i();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        TextureRegion texture = getImage();
+        UITextureRegion texture = getImage();
 
-        if (texture == null)
-        {
+        if (texture == null) {
             texture = canvas.getCurrentStyle().getBackground();
         }
 
@@ -85,17 +88,18 @@ public class FluidHolderWidget extends CoreWidget {
                 float result = fluid.volume / maxVolume;
 
                 FluidRegistry fluidRegistry = CoreRegistry.get(FluidRegistry.class);
-                FluidRenderer fluidRenderer = fluidRegistry.getFluidRenderer(fluid.fluidType);
-
-                Vector2i size = canvas.size();
-                if (minY < maxY) {
-                    float yPerc = 1f * (minY + result * (maxY - minY)) / texture.getHeight();
-                    fluidRenderer.renderFluid(canvas, Rect2i.createFromMinAndSize(minX, minY, maxX, Math.round(yPerc * size.y) - minY));
-                } else {
-                    float yPerc = 1f * (minY - result * (minY - maxY)) / texture.getHeight();
-                    int y = Math.round(yPerc * size.y);
-                    fluidRenderer.renderFluid(canvas, Rect2i.createFromMinAndSize(minX, y, maxX, minY - y + 1));
-                }
+//                TODO: not sure how to resolve this rendering logic -- Michael P
+//                FluidRenderer fluidRenderer = fluidRegistry.getFluidRenderer(fluid.fluidType);
+//
+//                Vector2i size = canvas.size();
+//                if (minY < maxY) {
+//                    float yPerc = 1f * (minY + result * (maxY - minY)) / texture.getHeight();
+//                    fluidRenderer.renderFluid(canvas, RectUtility.createFromMinAndSize(minX, minY, maxX, Math.round(yPerc * size.y) - minY));
+//                } else {
+//                    float yPerc = 1f * (minY - result * (minY - maxY)) / texture.getHeight();
+//                    int y = Math.round(yPerc * size.y);
+//                    fluidRenderer.renderFluid(canvas, RectUtility.createFromMinAndSize(minX, y, maxX, minY - y + 1));
+//                }
             }
 
             canvas.drawTexture(texture, canvas.getRegion());

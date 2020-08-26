@@ -15,17 +15,17 @@
  */
 package org.terasology.was.ui;
 
-import org.terasology.math.geom.Rect2i;
+import org.joml.Vector2i;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Vector2i;
+import org.terasology.nui.Canvas;
+import org.terasology.nui.CoreWidget;
+import org.terasology.nui.LayoutConfig;
+import org.terasology.nui.ScaleMode;
+import org.terasology.nui.databinding.Binding;
+import org.terasology.nui.databinding.DefaultBinding;
+import org.terasology.nui.util.RectUtility;
 import org.terasology.rendering.assets.texture.TextureRegion;
-import org.terasology.rendering.nui.Canvas;
-import org.terasology.rendering.nui.Color;
-import org.terasology.rendering.nui.CoreWidget;
-import org.terasology.rendering.nui.LayoutConfig;
-import org.terasology.rendering.nui.ScaleMode;
-import org.terasology.rendering.nui.databinding.Binding;
-import org.terasology.rendering.nui.databinding.DefaultBinding;
+import org.terasology.nui.Color;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
@@ -64,11 +64,11 @@ public class VerticalTextureProgressWidget extends CoreWidget {
             Vector2i size = canvas.size();
             if (minY < maxY) {
                 float yPerc = 1f * (minY + result * (maxY - minY)) / texture.getHeight();
-                canvas.drawTextureRaw(texture, Rect2i.createFromMinAndSize(0, 0, size.x, Math.round(yPerc * size.y)), ScaleMode.STRETCH,
+                canvas.drawTextureRaw(texture, RectUtility.createFromMinAndSize(0, 0, size.x, Math.round(yPerc * size.y)), ScaleMode.STRETCH,
                         0f, 0f, 1f, yPerc);
             } else {
                 float yPerc = 1f * (minY - result * (minY - maxY)) / texture.getHeight();
-                canvas.drawTextureRaw(texture, Rect2i.createFromMinAndSize(0, Math.round(yPerc * size.y), size.x, Math.round((1 - yPerc) * size.y)), ScaleMode.STRETCH,
+                canvas.drawTextureRaw(texture, RectUtility.createFromMinAndSize(0, Math.round(yPerc * size.y), size.x, Math.round((1 - yPerc) * size.y)), ScaleMode.STRETCH,
                         0, yPerc, 1, (1 - yPerc));
             }
 
@@ -91,7 +91,7 @@ public class VerticalTextureProgressWidget extends CoreWidget {
         if (image.get() != null) {
             return image.get().size();
         }
-        return Vector2i.zero();
+        return new Vector2i();
     }
 
     public TextureRegion getImage() {
