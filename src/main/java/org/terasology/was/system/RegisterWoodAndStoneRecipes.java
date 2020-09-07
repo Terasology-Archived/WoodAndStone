@@ -16,7 +16,6 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
-import org.terasology.assets.ResourceUrn;
 import org.terasology.crafting.component.CraftInHandRecipeComponent;
 import org.terasology.crafting.component.CraftingStationMaterialComponent;
 import org.terasology.crafting.component.CraftingStationRecipeComponent;
@@ -39,6 +38,7 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.herbalism.component.HerbalismStationRecipeComponent;
 import org.terasology.multiBlock.Basic2DSizeFilter;
 import org.terasology.multiBlock.Basic3DSizeFilter;

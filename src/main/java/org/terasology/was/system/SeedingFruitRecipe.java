@@ -16,7 +16,6 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
-import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -28,11 +27,12 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.gestalt.naming.Name;
 import org.terasology.logic.common.DisplayNameComponent;
 import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.naming.Name;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.utilities.Assets;
 
 import java.util.Arrays;
 import java.util.LinkedList;
