@@ -1,30 +1,17 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.heat.ui;
 
 import org.joml.Vector2i;
 import org.terasology.nui.BaseInteractionListener;
 import org.terasology.nui.Canvas;
+import org.terasology.nui.Color;
 import org.terasology.nui.CoreWidget;
 import org.terasology.nui.InteractionListener;
 import org.terasology.nui.ScaleMode;
 import org.terasology.nui.UITextureRegion;
 import org.terasology.nui.databinding.Binding;
 import org.terasology.nui.databinding.DefaultBinding;
-import org.terasology.nui.Color;
 import org.terasology.nui.util.RectUtility;
 
 /**
@@ -35,10 +22,10 @@ public class ThermometerWidget extends CoreWidget {
     private Binding<Float> markedTemperature = new DefaultBinding<>();
     private Binding<Float> maxTemperature = new DefaultBinding<>();
     private Binding<Float> minTemperature = new DefaultBinding<>();
-    private InteractionListener listener = new BaseInteractionListener();
+    private final InteractionListener listener = new BaseInteractionListener();
 
-    private float minHeightPerc = 0.87f;
-    private float maxHeightPerc = 0.03f;
+    private final float minHeightPerc = 0.87f;
+    private final float maxHeightPerc = 0.03f;
 
     @Override
     public Vector2i getPreferredContentSize(Canvas canvas, Vector2i sizeHint) {
@@ -73,10 +60,6 @@ public class ThermometerWidget extends CoreWidget {
         canvas.addInteractionRegion(listener);
     }
 
-    public void setTemperature(float value) {
-        temperature.set(value);
-    }
-
     public void bindTemperature(Binding<Float> temperatureToBind) {
         temperature = temperatureToBind;
     }
@@ -85,7 +68,7 @@ public class ThermometerWidget extends CoreWidget {
         return temperature.get();
     }
 
-    public void setMarkedTemperature(Float value) {
+    public void setTemperature(float value) {
         temperature.set(value);
     }
 
@@ -97,8 +80,8 @@ public class ThermometerWidget extends CoreWidget {
         return markedTemperature.get();
     }
 
-    public void setMaxTemperature(float value) {
-        maxTemperature.set(value);
+    public void setMarkedTemperature(Float value) {
+        temperature.set(value);
     }
 
     public void bindMaxTemperature(Binding<Float> maxTemperatureToBind) {
@@ -109,8 +92,8 @@ public class ThermometerWidget extends CoreWidget {
         return maxTemperature.get();
     }
 
-    public void setMinTemperature(float value) {
-        minTemperature.set(value);
+    public void setMaxTemperature(float value) {
+        maxTemperature.set(value);
     }
 
     public void bindMinTemperature(Binding<Float> minTemperatureToBind) {
@@ -119,5 +102,9 @@ public class ThermometerWidget extends CoreWidget {
 
     public float getMinTemperature() {
         return minTemperature.get();
+    }
+
+    public void setMinTemperature(float value) {
+        minTemperature.set(value);
     }
 }

@@ -1,24 +1,9 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
 import org.terasology.anotherWorldPlants.farm.component.SeedComponent;
-import org.terasology.nui.widgets.TooltipLine;
-import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -26,18 +11,20 @@ import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.assets.texture.TextureRegionAsset;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.engine.world.block.Block;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.system.HerbalismClientSystem;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.assets.texture.TextureRegionAsset;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.world.block.Block;
+import org.terasology.inventory.rendering.nui.layers.ingame.ItemIcon;
+import org.terasology.nui.widgets.TooltipLine;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -82,7 +69,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
     }
 
     public static final class Result implements CraftInHandResult {
-        private List<String> parameters;
+        private final List<String> parameters;
         private List<CraftIngredientRenderer> renderers;
 
         private Result(List<String> parameters) {
@@ -119,11 +106,13 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             herbSeed.addComponent(genomeComponent);
 
             SeedComponent seedComponent = new SeedComponent();
-            seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK_PROPERTY, Block.class);
+            seedComponent.blockPlaced = genomeManager.getGenomeProperty(herbSeed, Herbalism.PLANTED_BLOCK_PROPERTY,
+                    Block.class);
             herbSeed.addComponent(seedComponent);
 
             ItemComponent itemComponent = herbSeed.getComponent(ItemComponent.class);
-            itemComponent.icon = Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")").get();
+            itemComponent.icon =
+                    Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")").get();
             herbSeed.saveComponent(itemComponent);
 
             return herbSeed;
@@ -134,10 +123,7 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
             if (!KNIFE_BEHAVIOUR.isValidToCraft(entity, parameters.get(0), multiplier)) {
                 return false;
             }
-            if (!HERB_BEHAVIOUR.isValidToCraft(entity, parameters.get(1), multiplier)) {
-                return false;
-            }
-            return true;
+            return HERB_BEHAVIOUR.isValidToCraft(entity, parameters.get(1), multiplier);
         }
 
         @Override
@@ -163,7 +149,8 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
         @Override
         public void setupResultDisplay(ItemIcon itemIcon) {
             itemIcon.setIcon(Assets.getTextureRegion("AnotherWorldPlants:SeedBag(" + HERB_BEHAVIOUR.getHerbIconUri(parameters.get(1)) + ")").get());
-            itemIcon.setTooltipLines(Arrays.asList(new TooltipLine("Herb Seed"), HerbalismClientSystem.getHerbTooltipLine(HERB_BEHAVIOUR.getHerbName(parameters.get(1)))));
+            itemIcon.setTooltipLines(Arrays.asList(new TooltipLine("Herb Seed"),
+                    HerbalismClientSystem.getHerbTooltipLine(HERB_BEHAVIOUR.getHerbName(parameters.get(1)))));
         }
     }
 
@@ -188,7 +175,8 @@ public class SeedingHerbRecipe implements CraftInHandRecipe {
 
             final GenomeManager genomeManager = CoreRegistry.get(GenomeManager.class);
             String herbName = genomeManager.getGenomeProperty(item, Herbalism.NAME_PROPERTY, String.class);
-            String herbIconUri = (genomeManager.getGenomeProperty(item, Herbalism.ICON_PROPERTY, TextureRegionAsset.class)).getUrn().toString();
+            String herbIconUri = (genomeManager.getGenomeProperty(item, Herbalism.ICON_PROPERTY,
+                    TextureRegionAsset.class)).getUrn().toString();
 
             return super.getParameter(slots, item) + "|" + genome.genes + "|" + herbName + "|" + herbIconUri;
         }

@@ -1,32 +1,19 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.was.ui;
 
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.nui.BaseInteractionScreen;
 import org.terasology.heat.component.HeatProcessedComponent;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.ThermometerWidget;
-import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.inventory.logic.InventoryUtils;
+import org.terasology.inventory.rendering.nui.layers.ingame.InventoryGrid;
 import org.terasology.nui.databinding.Binding;
 import org.terasology.nui.widgets.UILoadBar;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
@@ -74,10 +61,12 @@ public class FurnaceWindow extends BaseInteractionScreen {
                 new Binding<Float>() {
                     @Override
                     public Float get() {
-                        WorkstationInventoryComponent workstationInventory = workstation.getComponent(WorkstationInventoryComponent.class);
+                        WorkstationInventoryComponent workstationInventory =
+                                workstation.getComponent(WorkstationInventoryComponent.class);
                         if (workstationInventory != null) {
                             for (int slot : WorkstationInventoryUtils.getAssignedSlots(workstation, "INPUT")) {
-                                HeatProcessedComponent heatProcessed = InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
+                                HeatProcessedComponent heatProcessed =
+                                        InventoryUtils.getItemAt(workstation, slot).getComponent(HeatProcessedComponent.class);
                                 if (heatProcessed != null) {
                                     return heatProcessed.heatRequired;
                                 }
@@ -102,7 +91,8 @@ public class FurnaceWindow extends BaseInteractionScreen {
                         }
                         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
-                        HeatProducerComponent.FuelSourceConsume lastConsumed = consumedFuel.get(consumedFuel.size() - 1);
+                        HeatProducerComponent.FuelSourceConsume lastConsumed =
+                                consumedFuel.get(consumedFuel.size() - 1);
                         if (gameTime > lastConsumed.startTime + lastConsumed.burnLength) {
                             return 0f;
                         }
@@ -118,11 +108,13 @@ public class FurnaceWindow extends BaseInteractionScreen {
                 new Binding<Boolean>() {
                     @Override
                     public Boolean get() {
-                        WorkstationProcessingComponent processing = workstation.getComponent(WorkstationProcessingComponent.class);
+                        WorkstationProcessingComponent processing =
+                                workstation.getComponent(WorkstationProcessingComponent.class);
                         if (processing == null) {
                             return false;
                         }
-                        WorkstationProcessingComponent.ProcessDef heatingProcess = processing.processes.get("Machines:Heater");
+                        WorkstationProcessingComponent.ProcessDef heatingProcess = processing.processes.get("Machines" +
+                                ":Heater");
                         return heatingProcess != null;
                     }
 
@@ -135,11 +127,13 @@ public class FurnaceWindow extends BaseInteractionScreen {
                 new Binding<Float>() {
                     @Override
                     public Float get() {
-                        WorkstationProcessingComponent processing = workstation.getComponent(WorkstationProcessingComponent.class);
+                        WorkstationProcessingComponent processing =
+                                workstation.getComponent(WorkstationProcessingComponent.class);
                         if (processing == null) {
                             return 1f;
                         }
-                        WorkstationProcessingComponent.ProcessDef heatingProcess = processing.processes.get("Machines:Heater");
+                        WorkstationProcessingComponent.ProcessDef heatingProcess = processing.processes.get("Machines" +
+                                ":Heater");
                         if (heatingProcess == null) {
                             return 1f;
                         }

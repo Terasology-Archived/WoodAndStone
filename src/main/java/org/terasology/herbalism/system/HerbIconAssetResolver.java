@@ -1,30 +1,17 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.herbalism.system;
 
 import com.google.common.collect.ImmutableSet;
+import org.terasology.engine.rendering.assets.texture.Texture;
+import org.terasology.engine.rendering.assets.texture.TextureData;
+import org.terasology.engine.rendering.assets.texture.TextureRegionAsset;
+import org.terasology.engine.rendering.assets.texture.TextureUtil;
 import org.terasology.gestalt.assets.AssetDataProducer;
 import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.gestalt.assets.module.annotations.RegisterAssetDataProducer;
 import org.terasology.gestalt.naming.Name;
-import org.terasology.rendering.assets.texture.Texture;
-import org.terasology.rendering.assets.texture.TextureData;
-import org.terasology.rendering.assets.texture.TextureRegionAsset;
-import org.terasology.rendering.assets.texture.TextureUtil;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -38,10 +25,10 @@ import java.util.Set;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterAssetDataProducer
-public class HerbIconAssetResolver implements AssetDataProducer<TextureData>  {
+public class HerbIconAssetResolver implements AssetDataProducer<TextureData> {
     private static final Name HERBALISM_MODULE = new Name("herbalism");
 
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
 
     public HerbIconAssetResolver(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -52,7 +39,7 @@ public class HerbIconAssetResolver implements AssetDataProducer<TextureData>  {
         sb.append("Herbalism:Herb(");
         sb.append(iconUri);
         for (float hueValue : hueValues) {
-            sb.append(",").append(String.valueOf(hueValue));
+            sb.append(",").append(hueValue);
         }
         sb.append(")");
 

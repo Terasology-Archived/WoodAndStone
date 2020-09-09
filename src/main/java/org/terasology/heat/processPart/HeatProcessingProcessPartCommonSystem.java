@@ -1,33 +1,24 @@
-/*
- * Copyright 2016 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.heat.processPart;
 
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.BlockEntityRegistry;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.block.family.BlockFamily;
+import org.terasology.engine.world.block.items.BlockItemFactory;
 import org.terasology.heat.HeatUtils;
 import org.terasology.heat.component.HeatProcessedComponent;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.In;
+import org.terasology.inventory.logic.InventoryManager;
+import org.terasology.inventory.logic.InventoryUtils;
 import org.terasology.workstation.component.OutputTypeComponent;
 import org.terasology.workstation.component.SpecificInputSlotComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
@@ -37,10 +28,6 @@ import org.terasology.workstation.processPart.ProcessEntityGetDurationEvent;
 import org.terasology.workstation.processPart.ProcessEntityIsInvalidToStartEvent;
 import org.terasology.workstation.processPart.ProcessEntityStartExecutionEvent;
 import org.terasology.workstation.processPart.inventory.ProcessEntityIsInvalidForInventoryItemEvent;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.items.BlockItemFactory;
 
 @RegisterSystem
 public class HeatProcessingProcessPartCommonSystem extends BaseComponentSystem {
@@ -65,14 +52,16 @@ public class HeatProcessingProcessPartCommonSystem extends BaseComponentSystem {
             Float heat = null;
 
             for (int slot : WorkstationInventoryUtils.getAssignedSlots(event.getWorkstation(), "INPUT")) {
-                HeatProcessedComponent processed = InventoryUtils.getItemAt(event.getWorkstation(), slot).getComponent(HeatProcessedComponent.class);
+                HeatProcessedComponent processed =
+                        InventoryUtils.getItemAt(event.getWorkstation(), slot).getComponent(HeatProcessedComponent.class);
                 if (processed != null) {
                     float heatRequired = processed.heatRequired;
                     if (heat == null) {
                         heat = HeatUtils.calculateHeatForEntity(event.getWorkstation(), blockEntityRegistry);
                     }
                     if (heatRequired <= heat) {
-                        final String result = processed.blockResult != null ? processed.blockResult : processed.itemResult;
+                        final String result = processed.blockResult != null ? processed.blockResult :
+                                processed.itemResult;
                         if (canOutputResult(event.getWorkstation(), result)) {
                             processEntity.addComponent(new SpecificInputSlotComponent(slot));
                             processEntity.addComponent(new OutputTypeComponent(result));
@@ -98,7 +87,8 @@ public class HeatProcessingProcessPartCommonSystem extends BaseComponentSystem {
     public void getDuration(ProcessEntityGetDurationEvent event, EntityRef processEntity,
                             HeatProcessingComponent heatProcessingComponent) {
         SpecificInputSlotComponent input = processEntity.getComponent(SpecificInputSlotComponent.class);
-        HeatProcessedComponent component = InventoryUtils.getItemAt(event.getWorkstation(), input.slot).getComponent(HeatProcessedComponent.class);
+        HeatProcessedComponent component =
+                InventoryUtils.getItemAt(event.getWorkstation(), input.slot).getComponent(HeatProcessedComponent.class);
         event.add(component.processingTime / 1000f);
     }
 
@@ -108,7 +98,8 @@ public class HeatProcessingProcessPartCommonSystem extends BaseComponentSystem {
         OutputTypeComponent output = processEntity.getComponent(OutputTypeComponent.class);
         EntityRef toGive = createResultItem(output.type);
 
-        if (inventoryManager.giveItem(event.getWorkstation(), event.getInstigator(), toGive, WorkstationInventoryUtils.getAssignedSlots(event.getWorkstation(), "OUTPUT"))) {
+        if (inventoryManager.giveItem(event.getWorkstation(), event.getInstigator(), toGive,
+                WorkstationInventoryUtils.getAssignedSlots(event.getWorkstation(), "OUTPUT"))) {
             return;
         }
         toGive.destroy();

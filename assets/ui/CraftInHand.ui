@@ -1,22 +1,22 @@
 {
-    "type": "CraftInHandWindow",
-    "skin": "WoodAndStone:CraftInHand",
-    "contents": {
-        "type": "relativeLayout",
-        "contents": [
-            {
-                "type": "ScrollableArea",
-                "content": {
-                    "type": "CraftInHandAvailableRecipesWidget",
-                    "id": "availableRecipes"
-                },
-                "layoutInfo": {
-                    "width": 420,
-                    "height": 360,
-                    "position-horizontal-center": {},
-                    "position-vertical-center": {}
-                }
-            }
-        ]
-    }
+  "type": "CraftInHandWindow",
+  "skin": "WoodAndStone:CraftInHand",
+  "contents": {
+    "type": "relativeLayout",
+    "contents": [
+      {
+        "type": "ScrollableArea",
+        "content": {
+          "type": "CraftInHandAvailableRecipesWidget",
+          "id": "availableRecipes"
+        },
+        "layoutInfo": {
+          "width": 420,
+          "height": 360,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        }
+      }
+    ]
+  }
 }

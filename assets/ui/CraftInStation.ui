@@ -1,136 +1,136 @@
 {
-    "type": "CraftingStationWindow",
-    "skin": "WoodAndStone:CraftingStation",
-    "contents": {
+  "type": "CraftingStationWindow",
+  "skin": "WoodAndStone:CraftingStation",
+  "contents": {
+    "type": "relativeLayout",
+    "contents": [
+      {
         "type": "relativeLayout",
         "contents": [
-            {
-                "type": "relativeLayout",
-                "contents": [
-                    {
-                        "type": "UIImage",
-                        "id": "stationBackground",
-                        "layoutInfo": {
-                            "width": 700,
-                            "height": 640,
-                            "position-left": {},
-                            "position-top": {}
-                        }
-                    },
-                    {
-                        "type": "ScrollableArea",
-                        "content": {
-                            "type": "InventoryGrid",
-                            "id": "ingredientsInventory"
-                        },
-                        "layoutInfo": {
-                            "width": 184,
-                            "height": 250,
-                            "position-left": {
-                                "offset": 70
-                            },
-                            "position-top": {
-                                "offset": 90
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "upgradesInventory",
-                        "layoutInfo": {
-                            "width": 112,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 70
-                            },
-                            "position-top": {
-                                "offset": 361
-                            }
-                        }
-                    },
-                    {
-                        "type": "UIButton",
-                        "id": "upgradeButton",
-                        "layoutInfo": {
-                            "width": 62,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 127
-                            },
-                            "position-top": {
-                                "offset": 361
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "toolsInventory",
-                        "layoutInfo": {
-                            "width": 200,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 259
-                            },
-                            "position-top": {
-                                "offset": 361
-                            }
-                        }
-                    },
-                    {
-                        "type": "ScrollableArea",
-                        "content": {
-                            "type": "StationAvailableRecipesWidget",
-                            "id": "availableRecipes"
-                        },
-                        "layoutInfo": {
-                            "width": 371,
-                            "height": 250,
-                            "position-left": {
-                                "offset": 259
-                            },
-                            "position-top": {
-                                "offset": 90
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "resultInventory",
-                        "layoutInfo": {
-                            "width": 56,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 574
-                            },
-                            "position-top": {
-                                "offset": 361
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "playerInventory",
-                        "layoutInfo": {
-                            "width": 560,
-                            "height": 168,
-                            "position-left": {
-                                "offset": 70
-                            },
-                            "position-top": {
-                                "offset": 422
-                            }
-                        }
-                    }
-                ],
-                "layoutInfo": {
-                    "width": 700,
-                    "height": 640,
-                    "position-horizontal-center": {},
-                    "position-vertical-center": {
-                        "offset": -32
-                    }
-                }
+          {
+            "type": "UIImage",
+            "id": "stationBackground",
+            "layoutInfo": {
+              "width": 700,
+              "height": 640,
+              "position-left": {},
+              "position-top": {}
             }
-        ]
-    }
+          },
+          {
+            "type": "ScrollableArea",
+            "content": {
+              "type": "InventoryGrid",
+              "id": "ingredientsInventory"
+            },
+            "layoutInfo": {
+              "width": 184,
+              "height": 250,
+              "position-left": {
+                "offset": 70
+              },
+              "position-top": {
+                "offset": 90
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "upgradesInventory",
+            "layoutInfo": {
+              "width": 112,
+              "height": 56,
+              "position-left": {
+                "offset": 70
+              },
+              "position-top": {
+                "offset": 361
+              }
+            }
+          },
+          {
+            "type": "UIButton",
+            "id": "upgradeButton",
+            "layoutInfo": {
+              "width": 62,
+              "height": 56,
+              "position-left": {
+                "offset": 127
+              },
+              "position-top": {
+                "offset": 361
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "toolsInventory",
+            "layoutInfo": {
+              "width": 200,
+              "height": 56,
+              "position-left": {
+                "offset": 259
+              },
+              "position-top": {
+                "offset": 361
+              }
+            }
+          },
+          {
+            "type": "ScrollableArea",
+            "content": {
+              "type": "StationAvailableRecipesWidget",
+              "id": "availableRecipes"
+            },
+            "layoutInfo": {
+              "width": 371,
+              "height": 250,
+              "position-left": {
+                "offset": 259
+              },
+              "position-top": {
+                "offset": 90
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "resultInventory",
+            "layoutInfo": {
+              "width": 56,
+              "height": 56,
+              "position-left": {
+                "offset": 574
+              },
+              "position-top": {
+                "offset": 361
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "playerInventory",
+            "layoutInfo": {
+              "width": 560,
+              "height": 168,
+              "position-left": {
+                "offset": 70
+              },
+              "position-top": {
+                "offset": 422
+              }
+            }
+          }
+        ],
+        "layoutInfo": {
+          "width": 700,
+          "height": 640,
+          "position-horizontal-center": {},
+          "position-vertical-center": {
+            "offset": -32
+          }
+        }
+      }
+    ]
+  }
 }

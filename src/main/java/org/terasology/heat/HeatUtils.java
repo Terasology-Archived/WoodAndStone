@@ -1,31 +1,18 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.heat;
 
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.math.Region3i;
+import org.terasology.engine.math.Side;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.BlockEntityRegistry;
+import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.engine.world.block.regions.BlockRegionComponent;
 import org.terasology.heat.component.HeatConsumerComponent;
 import org.terasology.heat.component.HeatProducerComponent;
-import org.terasology.math.Region3i;
-import org.terasology.math.Side;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.regions.BlockRegionComponent;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,8 +31,10 @@ public final class HeatUtils {
         return Math.min(producer.maximumTemperature, calculateHeatForProducerAtTime(producer, gameTime));
     }
 
-    public static float solveHeatEquation(float startingHeat, float appliedHeat, float heatTransferEfficiency, long duration) {
-        return startingHeat + (appliedHeat - startingHeat) * (1 - (float) Math.pow(Math.E, -duration * heatTransferEfficiency / HEAT_MAGIC_VALUE));
+    public static float solveHeatEquation(float startingHeat, float appliedHeat, float heatTransferEfficiency,
+                                          long duration) {
+        return startingHeat + (appliedHeat - startingHeat) * (1 - (float) Math.pow(Math.E,
+                -duration * heatTransferEfficiency / HEAT_MAGIC_VALUE));
     }
 
     private static float calculateHeatForProducerAtTime(HeatProducerComponent producer, long time) {
@@ -54,12 +43,14 @@ public final class HeatUtils {
         for (HeatProducerComponent.FuelSourceConsume fuelSourceConsume : producer.fuelConsumed) {
             if (fuelSourceConsume.startTime < time) {
                 if (lastCalculated < fuelSourceConsume.startTime) {
-                    heat = solveHeatEquation(heat, 20, producer.temperatureLossRate, fuelSourceConsume.startTime - lastCalculated);
+                    heat = solveHeatEquation(heat, 20, producer.temperatureLossRate,
+                            fuelSourceConsume.startTime - lastCalculated);
                     lastCalculated = fuelSourceConsume.startTime;
                 }
                 long heatEndTime = Math.min(fuelSourceConsume.startTime + fuelSourceConsume.burnLength, time);
                 heat = Math.min(producer.maximumTemperature,
-                        solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate, heatEndTime - lastCalculated));
+                        solveHeatEquation(heat, fuelSourceConsume.heatProvided, producer.temperatureAbsorptionRate,
+                                heatEndTime - lastCalculated));
                 lastCalculated = heatEndTime;
             } else {
                 break;
@@ -85,7 +76,8 @@ public final class HeatUtils {
         }
     }
 
-    private static float calculateHeatForConsumer(EntityRef entity, BlockEntityRegistry blockEntityRegistry, HeatConsumerComponent heatConsumer) {
+    private static float calculateHeatForConsumer(EntityRef entity, BlockEntityRegistry blockEntityRegistry,
+                                                  HeatConsumerComponent heatConsumer) {
         float result = 20;
 
         for (Map.Entry<Vector3i, Side> heaterBlock : getPotentialHeatSourceBlocksForConsumer(entity).entrySet()) {

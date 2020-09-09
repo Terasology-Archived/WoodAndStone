@@ -1,26 +1,13 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingProcessComponent;
 import org.terasology.crafting.event.CraftingWorkstationProcessRequest;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.registry.CoreRegistry;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.inventory.logic.InventoryManager;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
@@ -30,10 +17,11 @@ import org.terasology.workstation.system.ValidateInventoryItem;
 
 import java.util.List;
 
-public class CraftingWorkstationProcess implements WorkstationProcess, ValidateInventoryItem, ValidateFluidInventoryItem {
-    private String processType;
-    private String craftingRecipeId;
-    private CraftingStationRecipe recipe;
+public class CraftingWorkstationProcess implements WorkstationProcess, ValidateInventoryItem,
+        ValidateFluidInventoryItem {
+    private final String processType;
+    private final String craftingRecipeId;
+    private final CraftingStationRecipe recipe;
 
     public CraftingWorkstationProcess(String processType, String craftingRecipeId, CraftingStationRecipe recipe) {
         this.processType = processType;
@@ -79,14 +67,16 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
     }
 
     @Override
-    public long startProcessingManual(EntityRef instigator, EntityRef workstation, WorkstationProcessRequest request, EntityRef processEntity) throws InvalidProcessException {
+    public long startProcessingManual(EntityRef instigator, EntityRef workstation, WorkstationProcessRequest request,
+                                      EntityRef processEntity) throws InvalidProcessException {
         if (!(request instanceof CraftingWorkstationProcessRequest)) {
             throw new InvalidProcessException();
         }
 
         final CraftingWorkstationProcessRequest craftingRequest = (CraftingWorkstationProcessRequest) request;
         final List<String> parameters = craftingRequest.getParameters();
-        final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation, parameters);
+        final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation,
+                parameters);
         if (result == null) {
             throw new InvalidProcessException();
         }
@@ -114,9 +104,11 @@ public class CraftingWorkstationProcess implements WorkstationProcess, ValidateI
     public void finishProcessing(EntityRef instigator, EntityRef workstation, EntityRef processEntity) {
         CraftingProcessComponent craftingProcess = processEntity.getComponent(CraftingProcessComponent.class);
 
-        final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation, craftingProcess.parameters);
+        final CraftingStationRecipe.CraftingStationResult result = recipe.getResultByParameters(workstation,
+                craftingProcess.parameters);
         EntityRef resultItem = result.finishCrafting(workstation, craftingProcess.count);
-        if (CoreRegistry.get(InventoryManager.class).giveItem(workstation, workstation, resultItem, WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"))) {
+        if (CoreRegistry.get(InventoryManager.class).giveItem(workstation, workstation, resultItem,
+                WorkstationInventoryUtils.getAssignedSlots(workstation, "OUTPUT"))) {
             return;
         }
         resultItem.destroy();

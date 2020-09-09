@@ -1,18 +1,5 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.was.generator;
 
 import com.google.common.base.Function;
@@ -42,25 +29,25 @@ import org.terasology.anotherWorld.util.alpha.PowerAlphaFunction;
 import org.terasology.anotherWorld.util.alpha.UniformNoiseAlpha;
 import org.terasology.climateConditions.ClimateConditionsSystem;
 import org.terasology.climateConditions.ConditionsBaseField;
-import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
-import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
-import org.terasology.engine.SimpleUri;
+import org.terasology.coreworlds.generator.facetProviders.SeaLevelProvider;
+import org.terasology.coreworlds.generator.facetProviders.SurfaceToDensityProvider;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.WorldBuilder;
+import org.terasology.engine.world.generator.RegisterWorldGenerator;
+import org.terasology.engine.world.generator.WorldConfigurator;
+import org.terasology.engine.world.generator.WorldConfiguratorAdapter;
+import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
 import org.terasology.gf.generator.BushProvider;
 import org.terasology.gf.generator.FloraFeatureGenerator;
 import org.terasology.gf.generator.FloraProvider;
 import org.terasology.gf.generator.FoliageProvider;
 import org.terasology.gf.generator.TreeProvider;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generator.RegisterWorldGenerator;
-import org.terasology.world.generator.WorldConfigurator;
-import org.terasology.world.generator.WorldConfiguratorAdapter;
-import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -69,30 +56,28 @@ import java.util.List;
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
-@RegisterWorldGenerator(id = "throughoutTheAges", displayName = "Throughout the Ages", description = "Generates the world for playing 'Throughout the Ages' content mods.")
+@RegisterWorldGenerator(id = "throughoutTheAges", displayName = "Throughout the Ages", description = "Generates the " +
+        "world for playing 'Throughout the Ages' content mods.")
 public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
+    private final List<ChunkDecorator> chunkDecorators = new LinkedList<>();
+    private final List<FeatureGenerator> featureGenerators = new LinkedList<>();
+    private final List<FacetProvider> facetProviders = new LinkedList<>();
     private BlockManager blockManager;
-    
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
-    
-    private List<ChunkDecorator> chunkDecorators = new LinkedList<>();
-    private List<FeatureGenerator> featureGenerators = new LinkedList<>();
-    private List<FacetProvider> facetProviders = new LinkedList<>();
-    
     private int seaLevel = 32;
     private int maxLevel = 220;
     private float biomeDiversity = 0.5f;
-    
+
     private Function<Float, Float> temperatureFunction = IdentityAlphaFunction.singleton();
     private Function<Float, Float> humidityFunction = IdentityAlphaFunction.singleton();
-    
+
     private PerlinSurfaceHeightProvider surfaceHeightProvider;
 
     public WoodAndStoneWorldGenerator(SimpleUri uri) {
         super(uri);
     }
-    
+
     public void addChunkDecorator(ChunkDecorator chunkGenerator) {
         chunkDecorators.add(chunkGenerator);
     }
@@ -104,7 +89,7 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
     public void addFacetProvider(FacetProvider facetProvider) {
         facetProviders.add(facetProvider);
     }
-    
+
     public void setSeaLevel(int seaLevel) {
         this.seaLevel = seaLevel;
     }
@@ -130,7 +115,8 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         this.humidityFunction = humidityFunction;
     }
 
-    public void setLandscapeOptions(float seaFrequency, float terrainDiversity, Function<Float, Float> generalTerrainFunction,
+    public void setLandscapeOptions(float seaFrequency, float terrainDiversity,
+                                    Function<Float, Float> generalTerrainFunction,
                                     Function<Float, Float> heightBelowSeaLevelFunction,
                                     Function<Float, Float> heightAboveSeaLevelFunction,
                                     float hillinessDiversity, Function<Float, Float> hillynessFunction) {
@@ -139,18 +125,18 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
                 heightAboveSeaLevelFunction,
                 hillinessDiversity, hillynessFunction, seaLevel, maxLevel);
     }
-    
+
     @Override
     public void initialize() {
-    	setupRasterizerInitializer();
-    	
+        setupRasterizerInitializer();
+
         getWorld().initialize();
     }
-    
-    private void setupRasterizerInitializer(){
-    	addChunkDecorator(new BiomeDecorator());
-    	
-    	blockManager = CoreRegistry.get(BlockManager.class);
+
+    private void setupRasterizerInitializer() {
+        addChunkDecorator(new BiomeDecorator());
+
+        blockManager = CoreRegistry.get(BlockManager.class);
 
         final Block mantle = blockManager.getBlock("CoreAssets:MantleStone");
         final Block stone = blockManager.getBlock("CoreAssets:Stone");
@@ -161,13 +147,14 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         final Block grass = blockManager.getBlock("CoreAssets:Grass");
         final Block snow = blockManager.getBlock("CoreAssets:Snow");
         final Block ice = blockManager.getBlock("CoreAssets:Ice");
-        
+
         // Setup biome terrain layers
         setupLayers(mantle, water, stone, sand, dirt, grass, snow, ice, seaLevel);
 
         // Replace stone with sand on the sea shores
         addChunkDecorator(
-                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)), new BeachBlockProvider(0.05f, clay, sand), seaLevel - 5, seaLevel + 2));
+                new BeachDecorator(new BlockCollectionPredicate(Arrays.asList(stone, dirt, grass, snow)),
+                        new BeachBlockProvider(0.05f, clay, sand), seaLevel - 5, seaLevel + 2));
 
         Predicate<Block> removableBlocks = new BlockCollectionPredicate(Arrays.asList(stone, sand, dirt, grass, snow));
 
@@ -178,14 +165,14 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
 
         // Setup ore spawning
         setupOreGenerator(stone);
-        
+
         FloraFeatureGenerator floraDecorator = new FloraFeatureGenerator();
         addFeatureGenerator(floraDecorator);
-        
-        if(worldBuilder == null){
-        	worldBuilder = createWorld();
+
+        if (worldBuilder == null) {
+            worldBuilder = createWorld();
         }
-        
+
         for (ChunkDecorator chunkDecorator : chunkDecorators) {
             worldBuilder.addRasterizer(chunkDecorator);
         }
@@ -208,7 +195,7 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         // only exist in higher Y-levels
         setTemperatureFunction(
                 new MinMaxAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 0.4f, 1f));
-        
+
         setLandscapeOptions(
                 // 40% of the landscape is under water
                 0.4f,
@@ -216,30 +203,32 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
                 0.1f,
                 // Height is distributed Gaussian
                 IdentityAlphaFunction.singleton(),
-                // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel height
+                // Terrain underwater is more shallow than deep (PowerAlphaFunction) and also at least 0.3*seaLevel 
+                // height
                 new MinMaxAlphaFunction(new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 0.7f), 0.3f, 1f),
                 // Make the lowlands a bit more common than higher areas (using PowerAlphaFunction)
                 new PowerAlphaFunction(IdentityAlphaFunction.singleton(), 2f),
                 // Smoothen the terrain a bit
-                0.5f, new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f));
-        
+                0.5f,
+                new MinMaxAlphaFunction(new PowerAlphaFunction(new UniformNoiseAlpha(IdentityAlphaFunction.singleton()), 1.3f), 0.1f, 1f));
+
         // Setup flora growing in the world
         setupFlora(seaLevel);
     }
-    
+
     @Override
-    protected WorldBuilder createWorld(){
-    	setupGenerator();
-    	
-    	ClimateConditionsSystem environmentSystem = new ClimateConditionsSystem();
-    	environmentSystem.setWorldSeed(getWorldSeed());
+    protected WorldBuilder createWorld() {
+        setupGenerator();
+
+        ClimateConditionsSystem environmentSystem = new ClimateConditionsSystem();
+        environmentSystem.setWorldSeed(getWorldSeed());
         environmentSystem.configureHumidity(seaLevel, maxLevel, biomeDiversity, humidityFunction, 0, 1);
         environmentSystem.configureTemperature(seaLevel, maxLevel, biomeDiversity, temperatureFunction, -20, 40);
-        
-    	ConditionsBaseField temperatureBaseField = environmentSystem.getTemperatureBaseField();
+
+        ConditionsBaseField temperatureBaseField = environmentSystem.getTemperatureBaseField();
         ConditionsBaseField humidityBaseField = environmentSystem.getHumidityBaseField();
-        
-    	WorldBuilder worldBuilder = new WorldBuilder(worldGeneratorPluginLibrary);
+
+        WorldBuilder worldBuilder = new WorldBuilder(worldGeneratorPluginLibrary);
         worldBuilder.addProvider(new BiomeProvider());
         worldBuilder.addProvider(new HillynessProvider());
         worldBuilder.addProvider(surfaceHeightProvider);
@@ -252,7 +241,7 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         for (FacetProvider facetProvider : facetProviders) {
             worldBuilder.addProvider(facetProvider);
         }
-        
+
         return worldBuilder;
     }
 
@@ -285,7 +274,8 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
         addChunkDecorator(oreDecorator);
     }
 
-    private void setupLayers(Block mantle, Block sea, Block stone, Block sand, Block dirt, Block grass, Block snow, Block ice,
+    private void setupLayers(Block mantle, Block sea, Block stone, Block sand, Block dirt, Block grass, Block snow,
+                             Block ice,
                              int seaLevel) {
         LayeringConfig config = new LayeringConfig(mantle, stone, sea);
 
@@ -324,9 +314,9 @@ public class WoodAndStoneWorldGenerator extends BaseFacetedWorldGenerator {
     }
 
     private final class BeachBlockProvider implements Provider<Block> {
-        private float chance;
-        private Block block1;
-        private Block block2;
+        private final float chance;
+        private final Block block1;
+        private final Block block2;
 
         public BeachBlockProvider(float chance, Block block1, Block block2) {
             this.chance = chance;

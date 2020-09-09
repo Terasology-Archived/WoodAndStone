@@ -1,22 +1,11 @@
-/*
- * Copyright 2016 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.was.ui;
 
 import org.joml.Vector2i;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.assets.texture.TextureRegion;
 import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidRegistry;
@@ -28,15 +17,11 @@ import org.terasology.nui.LayoutConfig;
 import org.terasology.nui.UITextureRegion;
 import org.terasology.nui.databinding.Binding;
 import org.terasology.nui.databinding.DefaultBinding;
-import org.terasology.nui.util.RectUtility;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.assets.texture.TextureRegion;
 
 public class FluidHolderWidget extends CoreWidget {
+    private final InteractionListener listener = new BaseInteractionListener();
     @LayoutConfig
     private Binding<TextureRegion> image = new DefaultBinding<>();
-    private InteractionListener listener = new BaseInteractionListener();
-
     private int minX;
     private int maxX;
 
@@ -94,7 +79,8 @@ public class FluidHolderWidget extends CoreWidget {
 //                Vector2i size = canvas.size();
 //                if (minY < maxY) {
 //                    float yPerc = 1f * (minY + result * (maxY - minY)) / texture.getHeight();
-//                    fluidRenderer.renderFluid(canvas, RectUtility.createFromMinAndSize(minX, minY, maxX, Math.round(yPerc * size.y) - minY));
+//                    fluidRenderer.renderFluid(canvas, RectUtility.createFromMinAndSize(minX, minY, maxX, Math.round
+//                    (yPerc * size.y) - minY));
 //                } else {
 //                    float yPerc = 1f * (minY - result * (minY - maxY)) / texture.getHeight();
 //                    int y = Math.round(yPerc * size.y);

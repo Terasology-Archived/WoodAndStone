@@ -1,46 +1,34 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.was.integration.journal;
 
 import org.joml.Vector2i;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.logic.common.DisplayNameComponent;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.rendering.nui.widgets.browser.data.ParagraphData;
+import org.terasology.engine.rendering.nui.widgets.browser.data.basic.flow.ContainerRenderSpace;
+import org.terasology.engine.rendering.nui.widgets.browser.ui.ParagraphRenderable;
+import org.terasology.engine.rendering.nui.widgets.browser.ui.style.ParagraphRenderStyle;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.engine.world.block.Block;
+import org.terasology.inventory.rendering.nui.layers.ingame.ItemIcon;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.HorizontalAlign;
 import org.terasology.nui.util.RectUtility;
-import org.terasology.utilities.Assets;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.logic.common.DisplayNameComponent;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.rendering.nui.widgets.browser.data.ParagraphData;
-import org.terasology.rendering.nui.widgets.browser.data.basic.flow.ContainerRenderSpace;
-import org.terasology.rendering.nui.widgets.browser.ui.ParagraphRenderable;
-import org.terasology.rendering.nui.widgets.browser.ui.style.ParagraphRenderStyle;
-import org.terasology.world.block.Block;
 
 public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
-    private int indentAbove = 5;
-    private int indentBelow = 5;
-    private int ingredientSpacing = 3;
-    private int resultSpacing = 30;
+    private final int indentAbove = 5;
+    private final int indentBelow = 5;
+    private final int ingredientSpacing = 3;
+    private final int resultSpacing = 30;
 
-    private int iconSize = 64;
-    private ItemIcon[] ingredientIcons;
-    private ItemIcon resultIcon;
+    private final int iconSize = 64;
+    private final ItemIcon[] ingredientIcons;
+    private final ItemIcon resultIcon;
 
-    public RecipeParagraph(Block[] blockIngredients, Prefab[] itemIngredients, Block blockResult, Prefab itemResult, int resultCount) {
+    public RecipeParagraph(Block[] blockIngredients, Prefab[] itemIngredients, Block blockResult, Prefab itemResult,
+                           int resultCount) {
         if (blockIngredients.length != itemIngredients.length) {
             throw new IllegalArgumentException("Arrays have to be of the same length");
         }
@@ -94,10 +82,14 @@ public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
     }
 
     @Override
-    public void renderContents(Canvas canvas, Vector2i startPos, ContainerRenderSpace containerRenderSpace, int leftIndent, int rightIndent, ParagraphRenderStyle defaultStyle, HorizontalAlign horizontalAlign, HyperlinkRegister hyperlinkRegister) {
+    public void renderContents(Canvas canvas, Vector2i startPos, ContainerRenderSpace containerRenderSpace,
+                               int leftIndent, int rightIndent, ParagraphRenderStyle defaultStyle,
+                               HorizontalAlign horizontalAlign, HyperlinkRegister hyperlinkRegister) {
         int ingredientsCount = ingredientIcons.length;
-        int drawingWidth = ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing + resultSpacing + iconSize;
-        int x = startPos.x + horizontalAlign.getOffset(drawingWidth, containerRenderSpace.getWidthForVerticalPosition(startPos.y));
+        int drawingWidth =
+                ingredientsCount * iconSize + (ingredientsCount - 1) * ingredientSpacing + resultSpacing + iconSize;
+        int x = startPos.x + horizontalAlign.getOffset(drawingWidth,
+                containerRenderSpace.getWidthForVerticalPosition(startPos.y));
         int y = startPos.y + indentAbove;
         for (int i = 0; i < ingredientIcons.length; i++) {
             canvas.drawWidget(ingredientIcons[i], RectUtility.createFromMinAndSize(x, y, iconSize, iconSize));
@@ -109,7 +101,8 @@ public class RecipeParagraph implements ParagraphData, ParagraphRenderable {
     }
 
     @Override
-    public int getPreferredContentsHeight(ParagraphRenderStyle defaultStyle, int yStart, ContainerRenderSpace containerRenderSpace, int sideIndents) {
+    public int getPreferredContentsHeight(ParagraphRenderStyle defaultStyle, int yStart,
+                                          ContainerRenderSpace containerRenderSpace, int sideIndents) {
         return getPreferredSize().y;
     }
 

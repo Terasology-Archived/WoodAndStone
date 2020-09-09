@@ -1,38 +1,24 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.was.ui;
 
 import org.terasology.crafting.ui.workstation.StationAvailableRecipesWidget;
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.nui.BaseInteractionScreen;
 import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidRegistry;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.ThermometerWidget;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.inventory.rendering.nui.layers.ingame.InventoryGrid;
 import org.terasology.math.TeraMath;
 import org.terasology.nui.databinding.Binding;
 import org.terasology.nui.databinding.ReadOnlyBinding;
 import org.terasology.nui.widgets.UILoadBar;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.was.WoodAndStone;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
 import org.terasology.workstation.component.WorkstationProcessingComponent;
@@ -90,7 +76,8 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
     protected void initializeWithInteractionTarget(final EntityRef station) {
         WorkstationInventoryComponent workstationInventory = station.getComponent(WorkstationInventoryComponent.class);
 
-        WorkstationInventoryComponent.SlotAssignment fluidInputAssignments = workstationInventory.slotAssignments.get("FLUID_INPUT");
+        WorkstationInventoryComponent.SlotAssignment fluidInputAssignments =
+                workstationInventory.slotAssignments.get("FLUID_INPUT");
 
         WorkstationScreenUtils.setupInventoryGrid(station, ingredientsInventory, "INPUT");
         WorkstationScreenUtils.setupInventoryGrid(station, toolsInventory, "TOOL");
@@ -169,7 +156,8 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
                     @Override
                     public String get() {
                         FluidInventoryComponent fluidInventory = station.getComponent(FluidInventoryComponent.class);
-                        final FluidComponent fluid = fluidInventory.fluidSlots.get(waterSlot).getComponent(FluidComponent.class);
+                        final FluidComponent fluid =
+                                fluidInventory.fluidSlots.get(waterSlot).getComponent(FluidComponent.class);
                         if (fluid == null) {
                             return "0ml";
                         } else {
@@ -193,7 +181,8 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
                         }
                         long gameTime = CoreRegistry.get(Time.class).getGameTimeInMs();
 
-                        HeatProducerComponent.FuelSourceConsume lastConsumed = consumedFuel.get(consumedFuel.size() - 1);
+                        HeatProducerComponent.FuelSourceConsume lastConsumed =
+                                consumedFuel.get(consumedFuel.size() - 1);
                         if (gameTime > lastConsumed.startTime + lastConsumed.burnLength) {
                             return 0f;
                         }
@@ -211,11 +200,13 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
                 new Binding<Boolean>() {
                     @Override
                     public Boolean get() {
-                        WorkstationProcessingComponent processing = station.getComponent(WorkstationProcessingComponent.class);
+                        WorkstationProcessingComponent processing =
+                                station.getComponent(WorkstationProcessingComponent.class);
                         if (processing == null) {
                             return false;
                         }
-                        WorkstationProcessingComponent.ProcessDef herbalismProcess = processing.processes.get(WoodAndStone.HERBALISM_PROCESS_TYPE);
+                        WorkstationProcessingComponent.ProcessDef herbalismProcess =
+                                processing.processes.get(WoodAndStone.HERBALISM_PROCESS_TYPE);
                         return herbalismProcess != null;
                     }
 
@@ -228,11 +219,13 @@ public class HerbalismStationWindow extends BaseInteractionScreen {
                 new Binding<Float>() {
                     @Override
                     public Float get() {
-                        WorkstationProcessingComponent processing = station.getComponent(WorkstationProcessingComponent.class);
+                        WorkstationProcessingComponent processing =
+                                station.getComponent(WorkstationProcessingComponent.class);
                         if (processing == null) {
                             return 1f;
                         }
-                        WorkstationProcessingComponent.ProcessDef herbalismProcess = processing.processes.get(WoodAndStone.HERBALISM_PROCESS_TYPE);
+                        WorkstationProcessingComponent.ProcessDef herbalismProcess =
+                                processing.processes.get(WoodAndStone.HERBALISM_PROCESS_TYPE);
                         if (herbalismProcess == null) {
                             return 1f;
                         }

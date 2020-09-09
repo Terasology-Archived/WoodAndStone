@@ -1,18 +1,5 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.crafting.ui.hand;
 
 import com.google.common.collect.HashMultimap;
@@ -23,13 +10,13 @@ import org.terasology.crafting.system.CraftInHandRecipeRegistry;
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.crafting.ui.CraftRecipeWidget;
 import org.terasology.crafting.ui.CreationCallback;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.players.LocalPlayer;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.CoreWidget;
 import org.terasology.nui.UIWidget;
 import org.terasology.nui.layouts.ColumnLayout;
-import org.terasology.registry.CoreRegistry;
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,11 +26,11 @@ import java.util.Map;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CraftInHandAvailableRecipesWidget extends CoreWidget {
-    private Multimap<String, List<String>> displayedRecipes = HashMultimap.create();
-    private CraftInHandRecipeRegistry registry;
-    private EntityRef character;
+    private final Multimap<String, List<String>> displayedRecipes = HashMultimap.create();
+    private final CraftInHandRecipeRegistry registry;
+    private final EntityRef character;
 
-    private ColumnLayout layout;
+    private final ColumnLayout layout;
 
     public CraftInHandAvailableRecipesWidget() {
         layout = new ColumnLayout();
@@ -59,7 +46,8 @@ public class CraftInHandAvailableRecipesWidget extends CoreWidget {
         Multimap<String, List<String>> recipes = HashMultimap.create();
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
             String recipeId = craftInHandRecipe.getKey();
-            List<CraftInHandRecipe.CraftInHandResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(character);
+            List<CraftInHandRecipe.CraftInHandResult> results =
+                    craftInHandRecipe.getValue().getMatchingRecipeResults(character);
             if (results != null) {
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
                     List<String> parameters = result.getParameters();
@@ -97,7 +85,8 @@ public class CraftInHandAvailableRecipesWidget extends CoreWidget {
         displayedRecipes.clear();
         for (Map.Entry<String, CraftInHandRecipe> craftInHandRecipe : registry.getRecipes().entrySet()) {
             final String recipeId = craftInHandRecipe.getKey();
-            List<CraftInHandRecipe.CraftInHandResult> results = craftInHandRecipe.getValue().getMatchingRecipeResults(character);
+            List<CraftInHandRecipe.CraftInHandResult> results =
+                    craftInHandRecipe.getValue().getMatchingRecipeResults(character);
             if (results != null) {
                 for (CraftInHandRecipe.CraftInHandResult result : results) {
                     final List<String> parameters = result.getParameters();

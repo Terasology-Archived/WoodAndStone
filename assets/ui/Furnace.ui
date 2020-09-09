@@ -1,121 +1,121 @@
 {
-    "type": "FurnaceWindow",
-    "skin": "WoodAndStone:CraftingStation",
-    "contents": {
+  "type": "FurnaceWindow",
+  "skin": "WoodAndStone:CraftingStation",
+  "contents": {
+    "type": "relativeLayout",
+    "contents": [
+      {
         "type": "relativeLayout",
         "contents": [
-            {
-                "type": "relativeLayout",
-                "contents": [
-                    {
-                        "type": "InventoryGrid",
-                        "id": "input",
-                        "layoutInfo": {
-                            "width": 56,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 150
-                            },
-                            "position-top": {
-                                "offset": 5
-                            }
-                        }
-                    },
-                    {
-                        "type": "VerticalTextureProgressWidget",
-                        "id": "burn",
-                        "image": "WoodAndStone:Fire",
-                        "layoutInfo": {
-                            "width": 80,
-                            "height": 80,
-                            "position-left": {
-                                "offset": 138
-                            },
-                            "position-top": {
-                                "offset": 66
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "fuel",
-                        "layoutInfo": {
-                            "width": 56,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 150
-                            },
-                            "position-top": {
-                                "offset": 151
-                            }
-                        }
-                    },
-                    {
-                        "type": "UILoadBar",
-                        "fillTexture": "engine:statusBar",
-                        "id": "craftingProgress",
-                        "animate": false,
-                        "layoutInfo": {
-                            "width": 56,
-                            "height": 10,
-                            "position-left": {
-                                "offset": 364
-                            },
-                            "position-top": {
-                                "offset": 68
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "output",
-                        "layoutInfo": {
-                            "width": 56,
-                            "height": 56,
-                            "position-left": {
-                                "offset": 364
-                            },
-                            "position-top": {
-                                "offset": 78
-                            }
-                        }
-                    },
-                    {
-                        "type": "ThermometerWidget",
-                        "id": "heat",
-                        "layoutInfo": {
-                            "width": 20,
-                            "height": 150,
-                            "position-left": {
-                                "offset": 275
-                            },
-                            "position-top": {
-                                "offset": 31
-                            }
-                        }
-                    },
-                    {
-                        "type": "InventoryGrid",
-                        "id": "player",
-                        "layoutInfo": {
-                            "width": 560,
-                            "height": 168,
-                            "position-left": {
-                                "offset": 5
-                            },
-                            "position-top": {
-                                "offset": 212
-                            }
-                        }
-                    }
-                ],
-                "layoutInfo": {
-                    "width": 570,
-                    "height": 485,
-                    "position-horizontal-center": {},
-                    "position-vertical-center": {}
-                }
+          {
+            "type": "InventoryGrid",
+            "id": "input",
+            "layoutInfo": {
+              "width": 56,
+              "height": 56,
+              "position-left": {
+                "offset": 150
+              },
+              "position-top": {
+                "offset": 5
+              }
             }
-        ]
-    }
+          },
+          {
+            "type": "VerticalTextureProgressWidget",
+            "id": "burn",
+            "image": "WoodAndStone:Fire",
+            "layoutInfo": {
+              "width": 80,
+              "height": 80,
+              "position-left": {
+                "offset": 138
+              },
+              "position-top": {
+                "offset": 66
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "fuel",
+            "layoutInfo": {
+              "width": 56,
+              "height": 56,
+              "position-left": {
+                "offset": 150
+              },
+              "position-top": {
+                "offset": 151
+              }
+            }
+          },
+          {
+            "type": "UILoadBar",
+            "fillTexture": "engine:statusBar",
+            "id": "craftingProgress",
+            "animate": false,
+            "layoutInfo": {
+              "width": 56,
+              "height": 10,
+              "position-left": {
+                "offset": 364
+              },
+              "position-top": {
+                "offset": 68
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "output",
+            "layoutInfo": {
+              "width": 56,
+              "height": 56,
+              "position-left": {
+                "offset": 364
+              },
+              "position-top": {
+                "offset": 78
+              }
+            }
+          },
+          {
+            "type": "ThermometerWidget",
+            "id": "heat",
+            "layoutInfo": {
+              "width": 20,
+              "height": 150,
+              "position-left": {
+                "offset": 275
+              },
+              "position-top": {
+                "offset": 31
+              }
+            }
+          },
+          {
+            "type": "InventoryGrid",
+            "id": "player",
+            "layoutInfo": {
+              "width": 560,
+              "height": 168,
+              "position-left": {
+                "offset": 5
+              },
+              "position-top": {
+                "offset": 212
+              }
+            }
+          }
+        ],
+        "layoutInfo": {
+          "width": 570,
+          "height": 485,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        }
+      }
+    ]
+  }
 }

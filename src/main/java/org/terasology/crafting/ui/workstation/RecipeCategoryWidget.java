@@ -1,23 +1,9 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.crafting.ui.workstation;
 
 import org.joml.Rectanglei;
 import org.joml.Vector2i;
-import org.terasology.input.MouseInput;
 import org.terasology.nui.BaseInteractionListener;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.CoreWidget;
@@ -25,6 +11,7 @@ import org.terasology.nui.InteractionListener;
 import org.terasology.nui.TextLineBuilder;
 import org.terasology.nui.asset.font.Font;
 import org.terasology.nui.events.NUIMouseClickEvent;
+import org.terasology.nui.input.MouseInput;
 
 import java.util.List;
 
@@ -32,13 +19,13 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class RecipeCategoryWidget extends CoreWidget {
-    private boolean opened;
-    private int leftIndent;
-    private String name;
-    private int count;
-    private CategoryToggleCallback callback;
+    private final boolean opened;
+    private final int leftIndent;
+    private final String name;
+    private final int count;
+    private final CategoryToggleCallback callback;
 
-    private InteractionListener interactionListener = new BaseInteractionListener() {
+    private final InteractionListener interactionListener = new BaseInteractionListener() {
         @Override
         public boolean onMouseClick(NUIMouseClickEvent event) {
             if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {

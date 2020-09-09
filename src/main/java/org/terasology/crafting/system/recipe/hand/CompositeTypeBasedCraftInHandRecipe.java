@@ -1,25 +1,12 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.crafting.system.recipe.hand;
 
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.inventory.rendering.nui.layers.ingame.ItemIcon;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +17,8 @@ import java.util.List;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
-    private List<IngredientCraftBehaviour<EntityRef>> itemCraftBehaviours = new ArrayList<>();
-    private RecipeResultFactory resultFactory;
+    private final List<IngredientCraftBehaviour<EntityRef>> itemCraftBehaviours = new ArrayList<>();
+    private final RecipeResultFactory resultFactory;
 
     public CompositeTypeBasedCraftInHandRecipe(RecipeResultFactory resultFactory) {
         this.resultFactory = resultFactory;
@@ -43,7 +30,8 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
 
     @Override
     public List<CraftInHandResult> getMatchingRecipeResults(EntityRef character) {
-        // TODO: Improve searching for different kinds of items of the same type in whole inventory, not just first matching
+        // TODO: Improve searching for different kinds of items of the same type in whole inventory, not just first 
+        //  matching
         List<String> parameters = new LinkedList<>();
         for (IngredientCraftBehaviour<EntityRef> itemCraftBehaviour : itemCraftBehaviours) {
             String parameter = findParameter(character, itemCraftBehaviour);
@@ -53,7 +41,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
             parameters.add(parameter);
         }
 
-        return Collections.<CraftInHandResult>singletonList(new CraftResult(parameters));
+        return Collections.singletonList(new CraftResult(parameters));
     }
 
     private String findParameter(EntityRef character, IngredientCraftBehaviour itemCraftBehaviour) {
@@ -70,7 +58,7 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
     }
 
     public class CraftResult implements CraftInHandResult {
-        private List<String> parameters;
+        private final List<String> parameters;
         private List<CraftIngredientRenderer> renderers;
 
         public CraftResult(List<String> parameters) {
@@ -97,7 +85,8 @@ public class CompositeTypeBasedCraftInHandRecipe implements CraftInHandRecipe {
         public int getMaxMultiplier(EntityRef entity) {
             int maxMultiplier = resultFactory.getMaxMultiplier(parameters);
             for (int i = 0; i < parameters.size(); i++) {
-                maxMultiplier = Math.min(maxMultiplier, itemCraftBehaviours.get(i).getMaxMultiplier(entity, parameters.get(i)));
+                maxMultiplier = Math.min(maxMultiplier, itemCraftBehaviours.get(i).getMaxMultiplier(entity,
+                        parameters.get(i)));
             }
             return maxMultiplier;
         }
