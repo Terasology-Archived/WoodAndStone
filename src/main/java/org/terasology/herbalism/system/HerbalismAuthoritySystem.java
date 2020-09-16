@@ -17,11 +17,11 @@ import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockComponent;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
-import org.terasology.gf.PlantedSaplingComponent;
+import org.terasology.growingflora.PlantedSaplingComponent;
+import org.terasology.growingflora.randomUpdate.RandomUpdateEvent;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.PollinatingHerbComponent;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.randomUpdate.RandomUpdateEvent;
 
 @RegisterSystem(value = RegisterMode.AUTHORITY)
 public class HerbalismAuthoritySystem extends BaseComponentSystem {

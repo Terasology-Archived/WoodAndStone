@@ -16,7 +16,7 @@ import org.terasology.nui.UIWidget;
 import org.terasology.nui.widgets.ActivateEventListener;
 import org.terasology.nui.widgets.UIButton;
 import org.terasology.nui.widgets.UIImage;
-import org.terasology.was.ui.WorkstationScreenUtils;
+import org.terasology.woodandstone.ui.WorkstationScreenUtils;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationRegistry;

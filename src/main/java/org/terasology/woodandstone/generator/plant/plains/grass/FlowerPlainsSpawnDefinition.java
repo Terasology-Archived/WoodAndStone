@@ -1,6 +1,6 @@
 // Copyright 2020 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
-package org.terasology.herbalism.generator;
+package org.terasology.woodandstone.generator.plant.plains.grass;
 
 import org.terasology.anotherWorld.AnotherWorldBiomes;
 import org.terasology.anotherWorld.decorator.BlockCollectionPredicate;
@@ -16,14 +16,13 @@ import java.util.Arrays;
  * @author Marcin Sciesinski <marcins78@gmail.com>
  */
 @RegisterPlugin
-public class HerbPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
-    public HerbPlainsSpawnDefinition() {
-        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 0.5f, 0.3f, "Herbalism:Herb",
-                Arrays.asList(
-                        new BlockUri("WoodAndStone:HerbGeneratedA")/*,
-                        new BlockUri("WoodAndStone:Herb2"),
-                        new BlockUri("WoodAndStone:Herb6"),
-                        new BlockUri("WoodAndStone:Herb7")*/),
+public class FlowerPlainsSpawnDefinition extends StaticBlockFloraSpawnDefinition {
+    public FlowerPlainsSpawnDefinition() {
+        super(PlantType.GRASS, AnotherWorldBiomes.PLAINS.getId().toLowerCase(), 0.5f, 1f, "CoreAssets:Flower",
+                Arrays.asList(new BlockUri("CoreAssets:Dandelion"), new BlockUri("CoreAssets:Iris"),
+                        new BlockUri("CoreAssets:Lavender"), new BlockUri("CoreAssets:RedClover"), new BlockUri(
+                                "CoreAssets:RedFlower"),
+                        new BlockUri("CoreAssets:Tulip"), new BlockUri("CoreAssets:YellowFlower")),
                 new BlockCollectionPredicate(Blocks.getBlock("CoreAssets:Grass")), null);
     }
 }

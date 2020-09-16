@@ -13,7 +13,7 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockUri;
 import org.terasology.engine.world.generator.plugin.RegisterPlugin;
 import org.terasology.genome.component.GenomeComponent;
-import org.terasology.gf.grass.ReplaceBlockGrowthDefinition;
+import org.terasology.growingflora.grass.ReplaceBlockGrowthDefinition;
 import org.terasology.math.geom.Vector3i;
 
 import java.util.Arrays;
