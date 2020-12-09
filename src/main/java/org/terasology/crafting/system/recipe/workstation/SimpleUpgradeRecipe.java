@@ -15,6 +15,8 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
+import org.joml.Vector3f;
+import org.joml.Vector3ic;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -22,6 +24,7 @@ import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -29,6 +32,8 @@ import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockRegion;
+import org.terasology.world.block.BlockRegions;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
 import java.util.LinkedHashMap;
@@ -127,8 +132,8 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             EntityManager entityManager = CoreRegistry.get(EntityManager.class);
 
             Block block = blockManager.getBlock(resultBlockUri);
-            Region3i region = station.getComponent(BlockRegionComponent.class).region;
-            for (Vector3i location : region) {
+            BlockRegion region = station.getComponent(BlockRegionComponent.class).region;
+            for (Vector3ic location : BlockRegions.iterableInPlace(region)) {
                 worldProvider.setBlock(location, block);
             }
 
@@ -150,7 +155,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             station.destroy();
 
             newStation.addComponent(new BlockRegionComponent(region));
-            newStation.addComponent(new LocationComponent(region.center()));
+            newStation.addComponent(new LocationComponent(JomlUtil.from(region.center(new Vector3f()))));
 
             return newStation;
         }

@@ -19,6 +19,7 @@ import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.heat.component.HeatConsumerComponent;
 import org.terasology.heat.component.HeatProducerComponent;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.Region3i;
 import org.terasology.math.Side;
 import org.terasology.math.geom.Vector3i;
@@ -119,7 +120,7 @@ public final class HeatUtils {
             return Region3i.createBounded(blockPosition, blockPosition);
         }
         BlockRegionComponent blockRegionComponent = entityRef.getComponent(BlockRegionComponent.class);
-        return blockRegionComponent.region;
+        return JomlUtil.from(blockRegionComponent.region);
     }
 
     public static Map<Vector3i, Side> getPotentialHeatSourceBlocksForConsumer(EntityRef consumer) {
