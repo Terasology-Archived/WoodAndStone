@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.ui.workstation;
 
-import org.joml.Rectanglei;
+import org.joml.primitives.Rectanglei;
 import org.joml.Vector2i;
 import org.terasology.input.MouseInput;
 import org.terasology.nui.BaseInteractionListener;
