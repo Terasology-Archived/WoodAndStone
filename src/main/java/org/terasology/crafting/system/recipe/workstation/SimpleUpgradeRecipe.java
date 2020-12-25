@@ -25,15 +25,12 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.JomlUtil;
-import org.terasology.math.Region3i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockRegion;
-import org.terasology.world.block.BlockRegions;
 import org.terasology.world.block.regions.BlockRegionComponent;
 
 import java.util.LinkedHashMap;
@@ -133,7 +130,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
 
             Block block = blockManager.getBlock(resultBlockUri);
             BlockRegion region = station.getComponent(BlockRegionComponent.class).region;
-            for (Vector3ic location : BlockRegions.iterableInPlace(region)) {
+            for (Vector3ic location : region) {
                 worldProvider.setBlock(location, block);
             }
 
