@@ -1,6 +1,6 @@
 {
     "id": "WoodAndStone",
-    "version": "1.0.0",
+    "version": "1.0.0-SNAPSHOT",
     "author": "Marcin Sciesinski <marcins78@gmail.com>",
     "displayName": "Wood and Stone",
     "description": "Basic 'Stone Age' crafting",
