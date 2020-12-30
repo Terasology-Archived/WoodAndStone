@@ -6,6 +6,7 @@ import org.joml.RoundingMode;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -104,13 +105,12 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
 
         if (random.nextFloat() < chanceOfBlockDrop) {
             final String herbBaseGenome = herbComp.herbBaseGenome;
-            final Vector3f position = locationComp.getWorldPosition(new Vector3f());
+            final Vector3i position = new Vector3i(locationComp.getWorldPosition(new Vector3f()), RoundingMode.HALF_UP);
 
             BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0,
                 new HerbGeneMutator(), herbBaseGenome,
                 3, 0.0002f);
-            final String generatedGenes = generator.generateGenes(new Vector2i(new Vector2f(position.x + 0.5f,
-                position.z + 0.5f), RoundingMode.FLOOR));
+            final String generatedGenes = generator.generateGenes(new Vector2i(position.x, position.y));
 
             EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
 
