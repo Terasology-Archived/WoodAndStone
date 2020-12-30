@@ -1,20 +1,12 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.herbalism.system;
 
+import org.joml.RoundingMode;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -33,9 +25,6 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.inventory.events.DropItemEvent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3f;
 import org.terasology.physics.events.ImpulseEvent;
 import org.terasology.registry.In;
 import org.terasology.rendering.assets.texture.TextureRegionAsset;
@@ -74,8 +63,10 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void onGrownHerbDestroyed(DoDestroyEvent event, EntityRef entity, HerbComponent herbComp, GenomeComponent genomeComponent, LocationComponent locationComp) {
-        BlockDamageModifierComponent blockDamageModifierComponent = event.getDamageType().getComponent(BlockDamageModifierComponent.class);
+    public void onGrownHerbDestroyed(DoDestroyEvent event, EntityRef entity, HerbComponent herbComp,
+                                     GenomeComponent genomeComponent, LocationComponent locationComp) {
+        BlockDamageModifierComponent blockDamageModifierComponent =
+            event.getDamageType().getComponent(BlockDamageModifierComponent.class);
         float chanceOfBlockDrop = 1;
 
         if (blockDamageModifierComponent != null) {
@@ -96,14 +87,16 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             herb.saveComponent(item);
 
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
-                createDrop(herb, locationComp.getWorldPosition(), false);
+                createDrop(herb, locationComp.getWorldPosition(new Vector3f()), false);
             }
         }
     }
 
     @ReceiveEvent
-    public void onGeneratedHerbDestroyed(DoDestroyEvent event, EntityRef entity, GeneratedHerbComponent herbComp, LocationComponent locationComp) {
-        BlockDamageModifierComponent blockDamageModifierComponent = event.getDamageType().getComponent(BlockDamageModifierComponent.class);
+    public void onGeneratedHerbDestroyed(DoDestroyEvent event, EntityRef entity, GeneratedHerbComponent herbComp,
+                                         LocationComponent locationComp) {
+        BlockDamageModifierComponent blockDamageModifierComponent =
+            event.getDamageType().getComponent(BlockDamageModifierComponent.class);
         float chanceOfBlockDrop = 1;
 
         if (blockDamageModifierComponent != null) {
@@ -112,11 +105,12 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
 
         if (random.nextFloat() < chanceOfBlockDrop) {
             final String herbBaseGenome = herbComp.herbBaseGenome;
-            final Vector3f position = locationComp.getWorldPosition();
+            final Vector3i position = new Vector3i(locationComp.getWorldPosition(new Vector3f()), RoundingMode.HALF_UP);
 
-            BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0, new HerbGeneMutator(), herbBaseGenome,
-                    3, 0.0002f);
-            final String generatedGenes = generator.generateGenes(new Vector2i(TeraMath.floorToInt(position.x + 0.5f), TeraMath.floorToInt(position.z + 0.5f)));
+            BiodiversityGenerator generator = new BiodiversityGenerator(worldProvider.getSeed(), 0,
+                new HerbGeneMutator(), herbBaseGenome,
+                3, 0.0002f);
+            final String generatedGenes = generator.generateGenes(new Vector2i(position.x, position.y));
 
             EntityRef herb = entityManager.create("WoodAndStone:HerbBase");
 
@@ -130,22 +124,22 @@ public class HerbDropAuthoritySystem extends BaseComponentSystem {
             herb.saveComponent(item);
 
             if (shouldDropToWorld(event, blockDamageModifierComponent, herb)) {
-                createDrop(herb, locationComp.getWorldPosition(), false);
+                createDrop(herb, locationComp.getWorldPosition(new Vector3f()), false);
             }
         }
     }
 
-    private boolean shouldDropToWorld(DoDestroyEvent event, BlockDamageModifierComponent blockDamageModifierComponent, EntityRef dropItem) {
+    private boolean shouldDropToWorld(DoDestroyEvent event, BlockDamageModifierComponent blockDamageModifierComponent
+        , EntityRef dropItem) {
         EntityRef instigator = event.getInstigator();
         return blockDamageModifierComponent == null || !blockDamageModifierComponent.directPickup
-                || !inventoryManager.giveItem(instigator, instigator, dropItem);
+            || !inventoryManager.giveItem(instigator, instigator, dropItem);
     }
 
     private void createDrop(EntityRef item, Vector3f location, boolean applyMovement) {
         item.send(new DropItemEvent(location));
         if (applyMovement) {
-            item.send(new ImpulseEvent(random.nextVector3f(30.0f, new org.joml.Vector3f())));
+            item.send(new ImpulseEvent(random.nextVector3f(30.0f, new Vector3f())));
         }
     }
-
 }
