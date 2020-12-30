@@ -16,7 +16,7 @@
         { "id": "Drops", "minVersion": "1.0.1" },
         { "id": "Fences", "minVersion": "1.0.0" },
         { "id": "Fluid", "minVersion": "1.1.0" },
-        { "id": "Genome", "minVersion": "1.0.0" },
+        { "id": "Genome", "minVersion": "1.0.1-SNAPSHOT" },
         { "id": "GrowingFlora", "minVersion": "1.0.0" },
         { "id": "Health", "minVersion": "1.0.0" },
         { "id": "Hunger", "minVersion": "1.1.0" },
