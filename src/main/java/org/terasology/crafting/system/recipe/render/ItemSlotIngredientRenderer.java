@@ -16,7 +16,7 @@
 package org.terasology.crafting.system.recipe.render;
 
 import com.google.common.base.Function;
-import org.joml.Rectanglei;
+import org.terasology.joml.geom.Rectanglei;
 import org.joml.Vector2i;
 import org.terasology.nui.Canvas;
 import org.terasology.utilities.Assets;
