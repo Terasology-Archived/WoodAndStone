@@ -152,7 +152,7 @@ public class SimpleUpgradeRecipe implements UpgradeRecipe {
             station.destroy();
 
             newStation.addComponent(new BlockRegionComponent(region));
-            newStation.addComponent(new LocationComponent(JomlUtil.from(region.center(new Vector3f()))));
+            newStation.addComponent(new LocationComponent(region.center(new Vector3f())));
 
             return newStation;
         }
