@@ -24,7 +24,6 @@ import org.terasology.logic.inventory.InventoryComponent;
 import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.inventory.ItemComponent;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.math.JomlUtil;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.workstation.process.WorkstationInventoryUtils;
 import org.terasology.world.WorldProvider;
