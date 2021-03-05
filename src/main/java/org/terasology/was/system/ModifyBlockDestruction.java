@@ -52,7 +52,7 @@ public class ModifyBlockDestruction extends BaseComponentSystem {
     public void preventPlayerFromDestroyingBasicBlocksByHand(BeforeDamagedEvent event, EntityRef blockEntity) {
         BlockComponent blockComponent = blockEntity.getComponent(BlockComponent.class);
         if (blockComponent != null && event.getInstigator().hasComponent(CharacterComponent.class)) {
-            Block block = blockComponent.block;
+            Block block = blockComponent.getBlock();
 
             if (exceptions.contains(block.getURI())) {
                 return;

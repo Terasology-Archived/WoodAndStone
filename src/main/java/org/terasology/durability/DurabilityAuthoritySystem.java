@@ -49,7 +49,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
         EntityRef tool = event.getDirectCause();
         DurabilityComponent durabilityComponent = tool.getComponent(DurabilityComponent.class);
         if (durabilityComponent != null) {
-            Block block = blockComponent.block;
+            Block block = blockComponent.getBlock();
             Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
             if (isTheRightTool(categoriesIterator, event.getDamageType())) {
                 // It was the right tool for the job, so reduce the durability
