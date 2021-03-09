@@ -18,15 +18,11 @@ package org.terasology.herbalism.events;
 
 import gnu.trove.iterator.TFloatIterator;
 import gnu.trove.list.TFloatList;
-import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TFloatArrayList;
-import gnu.trove.list.array.TIntArrayList;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ConsumableEvent;
-import org.terasology.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ConsumableEvent;
 import org.terasology.herbalism.HerbEffect;
 import org.terasology.herbalism.component.PotionComponent;
-import org.terasology.protobuf.EntityData;
 
 // TODO: Add extends AbstractValueModifiableEvent?
 public class BeforeDrinkPotionEvent implements ConsumableEvent {

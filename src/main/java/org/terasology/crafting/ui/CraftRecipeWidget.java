@@ -18,7 +18,8 @@ package org.terasology.crafting.ui;
 import org.joml.Vector2i;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.CraftProcessDisplay;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.rendering.nui.layers.ingame.inventory.ItemIcon;
 import org.terasology.input.Keyboard;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.CoreWidget;
@@ -28,7 +29,6 @@ import org.terasology.nui.events.NUIKeyEvent;
 import org.terasology.nui.util.RectUtility;
 import org.terasology.nui.widgets.ActivateEventListener;
 import org.terasology.nui.widgets.UIButton;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

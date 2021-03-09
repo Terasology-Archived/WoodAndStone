@@ -16,9 +16,9 @@
 package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.In;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
 import org.terasology.workstation.system.WorkstationRegistry;
 
 /**

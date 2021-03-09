@@ -15,19 +15,23 @@
  */
 package org.terasology.heat.processPart;
 
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.prefab.PrefabManager;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.PrefabManager;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.inventory.InventoryManager;
+import org.terasology.engine.logic.inventory.InventoryUtils;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.BlockEntityRegistry;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.block.family.BlockFamily;
+import org.terasology.engine.world.block.items.BlockItemFactory;
 import org.terasology.heat.HeatUtils;
 import org.terasology.heat.component.HeatProcessedComponent;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.inventory.InventoryUtils;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.In;
 import org.terasology.workstation.component.OutputTypeComponent;
 import org.terasology.workstation.component.SpecificInputSlotComponent;
 import org.terasology.workstation.component.WorkstationInventoryComponent;
@@ -37,10 +41,6 @@ import org.terasology.workstation.processPart.ProcessEntityGetDurationEvent;
 import org.terasology.workstation.processPart.ProcessEntityIsInvalidToStartEvent;
 import org.terasology.workstation.processPart.ProcessEntityStartExecutionEvent;
 import org.terasology.workstation.processPart.inventory.ProcessEntityIsInvalidForInventoryItemEvent;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.items.BlockItemFactory;
 
 @RegisterSystem
 public class HeatProcessingProcessPartCommonSystem extends BaseComponentSystem {

@@ -16,7 +16,9 @@
 package org.terasology.was.ui;
 
 import org.joml.Vector2i;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.assets.texture.TextureRegion;
 import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidRegistry;
@@ -28,9 +30,6 @@ import org.terasology.nui.LayoutConfig;
 import org.terasology.nui.UITextureRegion;
 import org.terasology.nui.databinding.Binding;
 import org.terasology.nui.databinding.DefaultBinding;
-import org.terasology.nui.util.RectUtility;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.assets.texture.TextureRegion;
 
 public class FluidHolderWidget extends CoreWidget {
     @LayoutConfig

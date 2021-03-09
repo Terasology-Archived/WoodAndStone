@@ -16,7 +16,7 @@
 package org.terasology.rpgAttributes.component;
 
 import org.terasology.attribute.AttributeBaseSource;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 public class ComponentAttributeBaseSource implements AttributeBaseSource {
     private Class<? extends AttributeComponent> attributeComponent;

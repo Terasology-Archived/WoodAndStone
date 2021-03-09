@@ -16,8 +16,8 @@
 package org.terasology.npcAI.component;
 
 import com.google.common.collect.Lists;
-import org.terasology.entitySystem.Component;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.reflection.MappedContainer;
 
 import java.util.List;

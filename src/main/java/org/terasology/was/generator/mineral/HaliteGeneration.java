@@ -19,9 +19,9 @@ import org.terasology.anotherWorld.decorator.ore.OreDefinition;
 import org.terasology.anotherWorld.decorator.structure.PocketStructureDefinition;
 import org.terasology.anotherWorld.decorator.structure.provider.UniformPocketBlockProvider;
 import org.terasology.anotherWorld.util.PDist;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.generator.plugin.RegisterPlugin;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.generator.plugin.RegisterPlugin;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

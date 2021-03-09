@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.ui.hand;
 
-import org.terasology.rendering.nui.CoreScreenLayer;
+import org.terasology.engine.rendering.nui.CoreScreenLayer;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

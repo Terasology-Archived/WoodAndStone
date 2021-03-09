@@ -15,7 +15,7 @@
  */
 package org.terasology.attribute;
 
-import org.terasology.entitySystem.event.AbstractValueModifiableEvent;
+import org.terasology.engine.entitySystem.event.AbstractValueModifiableEvent;
 
 public class GetAttributeValue extends AbstractValueModifiableEvent {
     private String attributeName;

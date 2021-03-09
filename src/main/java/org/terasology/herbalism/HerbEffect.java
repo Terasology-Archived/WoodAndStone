@@ -15,7 +15,7 @@
  */
 package org.terasology.herbalism;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 public interface HerbEffect {
     void applyEffect(EntityRef instigator, EntityRef entity, float magnitude, long duration);

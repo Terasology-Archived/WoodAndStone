@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.system.recipe.behaviour;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 import java.util.List;
 

@@ -4,16 +4,16 @@ package org.terasology.heat;
 
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.math.Side;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.BlockEntityRegistry;
+import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.world.block.regions.BlockRegionComponent;
 import org.terasology.heat.component.HeatConsumerComponent;
 import org.terasology.heat.component.HeatProducerComponent;
-import org.terasology.math.Side;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.BlockEntityRegistry;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockRegion;
-import org.terasology.world.block.regions.BlockRegionComponent;
 
 import java.util.Collections;
 import java.util.HashMap;

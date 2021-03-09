@@ -16,12 +16,12 @@
 package org.terasology.crafting.system.recipe.behaviour;
 
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.fluid.component.FluidComponent;
 import org.terasology.fluid.component.FluidInventoryComponent;
 import org.terasology.fluid.system.FluidManager;
 import org.terasology.math.TeraMath;
-import org.terasology.registry.CoreRegistry;
 
 import java.util.LinkedList;
 import java.util.List;

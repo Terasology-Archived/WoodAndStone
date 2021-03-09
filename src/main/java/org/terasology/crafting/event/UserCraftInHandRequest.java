@@ -15,8 +15,8 @@
  */
 package org.terasology.crafting.event;
 
-import org.terasology.entitySystem.event.Event;
-import org.terasology.network.ServerEvent;
+import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.engine.network.ServerEvent;
 
 import java.util.List;
 

@@ -18,8 +18,8 @@ package org.terasology.crafting.system.recipe.hand;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.rendering.nui.layers.ingame.inventory.ItemIcon;
 
 import java.util.ArrayList;
 import java.util.Collections;

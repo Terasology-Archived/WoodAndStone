@@ -17,7 +17,7 @@ package org.terasology.herbalism.system;
 
 import com.google.common.base.Predicate;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.herbalism.component.HerbComponent;
 
 public class HerbalismStationIngredientPredicate implements Predicate<EntityRef> {

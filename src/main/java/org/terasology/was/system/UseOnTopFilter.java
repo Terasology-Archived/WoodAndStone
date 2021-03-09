@@ -16,8 +16,8 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.math.Side;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.math.Side;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

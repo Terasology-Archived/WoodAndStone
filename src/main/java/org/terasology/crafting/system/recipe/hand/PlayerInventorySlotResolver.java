@@ -16,7 +16,7 @@
 package org.terasology.crafting.system.recipe.hand;
 
 import org.terasology.crafting.system.recipe.behaviour.InventorySlotResolver;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 import java.util.Collections;
 import java.util.LinkedList;

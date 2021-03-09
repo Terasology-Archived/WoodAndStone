@@ -15,7 +15,8 @@
  */
 package org.terasology.herbalism.component;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
+
 import java.util.List;
 
 // Add this Component to any recipe prefab that is supposed to be creatable in a HerbalismStation or similar.

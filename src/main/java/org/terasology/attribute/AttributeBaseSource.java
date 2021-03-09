@@ -15,7 +15,7 @@
  */
 package org.terasology.attribute;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 public interface AttributeBaseSource {
     float getAttributeBase(EntityRef entity);

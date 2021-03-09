@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.system.recipe.workstation;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

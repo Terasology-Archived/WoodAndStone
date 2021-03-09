@@ -15,7 +15,7 @@
  */
 package org.terasology.crafting.component;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 // Used to distinguish that a workstation is in fact portable and should not be treated as a block.
 public class PortableWorkstationComponent implements Component {

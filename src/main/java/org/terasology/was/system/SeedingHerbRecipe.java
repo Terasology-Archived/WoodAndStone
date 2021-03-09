@@ -17,8 +17,6 @@ package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
 import org.terasology.anotherWorldPlants.farm.component.SeedComponent;
-import org.terasology.nui.widgets.TooltipLine;
-import org.terasology.utilities.Assets;
 import org.terasology.crafting.system.recipe.behaviour.ConsumeItemCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.IngredientCraftBehaviour;
 import org.terasology.crafting.system.recipe.behaviour.ReduceDurabilityCraftBehaviour;
@@ -26,18 +24,20 @@ import org.terasology.crafting.system.recipe.hand.CraftInHandIngredientPredicate
 import org.terasology.crafting.system.recipe.hand.CraftInHandRecipe;
 import org.terasology.crafting.system.recipe.hand.PlayerInventorySlotResolver;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.rendering.assets.texture.TextureRegionAsset;
+import org.terasology.engine.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.engine.world.block.Block;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;
 import org.terasology.herbalism.Herbalism;
 import org.terasology.herbalism.component.HerbComponent;
 import org.terasology.herbalism.system.HerbalismClientSystem;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.assets.texture.TextureRegionAsset;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
-import org.terasology.world.block.Block;
+import org.terasology.nui.widgets.TooltipLine;
 
 import java.util.Arrays;
 import java.util.LinkedList;

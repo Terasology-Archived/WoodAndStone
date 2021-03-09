@@ -15,8 +15,8 @@
  */
 package org.terasology.crafting.component;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.rendering.assets.texture.Texture;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.rendering.assets.texture.Texture;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

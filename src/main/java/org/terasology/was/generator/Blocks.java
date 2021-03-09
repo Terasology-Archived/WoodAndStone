@@ -15,9 +15,9 @@
  */
 package org.terasology.was.generator;
 
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
 
 public final class Blocks {
     private Blocks() {

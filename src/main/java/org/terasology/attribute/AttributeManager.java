@@ -15,7 +15,7 @@
  */
 package org.terasology.attribute;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 public interface AttributeManager {
     void registerAttribute(String attributeName, AttributeBaseSource attributeBaseSource);

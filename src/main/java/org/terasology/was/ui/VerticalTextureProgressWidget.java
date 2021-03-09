@@ -16,16 +16,16 @@
 package org.terasology.was.ui;
 
 import org.joml.Vector2i;
+import org.terasology.engine.rendering.assets.texture.TextureRegion;
 import org.terasology.math.TeraMath;
 import org.terasology.nui.Canvas;
+import org.terasology.nui.Color;
 import org.terasology.nui.CoreWidget;
 import org.terasology.nui.LayoutConfig;
 import org.terasology.nui.ScaleMode;
 import org.terasology.nui.databinding.Binding;
 import org.terasology.nui.databinding.DefaultBinding;
 import org.terasology.nui.util.RectUtility;
-import org.terasology.rendering.assets.texture.TextureRegion;
-import org.terasology.nui.Color;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

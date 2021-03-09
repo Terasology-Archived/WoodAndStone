@@ -16,7 +16,7 @@
 package org.terasology.herbalism.effect;
 
 import org.terasology.alterationEffects.AlterationEffect;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.herbalism.HerbEffect;
 
 public class AlterationEffectWrapperHerbEffect implements HerbEffect {

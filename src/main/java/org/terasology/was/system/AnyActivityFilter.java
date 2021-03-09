@@ -16,7 +16,7 @@
 package org.terasology.was.system;
 
 import com.google.common.base.Predicate;
-import org.terasology.logic.common.ActivateEvent;
+import org.terasology.engine.logic.common.ActivateEvent;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

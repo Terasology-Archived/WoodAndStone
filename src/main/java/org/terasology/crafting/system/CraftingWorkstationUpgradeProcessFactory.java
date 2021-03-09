@@ -17,7 +17,7 @@ package org.terasology.crafting.system;
 
 import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
 import org.terasology.crafting.system.recipe.workstation.SimpleUpgradeRecipe;
-import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.workstation.process.WorkstationProcess;
 import org.terasology.workstation.system.WorkstationProcessFactory;
 

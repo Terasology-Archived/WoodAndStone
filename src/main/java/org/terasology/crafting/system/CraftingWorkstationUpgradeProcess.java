@@ -19,7 +19,7 @@ import org.terasology.crafting.component.CraftingStationComponent;
 import org.terasology.crafting.component.CraftingStationUpgradeRecipeComponent;
 import org.terasology.crafting.event.CraftingStationUpgraded;
 import org.terasology.crafting.system.recipe.workstation.UpgradeRecipe;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.InvalidProcessException;
 import org.terasology.workstation.process.WorkstationInventoryUtils;

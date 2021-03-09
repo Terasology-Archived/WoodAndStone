@@ -17,11 +17,11 @@ package org.terasology.heat.component;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.terasology.entitySystem.Component;
-import org.terasology.math.Side;
-import org.terasology.network.Replicate;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.math.Side;
+import org.terasology.engine.network.Replicate;
+import org.terasology.engine.world.block.ForceBlockActive;
 import org.terasology.reflection.MappedContainer;
-import org.terasology.world.block.ForceBlockActive;
 
 import java.util.List;
 import java.util.Set;

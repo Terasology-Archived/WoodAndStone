@@ -15,8 +15,8 @@
  */
 package org.terasology.npcAI.component;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.world.block.Block;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.world.block.Block;
 
 import java.util.List;
 

@@ -15,9 +15,9 @@
  */
 package org.terasology.durability;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.world.block.ForceBlockActive;
-import org.terasology.world.block.items.AddToBlockBasedItem;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.world.block.ForceBlockActive;
+import org.terasology.engine.world.block.items.AddToBlockBasedItem;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

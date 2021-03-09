@@ -17,7 +17,7 @@ package org.terasology.crafting.system.recipe.workstation;
 
 import com.google.common.base.Predicate;
 import org.terasology.crafting.component.CraftingStationIngredientComponent;
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
 
 /**
  * @author Marcin Sciesinski <marcins78@gmail.com>

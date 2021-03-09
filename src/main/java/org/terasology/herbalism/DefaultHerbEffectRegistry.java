@@ -16,9 +16,9 @@
 package org.terasology.herbalism;
 
 import org.terasology.anotherWorld.util.ChanceRandomizer;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.Share;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.Share;
 
 @RegisterSystem
 @Share(HerbEffectRegistry.class)

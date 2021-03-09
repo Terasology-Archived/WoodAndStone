@@ -16,7 +16,7 @@
 
 package org.terasology.herbalism.component;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 public class PotionComponent implements Component {
     public String effect;
