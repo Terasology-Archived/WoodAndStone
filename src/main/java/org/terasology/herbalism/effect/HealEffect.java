@@ -16,7 +16,7 @@
 package org.terasology.herbalism.effect;
 
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.health.event.DoRestoreEvent;
+import org.terasology.logic.health.event.DoRestoreEvent;
 import org.terasology.herbalism.HerbEffect;
 import org.terasology.math.TeraMath;
 
