@@ -19,7 +19,7 @@ import org.terasology.crafting.system.recipe.render.RecipeResultFactory;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.registry.CoreRegistry;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.module.inventory.ui.ItemIcon;
 import org.terasology.engine.utilities.Assets;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.items.BlockItemFactory;

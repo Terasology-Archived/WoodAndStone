@@ -26,7 +26,7 @@ import org.terasology.crafting.system.recipe.workstation.AbstractWorkstationReci
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.registry.CoreRegistry;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.module.inventory.ui.ItemIcon;
 import org.terasology.engine.utilities.Assets;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;

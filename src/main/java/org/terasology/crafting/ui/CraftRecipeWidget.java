@@ -19,7 +19,7 @@ import org.joml.Vector2i;
 import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.CraftProcessDisplay;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.module.inventory.ui.ItemIcon;
 import org.terasology.input.Keyboard;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.CoreWidget;
