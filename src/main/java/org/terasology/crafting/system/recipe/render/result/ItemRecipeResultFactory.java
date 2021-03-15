@@ -22,7 +22,7 @@ import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.logic.common.DisplayNameComponent;
 import org.terasology.engine.logic.inventory.ItemComponent;
 import org.terasology.engine.registry.CoreRegistry;
-import org.terasology.engine.rendering.nui.layers.ingame.inventory.ItemIcon;
+import org.terasology.rendering.nui.layers.ingame.inventory.ItemIcon;
 
 import java.util.List;
 

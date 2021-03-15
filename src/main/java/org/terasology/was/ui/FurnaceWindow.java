@@ -17,11 +17,11 @@ package org.terasology.was.ui;
 
 import org.terasology.engine.core.Time;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.inventory.InventoryUtils;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.rendering.nui.BaseInteractionScreen;
-import org.terasology.engine.rendering.nui.layers.ingame.inventory.InventoryGrid;
+import org.terasology.rendering.nui.layers.ingame.inventory.InventoryGrid;
 import org.terasology.heat.component.HeatProcessedComponent;
 import org.terasology.heat.component.HeatProducerComponent;
 import org.terasology.heat.ui.ThermometerWidget;

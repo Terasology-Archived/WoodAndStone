@@ -22,7 +22,7 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.registry.In;
-import org.terasology.engine.rendering.nui.layers.ingame.inventory.GetItemTooltip;
+import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.engine.utilities.Assets;
 import org.terasology.genome.component.GenomeComponent;
 import org.terasology.genome.system.GenomeManager;

@@ -20,7 +20,7 @@ import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.FixedFunction;
 import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.inventory.InventoryUtils;
+import org.terasology.logic.inventory.InventoryUtils;
 import org.terasology.engine.logic.inventory.ItemComponent;
 
 import java.util.LinkedList;
