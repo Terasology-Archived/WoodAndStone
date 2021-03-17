@@ -22,7 +22,7 @@ import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.durability.DurabilityComponent;
 import org.terasology.durability.ReduceDurabilityEvent;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.inventory.InventoryUtils;
+import org.terasology.module.inventory.systems.InventoryUtils;
 
 import java.util.LinkedList;
 import java.util.List;

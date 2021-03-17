@@ -17,11 +17,11 @@ package org.terasology.was.ui;
 
 import org.terasology.engine.core.Time;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.inventory.InventoryUtils;
+import org.terasology.module.inventory.systems.InventoryUtils;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.rendering.nui.BaseInteractionScreen;
-import org.terasology.engine.rendering.nui.layers.ingame.inventory.InventoryGrid;
+import org.terasology.module.inventory.ui.InventoryGrid;
 import org.terasology.mill.component.MillProgressComponent;
 import org.terasology.nui.UIWidget;
 import org.terasology.nui.databinding.Binding;

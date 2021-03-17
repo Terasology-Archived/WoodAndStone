@@ -19,7 +19,7 @@ import org.terasology.crafting.component.CraftingProcessComponent;
 import org.terasology.crafting.event.CraftingWorkstationProcessRequest;
 import org.terasology.crafting.system.recipe.workstation.CraftingStationRecipe;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.inventory.InventoryManager;
+import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.workstation.event.WorkstationProcessRequest;
 import org.terasology.workstation.process.InvalidProcessException;

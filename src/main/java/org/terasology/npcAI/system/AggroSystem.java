@@ -23,7 +23,7 @@ import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.engine.logic.health.event.OnDamagedEvent;
+import org.terasology.logic.health.event.OnDamagedEvent;
 import org.terasology.engine.monitoring.PerformanceMonitor;
 import org.terasology.engine.registry.In;
 import org.terasology.math.TeraMath;

@@ -20,8 +20,8 @@ import org.terasology.crafting.system.recipe.render.CraftIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.ItemSlotIngredientRenderer;
 import org.terasology.crafting.system.recipe.render.MultiplyFunction;
 import org.terasology.engine.entitySystem.entity.EntityRef;
-import org.terasology.engine.logic.inventory.InventoryManager;
-import org.terasology.engine.logic.inventory.InventoryUtils;
+import org.terasology.module.inventory.systems.InventoryManager;
+import org.terasology.module.inventory.systems.InventoryUtils;
 import org.terasology.engine.logic.inventory.ItemComponent;
 import org.terasology.engine.registry.CoreRegistry;
 
