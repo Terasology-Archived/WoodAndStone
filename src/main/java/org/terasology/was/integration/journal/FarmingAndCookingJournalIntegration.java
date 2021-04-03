@@ -17,7 +17,7 @@ package org.terasology.was.integration.journal;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import org.terasology.assets.ResourceUrn;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.prefab.Prefab;
