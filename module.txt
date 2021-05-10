@@ -48,7 +48,7 @@
         },
         {
             "id": "Fluid",
-            "minVersion": "1.1.0"
+            "minVersion": "2.0.0"
         },
         {
             "id": "Genome",
